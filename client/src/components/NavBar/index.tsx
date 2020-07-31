@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
 import $ from 'jquery';
 
@@ -18,7 +18,7 @@ const NavBar = () => {
         <a className="navbar-brand" href="#">Project Tracker</a>
         <ul className="navbar-nav ml-auto mt-2 mt-lg-0">
           <li className="nav-item">
-            <NavLink exact className="nav-link" to="/" onClick={toggle}>Home</NavLink>
+            <NavLink exact className="nav-link" to="/" onClick={toggle}>Overview</NavLink>
           </li>
           <li className="nav-item">
             <NavLink exact className="nav-link" to="/boards" onClick={toggle}>Boards</NavLink>
