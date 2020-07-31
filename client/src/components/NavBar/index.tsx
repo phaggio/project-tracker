@@ -2,11 +2,6 @@ import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import $ from 'jquery';
 
-const consoleThis = (e: { target: Object; }) => {
-  console.log(e.target);
-}
-
-
 const NavBar = () => {
   const toggle = () => {
     $('.navbar-collapse').collapse('hide');
