@@ -1,12 +1,8 @@
 import { join } from 'path';
 import { Request, Response, Router } from 'express';
+import apiRoutes from './API';
 
 const router = Router();
-const apiRoutes = require('./API');
-
-
-
-
 
 router.use(`/api`, apiRoutes);
 router.use((request: Request, response: Response) => {
