@@ -15,7 +15,7 @@ const NavBar = () => {
         <span className="navbar-toggler-icon"></span>
       </button>
       <div className="collapse navbar-collapse" id="navbar">
-        <a className="navbar-brand" href="#">Project Tracker</a>
+        <NavLink exact className="navbar-brand" to="/">Project Tracker</NavLink>
         <ul className="navbar-nav ml-auto mt-2 mt-lg-0">
           <li className="nav-item">
             <NavLink exact className="nav-link" to="/" onClick={toggle}>Overview</NavLink>

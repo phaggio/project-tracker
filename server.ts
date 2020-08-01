@@ -2,7 +2,7 @@
 
 const express = require('express');
 const mongoose = require('mongoose');
-const routes = require('./routes');
+const routes = require('../routes');
 
 const app = express();
 const LOCAL_PORT = 8000;
