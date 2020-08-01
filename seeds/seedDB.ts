@@ -2,7 +2,6 @@ import userSeed from './userSeed';
 
 import mongoose from 'mongoose';
 import * as db from '../models';
-console.log('seeding...');
 
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/project-tracker', {
   useUnifiedTopology: true,
