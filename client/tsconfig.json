@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "es5",
     "lib": [
       "dom",
       "dom.iterable",
@@ -16,13 +16,20 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
+    "noEmit": true, // emit js output during development
     "jsx": "react",
-    "outDir": "dist",
-    "sourceMap": true,
+		"sourceMap": true,
+		"declaration": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"experimentalDecorators": true,
     "noImplicitAny": true
   },
   "include": [
-    "./src/**/*"
-  ]
+    "src/**/*"
+	],
+	"exclude": [
+		"node_modules",
+		"build"
+	]
 }

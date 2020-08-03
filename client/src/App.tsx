@@ -1,7 +1,5 @@
 import React from 'react';
 import { HashRouter, Route, Switch } from 'react-router-dom';
-// import { TransitionGroup, CSSTransition, SwitchTransition, Transition } from 'react-transition-group';
-import './App.css';
 import NavBar from './components/NavBar';
 import Overview from './pages/Overview';
 import Boards from './pages/Boards';
