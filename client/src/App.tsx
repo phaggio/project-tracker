@@ -4,6 +4,7 @@ import NavBar from './components/NavBar';
 import Overview from './pages/Overview';
 import Boards from './pages/Boards';
 import Settings from './pages/Settings';
+import NewProject from './components/NewProject';
 
 
 const App = () => {
@@ -33,6 +34,7 @@ const App = () => {
           <Route exact path='/' component={Overview} />
           <Route exact path='/boards' component={Boards} />
           <Route exact path='/settings' component={Settings} />
+          <Route exact path='/new/project' component={NewProject} />
         </Switch>
       </HashRouter>
     </div>
