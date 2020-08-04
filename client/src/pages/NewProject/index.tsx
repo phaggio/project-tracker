@@ -23,7 +23,6 @@ const NewProject = () => {
 
   const handleKeyEvent = (event: React.ChangeEvent<HTMLInputElement>) => {
     const id = event.target.id;
-    console.log(event.target.id);
     if (id === 'title') {
       const input = event.target.value.trim();
       updateProjectInput({
@@ -40,7 +39,7 @@ const NewProject = () => {
     <div className="container">
       <form
         method="POST"
-        onSubmit={submitButtonPressed}
+        onSubmit={submitButtonPressed} // this also works when user press enter key on keyboard
       >
         <div className="form-group">
           <label>Name <span style={{color: 'red'}}>*</span></label>
