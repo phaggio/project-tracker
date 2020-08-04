@@ -20,7 +20,6 @@
     "jsx": "react",
 		"sourceMap": true,
 		"declaration": true,
-		"noUnusedLocals": true,
 		"noUnusedParameters": true,
 		"experimentalDecorators": true,
     "noImplicitAny": true
