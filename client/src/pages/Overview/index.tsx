@@ -4,7 +4,7 @@ import AddNewButton from '../../components/AddNewButton';
 const buttons = [
   { name: 'Project', url: '/new/project' },
   { name: 'Feature', url: 'new/feature' },
-  { name: 'Work Item', url: 'new/workitem' },
+  { name: 'Work Item', url: 'new/item' },
   { name: 'Bug', url: 'new/bug' }
 ]
 

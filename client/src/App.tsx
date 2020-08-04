@@ -1,11 +1,8 @@
 import React from 'react';
 import { HashRouter, Route, Switch } from 'react-router-dom';
 import NavBar from './components/NavBar';
-import Overview from './pages/Overview';
-import Boards from './pages/Boards';
-import Settings from './pages/Settings';
-import NewProject from './components/NewProject';
 
+import * as pages from './pages'
 
 const App = () => {
   return (
@@ -31,10 +28,12 @@ const App = () => {
         /> */}
 
         <Switch>
-          <Route exact path='/' component={Overview} />
-          <Route exact path='/boards' component={Boards} />
-          <Route exact path='/settings' component={Settings} />
-          <Route exact path='/new/project' component={NewProject} />
+          <Route exact path='/' component={pages.Overview} />
+          <Route exact path='/boards' component={pages.Boards} />
+          <Route exact path='/settings' component={pages.Settings} />
+          <Route exact path='/new/project' component={pages.NewProject} />
+          <Route exact path='/new/feature' component={pages.NewFeature} />
+          <Route exact path='/new/item' component={pages.NewWorkItem} />
         </Switch>
       </HashRouter>
     </div>

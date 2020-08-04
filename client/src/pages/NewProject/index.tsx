@@ -15,14 +15,16 @@ const NewProject = () => {
       <form>
         <div className="form-group">
           <label>Name</label>
-          <input type="text" className="form-control" onChange={event => updateProjectNameInput(event)} placeholder="Project Name" />
+          <input type="text" className="form-control" 
+          onChange={event => updateProjectNameInput(event)} 
+          placeholder="Project name" />
         </div>
         <div className="form-group">
           <label>Description <small>(Optional)</small></label>
           <input type="text" className="form-control" placeholder="Description" />
         </div>
         <button type="submit" className="btn btn-success" disabled={disableCreateButton}
-          onClick={() => console.log('submit button pressed...')}
+          onSubmit={() => console.log('submit button pressed...')}
         >Create project
         </button>
       </form>

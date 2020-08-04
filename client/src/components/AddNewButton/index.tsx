@@ -20,7 +20,7 @@ const AddNewButton = (props: { buttons: Button[] }) => {
 
         {props.buttons.map(button => {
           return (
-            <Link className="dropdown-item" to={button.url}>{button.name}</Link>
+            <Link className="dropdown-item" key={button.name} to={button.url}>{button.name}</Link>
           )
         })}
       </div>
