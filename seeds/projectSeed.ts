@@ -1,5 +1,3 @@
-
-
 const projectSeed = [
   {
     id: 1,

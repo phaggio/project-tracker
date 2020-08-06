@@ -23,7 +23,9 @@ const seedDB = async () => {
 
   for (const model of models) {
     await model.modelNames.collection
+      // deletes all existing collections in the db
       .deleteMany({})
+      // insert seed data collection to db
       .then(() =>
         model.modelNames.collection
           .insertMany(model.data)

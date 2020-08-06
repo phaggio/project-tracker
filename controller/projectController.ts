@@ -7,6 +7,13 @@ const findAll = (request: Request, response: Response) => {
     .catch(err => response.status(422).json(err));
 };
 
+const create = (request: Request, response: Response) => {
+  Project.create(request.body)
+    .then(data => response.json(data))
+    .catch(err => response.status(422).json(err));
+}
+
 export {
-  findAll
+  findAll,
+  create
 }
