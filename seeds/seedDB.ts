@@ -6,8 +6,11 @@ import * as db from '../models';
 
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/project-tracker', {
   useUnifiedTopology: true,
-  useNewUrlParser: true
+  useNewUrlParser: true,
+  useCreateIndex: true
 });
+
+console.log(`mongoose version: ${mongoose.version}`);
 
 const seedDB = async () => {
   const models = [
@@ -24,7 +27,7 @@ const seedDB = async () => {
   for (const model of models) {
     await model.modelNames.collection
       // deletes all existing collections in the db
-      .deleteMany({})
+      .deleteMany({}).then(res => (console.log(`clearing database`)))
       // insert seed data collection to db
       .then(() =>
         model.modelNames.collection

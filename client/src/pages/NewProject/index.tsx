@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import API from '../../requests/projects';
+import { AxiosResponse } from 'axios';
+import * as API from '../../requests/projects';
 
 const NewProject = () => {
   const [disableCreateButton, updateDisableCreateButton] = useState(true);
@@ -16,7 +17,10 @@ const NewProject = () => {
 
     // need to make proper API call
     const data = projectInput;
-    API.addNewProject(data).then(res => console.log(res));
+    console.log(`sending`, data);
+    API.addNewProject(data)
+      .then((response: AxiosResponse) => console.log(response))
+      .catch(err => console.error(err));
   };
 
   const handleKeyEvent = (event: React.ChangeEvent<HTMLInputElement>) => {

@@ -74,9 +74,10 @@
   },
   "include": [
     "server.ts",
-    "./seeds/*",
+    "./seeds/",
     "./routes/",
-    "./models/*"
+    "./models/",
+    "./controller/"
   ],
   "exclude": [
     "node_modules",
