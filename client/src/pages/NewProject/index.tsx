@@ -6,7 +6,8 @@ const NewProject = () => {
   const [projectInput, updateProjectInput] = useState({ title: '', description: '' });
 
   useEffect(() => {
-    projectInput.title ? updateDisableCreateButton(false) : updateDisableCreateButton(true);
+    projectInput.title ?
+      updateDisableCreateButton(false) : updateDisableCreateButton(true);
   }, [projectInput]);
 
   const submitButtonPressed = (event: React.FormEvent) => {
@@ -14,10 +15,7 @@ const NewProject = () => {
     console.log(`submit button pressed..`)
 
     // need to make proper API call
-    const data: object = {
-      name: 'testing',
-      description: 'some description'
-    }
+    const data = projectInput;
     API.addNewProject(data).then(res => console.log(res));
   };
 
@@ -35,6 +33,7 @@ const NewProject = () => {
     }
   }
 
+
   return (
     <div className="container">
       <form
@@ -42,8 +41,10 @@ const NewProject = () => {
         onSubmit={submitButtonPressed} // this also works when user press enter key on keyboard
       >
         <div className="form-group">
-          <label>Name <span style={{ color: 'red' }}>*</span></label>
-          <input type="text" className="form-control" id="title"
+          <label>Name</label>
+          <input type="text"
+            className="form-control"
+            id="title"
             onChange={event => {
               handleKeyEvent(event);
             }}
@@ -52,7 +53,9 @@ const NewProject = () => {
 
         <div className="form-group">
           <label>Description <small>(Optional)</small></label>
-          <input type="text" className="form-control" id="description"
+          <input type="text"
+            className="form-control"
+            id="description"
             onChange={event => handleKeyEvent(event)}
             placeholder="Description" />
         </div>
@@ -62,7 +65,7 @@ const NewProject = () => {
         </button>
 
       </form>
-
+      <br />
       <button onClick={() => console.log(projectInput)}>Console.log input state</button>
     </div>
 
