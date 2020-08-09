@@ -1,5 +1,6 @@
 import userSeed from './userSeed';
 import projectSeed from './projectSeed';
+import featureSeed from './featureSeed';
 
 import mongoose from 'mongoose';
 import * as db from '../models';
@@ -21,6 +22,10 @@ const seedDB = async () => {
     {
       modelNames: db.Project,
       data: projectSeed
+    },
+    {
+      modelNames: db.Feature,
+      data: featureSeed
     }
   ]
 

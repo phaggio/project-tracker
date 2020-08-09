@@ -3,7 +3,7 @@ import mongoose, { Schema, Document } from 'mongoose';
 export interface IProject extends Document {
   name: string;
   description: string;
-  tag: string[];
+  tags: string[];
 }
 
 const ProjectSchema: Schema = new Schema({

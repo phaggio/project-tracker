@@ -4,10 +4,13 @@ import * as API from '../../requests/projects';
 
 const NewProject = () => {
   const [disableCreateButton, updateDisableCreateButton] = useState(true);
-  const [projectInput, updateProjectInput] = useState({ name: '', description: '' });
+  const [projectInput, updateProjectInput] = useState(
+    { name: '', description: '' }
+  );
 
   useEffect(() => {
-    projectInput.name ?
+    // if there's input in project name, enable the Create project button
+    projectInput.name.trim() ?
       updateDisableCreateButton(false) : updateDisableCreateButton(true);
   }, [projectInput]);
 
@@ -15,7 +18,7 @@ const NewProject = () => {
     event.preventDefault();
     console.log(`submit button pressed..`)
 
-    // need to make proper API call
+    // need to make proper API call and what to show to user after creating the project.
     const data = projectInput;
     console.log(`sending`, data);
     API.addNewProject(data)
@@ -26,6 +29,7 @@ const NewProject = () => {
   const handleKeyEvent = (event: React.ChangeEvent<HTMLInputElement>) => {
     const id = event.target.id;
     const input = event.target.value.trim();
+    console.log(id, input)
     if (id === 'name') {
       updateProjectInput({
         ...projectInput, name: input
@@ -48,7 +52,7 @@ const NewProject = () => {
           <label>Name</label>
           <input type="text"
             className="form-control"
-            id="title"
+            id="name"
             onChange={event => {
               handleKeyEvent(event);
             }}
