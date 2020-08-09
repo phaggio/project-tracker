@@ -4,10 +4,10 @@ import * as API from '../../requests/projects';
 
 const NewProject = () => {
   const [disableCreateButton, updateDisableCreateButton] = useState(true);
-  const [projectInput, updateProjectInput] = useState({ title: '', description: '' });
+  const [projectInput, updateProjectInput] = useState({ name: '', description: '' });
 
   useEffect(() => {
-    projectInput.title ?
+    projectInput.name ?
       updateDisableCreateButton(false) : updateDisableCreateButton(true);
   }, [projectInput]);
 
@@ -26,9 +26,9 @@ const NewProject = () => {
   const handleKeyEvent = (event: React.ChangeEvent<HTMLInputElement>) => {
     const id = event.target.id;
     const input = event.target.value.trim();
-    if (id === 'title') {
+    if (id === 'name') {
       updateProjectInput({
-        ...projectInput, title: input
+        ...projectInput, name: input
       })
     } else if (id === 'description') {
       updateProjectInput({

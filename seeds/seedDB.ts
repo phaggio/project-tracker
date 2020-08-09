@@ -27,7 +27,7 @@ const seedDB = async () => {
   for (const model of models) {
     await model.modelNames.collection
       // deletes all existing collections in the db
-      .deleteMany({}).then(res => (console.log(`clearing database`)))
+      .deleteMany({}).then(() => (console.log(`clearing ${model.modelNames.collection.name} collection`)))
       // insert seed data collection to db
       .then(() =>
         model.modelNames.collection
