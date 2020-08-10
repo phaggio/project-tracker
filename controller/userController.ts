@@ -2,8 +2,15 @@ import { User } from '../models';
 import { Request, Response } from 'express';
 
 const findByName = (request: Request, response: Response) => {
-  console.log(request.query);
-  User.find(request.query)
+  console.log(request.query.name);
+  const name = request.query.name;
+  const query: object = {
+    name: {
+      $regex: name,
+      $options: 'i'
+    }
+  }
+  User.find(query)
     .then(data => response.json(data))
     .catch(err => response.status(422).json(err));
 };
