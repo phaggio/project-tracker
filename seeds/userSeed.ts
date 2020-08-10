@@ -1,5 +1,3 @@
-
-
 const userSeed = [
   {
     id: 1,

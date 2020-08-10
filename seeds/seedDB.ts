@@ -32,16 +32,21 @@ const seedDB = async () => {
   for (const model of models) {
     await model.modelNames.collection
       // deletes all existing collections in the db
-      .deleteMany({}).then(() => (console.log(`clearing ${model.modelNames.collection.name} collection`)))
+      .deleteMany({})
+      .then(() => {
+        console.log(`removed existing ${model.modelNames.collection.name} collection`)
+      })
       // insert seed data collection to db
-      .then(() =>
+      .then(() => {
         model.modelNames.collection
           .insertMany(model.data)
-          .then(res =>
+          .then(res => {
             console.log(`${res.result.n} ${model.modelNames.collection.name} records inserted!`)
-          )
-      )
-      .catch(err => console.error(err));
+          })
+      })
+      .catch(err => {
+        console.error(err)
+      });
   }
   process.exit(0);
 }

@@ -6,7 +6,9 @@ const app = express();
 const LOCAL_PORT: String = '8000';
 const PORT = process.env.PORT || LOCAL_PORT;
 
+// for parsing application/x-www-form-urlencoded 
 app.use(express.urlencoded({ extended: true }));
+// for parsing application/json
 app.use(express.json());
 
 if (process.env.NODE_ENV === 'production') {

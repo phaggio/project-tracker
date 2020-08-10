@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { AxiosResponse } from 'axios';
 import * as API from '../../requests/features';
 
-
-
 const NewFeature = () => {
   const [disableCreateButton, updateDisableCreateButton] = useState(true);
+  const [assignee, updateAssignee] = useState('');
+  const [users, updateUsers] = useState([])
   const [featureInput, updateFeatureInput] = useState(
     { name: '', description: '', owner: '' }
   );
@@ -30,6 +30,14 @@ const NewFeature = () => {
       .catch(err => console.error(err));
   };
 
+
+
+  const retrieveUsers = () => {
+    API.getUsersByName(assignee)
+      .then((response: AxiosResponse) => console.log(response.data));
+  }
+
+
   const handleKeyEvent = (
     event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>
   ) => {
@@ -43,6 +51,9 @@ const NewFeature = () => {
       case 'description':
         updateFeatureInput({ ...featureInput, description: input });
         break;
+      case 'assignee':
+        updateAssignee(input);
+        break;
       default:
         break;
     }
@@ -54,8 +65,18 @@ const NewFeature = () => {
         method="POST"
         onSubmit={submitButtonPressed}
       >
+
         <div className="form-group">
-          <label>Name</label>
+          <label>Assign to: </label>
+          <input type="text"
+            className="form-control"
+            id="assignee"
+            onChange={event => handleKeyEvent(event)}
+            placeholder="Assignee" />
+        </div>
+
+        <div className="form-group">
+          <label>Feature name</label>
           <input type="text"
             className="form-control"
             id="name"
@@ -82,6 +103,11 @@ const NewFeature = () => {
         </button>
 
       </form>
+
+
+      <button onClick={() => console.log(users)}>console.log users</button>
+      <button onClick={() => console.log(assignee)}>console.log assignee search input</button>
+      <button onClick={() => retrieveUsers()}>retrive users</button>
     </div>
 
   )
