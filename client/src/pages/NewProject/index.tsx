@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { AxiosResponse } from 'axios';
-import * as API from '../../requests/projects';
+import { projectRequest } from '../../requests';
 
 const NewProject = () => {
   const [disableCreateButton, updateDisableCreateButton] = useState(true);
@@ -21,7 +21,7 @@ const NewProject = () => {
     // need to make proper API call and what to show to user after creating the project.
     const data = projectInput;
     console.log(`sending`, data);
-    API.addNewProject(data)
+    projectRequest.addNewProject(data)
       .then((response: AxiosResponse) => console.log(response))
       .catch(err => console.error(err));
   };

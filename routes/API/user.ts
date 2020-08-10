@@ -1,10 +1,10 @@
 import { Router } from 'express';
-import { findByName, create } from '../../controller/userController';
+import { findByName, createNewUser } from '../../controller/userController';
 
 const router: Router = Router();
 
 router.route('/')
   .get(findByName)
-  .post(create)
+  .post(createNewUser)
 
 export default router;

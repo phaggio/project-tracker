@@ -1,11 +1,11 @@
 import { Router } from 'express';
-import { findAll, create } from '../../controller/featureController';
+import { findAll, createNewFeature } from '../../controller/featureController';
 
 const router: Router = Router();
 
 router.route('/')
   .get(findAll)
-  .post(create)
+  .post(createNewFeature)
 
 
 export default router;

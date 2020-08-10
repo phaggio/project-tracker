@@ -9,13 +9,13 @@ const findByName = (request: Request, response: Response) => {
       $regex: name,
       $options: 'i'
     }
-  }
+  };
   User.find(query)
     .then(data => response.json(data))
     .catch(err => response.status(422).json(err));
 };
 
-const create = (request: Request, response: Response) => {
+const createNewUser = (request: Request, response: Response) => {
   User.create(request.body)
     .then(data => response.json(data))
     .catch(err => response.status(422).json(err));
@@ -23,5 +23,5 @@ const create = (request: Request, response: Response) => {
 
 export {
   findByName,
-  create
+  createNewUser
 };

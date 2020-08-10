@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { AxiosResponse } from 'axios';
-import * as API from '../../requests/features';
+import { featureRequest, userRequest } from '../../requests';
 
 const NewFeature = () => {
   const [disableCreateButton, updateDisableCreateButton] = useState(true);
   const [assignee, updateAssignee] = useState('');
-  const [users, updateUsers] = useState([])
+  const [users, updateUsers] = useState([]);
   const [featureInput, updateFeatureInput] = useState(
     { name: '', description: '', owner: '' }
   );
@@ -25,7 +25,7 @@ const NewFeature = () => {
     // need to make proper API call and what to show to user after creating the feature.
     const data = featureInput;
     console.log(`sending`, data);
-    API.addNewFeature(data)
+    featureRequest.addNewFeature(data)
       .then((response: AxiosResponse) => console.log(response))
       .catch(err => console.error(err));
   };
@@ -33,7 +33,7 @@ const NewFeature = () => {
 
 
   const retrieveUsers = () => {
-    API.getUsersByName(assignee)
+    userRequest.getUsersByName(assignee)
       .then((response: AxiosResponse) => console.log(response.data));
   }
 
