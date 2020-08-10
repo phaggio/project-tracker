@@ -1,10 +1,10 @@
 import { Router } from 'express';
-import { findAll, create } from '../../controller/projectController'
+import projectRoutes from './project';
+import featureRoutes from './feature';
 
 const router: Router = Router();
 
-router.route('/project')
-  .get(findAll)
-  .post(create)
+router.use('/project', projectRoutes);
+router.use('/feature', featureRoutes);
 
 export default router;
