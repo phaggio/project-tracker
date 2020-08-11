@@ -12,21 +12,27 @@ const NewWorkItem = () => {
 
   return (
     <div className="container">
-      <form>
+      <form
+        onSubmit={() => console.log('submitting...')}
+      >
         <div className="form-group">
           <label>Name</label>
           <input type="text" className="form-control"
             onChange={event => updateNewWorkItemNameInput(event)}
             placeholder="Work item name" />
         </div>
+        
         <div className="form-group">
           <label>Description <small>(Optional)</small></label>
           <input type="text" className="form-control" placeholder="Description" />
         </div>
-        <button type="submit" className="btn btn-success" disabled={disableAddButton}
-          onSubmit={() => console.log('submit button pressed...')}
+
+        <button type="submit"
+          className="btn btn-success"
+          disabled={disableAddButton}
         >Add work item
         </button>
+
       </form>
     </div>
 

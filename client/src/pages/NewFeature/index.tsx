@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { AxiosResponse } from 'axios';
-import { featureRequest, userRequest } from '../../requests';
+import { featureRequest, userRequest } from '../../httpRequests';
 
 const NewFeature = () => {
   const [disableCreateButton, updateDisableCreateButton] = useState(true);
   const [assignee, updateAssignee] = useState('');
-  const [users, updateUsers] = useState([]);
   const [featureInput, updateFeatureInput] = useState(
-    { name: '', description: '', owner: '' }
+    { name: '', description: '', assignee: '' }
   );
 
   useEffect(() => {
@@ -30,13 +29,10 @@ const NewFeature = () => {
       .catch(err => console.error(err));
   };
 
-
-
   const retrieveUsers = () => {
     userRequest.getUsersByName(assignee)
       .then((response: AxiosResponse) => console.log(response.data));
   }
-
 
   const handleKeyEvent = (
     event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>
@@ -105,7 +101,7 @@ const NewFeature = () => {
       </form>
 
 
-      <button onClick={() => console.log(users)}>console.log users</button>
+
       <button onClick={() => console.log(assignee)}>console.log assignee search input</button>
       <button onClick={() => retrieveUsers()}>retrive users</button>
     </div>

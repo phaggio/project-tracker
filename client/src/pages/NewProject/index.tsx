@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { AxiosResponse } from 'axios';
-import { projectRequest } from '../../requests';
+import { projectRequest } from '../../httpRequests';
 
 const NewProject = () => {
   const [disableCreateButton, updateDisableCreateButton] = useState(true);
