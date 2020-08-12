@@ -75,6 +75,12 @@ const NewProject = () => {
       </form>
       <br />
       <button onClick={() => console.log(projectInput)}>Console.log input state</button>
+
+      <br />
+      <button onClick={() => {
+        projectRequest.getProjectByName('Simple').then(res => console.log(res))
+      }}>project by name</button>
+
     </div>
 
   )

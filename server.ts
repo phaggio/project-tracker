@@ -25,5 +25,5 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/project-tracker
 
 app.listen(PORT, () => {
   console.log(`API Server up on http://localhost:${PORT}`);
-  console.log(`dir = ${__dirname}`);
+  console.log(`running dir = ${__dirname}`);
 });
