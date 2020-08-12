@@ -1,5 +1,5 @@
 import React from 'react';
-import { HashRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, HashRouter, Route, Switch } from 'react-router-dom';
 import NavBar from './components/NavBar';
 
 import * as pages from './pages'
@@ -7,7 +7,7 @@ import * as pages from './pages'
 const App = () => {
   return (
     <div className="App">
-      <HashRouter>
+      <BrowserRouter>
         <NavBar />
         <Switch>
           <Route exact path='/' component={pages.Overview} />
@@ -17,7 +17,7 @@ const App = () => {
           <Route exact path='/new/feature' component={pages.NewFeature} />
           <Route exact path='/new/item' component={pages.NewWorkItem} />
         </Switch>
-      </HashRouter>
+      </BrowserRouter>
     </div>
   );
 }

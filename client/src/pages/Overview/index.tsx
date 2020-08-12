@@ -1,6 +1,8 @@
 import React from 'react';
 import buttons from '../../content/buttons';
 import AddNewButton from '../../components/AddNewButton';
+import ProjectButton from '../../components/ProjectButton';
+import { Link } from 'react-router-dom';
 
 const Overview = () => {
 
@@ -16,7 +18,10 @@ const Overview = () => {
           <br />
           <br />
           Lorem ipsum, dolor sit amet consectetur adipisicing elit. Deserunt iusto saepe ea incidunt aliquam optio odit, modi ratione voluptatum repellendus non consequatur labore repudiandae esse eaque perferendis corporis facilis nemo?
+          <ProjectButton name={'test'} subtitle={'test sub'} />
 
+
+          <Link to="/boards">boards</Link>
         </div>
         <div className="col-12 col-md-8 border border-secondary">
           THIS IS OVERVIEW OF PROJECT STATUS

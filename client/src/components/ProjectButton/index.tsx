@@ -7,7 +7,7 @@ const size: object = {
   width: "10rem"
 }
 
-const ProjectItem = (props: { name: string; subtitle: string; }) => {
+const ProjectButton = (props: { name: string; subtitle: string; }) => {
   return (
 
     <button type="button" className="m-1 btn btn-dark btn-block" onClick={() => console.log('clicked')}>
@@ -27,7 +27,7 @@ const ProjectItem = (props: { name: string; subtitle: string; }) => {
   )
 }
 
-ProjectItem.propTypes = {
+ProjectButton.propTypes = {
   name: PropTypes.string,
   subtitle: PropTypes.string,
   link: PropTypes.string,
@@ -35,4 +35,4 @@ ProjectItem.propTypes = {
   imgURL: PropTypes.string
 }
 
-export default ProjectItem;
+export default ProjectButton;
