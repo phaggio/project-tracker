@@ -1,15 +1,17 @@
-import Overview from './Overview';
+import Home from './Home';
 import Boards from './Boards';
 import Settings from './Settings';
 import NewProject from './NewProject';
 import NewFeature from './NewFeature';
 import NewWorkItem from './NewWorkItem';
+import Project from './Project';
 
 export {
-  Overview,
+  Home,
   Boards,
   Settings,
   NewProject,
   NewFeature,
-  NewWorkItem
+  NewWorkItem,
+  Project
 }
