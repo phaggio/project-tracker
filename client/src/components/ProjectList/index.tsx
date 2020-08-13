@@ -23,8 +23,8 @@ const ProjectList = ({ projects }: ListProps) => {
       {(projects) ?
         projects.map(project => {
           return (
-            <div>
-              <h4 key={project.name}>{project.name}</h4>
+            <div key={project.name}>
+              <h4>{project.name}</h4>
               <p>{project.description}</p>
               <p>{project._id}</p>
             </div>

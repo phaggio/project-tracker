@@ -6,9 +6,6 @@ import ProjectList from '../../components/ProjectList';
 import {projectRequest} from '../../httpRequests'
 import { Link } from 'react-router-dom';
 
-// const projectsInDB = projectRequest.getProjectByName(``);
-
-
 
 const Home = () => {
   const [projects, updateProjects] = useState([]);

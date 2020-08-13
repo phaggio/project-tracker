@@ -4,6 +4,7 @@ import Settings from './Settings';
 import NewProject from './NewProject';
 import NewFeature from './NewFeature';
 import NewWorkItem from './NewWorkItem';
+import NewUser from './NewUser';
 import Project from './Project';
 
 export {
@@ -13,5 +14,6 @@ export {
   NewProject,
   NewFeature,
   NewWorkItem,
+  NewUser,
   Project
 }
