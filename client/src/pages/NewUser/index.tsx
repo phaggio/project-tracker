@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { AxiosResponse } from 'axios';
+import { userRequest } from '../../httpRequests'
 
 const NewUser = () => {
   const [disableCreateButton, updateDisableCreateButton] = useState(true);
@@ -20,9 +21,9 @@ const NewUser = () => {
     // need to make proper API call and what to show to user after creating the project.
     const data = userInfo;
     console.log(`sending`, data);
-    // projectRequest.addNewProject(data)
-    //   .then((response: AxiosResponse) => console.log(response))
-    //   .catch(err => console.error(err));
+    userRequest.createNewUser(data)
+      .then((response: AxiosResponse) => console.log(response))
+      .catch(err => console.error(err));
   };
 
   const handleKeyEvent = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -88,7 +89,8 @@ const NewUser = () => {
       <button onClick={() => console.log(userInfo)}>Console.log input state</button>
 
       <br />
-      <button onClick={() => { console.log('submit button clicked')
+      <button onClick={() => {
+        console.log('submit button clicked')
       }}>project by name</button>
 
     </div>

@@ -5,6 +5,8 @@ const router: Router = Router();
 
 router.route('/')
   .get(findByName)
+
+router.route('/new')
   .post(createNewProject)
 
 export default router;

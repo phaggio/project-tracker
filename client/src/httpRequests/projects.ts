@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const addNewProject = (data: object) => {
-  return axios.post('/api/project', data)
+  return axios.post('/api/project/new', data)
 };
 
 const getProjectByName = (projectName: string) => {

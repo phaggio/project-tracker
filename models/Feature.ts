@@ -13,7 +13,7 @@ export interface IFeature extends Document {
 const FeatureSchema: Schema = new Schema({
   name: {
     type: String,
-    minlength: 1
+    required: true
   },
   description: {
     type: String

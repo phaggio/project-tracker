@@ -8,6 +8,12 @@ const getUsersByName = (userName: string) => {
   return axios.get('/api/user', config);
 };
 
+const createNewUser = (data: object) => {
+  console.log(data);
+  return axios.post('/api/user/new', data);
+};
+
 export {
+  createNewUser,
   getUsersByName
 };
