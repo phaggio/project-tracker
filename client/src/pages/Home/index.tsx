@@ -1,10 +1,26 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 // import buttons from '../../content/buttons';
 // import AddNewButton from '../../components/AddNewButton';
 // import ProjectButton from '../../components/ProjectButton';
+import ProjectList from '../../components/ProjectList';
+import {projectRequest} from '../../httpRequests'
 import { Link } from 'react-router-dom';
 
+// const projectsInDB = projectRequest.getProjectByName(``);
+
+
+
 const Home = () => {
+  const [projects, updateProjects] = useState([]);
+
+  useEffect(() => {
+    projectRequest.getProjectByName(``)
+      .then(res => {
+        console.log(res.data);
+        updateProjects(res.data)
+      })
+  }, [])
+
   return (
     <div className="container border border-primary rounded">
       this is Home page it is one big container
@@ -28,6 +44,7 @@ const Home = () => {
 						<a href="/">project 3 name and stuff</a>
 						<a href="/">project 4 name and stuff</a>
 						<a href="/">project 5 name and stuff</a>
+            <ProjectList projects={projects} />
           </div>
         </div>
 
@@ -38,6 +55,8 @@ const Home = () => {
         </div>
 				
       </div>
+
+      <button type="button" onClick={() => console.log(projects)}>console log projects in DB</button>
     </div>
   )
 };

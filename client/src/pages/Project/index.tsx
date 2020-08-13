@@ -51,6 +51,7 @@ const Project = (path: pathObj) => {
 					</div>
 				)}
 			/>
+			
 		</div>
 	)
 }
