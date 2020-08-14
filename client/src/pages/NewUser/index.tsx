@@ -5,7 +5,11 @@ import { userRequest } from '../../httpRequests'
 const NewUser = () => {
   const [disableCreateButton, updateDisableCreateButton] = useState(true);
   const [userInfo, updateUserInfo] = useState(
-    { firstName: '', lastName: '', email: '' }
+    {
+      firstName: '',
+      lastName: '',
+      email: ''
+    }
   );
 
   useEffect(() => {
@@ -20,10 +24,19 @@ const NewUser = () => {
 
     // need to make proper API call and what to show to user after creating the project.
     const data = userInfo;
-    console.log(`sending`, data);
-    userRequest.createNewUser(data)
-      .then((response: AxiosResponse) => console.log(response))
-      .catch(err => console.error(err));
+    console.log(`sending from client:`, data);
+    userRequest
+      .createNewUser(data)
+      .then((response: AxiosResponse) => {
+        console.log(response);
+        console.log(response.status);
+        if (response.status === 200) {
+          console.log(`successfully added new user`);
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      });
   };
 
   const handleKeyEvent = (event: React.ChangeEvent<HTMLInputElement>) => {

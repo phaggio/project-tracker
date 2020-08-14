@@ -17,10 +17,14 @@ const findByName = (request: Request, response: Response) => {
 
 
 const createNewUser = (request: Request, response: Response) => {
-  console.log('From controller, in Node...')
+  console.log('express request.body:')
   console.log(request.body);
+  
   User.create(request.body)
-    .then(data => response.json(data))
+    .then(data => {
+      console.log(`response.statusCode = ${response.statusCode}`);
+      response.json(data);
+    })
     .catch(err => response.status(422).json(err));
 };
 

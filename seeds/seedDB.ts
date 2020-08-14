@@ -34,19 +34,19 @@ const seedDB = async () => {
     const collectionName = model.modelName.collection.collectionName;
 
     await model.modelName.collection
-      .drop()
+      .drop() // drop existing collection
       .then(() => {
         console.log(`Dropped collection: ${collectionName}`)
       });
 
     await model.modelName
-      .createCollection()
+      .createCollection() // create new collection in db
       .then(() => {
         console.log(`Created collection: ${collectionName}`)
       });
 
     await model.modelName.collection
-      .insertMany(model.data)
+      .insertMany(model.data) // seed the data in that collection
       .then(res => {
         const count = res.result.n;
         console.log(`${count} ${collectionName} documents inserted!`)

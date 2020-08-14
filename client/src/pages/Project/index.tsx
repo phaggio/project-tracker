@@ -17,16 +17,19 @@ interface matchObj {
 const Project = (path: pathObj) => {
 	const match = path.match;
 	console.log(match)
+
+
+
 	return (
 		<div className="container">
 			Project page
-
+{/* 
 			<li>
 				<Link to={`${match.url}/first`}>First</Link>
 			</li>
 			<li>
 				<Link to={`${match.url}/second`}>Second</Link>
-			</li>
+			</li> */}
 
 			<Route
 				exact={true}
@@ -44,14 +47,14 @@ const Project = (path: pathObj) => {
 			<Route
 				exact={true}
 				path='/project/test'
-				render={() => (
+				component={() => (
 					<div>
 						<h4>TEST</h4>
 						<p>something</p>
 					</div>
 				)}
 			/>
-			
+
 		</div>
 	)
 }
