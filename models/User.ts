@@ -1,23 +1,35 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import { Schema, Document, model } from 'mongoose';
 
-export interface IUser extends Document {
+export interface IUserDocument extends Document {
   firstName: string;
   lastName: string;
   email: string;
+};
+
+export interface IUser extends IUserDocument {
+  getFullName(): string;
 }
 
 const UserSchema: Schema = new Schema({
-  firstName: {
-    type: String
-  },
+  firstName: String,
+
   lastName: {
     type: String,
     required: true
   },
+
   email: {
     type: String,
-    required: true
+    required: true,
+    unique: true,
+    match: [/.+@.+\..+/, `Please enter a valid e-mail address`]
   }
-})
 
-export default mongoose.model<IUser>('User', UserSchema);
+});
+
+UserSchema.methods.getFullName = function (): string {
+  return `${this.firstName} ${this.lastName}`;
+};
+
+
+export default model<IUser>('User', UserSchema);

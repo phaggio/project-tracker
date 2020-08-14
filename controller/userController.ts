@@ -5,7 +5,7 @@ const findByName = (request: Request, response: Response) => {
   console.log(request.query.name);
   const name = request.query.name;
   const query: object = {
-    name: {
+    lastName: {
       $regex: name,
       $options: 'i'
     }
@@ -14,6 +14,7 @@ const findByName = (request: Request, response: Response) => {
     .then(data => response.json(data))
     .catch(err => response.status(422).json(err));
 };
+
 
 const createNewUser = (request: Request, response: Response) => {
   console.log('From controller, in Node...')

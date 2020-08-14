@@ -86,12 +86,8 @@ const NewUser = () => {
 
       </form>
       <br />
-      <button onClick={() => console.log(userInfo)}>Console.log input state</button>
+      <button onClick={() => console.log(userInfo)}>Console.log userInfo state</button>
 
-      <br />
-      <button onClick={() => {
-        console.log('submit button clicked')
-      }}>project by name</button>
 
     </div>
 

@@ -27,7 +27,7 @@ const FeatureSchema: Schema = new Schema({
     default: null
   },
   projectId: {
-    type: Number,
+    type: String,
     default: null
   },
   assignee: {

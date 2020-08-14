@@ -12,40 +12,44 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/project-tracker
 });
 
 console.log(`mongoose version: ${mongoose.version}`);
+console.log(`------------------------`)
 
 const seedDB = async () => {
   const models = [
     {
-      modelNames: db.User,
+      modelName: db.User,
       data: userSeed
     },
     {
-      modelNames: db.Project,
+      modelName: db.Project,
       data: projectSeed
     },
     {
-      modelNames: db.Feature,
+      modelName: db.Feature,
       data: featureSeed
     }
   ]
 
   for (const model of models) {
-    await model.modelNames.collection
-      // deletes all existing collections in the db
-      .deleteMany({})
+    const collectionName = model.modelName.collection.collectionName;
+
+    await model.modelName.collection
+      .drop()
       .then(() => {
-        console.log(`removed existing ${model.modelNames.collection.name} collection`)
-      })
-      // insert seed data collection to db
+        console.log(`Dropped collection: ${collectionName}`)
+      });
+
+    await model.modelName
+      .createCollection()
       .then(() => {
-        model.modelNames.collection
-          .insertMany(model.data)
-          .then(res => {
-            console.log(`${res.result.n} ${model.modelNames.collection.name} records inserted!`)
-          })
-      })
-      .catch(err => {
-        console.error(err)
+        console.log(`Created collection: ${collectionName}`)
+      });
+
+    await model.modelName.collection
+      .insertMany(model.data)
+      .then(res => {
+        const count = res.result.n;
+        console.log(`${count} ${collectionName} documents inserted!`)
       });
   }
   process.exit(0);
