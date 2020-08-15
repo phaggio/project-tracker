@@ -33,22 +33,31 @@ const Project = ({ match }: pathProps) => {
 	const [project, updateProject] = useState<IProject | undefined>(undefined);
 
 	useEffect(() => {
-		projectRequest
-			.getProjectById(match.params.id)
-			.then(res => updateProject(res.data));
+		if (match.params) {
+			projectRequest
+				.getProjectById(match.params.id)
+				.then(res => updateProject(res.data));
+		}
 	}, [])
 
 
 	return (
 		<div className="container">
 			<div className="row">
-				<div className="col-12 col-md-5 border border-primary">
-					<h4>{match.params.id}</h4>
+
+				<div className="col-12 col-md-5 border border-primary d-flex flex-column">
+					<label>id</label>
+					<small>{match.params.id}</small>
+					<label>path</label>
 					<p>{match.path}</p>
+					<label>url</label>
 					<p>{match.url}</p>
+					<label>name</label>
+					<h4>{project ? project.name : ``}</h4>
 					<label>description</label>
-					<p>{project ? project.description : ``}</p>
+					<h5>{project ? project.description : ``}</h5>
 				</div>
+
 				<div className="col-12 col-md-7">
 					<div className="row d-flex justify-content-end">
 						<button className="btn btn-success btn-sm">New feature</button>
@@ -58,10 +67,9 @@ const Project = ({ match }: pathProps) => {
 					<div>Feature 3</div>
 					<div>Feature 4</div>
 					<div>Feature 5</div>
-
 				</div>
-			</div>
 
+			</div>
 		</div>
 	)
 };
