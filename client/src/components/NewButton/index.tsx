@@ -6,7 +6,7 @@ interface ButtonProps {
   url: string;
   ariaLabel: string;
   small: boolean;
-}
+};
 
 const NewButton = (props: ButtonProps) => {
   console.log(props);

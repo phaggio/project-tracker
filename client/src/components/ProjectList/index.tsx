@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import NewButton from '../NewButton';
+import ProjectLink from '../ProjectLink';
 
 interface projectListProps {
   projects: project[];
@@ -23,22 +24,24 @@ const ProjectList = ({ projects }: projectListProps) => {
 
   return (
     <div className="d-flex flex-column">
+
       <div className="d-flex justify-content-between align-items-baseline">
         <h6>Projects</h6>
         <NewButton name="New project" url="/new/project" ariaLabel="add-new-project" small={true} />
       </div>
 
-      {(projects) ?
-        projects.map(project => {
-          return (
-            <div key={project.name}>
-              <Link to={`/project/${project._id}`}>{project.name}</Link>
-            </div>
-          )
-        })
-        :
-        <p>No project</p>
-      }
+      <div className="d-flex flex-column">
+        {(projects) ?
+          projects.map(project => {
+            return (
+              <ProjectLink key={project._id} data={project} />
+            )
+          })
+          :
+          <p>No project</p>
+        }
+      </div>
+
     </div>
   )
 };
