@@ -1,5 +1,5 @@
-import React from 'react';
-// import { Link, Route } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { projectRequest } from '../../httpRequests'
 
 interface pathProps {
 	history: boolean;
@@ -18,10 +18,26 @@ interface matchParams {
 	id: string;
 }
 
+interface IProject {
+	_id: string;
+	name: string;
+	description: string;
+	tags: string[];
+}
+
 const Project = ({ match }: pathProps) => {
 	console.log(match);
 	console.log(match.params);
 	console.log(match.params.id);
+
+	const [project, updateProject] = useState<IProject | undefined>(undefined);
+
+	useEffect(() => {
+		projectRequest
+			.getProjectById(match.params.id)
+			.then(res => updateProject(res.data));
+	}, [])
+
 
 	return (
 		<div className="container">
@@ -30,8 +46,8 @@ const Project = ({ match }: pathProps) => {
 					<h4>{match.params.id}</h4>
 					<p>{match.path}</p>
 					<p>{match.url}</p>
-					<p>description</p>
-					<p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugit, quod commodi obcaecati natus, corporis minima atque neque architecto porro libero possimus unde dignissimos consequatur saepe dolorum quia debitis fugiat illum.</p>
+					<label>description</label>
+					<p>{project ? project.description : ``}</p>
 				</div>
 				<div className="col-12 col-md-7">
 					<div className="row d-flex justify-content-end">

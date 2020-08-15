@@ -1,9 +1,15 @@
 import { Router } from 'express';
-import { findByName, createNewProject } from '../../controller/projectController';
+import { findAllProjects, findById, createNewProject, findByName } from '../../controller/projectController';
 
 const router: Router = Router();
 
 router.route('/')
+  .get(findAllProjects)
+
+router.route('/id')
+  .get(findById)
+
+router.route('/name')
   .get(findByName)
 
 router.route('/new')

@@ -6,7 +6,7 @@ const Home = () => {
   const [projects, updateProjects] = useState([]);
 
   useEffect(() => {
-    projectRequest.getProjectByName(``)
+    projectRequest.getAllProjects()
       .then(res => {
         console.log(res.data);
         updateProjects(res.data)

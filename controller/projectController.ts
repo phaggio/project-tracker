@@ -1,12 +1,12 @@
 import { Project } from '../models';
 import { Request, Response } from 'express';
 
-// const findAll = (request: Request, response: Response) => {
-//   const query = {}; // find all.
-//   Project.find(query)
-//     .then(data => response.json(data))
-//     .catch(err => response.status(422).json(err));
-// };
+const findAllProjects = (request: Request, response: Response) => {
+  Project
+    .find()
+    .then(data => response.json(data))
+    .catch(err => response.status(422).json(err))
+};
 
 const findByName = (request: Request, response: Response) => {
   console.log(request.query.name);
@@ -22,6 +22,15 @@ const findByName = (request: Request, response: Response) => {
     .catch(err => response.status(422).json(err));
 };
 
+const findById = (request: Request, response: Response) => {
+  console.log(`controller...`)
+  console.log(request.query);
+  const query = request.query;
+  Project.findById(query._id)
+    .then(data => response.json(data))
+    .catch(err => response.status(422).json(err))
+}
+
 const createNewProject = (request: Request, response: Response) => {
   Project.create(request.body)
     .then(data => response.json(data))
@@ -31,7 +40,8 @@ const createNewProject = (request: Request, response: Response) => {
 
 
 export {
-  // findAll,
+  findAllProjects,
   findByName,
+  findById,
   createNewProject
 }
