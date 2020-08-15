@@ -26,19 +26,17 @@ interface IProject {
 }
 
 const Project = ({ match }: pathProps) => {
-	console.log(match);
-	console.log(match.params);
-	console.log(match.params.id);
+	console.log('match', match);
+	console.log('match params', match.params);
 
 	const [project, updateProject] = useState<IProject | undefined>(undefined);
+	const [projectId, updateProjectId] = useState(match.params.id);
 
 	useEffect(() => {
-		if (match.params) {
-			projectRequest
-				.getProjectById(match.params.id)
-				.then(res => updateProject(res.data));
-		}
-	}, [])
+		projectRequest
+			.getProjectById(projectId)
+			.then(res => updateProject(res.data));
+	}, [projectId])
 
 
 	return (
