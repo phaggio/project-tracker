@@ -16,8 +16,7 @@ const App = () => {
         <Route exact={true} path='/new/feature' component={pages.NewFeature} />
         <Route exact={true} path='/new/item' component={pages.NewWorkItem} />
         <Route exact={true} path='/new/user' component={pages.NewUser} />
-        <Route path='/project' component={pages.Project} />
-        {/* <Route path='/:id' render={() => (<p>always render extra stuff</p>)}/> */}
+        <Route exact={false} path='/project/:id' component={pages.Project} />
       </Switch>
 
     </div>

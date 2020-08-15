@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import NewButton from '../NewButton';
 
-type ListProps = {
-  projects: project[]
+interface projectListProps {
+  projects: project[];
 }
 
 interface project {
@@ -12,27 +13,31 @@ interface project {
   tags: string[];
 }
 
-const ProjectList = ({ projects }: ListProps) => {
+const ProjectList = ({ projects }: projectListProps) => {
+
   if (projects) {
     console.log(`Found ${projects.length} projects in database.`)
   } else {
     console.log(`Cannot find any project in database.`)
   }
-  
+
   return (
-    <div>
+    <div className="d-flex flex-column">
+      <div className="d-flex justify-content-between align-items-baseline">
+        <h6>Projects</h6>
+        <NewButton name="New project" url="/new/project" ariaLabel="add-new-project" small={true} />
+      </div>
+
       {(projects) ?
         projects.map(project => {
           return (
             <div key={project.name}>
-              <h4>{project.name}</h4>
-              <p>{project.description}</p>
-              <p>{project._id}</p>
-              <Link to={`/project/${project._id}`}>{project._id}</Link>
+              <Link to={`/project/${project._id}`}>{project.name}</Link>
             </div>
           )
         })
-        : 'none'
+        :
+        <p>No project</p>
       }
     </div>
   )

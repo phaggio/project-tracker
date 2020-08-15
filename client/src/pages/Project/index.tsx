@@ -1,7 +1,7 @@
 import React from 'react';
-import { Link, Route } from 'react-router-dom';
+// import { Link, Route } from 'react-router-dom';
 
-interface pathObj {
+interface pathProps {
 	history: boolean;
 	location: string;
 	match: matchObj;
@@ -9,54 +9,47 @@ interface pathObj {
 
 interface matchObj {
 	isExact: boolean;
-	params: object;
+	params: matchParams;
 	path: string;
 	url: string;
 }
 
-const Project = (path: pathObj) => {
-	const match = path.match;
-	console.log(match)
+interface matchParams {
+	id: string;
+}
 
-
+const Project = ({ match }: pathProps) => {
+	console.log(match);
+	console.log(match.params);
+	console.log(match.params.id);
 
 	return (
 		<div className="container">
-			Project page
-{/* 
-			<li>
-				<Link to={`${match.url}/first`}>First</Link>
-			</li>
-			<li>
-				<Link to={`${match.url}/second`}>Second</Link>
-			</li> */}
-
-			<Route
-				exact={true}
-				path={`${match.path}/:name`}
-				render={(path) => (
-					<div>
-						{path.match.params.name}
-						<h4>something</h4>
-						<p>something</p>
+			<div className="row">
+				<div className="col-12 col-md-5 border border-primary">
+					<h4>{match.params.id}</h4>
+					<p>{match.path}</p>
+					<p>{match.url}</p>
+					<p>description</p>
+					<p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugit, quod commodi obcaecati natus, corporis minima atque neque architecto porro libero possimus unde dignissimos consequatur saepe dolorum quia debitis fugiat illum.</p>
+				</div>
+				<div className="col-12 col-md-7">
+					<div className="row d-flex justify-content-end">
+						<button className="btn btn-success btn-sm">New feature</button>
 					</div>
-				)}
-			/>
+					<div>Feature 1</div>
+					<div>Feature 2</div>
+					<div>Feature 3</div>
+					<div>Feature 4</div>
+					<div>Feature 5</div>
 
-
-			<Route
-				exact={true}
-				path='/project/test'
-				component={() => (
-					<div>
-						<h4>TEST</h4>
-						<p>something</p>
-					</div>
-				)}
-			/>
+				</div>
+			</div>
 
 		</div>
 	)
-}
+};
+
+
 
 export default Project
