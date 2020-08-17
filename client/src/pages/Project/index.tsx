@@ -26,12 +26,18 @@ type IProject = {
 	tags: string[];
 };
 
-const Project = ({ match }: pathProps) => {
-	console.log('match', match);
-	console.log('match params', match.params);
 
+const Project = ({ match }: pathProps) => {
+	// console.log('match', match);
+
+	if (match) {
+		console.log(`there's project ID in url`)
+	}
+	// console.log('match params', match.params);
+	console.log('rendering...')
+
+	const [projectId] = useState(match ? match.params.id : '');
 	const [project, updateProject] = useState<IProject | undefined>(undefined);
-	const [projectId] = useState(match.params.id);
 
 	useEffect(() => {
 		projectRequest
@@ -57,18 +63,14 @@ const Project = ({ match }: pathProps) => {
 					<h5>{project ? project.description : ``}</h5>
 				</div>
 
-				<div className="col-12 col-md-7">
-					<div className="row d-flex justify-content-end">
+				<div className="col-12 col-md-7 border border-danger">
+					<div className="row d-flex justify-content-end border border-success rounded">
 						<NewButton name='New feature'
 							url={`/new/feature/${match.params.id}`}
 							ariaLabel='add-new-feature'
 							small={true} />
 					</div>
-					<div>Feature 1</div>
-					<div>Feature 2</div>
-					<div>Feature 3</div>
-					<div>Feature 4</div>
-					<div>Feature 5</div>
+					<div>WILL NEED TO SHOW THE LIST OF ASSOCIATED FEATURES HERE...</div>
 				</div>
 
 			</div>

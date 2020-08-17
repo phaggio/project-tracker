@@ -126,8 +126,11 @@ const NewFeature = ({ match }: PathProps) => {
       </form>
 
 
-
-      <button onClick={() => console.log(parent, name, description, assignee)}>console.log input states</button>
+      <br />
+      <button className="btn btn-danger btn-sm"
+        onClick={() => console.log(parent, name, description, assignee)}>
+        console.log input states
+      </button>
       {/* <button onClick={() => retrieveUsers()}>retrive users</button> */}
     </div>
 

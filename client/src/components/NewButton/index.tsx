@@ -9,8 +9,6 @@ interface ButtonProps {
 };
 
 const NewButton = (props: ButtonProps) => {
-  console.log(props);
-
   return (
     <Link
       className={`btn btn-success ${props.small ? `btn-sm` : ``}`}
