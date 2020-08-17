@@ -1,36 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import { projectRequest } from '../../httpRequests'
+import NewButton from '../../components/NewButton';
 
-interface pathProps {
+type pathProps = {
 	history: boolean;
 	location: string;
 	match: matchObj;
 };
 
-interface matchObj {
+type matchObj = {
 	isExact: boolean;
 	params: matchParams;
 	path: string;
 	url: string;
-}
+};
 
-interface matchParams {
+type matchParams = {
 	id: string;
-}
+};
 
-interface IProject {
+type IProject = {
 	_id: string;
 	name: string;
 	description: string;
 	tags: string[];
-}
+};
 
 const Project = ({ match }: pathProps) => {
 	console.log('match', match);
 	console.log('match params', match.params);
 
 	const [project, updateProject] = useState<IProject | undefined>(undefined);
-	const [projectId, updateProjectId] = useState(match.params.id);
+	const [projectId] = useState(match.params.id);
 
 	useEffect(() => {
 		projectRequest
@@ -58,7 +59,10 @@ const Project = ({ match }: pathProps) => {
 
 				<div className="col-12 col-md-7">
 					<div className="row d-flex justify-content-end">
-						<button className="btn btn-success btn-sm">New feature</button>
+						<NewButton name='New feature'
+							url={`/new/feature/${match.params.id}`}
+							ariaLabel='add-new-feature'
+							small={true} />
 					</div>
 					<div>Feature 1</div>
 					<div>Feature 2</div>

@@ -26,7 +26,11 @@ const ProjectList = ({ projects }: projectListProps) => {
 
       <div className="d-flex justify-content-between align-items-baseline">
         <h6>Projects</h6>
-        <NewButton name="New project" url="/new/project" ariaLabel="add-new-project" small={true} />
+        <NewButton
+          name="New project"
+          url="/new/project"
+          ariaLabel="add-new-project"
+          small={true} />
       </div>
 
       <div className="d-flex flex-column">
