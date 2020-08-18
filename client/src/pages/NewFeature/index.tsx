@@ -24,7 +24,7 @@ type MatchParams = {
 
 
 const NewFeature = ({ match }: PathProps) => {
-  console.log(match)
+  // console.log(match.params)
   console.log('rendering NewFeature page...')
   const [disableCreateButton, updateDisableCreateButton] = useState(true);
   const [projects, updateProjects] = useState([]);
@@ -37,7 +37,7 @@ const NewFeature = ({ match }: PathProps) => {
   const [description, updateDescription] = useState('');
   const [tags] = useState([])
 
-  // initial GET request to get list of projects
+  // initial GET request to get list of projects for dropdown selection
   useEffect(() => {
     console.log('making GET api call...')
     projectRequest
@@ -49,9 +49,9 @@ const NewFeature = ({ match }: PathProps) => {
 
   const parseParentInfo = (str: string) => {
     const infoArr = str.split('/');
-    updateParentType(infoArr[0].trim());
-    updateParentName(infoArr[1].trim());
-    updateParentId(infoArr[2].trim());
+    updateParentType(infoArr[0] ? infoArr[0].trim() : '');
+    updateParentName(infoArr[1] ? infoArr[1].trim() : '');
+    updateParentId(infoArr[2] ? infoArr[2].trim() : '');
   }
 
 
@@ -75,7 +75,7 @@ const NewFeature = ({ match }: PathProps) => {
 
   const handleParentInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const input = event.target.value.trim();
-    parseParentInfo(input);
+    if (input) parseParentInfo(input);
   };
 
   const handleNameInput = (event: React.ChangeEvent<HTMLInputElement>) => {
