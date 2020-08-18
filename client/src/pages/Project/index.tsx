@@ -19,41 +19,36 @@ type matchParams = {
 	id: string;
 };
 
-type IProject = {
-	_id: string;
-	type: string;
-	name: string;
-	description: string;
-	tags: string[];
-};
-
 
 const Project = ({ match }: pathProps) => {
 	console.log('match', match);
 
-	if (match) {
-		console.log(`Found project ID in URL...`)
-	}
+
 
 	console.log('rendering Project page...')
 
 	const [projectId] = useState(match ? match.params.id : '');
-	const [project, updateProject] = useState<IProject>({
+	const [project, updateProject] = useState({
 		_id: '',
 		type: '',
 		name: '',
 		description: '',
 		tags: []
 	});
+	
 
+	if (match) {
+		console.log(`Found project ID in URL...`);
+	}
 
 	useEffect(() => {
-		console.log(`making initial GET api call to get project info...`)
-		projectRequest
-			.getProjectById(projectId)
-			.then(res => updateProject(res.data));
+		if (match) {
+			console.log(`projectId found in URL, making initial GET api call to get project info...`)
+			projectRequest
+				.getProjectById(projectId)
+				.then(res => updateProject(res.data));
+		}
 	}, [projectId])
-
 
 	return (
 		<div className="container">
@@ -102,12 +97,21 @@ const Project = ({ match }: pathProps) => {
 						/>
 					</div>
 
-					<div>WILL NEED TO SHOW THE LIST OF ASSOCIATED FEATURES HERE...</div>
+					<div>WILL NEED TO SHOW project status summary here, with graphs and numbers, etc.</div>
 
 				</div>
+			</div>
+			{/* end of first row */}
 
 
+			<div className="row mt-1 border border-info rounded">
+				<div className="col-12 col-md-4">
+					<div>Feature 1</div>
+					<div>Feature 2</div>
+				</div>
+				<div className="col-12 col-md-8 border border-secondary rounded">
 
+				</div>
 			</div>
 		</div>
 	)

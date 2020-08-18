@@ -3,6 +3,7 @@ import mongoose, { Schema, Document } from 'mongoose';
 export interface IWorkItem extends Document {
   name: string;
   description: string;
+  type: string;
   tags: string[];
   parentId: string;
   parentType: string;
@@ -16,6 +17,10 @@ const WorkItemSchema: Schema = new Schema({
   },
   description: {
     type: String
+  },
+  type: {
+    type: String,
+    required: true;
   },
   tags: {
     type: [String],
