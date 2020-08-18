@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-interface ButtonProps {
+type ButtonProps = {
   name: string;
   url: string;
   ariaLabel: string;

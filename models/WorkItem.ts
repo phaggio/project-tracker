@@ -1,15 +1,15 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
-export interface IFeature extends Document {
+export interface IWorkItem extends Document {
   name: string;
   description: string;
   tags: string[];
-  projectId: string;
+  parentId: string;
+  parentType: string;
   assigneeID: string;
-  workItems: string[];
 }
 
-const FeatureSchema: Schema = new Schema({
+const WorkItemSchema: Schema = new Schema({
   name: {
     type: String,
     required: true
@@ -21,18 +21,18 @@ const FeatureSchema: Schema = new Schema({
     type: [String],
     index: true
   },
-  projectId: {
+  parentId: {
     type: String,
     default: null
   },
-  assigneeId: {
+  parentType: {
     type: String,
     default: null
   },
-  workItems: {
-    type: [String],
-    default: []
+  assigneeID: {
+    type: String,
+    default: null
   }
 })
 
-export default mongoose.model<IFeature>('Feature', FeatureSchema);
+export default mongoose.model<IWorkItem>('WorkItem', WorkItemSchema);

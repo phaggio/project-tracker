@@ -68,7 +68,8 @@ const Project = ({ match }: pathProps) => {
 						<NewButton name='New feature'
 							url={`/new/feature/${match.params.id}`}
 							ariaLabel='add-new-feature'
-							small={true} />
+							small={true}
+						/>
 					</div>
 					<div>WILL NEED TO SHOW THE LIST OF ASSOCIATED FEATURES HERE...</div>
 				</div>

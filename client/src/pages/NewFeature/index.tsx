@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { AxiosResponse } from 'axios';
-import { featureRequest, userRequest, projectRequest } from '../../httpRequests';
+import { featureRequest, projectRequest } from '../../httpRequests';
+import DataList from '../../components/DataList';
 
 type PathProps = {
   history: boolean;
@@ -20,14 +21,26 @@ type MatchParams = {
 };
 
 const NewFeature = ({ match }: PathProps) => {
-  console.log('rendering...')
+  console.log('rendering NewFeature page...')
   const [disableCreateButton, updateDisableCreateButton] = useState(true);
+  const [projects, updateProjects] = useState([]);
 
   const [parent, updateParent] = useState(match.params.projectId);
   const [name, updateName] = useState('');
   const [assignee, updateAssignee] = useState('');
   const [description, updateDescription] = useState('');
-  const [tags, updateTags] = useState([])
+  const [tags] = useState([])
+
+  // initial GET request to get list of projects
+  useEffect(() => {
+    console.log('making GET api call...')
+    projectRequest
+      .getAllProjects()
+      .then((response: AxiosResponse) => updateProjects(response.data))
+      .catch(err => console.error(err))
+
+  }, [])
+
 
   const submitButtonPressed = (event: React.FormEvent) => {
     event.preventDefault();
@@ -46,11 +59,6 @@ const NewFeature = ({ match }: PathProps) => {
       .then((response: AxiosResponse) => console.log(response))
       .catch(err => console.error(err));
   };
-
-  const retrieveUsers = () => {
-    userRequest.getUsersByName(assignee)
-      .then((response: AxiosResponse) => console.log(response.data));
-  }
 
   const handleParentInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const input = event.target.value.trim();
@@ -82,12 +90,17 @@ const NewFeature = ({ match }: PathProps) => {
       >
 
         <div className="form-group">
-          <label>Parent item: </label>
+          <label>Parent item:</label>
           <input type="text"
             className="form-control"
+            list="projects"
             onChange={event => handleParentInput(event)}
-            placeholder="Parent item"
-            defaultValue={match.params ? match.params.projectId : ``} />
+            placeholder="Select parent item"
+            defaultValue={parent}
+          />
+          <DataList dataArr={projects}
+            listName="projects"
+            defaultOption="No project found" />
         </div>
 
         <div className="form-group">
@@ -125,15 +138,25 @@ const NewFeature = ({ match }: PathProps) => {
 
       </form>
 
-
       <br />
-      <button className="btn btn-danger btn-sm"
+
+      <button className="btn btn-danger btn-sm m-1"
         onClick={() => console.log(parent, name, description, assignee)}>
         console.log input states
       </button>
-      {/* <button onClick={() => retrieveUsers()}>retrive users</button> */}
-    </div>
+      <br />
+      <button className="btn btn-danger btn-sm m-1"
+        onClick={() => console.log(projects)}>
+        console.log projects states
+      </button>
 
+      <br />
+      <button className="btn btn-danger btn-sm m-1"
+        onClick={() => console.log(parent)}>
+        console.log parent states
+      </button>
+
+    </div>
   )
 };
 
