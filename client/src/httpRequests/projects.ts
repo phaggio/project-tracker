@@ -6,7 +6,7 @@ const addNewProject = (data: object) => {
 
 const getAllProjects = () => {
   return axios.get('/api/project');
-}
+};
 
 const getProjectByName = (projectName: string) => {
   console.log(projectName);
@@ -22,7 +22,7 @@ const getProjectById = (projectId: string) => {
     params: { _id: projectId }
   };
   return axios.get('/api/project/id', config);
-}
+};
 
 export {
   getAllProjects,

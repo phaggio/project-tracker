@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import ProjectList from '../../components/ProjectList';
-import { projectRequest } from '../../httpRequests';
+import { projectRequest, workItemRequest } from '../../httpRequests';
 
 const Home = () => {
   const [projects, updateProjects] = useState([]);
+  const [workItems, updateWorkItems] = useState([]);
 
   useEffect(() => {
     projectRequest.getAllProjects()
       .then(res => {
         console.log(res.data);
         updateProjects(res.data)
+      })
+    workItemRequest.getAllWorkItems()
+      .then(res => {
+        console.log(res.data);
+        updateWorkItems(res.data);
       })
   }, [])
 
@@ -33,10 +39,17 @@ const Home = () => {
 
       </div>
 
-      <button className="btn btn-danger btn-sm" type="button" onClick={() => {
+
+      <button className="btn btn-danger btn-sm my-1" type="button" onClick={() => {
         console.log(projects)
       }}>
         console.log projects state
+      </button>
+      <br />
+      <button className="btn btn-danger btn-sm my-1" type="button" onClick={() => {
+        console.log(workItems)
+      }}>
+        console.log workItems state
       </button>
     </div>
   )

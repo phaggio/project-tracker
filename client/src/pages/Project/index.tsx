@@ -22,9 +22,6 @@ type matchParams = {
 
 const Project = ({ match }: pathProps) => {
 	console.log('match', match);
-
-
-
 	console.log('rendering Project page...')
 
 	const [projectId] = useState(match ? match.params.id : '');
@@ -35,11 +32,8 @@ const Project = ({ match }: pathProps) => {
 		description: '',
 		tags: []
 	});
-	
 
-	if (match) {
-		console.log(`Found project ID in URL...`);
-	}
+	if (match) console.log(`Found project ID in URL...`);
 
 	useEffect(() => {
 		if (match) {
@@ -57,7 +51,6 @@ const Project = ({ match }: pathProps) => {
 				<div className="col-12 col-md-5 col-lg-4 border border-primary d-flex flex-column">
 					<div className="py-1 d-flex align-items-center">
 						<h1><span className="badge badge-primary">{project.name}</span></h1>
-						{/* <small className="">{project._id}</small> */}
 					</div>
 
 					<div>

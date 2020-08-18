@@ -16,9 +16,9 @@ interface project {
 const ProjectList = ({ projects }: projectListProps) => {
 
   if (projects) {
-    console.log(`Found ${projects.length} projects in database.`)
+    console.log(`From ProjectList component, found ${projects.length} projects in database.`)
   } else {
-    console.log(`Cannot find any project in database.`)
+    console.log(`From ProjectList component, cannot find any project in database.`)
   }
 
   return (
