@@ -21,6 +21,7 @@ type matchParams = {
 
 type IProject = {
 	_id: string;
+	type: string;
 	name: string;
 	description: string;
 	tags: string[];
@@ -31,15 +32,23 @@ const Project = ({ match }: pathProps) => {
 	console.log('match', match);
 
 	if (match) {
-		console.log(`there's project ID in url`)
+		console.log(`Found project ID in URL...`)
 	}
-	// console.log('match params', match.params);
-	console.log('rendering...')
+
+	console.log('rendering Project page...')
 
 	const [projectId] = useState(match ? match.params.id : '');
-	const [project, updateProject] = useState<IProject | undefined>(undefined);
+	const [project, updateProject] = useState<IProject>({
+		_id: '',
+		type: '',
+		name: '',
+		description: '',
+		tags: []
+	});
+
 
 	useEffect(() => {
+		console.log(`making initial GET api call to get project info...`)
 		projectRequest
 			.getProjectById(projectId)
 			.then(res => updateProject(res.data));
@@ -50,24 +59,40 @@ const Project = ({ match }: pathProps) => {
 		<div className="container">
 			<div className="row">
 
-				<div className="col-12 col-md-5 border border-primary d-flex flex-column">
-					<label>id</label>
-					<small>{match.params.id}</small>
-					<label>path</label>
-					<p>{match.path}</p>
-					<label>url</label>
-					<p>{match.url}</p>
-					<label>name</label>
-					<h4>{project ? project.name : ``}</h4>
-					<label>description</label>
-					<h5>{project ? project.description : ``}</h5>
+				<div className="col-12 col-md-5 col-lg-4 border border-primary d-flex flex-column">
+					<div className="py-1 d-flex align-items-center">
+						<h1><span className="badge badge-primary">{project.name}</span></h1>
+						{/* <small className="">{project._id}</small> */}
+					</div>
+
+					<div>
+						<hr className="my-2" />
+					</div>
+
+					<div className="py-1 d-flex align-items-center flex-wrap">
+						{
+							project.tags.map(tag => {
+								return (<span className="badge badge-info mr-1 my-1" key={tag}>{tag}</span>)
+							})
+						}
+					</div>
+
+					<div>
+						<hr className="my-2" />
+					</div>
+
+					<div className="py-1">
+						<h5>Description</h5>
+						<p>{project.description}</p>
+					</div>
+
 				</div>
 
-				<div className="col-12 col-md-7 border border-danger">
-					<div className="row d-flex justify-content-end border border-success rounded">
+				<div className="col-12 col-md-7 col-lg-8 border border-danger">
+					<div className="row py-1 d-flex justify-content-end border border-success rounded">
 						<NewButton name='New feature'
 							url={
-								project ?
+								project._id ?
 									`/new/feature/project/${project.name}/${project._id}`
 									:
 									'/new/feature'
@@ -76,8 +101,12 @@ const Project = ({ match }: pathProps) => {
 							small={true}
 						/>
 					</div>
+
 					<div>WILL NEED TO SHOW THE LIST OF ASSOCIATED FEATURES HERE...</div>
+
 				</div>
+
+
 
 			</div>
 		</div>

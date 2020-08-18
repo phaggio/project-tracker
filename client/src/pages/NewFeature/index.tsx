@@ -39,7 +39,7 @@ const NewFeature = ({ match }: PathProps) => {
 
   // initial GET request to get list of projects for dropdown selection
   useEffect(() => {
-    console.log('making GET api call...')
+    console.log('making initial GET api call...')
     projectRequest
       .getAllProjects()
       .then((response: AxiosResponse) => updateProjects(response.data))
