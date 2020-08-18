@@ -29,9 +29,9 @@ const NewFeature = ({ match }: PathProps) => {
   const [disableCreateButton, updateDisableCreateButton] = useState(true);
   const [projects, updateProjects] = useState([]);
 
-  const [parentName, updateParentName] = useState(match.params.name);
-  const [parentType, updateParentType] = useState(match.params.type);
-  const [parentId, updateParentId] = useState(match.params.id)
+  const [parentName, updateParentName] = useState(match.params.name ? match.params.name : '');
+  const [parentType, updateParentType] = useState(match.params.type ? match.params.type : '');
+  const [parentId, updateParentId] = useState(match.params.id ? match.params.id : '')
   const [name, updateName] = useState('');
   const [assignee, updateAssignee] = useState('');
   const [description, updateDescription] = useState('');
@@ -109,7 +109,7 @@ const NewFeature = ({ match }: PathProps) => {
             list="projects"
             onChange={event => handleParentInput(event)}
             placeholder="Select parent item"
-            defaultValue={`${parentType}/${parentName}/${parentId}`}
+            defaultValue={match.params.id ? `${parentType}/${parentName}/${parentId}` : ''}
             spellCheck={false}
           />
           <DataList dataArr={projects}
