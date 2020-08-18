@@ -16,6 +16,10 @@ const ProjectSchema: Schema = new Schema({
   description: {
     type: String
   },
+  type: {
+    type: String,
+    default: 'project'
+  },
   tags: {
     type: [String],
     index: true

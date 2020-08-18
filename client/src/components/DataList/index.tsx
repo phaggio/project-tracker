@@ -9,6 +9,7 @@ type DataListProps = {
 type Item = {
   name: string;
   _id: string;
+  type: string;
 }
 
 const DataList = ({ dataArr, listName, defaultOption }: DataListProps) => {
@@ -21,7 +22,7 @@ const DataList = ({ dataArr, listName, defaultOption }: DataListProps) => {
               key={data._id}
               // value={data.name}
             >
-              {`${data.name}/ ${data._id}`}
+              {`${data.type}/${data.name}/${data._id}`}
             </option>
           )
         })

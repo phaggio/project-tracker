@@ -28,7 +28,7 @@ type IProject = {
 
 
 const Project = ({ match }: pathProps) => {
-	// console.log('match', match);
+	console.log('match', match);
 
 	if (match) {
 		console.log(`there's project ID in url`)
@@ -66,7 +66,12 @@ const Project = ({ match }: pathProps) => {
 				<div className="col-12 col-md-7 border border-danger">
 					<div className="row d-flex justify-content-end border border-success rounded">
 						<NewButton name='New feature'
-							url={`/new/feature/${match.params.id}`}
+							url={
+								project ?
+									`/new/feature/project/${project.name}/${project._id}`
+									:
+									'/new/feature'
+							}
 							ariaLabel='add-new-feature'
 							small={true}
 						/>
