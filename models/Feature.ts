@@ -1,6 +1,7 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
 export interface IFeature extends Document {
+  status: string;
   name: string;
   description: string;
   tags: string[];
@@ -10,6 +11,10 @@ export interface IFeature extends Document {
 }
 
 const FeatureSchema: Schema = new Schema({
+  status: {
+    type: String,
+    default: 'open'
+  },
   name: {
     type: String,
     required: true

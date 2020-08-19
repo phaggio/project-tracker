@@ -42,7 +42,7 @@ const Project = ({ match }: pathProps) => {
 				.getProjectById(projectId)
 				.then(res => updateProject(res.data));
 		}
-	}, [projectId])
+	},[])
 
 	return (
 		<div className="container">

@@ -15,25 +15,31 @@ const WorkItemSchema: Schema = new Schema({
     type: String,
     required: true
   },
+
   description: {
     type: String
   },
+
   type: {
     type: String,
     required: true;
   },
+
   tags: {
     type: [String],
     index: true
   },
+
   parentId: {
     type: String,
     default: null
   },
+
   parentType: {
     type: String,
     default: null
   },
+
   assigneeID: {
     type: String,
     default: null
