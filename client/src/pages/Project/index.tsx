@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { projectRequest } from '../../httpRequests'
+import { projectRequest, featureRequest } from '../../httpRequests'
 import NewButton from '../../components/NewButton';
 
 type pathProps = {
@@ -19,6 +19,17 @@ type matchParams = {
 	id: string;
 };
 
+type FeatureObj = {
+	_id: string;
+	type: string;
+	name: string;
+	description: string;
+	tags: string[];
+	assigneeId: string;
+}
+
+type FeatureArray = FeatureObj[];
+
 
 const Project = ({ match }: pathProps) => {
 	console.log('match', match);
@@ -33,6 +44,8 @@ const Project = ({ match }: pathProps) => {
 		tags: []
 	});
 
+	const [features, updateFeatures] = useState<FeatureArray>([]);
+
 	if (match) console.log(`Found project ID in URL...`);
 
 	useEffect(() => {
@@ -42,7 +55,15 @@ const Project = ({ match }: pathProps) => {
 				.getProjectById(projectId)
 				.then(res => updateProject(res.data));
 		}
-	},[])
+	}, [])
+
+	useEffect(() => {
+		if (match) {
+			featureRequest
+				.getFeaturesByProjectId(projectId)
+				.then(res => updateFeatures(res.data));
+		}
+	}, [])
 
 	return (
 		<div className="container">
@@ -99,6 +120,15 @@ const Project = ({ match }: pathProps) => {
 
 			<div className="row mt-1 border border-info rounded">
 				<div className="col-12 col-md-4">
+					{features ? features.map(feature => {
+						return (
+							<small key={feature._id}>{feature.name}</small>
+						)
+					})
+						:
+						''
+					}
+
 					<div>Feature 1</div>
 					<div>Feature 2</div>
 				</div>

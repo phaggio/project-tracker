@@ -7,6 +7,20 @@ const findAll = (request: Request, response: Response) => {
     .catch(err => response.status(422).json(err));
 };
 
+const findByProjectId = (request: Request, response: Response) => {
+  console.log(request.query)
+  const projectId = request.query.projectId;
+  const query: object = {
+    projectId: {
+      $regex: projectId,
+      $options: 'i'
+    }
+  }
+  Feature.find(query)
+    .then(data => response.json(data))
+    .catch(err => response.status(422).json(err));
+};
+
 const createNewFeature = (request: Request, response: Response) => {
   Feature.create(request.body)
     .then(data => response.json(data))
@@ -15,5 +29,6 @@ const createNewFeature = (request: Request, response: Response) => {
 
 export {
   findAll,
+  findByProjectId,
   createNewFeature
 }
