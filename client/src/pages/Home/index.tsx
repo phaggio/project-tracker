@@ -1,22 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import ProjectList from '../../components/ProjectList';
-import { projectRequest, workItemRequest } from '../../httpRequests';
+import { projectRequest, featureRequest, workItemRequest } from '../../httpRequests';
+
+type projectType = {
+  _id: string;
+  name: string;
+  description: string;
+  tags: string[];
+}
 
 const Home = () => {
-  const [projects, updateProjects] = useState([]);
+  const [projects, updateProjects] = useState<projectType[]>([]);
+  const [features, updateFeatures] = useState([]);
   const [workItems, updateWorkItems] = useState([]);
 
   useEffect(() => {
-    projectRequest.getAllProjects()
-      .then(res => {
-        console.log(res.data);
-        updateProjects(res.data)
-      })
-    workItemRequest.getAllWorkItems()
-      .then(res => {
-        console.log(res.data);
-        updateWorkItems(res.data);
-      })
+    try {
+      projectRequest.getAllProjects()
+        .then(res => {
+          console.log(res.data);
+          updateProjects(res.data)
+        })
+      featureRequest.getAllFeatures()
+        .then(res => {
+          console.log(res.data);
+          updateFeatures(res.data);
+        })
+      workItemRequest.getAllWorkItems()
+        .then(res => {
+          console.log(res.data);
+          updateWorkItems(res.data);
+        })
+    } catch (err) {
+      console.log(err)
+    }
   }, [])
 
   return (
@@ -31,10 +48,21 @@ const Home = () => {
         </div>
 
         <div className="col-12 col-md-8 border border-secondary rounded">
-          <p>
-            THIS IS main Home page content.
-            It should should total number of projects, number of features, work items, and bugs outstanding.
-          </p>
+          <h4>Snapshot</h4>
+          <div className="d-flex justify-content-between">
+            <div className="d-flex flex-row align-items-baseline border border-primary rounded w-auto px-3 shadow">
+              <div className="display-3 text-primary">{`${projects.length}`}</div>
+              <small className="ml-2">Projects</small>
+            </div>
+            <div className="d-flex flex-row align-items-baseline border border-info rounded-lg w-auto px-3 shadow">
+              <div className="display-3 text-info">{`${features.length}`}</div>
+              <small className="ml-2">Features</small>
+            </div>
+            <div className="d-flex flex-row align-items-baseline border border-secondary rounded w-auto px-3 shadow">
+              <div className="display-3 text-secondary">{`${workItems.length}`}</div>
+              <small className="ml-2">Work items</small>
+            </div>
+          </div>
         </div>
 
       </div>

@@ -23,8 +23,7 @@ const findByName = (request: Request, response: Response) => {
 };
 
 const findById = (request: Request, response: Response) => {
-  console.log(`controller...`)
-  console.log(request.query);
+  console.log(`Project controller... querying project by ID: ${request.query._id}`)
   const query = request.query;
   Project.findById(query._id)
     .then(data => response.json(data))

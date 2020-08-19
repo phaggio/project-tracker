@@ -24,8 +24,8 @@ const ProjectList = ({ projects }: projectListProps) => {
   return (
     <div className="d-flex flex-column">
 
-      <div className="d-flex justify-content-between align-items-baseline">
-        <h6>Projects</h6>
+      <div className="d-flex flex-row justify-content-between align-items-baseline">
+        <h6 className="">Projects</h6>
         <NewButton
           name="New project"
           url="/new/project"
