@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { projectRequest, featureRequest } from '../../httpRequests'
-import NewButton from '../../components/NewButton';
 import AddNewButton from '../../components/AddNewButton';
+import Tag from '../../components/Tag';
 import FeatureLink from '../../components/FeatureLink';
 
 type PathProps = {
@@ -36,7 +36,7 @@ type FeatureArray = FeatureObj[];
 
 
 const Project = ({ match }: PathProps) => {
-	console.log('match', match);
+	if (match) console.log(`Found project ID in URL...`);
 	console.log('rendering Project page...');
 
 	const [projectId] = useState(match ? match.params.id : '');
@@ -63,19 +63,12 @@ const Project = ({ match }: PathProps) => {
 		}
 	]
 
-	if (match) console.log(`Found project ID in URL...`);
-
 	useEffect(() => {
 		if (match) {
 			console.log(`projectId found in URL, making initial GET api call to get project info...`)
 			projectRequest
 				.getProjectById(projectId)
 				.then(res => updateProject(res.data));
-		}
-	}, [projectId, match])
-
-	useEffect(() => {
-		if (match) {
 			featureRequest
 				.getFeaturesByProjectId(projectId)
 				.then(res => updateFeatures(res.data));
@@ -98,7 +91,7 @@ const Project = ({ match }: PathProps) => {
 					<div className="py-1 d-flex align-items-center flex-wrap">
 						{
 							project.tags.map(tag => {
-								return (<span className="badge badge-info mr-1 my-1" key={tag}>{tag}</span>)
+								return (<Tag key={tag} name={tag} />)
 							})
 						}
 					</div>
@@ -150,7 +143,12 @@ const Project = ({ match }: PathProps) => {
 			</div>
 
 
-			<button onClick={() => console.log(features)}>console.log features state</button>
+			<button className="btn btn-danger mt-1"
+				onClick={() => console.log(features)}
+				defaultValue="console.log"
+			>
+				console.log features state
+			</button>
 
 		</div>
 	)

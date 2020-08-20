@@ -7,6 +7,7 @@ const NewProject = () => {
   const [projectInput, updateProjectInput] = useState(
     { name: '', description: '' }
   );
+  const [tags, updateTags] = useState<string[]>([]);
 
   useEffect(() => {
     // if there's input in project name, enable the Create project button
@@ -38,51 +39,86 @@ const NewProject = () => {
       updateProjectInput({
         ...projectInput, description: input
       })
+    } else if (id === 'tags') {
+      parseTags(input);
     }
   }
 
+  const parseTags = (str: string) => {
+    let tagArr: string[] = []
+    // check for empty/space str between commas
+    str.split(',').map((item: string) => {
+      if (item.trim().length > 0) tagArr.push(item.trim());
+    });
+    updateTags(tagArr)
+  }
 
   return (
     <div className="container">
-      <form
-        method="POST"
-        onSubmit={submitButtonPressed} // this also works when user press enter key on keyboard
-      >
-        <div className="form-group">
-          <label>Name</label>
-          <input type="text"
-            className="form-control"
-            id="name"
-            onChange={event => {
-              handleKeyEvent(event);
-            }}
-            placeholder="Project name" />
-        </div>
+      <div className="row">
+        <div className="col-12">
+          <form
+            method="POST"
+            onSubmit={submitButtonPressed} // this also works when user press enter key on keyboard
+          >
+            <div className="form-group">
+              <label>Name</label>
+              <input type="text"
+                className="form-control"
+                id="name"
+                onChange={event => handleKeyEvent(event)}
+                placeholder="Project name" />
+            </div>
 
-        <div className="form-group">
-          <label>Description <small>(Optional)</small></label>
-          <input type="text"
-            className="form-control"
-            id="description"
-            onChange={event => handleKeyEvent(event)}
-            placeholder="Description" />
-        </div>
+            <div className="form-group">
+              <label className="mr-1">{`Tags: {`}</label>
+              {
+                tags ? tags.map(tag => { return (<span className="badge badge-info mr-1 my-1" key={tag}>{tag}</span>) }) : ``
+              }
+              <label>{`}`}</label>
+              <input type="text"
+                className="form-control"
+                id="tags"
+                onChange={event => {
+                  handleKeyEvent(event)
+                }}
+                placeholder="Separate tags by comma"
+              />
+            </div>
 
-        <button type="submit" className="btn btn-success" disabled={disableCreateButton}>
-          Create project
+            <div className="form-group">
+              <label>Description <small>(Optional)</small></label>
+              <input type="text"
+                className="form-control"
+                id="description"
+                onChange={event => handleKeyEvent(event)}
+                placeholder="Description" />
+            </div>
+
+            <button type="submit" className="btn btn-success" disabled={disableCreateButton}>
+              Create project
         </button>
 
-      </form>
-      <br />
-      <button onClick={() => console.log(projectInput)}>Console.log input state</button>
+          </form>
+        </div>
+      </div>
 
-      <br />
-      <button onClick={() => {
-        projectRequest.getProjectByName('Simple').then(res => console.log(res))
-      }}>project by name</button>
+
+
+      {/* debug console.log */}
+      <div className="">
+        <small>debug console.log</small>
+        <button className="btn btn-danger btn-sm m-1" onClick={() => console.log(projectInput)}>Console.log input state</button>
+        <button className="btn btn-danger btn-sm m-1" onClick={() => {
+          projectRequest.getProjectByName('Simple').then(res => console.log(res))
+        }}>project by name</button>
+        <button className="btn btn-danger btn-sm m-1" onClick={() => {
+          console.log(tags)
+        }}>console.log tags</button>
+      </div>
+
 
     </div>
-
   )
 };
 
