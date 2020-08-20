@@ -37,7 +37,13 @@ const Feature = ({ match }: PathProps) => {
 
 	useEffect(() => {
 		console.log('making GET api call to get feature data...');
-
+		featureRequest
+			.getFeatureById(featureId)
+			.then(res => {
+				console.log('Received feature data, updating feature state...')
+				updateFeature(res.data)
+			})
+			.catch(err => console.error(err))
 	}, [featureId])
 
 	console.log(featureId);
@@ -46,6 +52,10 @@ const Feature = ({ match }: PathProps) => {
 			feature detail here
 			<br />
 			{match.params.id}
+
+
+			<br />
+			<button className="btn btn-danger btn-sm" onClick={() => console.log(feature)}>console.log feature state</button>
 		</div>
 	)
 }
