@@ -4,6 +4,13 @@ const getAllFeatures = () => {
   return axios.get('/api/feature');
 };
 
+const getFeatureById = (featureId: string) => {
+  const config = {
+    params: { _id: featureId }
+  }
+  return axios.get('/api/feature/id', config);
+}
+
 const getFeaturesByProjectId = (projectId: string) => {
   const config = {
     params: { projectId: projectId }
@@ -17,6 +24,7 @@ const addNewFeature = (data: object) => {
 
 export {
   getAllFeatures,
+  getFeatureById,
   getFeaturesByProjectId,
   addNewFeature
 };

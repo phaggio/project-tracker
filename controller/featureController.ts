@@ -7,6 +7,14 @@ const findAll = (request: Request, response: Response) => {
     .catch(err => response.status(422).json(err));
 };
 
+const findById = (request: Request, response: Response) => {
+  console.log(request.query);
+  const query = request.query;
+  Feature.findById(query._id)
+    .then(data => response.json(data))
+    .catch(err => response.status(422).json(err))
+}
+
 const findByProjectId = (request: Request, response: Response) => {
   console.log(request.query)
   const projectId = request.query.projectId;
@@ -29,6 +37,7 @@ const createNewFeature = (request: Request, response: Response) => {
 
 export {
   findAll,
+  findById,
   findByProjectId,
   createNewFeature
 }

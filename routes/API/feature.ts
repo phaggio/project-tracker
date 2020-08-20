@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { findAll, findByProjectId, createNewFeature } from '../../controller/featureController';
+import { findAll, findById, findByProjectId, createNewFeature } from '../../controller/featureController';
 
 const router: Router = Router();
 
@@ -9,5 +9,8 @@ router.route('/')
 
 router.route('/byProjectId')
   .get(findByProjectId)
+
+router.route('/id')
+  .get(findById)
 
 export default router;
