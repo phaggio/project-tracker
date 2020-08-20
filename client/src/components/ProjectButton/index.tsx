@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-
+// not being used
 
 const size: object = {
   width: "10rem"

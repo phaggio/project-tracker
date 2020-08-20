@@ -1,37 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import { projectRequest, featureRequest } from '../../httpRequests'
 import NewButton from '../../components/NewButton';
+import FeatureLink from '../../components/FeatureLink';
+import Feature from '../Feature';
 
-type pathProps = {
+type PathProps = {
 	history: boolean;
 	location: string;
-	match: matchObj;
+	match: MatchObj;
 };
 
-type matchObj = {
+type MatchObj = {
 	isExact: boolean;
-	params: matchParams;
+	params: MatchParams;
 	path: string;
 	url: string;
 };
 
-type matchParams = {
+type MatchParams = {
 	id: string;
 };
 
 type FeatureObj = {
 	_id: string;
 	type: string;
+	status: string;
 	name: string;
 	description: string;
 	tags: string[];
+	projectId: string;
 	assigneeId: string;
 }
 
 type FeatureArray = FeatureObj[];
 
 
-const Project = ({ match }: pathProps) => {
+const Project = ({ match }: PathProps) => {
 	console.log('match', match);
 	console.log('rendering Project page...')
 
@@ -119,23 +123,27 @@ const Project = ({ match }: pathProps) => {
 
 
 			<div className="row mt-1 border border-info rounded">
-				<div className="col-12 col-md-4">
+				<div className="col-12 col-md-5 border border-success rounded">
+					<h4>Features</h4>
+
 					{features ? features.map(feature => {
 						return (
-							<small key={feature._id}>{feature.name}</small>
+							<FeatureLink key={feature._id} featureData={feature} />
 						)
 					})
 						:
 						''
 					}
 
-					<div>Feature 1</div>
-					<div>Feature 2</div>
 				</div>
 				<div className="col-12 col-md-8 border border-secondary rounded">
 
 				</div>
 			</div>
+
+
+			<button onClick={() => console.log(features)}>console.log features state</button>
+
 		</div>
 	)
 };

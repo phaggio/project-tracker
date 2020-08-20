@@ -55,7 +55,7 @@ const Home = () => {
               <small className="ml-2">Projects</small>
             </div>
             <div className="d-flex flex-row align-items-baseline border border-info rounded-lg w-auto px-3 shadow">
-              <div className="display-3 text-info">{`${features.length}`}</div>
+              <div className="display-3 text-warning">{`${features.length}`}</div>
               <small className="ml-2">Features</small>
             </div>
             <div className="d-flex flex-row align-items-baseline border border-secondary rounded w-auto px-3 shadow">
