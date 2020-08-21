@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { findAllProjects, findById, createNewProject, findByName } from '../../controller/projectController';
+import { findAllProjects, findById, createNewProject, findByName, updateProject } from '../../controller/projectController';
 
 const router: Router = Router();
 
@@ -8,6 +8,9 @@ router.route('/')
 
 router.route('/id')
   .get(findById)
+
+router.route('/:id')
+  .put(updateProject)
 
 router.route('/name')
   .get(findByName)

@@ -24,9 +24,14 @@ const getProjectById = (projectId: string) => {
   return axios.get('/api/project/id', config);
 };
 
+const updateProject = (id: string, data: object) => {
+  return axios.put(`/api/project/${id}`, data)
+}
+
 export {
   getAllProjects,
   addNewProject,
   getProjectByName,
-  getProjectById
+  getProjectById,
+  updateProject
 }

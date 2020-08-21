@@ -36,11 +36,16 @@ const createNewProject = (request: Request, response: Response) => {
     .catch(err => response.status(422).json(err));
 };
 
-
+const updateProject = (request: Request, response: Response) => {
+  Project.findOneAndUpdate({ _id: request.params.id }, request.body)
+    .then(data => response.json(data))
+    .catch(err => response.json(err));
+}
 
 export {
   findAllProjects,
   findByName,
   findById,
-  createNewProject
+  createNewProject,
+  updateProject
 }

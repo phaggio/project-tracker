@@ -76,6 +76,24 @@ const Project = ({ match }: PathProps) => {
 		}
 	}, [projectId, match])
 
+	const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const id = event.target.id;
+		const input = event.target.value;
+		switch (id) {
+			case 'name':
+				updateProject({ ...project, name: input })
+				break;
+			default:
+				break;
+		}
+	};
+
+	const saveButtonPressed = () => {
+		projectRequest.updateProject(projectId, project)
+			.then(data => console.log(data))
+		updateEditMode(!editMode);
+	}
+
 	return (
 		<div className="container">
 			<div className="row">
@@ -88,11 +106,11 @@ const Project = ({ match }: PathProps) => {
 								<input type="text"
 									className="form-control"
 									id="name"
-									onChange={event => console.log((event.target.value))}
+									onChange={event => handleInput(event)}
 									placeholder="Project name"
 									defaultValue={project.name} />
 								<div className="input-group-append">
-									<button type="button" className="btn btn-outline-dark" onClick={() => updateEditMode(!editMode)}>save</button>
+									<button type="button" className="btn btn-outline-dark" onClick={() => saveButtonPressed()}>save</button>
 								</div>
 							</div>
 							:
@@ -165,9 +183,14 @@ const Project = ({ match }: PathProps) => {
 
 			<button className="btn btn-danger mt-1"
 				onClick={() => console.log(features)}
-				defaultValue="console.log"
 			>
 				console.log features state
+			</button>
+
+			<button className="btn btn-danger mt-1"
+				onClick={() => console.log(project)}
+			>
+				console.log project state
 			</button>
 
 		</div>
