@@ -13,7 +13,8 @@ type dataType = {
 const ProjectLink = (props: ProjectLinkProps) => {
   return (
     <Link
-      className="mb-1"
+      className="mb-1 text-truncate"
+      title={props.data.name}
       to={`/project/${props.data._id}`}
     >
       {props.data.name}

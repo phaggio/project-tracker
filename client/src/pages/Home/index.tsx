@@ -41,10 +41,10 @@ const Home = () => {
 
       <div className="row">
 
-        <div className="col-12 col-md-4 border border-success rounded">
-          <div className="d-flex flex-column border border-success rounded">
+        <div className="col-12 col-md-4 border border-success rounded text-truncate">
+          {/* <div className="d-flex flex-column border border-success rounded"> */}
             <ProjectList projects={projects} />
-          </div>
+          {/* </div> */}
         </div>
 
         <div className="col-12 col-md-8 border border-secondary rounded">
