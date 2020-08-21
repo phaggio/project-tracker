@@ -36,7 +36,6 @@ type FeatureArray = FeatureObj[];
 
 
 const Project = ({ match }: PathProps) => {
-	if (match) console.log(`Found project ID in URL...`);
 	console.log('rendering Project page...');
 
 	const [projectId] = useState(match ? match.params.id : '');
@@ -49,6 +48,8 @@ const Project = ({ match }: PathProps) => {
 	});
 
 	const [features, updateFeatures] = useState<FeatureArray>([]);
+
+	const [editMode, updateEditMode] = useState(false);
 
 	const buttons = [
 		{
@@ -81,7 +82,26 @@ const Project = ({ match }: PathProps) => {
 
 				<div className="col-12 col-md-5 col-lg-4 border border-primary d-flex flex-column">
 					<div className="py-1 d-flex align-items-center">
-						<h1><span className="badge badge-primary">{project.name}</span></h1>
+
+						{editMode ?
+							<div className="input-group">
+								<input type="text"
+									className="form-control"
+									id="name"
+									onChange={event => console.log((event.target.value))}
+									placeholder="Project name"
+									defaultValue={project.name} />
+								<div className="input-group-append">
+									<button type="button" className="btn btn-outline-dark" onClick={() => updateEditMode(!editMode)}>save</button>
+								</div>
+							</div>
+							:
+							<h1 className="d-flex">
+								<span className="badge badge-primary">{project.name}</span>
+								<button className="btn btn-outline-dark btn-sm" onClick={() => updateEditMode(!editMode)}>Edit</button>
+							</h1>
+						}
+
 					</div>
 
 					<div>
@@ -124,7 +144,7 @@ const Project = ({ match }: PathProps) => {
 
 
 			<div className="row mt-1 border border-info rounded">
-				<div className="col-12 col-md-4 border border-success rounded">
+				<div className="col-12 col-md-5 border border-success rounded">
 					<h4>Features</h4>
 
 					{features ? features.map(feature => {
