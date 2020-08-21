@@ -62,6 +62,7 @@ const NewFeature = ({ match }: PathProps) => {
     // need to make proper API call and what to show to user after creating the feature.
     const data = {
       projectId: parentId,
+      type: 'feature',
       name: name,
       description: description,
       assignee: assignee,

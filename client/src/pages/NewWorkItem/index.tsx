@@ -104,9 +104,9 @@ const NewWorkItem = ({ match }: PathProps) => {
             defaultValue={match.params.id ? `${parentType}/${parentName}/${parentId}` : ''}
             spellCheck={false}
           />
-          {/* <DataList dataArr={projects}
+          <DataList dataArr={[...projects, ...features]}
             listName="projects"
-            defaultOption="No project found" /> */}
+            defaultOption="No project found" />
         </div>
 
         <div className="form-group">
