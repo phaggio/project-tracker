@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { AxiosResponse } from 'axios';
 import { featureRequest, projectRequest } from '../../httpRequests';
-import DataList from '../../components/DataList';
+import ParentList from '../../components/ParentList';
 
 type PathProps = {
   history: boolean;
@@ -113,7 +113,7 @@ const NewFeature = ({ match }: PathProps) => {
             defaultValue={match.params.id ? `${parentType}/${parentName}/${parentId}` : ''}
             spellCheck={false}
           />
-          <DataList dataArr={projects}
+          <ParentList dataArr={projects}
             listName="projects"
             defaultOption="No project found" />
         </div>

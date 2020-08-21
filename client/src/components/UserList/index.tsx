@@ -1,18 +1,18 @@
 import React from 'react';
 
-type DataListProps = {
+type UserListProps = {
   dataArr: Item[];
   listName: string;
   defaultOption: string;
 }
 
 type Item = {
-  name: string;
+  fullName: string;
   _id: string;
-  type: string;
 }
 
-const DataList = ({ dataArr, listName, defaultOption }: DataListProps) => {
+const UserList = ({ dataArr, listName, defaultOption }: UserListProps) => {
+
   return (
     <div>
       <datalist id={listName}>
@@ -20,9 +20,8 @@ const DataList = ({ dataArr, listName, defaultOption }: DataListProps) => {
           return (
             <option className="dropdown-item"
               key={data._id}
-              // value={data.name}
             >
-              {`${data.type}/${data.name}/${data._id}`}
+              {`${data.fullName} (${data._id})`}
             </option>
           )
         })
@@ -36,4 +35,4 @@ const DataList = ({ dataArr, listName, defaultOption }: DataListProps) => {
   )
 }
 
-export default DataList
+export default UserList

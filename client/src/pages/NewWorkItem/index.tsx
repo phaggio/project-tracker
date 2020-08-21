@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { AxiosResponse } from 'axios';
 import { featureRequest, projectRequest, userRequest } from '../../httpRequests';
-import DataList from '../../components/DataList';
+import ParentList from '../../components/ParentList';
+import UserList from '../../components/UserList';
 
 type PathProps = {
   history: boolean;
@@ -110,7 +111,7 @@ const NewWorkItem = ({ match }: PathProps) => {
             defaultValue={match.params.id ? `${parentType}/${parentName}/${parentId}` : ''}
             spellCheck={false}
           />
-          <DataList dataArr={[...projects, ...features]}
+          <ParentList dataArr={[...projects, ...features]}
             listName="projects"
             defaultOption="No project found" />
         </div>
@@ -155,9 +156,9 @@ const NewWorkItem = ({ match }: PathProps) => {
             list="assignees"
             onChange={event => updateInput(event)}
             placeholder="Assignee" />
-          <DataList dataArr={users}
+          <UserList dataArr={users}
             listName="assignees"
-            defaultOption="No project found" />
+            defaultOption="No user found" />
         </div>
 
         <button type="submit"
@@ -171,7 +172,7 @@ const NewWorkItem = ({ match }: PathProps) => {
 
 
 
-      <div>
+      <div className="d-flex flex-column">
         <button className="btn btn-danger btn-sm mt-2"
           onClick={() => console.log(parentType, parentName, parentId)}
         >
