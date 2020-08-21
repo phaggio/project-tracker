@@ -124,7 +124,7 @@ const Project = ({ match }: PathProps) => {
 
 
 			<div className="row mt-1 border border-info rounded">
-				<div className="col-12 col-md-5 border border-success rounded">
+				<div className="col-12 col-md-4 border border-success rounded">
 					<h4>Features</h4>
 
 					{features ? features.map(feature => {

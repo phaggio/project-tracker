@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { AxiosResponse } from 'axios';
-import { featureRequest, projectRequest, userRequest } from '../../httpRequests';
+import { featureRequest, projectRequest, userRequest, workItemRequest } from '../../httpRequests';
 import ParentList from '../../components/ParentList';
 import UserList from '../../components/UserList';
 
@@ -24,15 +24,15 @@ type MatchParams = {
 };
 
 const NewWorkItem = ({ match }: PathProps) => {
-  const [parentType, updateParentType] = useState(match.params.type ? match.params.type : '');
-  const [parentName, updateParentName] = useState(match.params.name ? match.params.name : '');
-  const [parentId, updateParentId] = useState(match.params.id ? match.params.id : '');
   const [projects, updateProjects] = useState([]);
   const [features, updateFeatures] = useState([]);
   const [users, updateUsers] = useState([]);
 
+  const [parentType, updateParentType] = useState(match.params.type ? match.params.type : '');
+  const [parentName, updateParentName] = useState(match.params.name ? match.params.name : '');
+  const [parentId, updateParentId] = useState(match.params.id ? match.params.id : '');
   const [name, updateName] = useState('');
-  const [assignee, updateAssignee] = useState('');
+  const [assigneeId, updateAssigneeId] = useState('');
   const [description, updateDescription] = useState('');
   const [tags, updateTags] = useState<string[]>([])
 
@@ -56,15 +56,26 @@ const NewWorkItem = ({ match }: PathProps) => {
       })
   }, [])
 
-
-  const handleParentInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.value);
+  const parseParentInfo = (str: string) => {
+    const infoArr = str.split('/');
+    updateParentType(infoArr[0] ? infoArr[0].trim() : '');
+    updateParentName(infoArr[1] ? infoArr[1].trim() : '');
+    updateParentId(infoArr[2] ? infoArr[2].trim() : '');
   };
+
+  const parseAssignee = (str: string) => {
+    const start = str.indexOf('(');
+    const end = str.indexOf(')');
+    return str.slice(start + 1, end);
+  }
 
   const updateInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const id = event.target.id;
     const input = event.target.value.trim();
     switch (id) {
+      case 'parent':
+        parseParentInfo(input);
+        break;
       case 'name':
         input ? updateDisableAddButton(false) : updateDisableAddButton(true);
         updateName(input);
@@ -73,7 +84,7 @@ const NewWorkItem = ({ match }: PathProps) => {
         updateDescription(input);
         break;
       case 'assignee':
-        updateAssignee(input);
+        updateAssigneeId(parseAssignee(input));
         break;
       default:
         break;
@@ -93,11 +104,28 @@ const NewWorkItem = ({ match }: PathProps) => {
     updateTags(tagArr);
   };
 
+  const submitButtonPressed = (event: React.FormEvent) => {
+    event.preventDefault(); //default action is clear the form
+    console.log(`submit button pressed..`)
+    const data = {
+      parentId: parentId,
+      parentType: parentType,
+      name: name,
+      tags: tags,
+      description: description,
+      assigneeId: assigneeId
+    };
+    console.log(`sending`, data);
+    workItemRequest.addNewWorkItem(data)
+      .then((response: AxiosResponse) => console.log(response))
+      .catch(err => console.error(err));
+  };
+
 
   return (
     <div className="container">
       <form
-        onSubmit={() => console.log('submitting...')}
+        onSubmit={event => submitButtonPressed(event)}
       >
 
         <div className="form-group">
@@ -106,7 +134,7 @@ const NewWorkItem = ({ match }: PathProps) => {
             className="form-control"
             id="parent"
             list="projects"
-            onChange={event => handleParentInput(event)}
+            onChange={event => updateInput(event)}
             placeholder="Select parent item"
             defaultValue={match.params.id ? `${parentType}/${parentName}/${parentId}` : ''}
             spellCheck={false}
@@ -179,7 +207,7 @@ const NewWorkItem = ({ match }: PathProps) => {
           console.log parent state
         </button>
         <button className="btn btn-danger btn-sm mt-2"
-          onClick={() => console.log(name, description, assignee)}
+          onClick={() => console.log(name, description, assigneeId)}
         >
           console.log work item state
         </button>

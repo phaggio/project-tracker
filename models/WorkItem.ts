@@ -7,7 +7,7 @@ export interface IWorkItem extends Document {
   tags: string[];
   parentId: string;
   parentType: string;
-  assigneeID: string;
+  assigneeId: string;
 }
 
 const WorkItemSchema: Schema = new Schema({
@@ -22,7 +22,7 @@ const WorkItemSchema: Schema = new Schema({
 
   type: {
     type: String,
-    required: true;
+    default: 'workitem'
   },
 
   tags: {
@@ -39,8 +39,8 @@ const WorkItemSchema: Schema = new Schema({
     type: String,
     default: null
   },
-
-  assigneeID: {
+  
+  assigneeId: {
     type: String,
     default: null
   }
