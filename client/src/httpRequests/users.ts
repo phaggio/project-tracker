@@ -1,11 +1,10 @@
 import axios from 'axios';
 
-const getUsersByName = (userName: string) => {
-  console.log(userName);
+const getUser = (_id: string | undefined = (undefined)) => {
   const config = {
-    params: { name: userName }
+    params: { _id: _id }
   };
-  return axios.get('/api/user', config);
+  return axios.get('/api/user/', config);
 };
 
 const createNewUser = (data: object) => {
@@ -14,6 +13,6 @@ const createNewUser = (data: object) => {
 };
 
 export {
-  createNewUser,
-  getUsersByName
+  getUser,
+  createNewUser
 };

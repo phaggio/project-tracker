@@ -1,16 +1,22 @@
 import { Schema, Document, model } from 'mongoose';
 
-export interface IUserDocument extends Document {
+interface IUserDocument extends Document {
+  type: string;
   firstName: string;
   lastName: string;
   email: string;
 };
 
-export interface IUser extends IUserDocument {
-  getFullName(): string;
+interface IUserBase extends IUserDocument {
+  fullName: string;
 }
 
 const UserSchema: Schema = new Schema({
+  type: {
+    type: String,
+    default: 'User'
+  },
+
   firstName: String,
 
   lastName: {
@@ -25,11 +31,15 @@ const UserSchema: Schema = new Schema({
     match: [/.+@.+\..+/, `Please enter a valid e-mail address`]
   }
 
+},
+  {
+    toJSON: { virtuals: true }
+  });
+
+
+UserSchema.virtual('fullName').get(function (this: IUserBase) {
+  return (`${this.firstName} ${this.lastName}`);
 });
 
-UserSchema.methods.getFullName = function (): string {
-  return `${this.firstName} ${this.lastName}`;
-};
 
-
-export default model<IUser>('User', UserSchema);
+export default model<IUserBase>('User', UserSchema);

@@ -1,6 +1,14 @@
 import { User } from '../models';
 import { Request, Response } from 'express';
 
+const findUser = (request: Request, response: Response) => {
+  const query = request.query;
+  User.find(query)
+    .then(data => response.json(data))
+    .catch(err => response.json(err))
+
+}
+
 const findByName = (request: Request, response: Response) => {
   console.log(request.query.name);
   const name = request.query.name;
@@ -19,7 +27,7 @@ const findByName = (request: Request, response: Response) => {
 const createNewUser = (request: Request, response: Response) => {
   console.log('express request.body:')
   console.log(request.body);
-  
+
   User.create(request.body)
     .then(data => {
       console.log(`response.statusCode = ${response.statusCode}`);
@@ -29,6 +37,7 @@ const createNewUser = (request: Request, response: Response) => {
 };
 
 export {
+  findUser,
   findByName,
   createNewUser
 };

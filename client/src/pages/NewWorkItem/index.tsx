@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { AxiosResponse } from 'axios';
-import { featureRequest, projectRequest } from '../../httpRequests';
+import { featureRequest, projectRequest, userRequest } from '../../httpRequests';
 import DataList from '../../components/DataList';
 
 type PathProps = {
@@ -28,6 +28,7 @@ const NewWorkItem = ({ match }: PathProps) => {
   const [parentId, updateParentId] = useState(match.params.id ? match.params.id : '');
   const [projects, updateProjects] = useState([]);
   const [features, updateFeatures] = useState([]);
+  const [users, updateUsers] = useState([]);
 
   const [name, updateName] = useState('');
   const [assignee, updateAssignee] = useState('');
@@ -40,13 +41,18 @@ const NewWorkItem = ({ match }: PathProps) => {
     projectRequest.getAllProjects()
       .then((response: AxiosResponse) => {
         console.log('adding projects to projects...');
-        updateProjects(response.data)
+        updateProjects(response.data);
       })
     featureRequest.getAllFeatures()
       .then((response: AxiosResponse) => {
         console.log('adding features to features...');
         updateFeatures(response.data);
       });
+    userRequest.getUser()
+      .then((response: AxiosResponse) => {
+        console.log('adding users to users...');
+        updateUsers(response.data);
+      })
   }, [])
 
 
@@ -146,8 +152,12 @@ const NewWorkItem = ({ match }: PathProps) => {
           <input type="text"
             className="form-control"
             id="assignee"
+            list="assignees"
             onChange={event => updateInput(event)}
             placeholder="Assignee" />
+          <DataList dataArr={users}
+            listName="assignees"
+            defaultOption="No project found" />
         </div>
 
         <button type="submit"
@@ -179,6 +189,14 @@ const NewWorkItem = ({ match }: PathProps) => {
           }}
         >
           console.log projects features state
+        </button>
+
+        <button className="btn btn-danger btn-sm mt-2"
+          onClick={() => {
+            console.log(users);
+          }}
+        >
+          console.log users state
         </button>
       </div>
     </div>
