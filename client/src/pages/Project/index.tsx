@@ -98,7 +98,7 @@ const Project = ({ match }: PathProps) => {
 		<div className="container">
 			<div className="row">
 
-				<div className="col-12 col-md-5 col-lg-4 border border-primary d-flex flex-column">
+				<div className="col-12 col-md-4 col-lg-4 border border-primary d-flex flex-column">
 					<div className="py-1 d-flex align-items-center">
 
 						{editMode ?
@@ -145,7 +145,7 @@ const Project = ({ match }: PathProps) => {
 
 				</div>
 
-				<div className="col-12 col-md-7 col-lg-8 border border-danger">
+				<div className="col-12 col-md-8 col-lg-8 border border-danger">
 					<div className="row py-1 d-flex justify-content-end border border-success rounded">
 						<AddNewButton buttons={buttons} small={true} />
 					</div>
@@ -162,7 +162,7 @@ const Project = ({ match }: PathProps) => {
 
 
 			<div className="row mt-1 border border-info rounded">
-				<div className="col-12 col-md-5 border border-success rounded">
+				<div className="col-12 col-md-4 border border-success rounded">
 					<h4>Features</h4>
 
 					{features ? features.map(feature => {

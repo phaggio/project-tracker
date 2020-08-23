@@ -1,30 +1,33 @@
 import axios from 'axios';
 
+const addNewFeature = (data: object) => {
+  return axios.post('/api/feature', data);
+};
+
 const getAllFeatures = () => {
   return axios.get('/api/feature');
 };
 
 const getFeatureById = (featureId: string) => {
-  const config = {
-    params: { _id: featureId }
-  }
-  return axios.get('/api/feature/id', config);
-}
+  // return axios.get(`/api/feature/id`, config);
+  return axios.get(`/api/feature/${featureId}`)
+};
 
 const getFeaturesByProjectId = (projectId: string) => {
   const config = {
     params: { projectId: projectId }
   };
-  return axios.get('/api/feature/ByProjectId', config);
+  return axios.get(`/api/feature/ProjectId/${projectId}`);
 }
 
-const addNewFeature = (data: object) => {
-  return axios.post('/api/feature', data);
+const updateFeatureById = (featureId: string, data: object) => {
+  return axios.put(`api/feature/${featureId}`, data)
 };
 
 export {
+  addNewFeature,
   getAllFeatures,
   getFeatureById,
   getFeaturesByProjectId,
-  addNewFeature
+  updateFeatureById
 };

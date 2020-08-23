@@ -16,8 +16,9 @@ const App = () => {
         <Route exact={true} path='/new/feature/:type?/:name?/:id?' component={pages.NewFeature} />
         <Route exact={false} path='/new/workitem/:type?/:name?/:id?' component={pages.NewWorkItem} />
         <Route exact={true} path='/new/user' component={pages.NewUser} />
-        <Route exact={false} path='/project/:id' component={pages.Project} />
-        <Route exact={false} path='/feature/:id' component={pages.Feature} />
+        <Route exact={false} path='/project/:id?' component={pages.Project} />
+        <Route exact={false} path='/feature/:id?' component={pages.Feature} />
+        <Route exact={false} path='/workitem/:id?' component={pages.WorkItem} />
       </Switch>
 
     </div>

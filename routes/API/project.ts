@@ -10,6 +10,7 @@ router.route('/id')
   .get(findById)
 
 router.route('/:id')
+  .get(findById)
   .put(updateProject)
 
 router.route('/name')

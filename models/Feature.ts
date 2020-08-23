@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
-interface IFeature extends Document {
+export interface IFeature extends Document {
   status: string;
   type: string;
   name: string;
