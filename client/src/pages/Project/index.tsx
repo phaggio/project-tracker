@@ -59,6 +59,7 @@ const Project = ({ match }: PathProps) => {
 
 	const [editNameMode, updateEditNameMode] = useState(false);
 	const [editTagsMode, updateEditTagsMode] = useState(false);
+	const [editDescriptionMode, updateEditDescriptionMode] = useState(false);
 
 	const buttons = [
 		{
@@ -85,15 +86,19 @@ const Project = ({ match }: PathProps) => {
 		}
 	}, [projectId, match])
 
-	const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+	const handleInput = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 		const id = event.target.id;
 		const input = event.target.value;
 		switch (id) {
 			case 'name':
 				updateProject({ ...project, name: input })
 				break;
+			case 'description':
+				updateProject({ ...project, description: input })
+				break;
 			case 'tags':
 				parseTags(input);
+				break;
 			default:
 				break;
 		}
@@ -234,16 +239,53 @@ const Project = ({ match }: PathProps) => {
 						</div>
 					}
 
-
-
-
 					<div>
 						<hr className="my-2" />
 					</div>
 
+
 					<div className="py-1">
-						<h5>Description</h5>
-						<p>{project.description}</p>
+						{
+							editDescriptionMode ?
+								<div className="form-group">
+									<div className="d-flex justify-content-between">
+										<label>Description <small>(Optional)</small></label>
+										<div className="d-flex align-items-start">
+											<button className="btn btn-success btn-sm py-0" onClick={() => {
+												saveButtonPressed();
+												updateEditDescriptionMode(!editDescriptionMode);
+											}}>
+												<i className="fas fa-check" />
+											</button>
+											<button className="btn btn-danger btn-sm py-0" onClick={() => {
+												updateEditDescriptionMode(!editDescriptionMode)
+											}}>
+												<i className="fas fa-times" />
+											</button>
+										</div>
+									</div>
+									<textarea
+										className="form-control"
+										id="description"
+										defaultValue={project.description}
+										style={project.description.length > 60 ? { height: '140px' } : { height: '90px' }}
+										onChange={event => handleInput(event)}
+										placeholder="Description" />
+
+								</div>
+								:
+								<div>
+									<div className="d-flex">
+										<h5 className="mr-1">Description</h5>
+										<button className="btn btn-sm p-0 d-flex align-items-start"
+											title="edit"
+											onClick={() => updateEditDescriptionMode(!editDescriptionMode)}>
+											<i className="far fa-edit" />
+										</button>
+									</div>
+									<p>{project.description}</p>
+								</div>
+						}
 					</div>
 
 				</div>
