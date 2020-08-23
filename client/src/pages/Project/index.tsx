@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { projectRequest, featureRequest } from '../../httpRequests'
+import { projectRequest, featureRequest } from '../../httpRequests';
+import { parseTags } from '../../util';
 import AddNewButton from '../../components/AddNewButton';
 import Tag from '../../components/Tag';
 import FeatureLink from '../../components/FeatureLink';
@@ -97,23 +98,13 @@ const Project = ({ match }: PathProps) => {
 				updateProject({ ...project, description: input })
 				break;
 			case 'tags':
+				updateProject({ ...project, tags: parseTags(input) })
 				parseTags(input);
 				break;
 			default:
 				break;
 		}
 	};
-
-	const parseTags = (str: string) => {
-		let tagArr: string[] = []
-		// check for empty/space str between commas
-		str.split(',').forEach((item: string) => {
-			if (item.trim().length > 0) {
-				tagArr.push(item.trim());
-			}
-		});
-		updateProject({ ...project, tags: tagArr });
-	}
 
 	const saveButtonPressed = () => {
 		projectRequest.updateProject(projectId, project)
@@ -125,7 +116,7 @@ const Project = ({ match }: PathProps) => {
 			<div className="row">
 
 				<div className="col-12 col-md-4 col-lg-4 border border-primary d-flex flex-column">
-					<div className="py-1 d-flex align-items-center">
+					<div className="py-1">
 
 						{editNameMode ?
 							<div className="input-group">
@@ -251,13 +242,13 @@ const Project = ({ match }: PathProps) => {
 									<div className="d-flex justify-content-between">
 										<label>Description <small>(Optional)</small></label>
 										<div className="d-flex align-items-start">
-											<button className="btn btn-success btn-sm py-0" onClick={() => {
+											<button className="btn btn-outline-success btn-sm py-0" onClick={() => {
 												saveButtonPressed();
 												updateEditDescriptionMode(!editDescriptionMode);
 											}}>
 												<i className="fas fa-check" />
 											</button>
-											<button className="btn btn-danger btn-sm py-0" onClick={() => {
+											<button className="btn btn-outline-danger btn-sm py-0" onClick={() => {
 												updateEditDescriptionMode(!editDescriptionMode)
 											}}>
 												<i className="fas fa-times" />

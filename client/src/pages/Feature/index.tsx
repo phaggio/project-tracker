@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { featureRequest } from '../../httpRequests';
+import { projectRequest, featureRequest } from '../../httpRequests';
 import Tag from '../../components/Tag';
+import { updateProject } from '../../httpRequests/projects';
+
 
 type PathProps = {
 	history: boolean;
@@ -29,25 +31,48 @@ type FeatureObj = {
 	assigneeId: string;
 }
 
-const Feature = ({ match }: PathProps) => {
-	console.log(`rendering Feature page... `);
+type ProjectObj = {
+	_id: string;
+	name: string,
+	description: string;
+	type: string;
+	tags: string[]
+}
 
-	const [featureId] = useState(match.params.id);
+const Feature = ({ match }: PathProps) => {
+	console.log(`Rendering Feature page... `);
+
+	const [featureId] = useState<string | undefined>(match.params.id);
 	const [feature, updateFeature] = useState<FeatureObj | undefined>(undefined);
+	const [projectId, updateProjectId] = useState<string | undefined>(undefined);
+	const [project, updateProject] = useState<ProjectObj | undefined>(undefined);
 
 	useEffect(() => {
 		console.log('making GET api call to get feature data...');
-		featureRequest
-			.getFeatureById(featureId)
-			.then(res => {
-				console.log('Received feature data, updating feature state...')
-				updateFeature(res.data)
-			})
-			.catch(err => console.error(err))
+		if (featureId !== undefined) {
+			featureRequest
+				.getFeatureById(featureId)
+				.then(res => {
+					console.log('Received feature data, updating feature state...')
+					updateFeature(res.data)
+				})
+				.catch(err => console.error(err))
+		}
 	}, [featureId])
 
+	useEffect(() => {
+		if (feature && feature.projectId !== projectId && projectId !== undefined) {
+			projectRequest.getProjectById(projectId)
+				.then(res => {
+					console.log('Received project data, updating project data...')
+					updateProject(res.data)
+				})
+				.catch(err => console.error(err))
+		}
+	}, [feature])
+
 	const saveButtonPressed = () => {
-		if (feature) {
+		if (feature && featureId) {
 			featureRequest
 				.updateFeatureById(featureId, feature)
 				.then(res => console.log(res))
@@ -59,14 +84,13 @@ const Feature = ({ match }: PathProps) => {
 
 	return (
 		<div className="container">
-
+			
 			{/* if feature is available */}
 			{feature ?
-				<div id='feature-found'>
-
+				<div>
 					<div className="row mb-2">
 						<div className="col-12">
-							<h2 className="text-left">{feature.name}</h2>
+							<h5 className="text-left">{feature.name}</h5>
 						</div>
 					</div>
 

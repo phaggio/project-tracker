@@ -43,7 +43,7 @@ const Home = () => {
 
         <div className="col-12 col-md-4 border border-success rounded text-truncate">
           {/* <div className="d-flex flex-column border border-success rounded"> */}
-            <ProjectList projects={projects} />
+          <ProjectList projects={projects} />
           {/* </div> */}
         </div>
 
@@ -72,6 +72,12 @@ const Home = () => {
         console.log(projects)
       }}>
         console.log projects state
+      </button>
+      <br />
+      <button className="btn btn-danger btn-sm my-1" type="button" onClick={() => {
+        console.log(features)
+      }}>
+        console.log features state
       </button>
       <br />
       <button className="btn btn-danger btn-sm my-1" type="button" onClick={() => {

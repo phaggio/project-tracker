@@ -25,7 +25,8 @@ const FeatureSchema: Schema = new Schema({
     required: true
   },
   description: {
-    type: String
+    type: String,
+    default: ''
   },
   tags: {
     type: [String],
