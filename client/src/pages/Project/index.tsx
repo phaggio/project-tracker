@@ -34,12 +34,20 @@ type FeatureObj = {
 
 type FeatureArray = FeatureObj[];
 
+type ProjectObj = {
+	_id: string;
+	name: string,
+	description: string;
+	type: string;
+	tags: string[]
+}
+
 
 const Project = ({ match }: PathProps) => {
 	console.log('Rendering Project page...');
 
 	const [projectId] = useState(match ? match.params.id : '');
-	const [project, updateProject] = useState({
+	const [project, updateProject] = useState<ProjectObj>({
 		_id: '',
 		type: '',
 		name: '',
@@ -49,7 +57,8 @@ const Project = ({ match }: PathProps) => {
 
 	const [features, updateFeatures] = useState<FeatureArray>([]);
 
-	const [editMode, updateEditMode] = useState(false);
+	const [editNameMode, updateEditNameMode] = useState(false);
+	const [editTagsMode, updateEditTagsMode] = useState(false);
 
 	const buttons = [
 		{
@@ -83,15 +92,27 @@ const Project = ({ match }: PathProps) => {
 			case 'name':
 				updateProject({ ...project, name: input })
 				break;
+			case 'tags':
+				parseTags(input);
 			default:
 				break;
 		}
 	};
 
+	const parseTags = (str: string) => {
+		let tagArr: string[] = []
+		// check for empty/space str between commas
+		str.split(',').forEach((item: string) => {
+			if (item.trim().length > 0) {
+				tagArr.push(item.trim());
+			}
+		});
+		updateProject({ ...project, tags: tagArr });
+	}
+
 	const saveButtonPressed = () => {
 		projectRequest.updateProject(projectId, project)
 			.then(data => console.log(data))
-		updateEditMode(!editMode);
 	}
 
 	return (
@@ -101,8 +122,7 @@ const Project = ({ match }: PathProps) => {
 				<div className="col-12 col-md-4 col-lg-4 border border-primary d-flex flex-column">
 					<div className="py-1 d-flex align-items-center">
 
-						{editMode ?
-
+						{editNameMode ?
 							<div className="input-group">
 								<input type="text"
 									className="form-control"
@@ -113,48 +133,109 @@ const Project = ({ match }: PathProps) => {
 								<div className="input-group-append">
 									<button type="button"
 										className="btn btn-outline-success btn-sm"
-										onClick={() => saveButtonPressed()}
+										onClick={() => {
+											saveButtonPressed();
+											updateEditNameMode(!editNameMode);
+										}}
 									>
 										<i className="fas fa-check" />
 									</button>
 									<button type="button"
 										className="btn btn-outline-danger btn-sm"
-										onClick={() => updateEditMode(!editMode)}
+										onClick={() => updateEditNameMode(!editNameMode)}
 									>
 										<i className="fas fa-times" />
 									</button>
 								</div>
 							</div>
-
 							:
-							<div className="w-100">
-								{/* <h1 className=""> */}
+							<div className="d-flex align-items-start">
 								<span className="badge badge-primary d-flex justify-content-between align-items-start">
 									<h4 className="py-1 px-2 m-0 text-left text-wrap">{project.name}</h4>
-									<button className="btn btn-sm p-0" 
-										title="edit"
-										onClick={() => updateEditMode(!editMode)}>
-										<i className="far fa-edit" />
-									</button>
 								</span>
-								{/* </h1> */}
-
+								<button className="btn btn-sm p-0 d-flex align-items-start"
+									title="edit"
+									onClick={() => updateEditNameMode(!editNameMode)}>
+									<i className="far fa-edit" />
+								</button>
 							</div>
 						}
 
 					</div>
 
+
+
 					<div>
 						<hr className="my-2" />
 					</div>
 
-					<div className="py-1 d-flex align-items-center flex-wrap">
-						{
-							project.tags.map(tag => {
-								return (<Tag key={tag} name={tag} />)
-							})
-						}
-					</div>
+
+
+
+					{editTagsMode ?
+
+						<div className="form-group">
+							<label className="mr-1">{`Tags: {`}</label>
+							{
+								project.tags ? project.tags.map(tag => {
+									return (<span className="badge badge-info mr-1 my-1" key={tag}>{tag}</span>)
+								}) : ``
+							}
+							<label>{`}`}</label>
+							<div className="input-group">
+								<input type="text"
+									className="form-control text-wrap"
+									id="tags"
+									onChange={event => {
+										handleInput(event)
+									}}
+									placeholder="Separate tags by comma"
+									defaultValue={`${[...project.tags]}`}
+								/>
+								<div className="input-group-append">
+									<button type="button"
+										className="btn btn-outline-success btn-sm"
+										onClick={() => {
+											saveButtonPressed();
+											updateEditTagsMode(!editTagsMode);
+										}}
+									>
+										<i className="fas fa-check" />
+									</button>
+									<button type="button"
+										className="btn btn-outline-danger btn-sm"
+										onClick={() => updateEditTagsMode(!editTagsMode)}
+									>
+										<i className="fas fa-times" />
+									</button>
+								</div>
+							</div>
+							<small>Separate tags by comma</small>
+
+						</div>
+						:
+						<div className="d-flex align-items-start">
+
+							<div className="d-flex align-items-start flex-wrap">
+								<label className="my-0 mr-1 p-0">{`Tags: {`}</label>
+								{
+									project.tags.map(tag => {
+										return (<Tag key={tag} name={tag} />)
+									})
+								}
+								<label className="my-0 p-0">{`}`}</label>
+							</div>
+
+							<button className="btn btn-sm p-0 d-flex align-items-start"
+								title="edit"
+								onClick={() => updateEditTagsMode(!editTagsMode)}>
+								<i className="far fa-edit" />
+							</button>
+						</div>
+					}
+
+
+
 
 					<div>
 						<hr className="my-2" />
@@ -203,13 +284,13 @@ const Project = ({ match }: PathProps) => {
 			</div>
 
 
-			<button className="btn btn-danger mt-1"
+			<button className="btn btn-danger btn-sm mt-1"
 				onClick={() => console.log(features)}
 			>
 				console.log features state
 			</button>
 
-			<button className="btn btn-danger mt-1"
+			<button className="btn btn-danger btn-sm mt-1"
 				onClick={() => console.log(project)}
 			>
 				console.log project state
