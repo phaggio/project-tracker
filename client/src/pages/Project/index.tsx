@@ -36,7 +36,7 @@ type FeatureArray = FeatureObj[];
 
 
 const Project = ({ match }: PathProps) => {
-	console.log('rendering Project page...');
+	console.log('Rendering Project page...');
 
 	const [projectId] = useState(match ? match.params.id : '');
 	const [project, updateProject] = useState({
@@ -102,6 +102,7 @@ const Project = ({ match }: PathProps) => {
 					<div className="py-1 d-flex align-items-center">
 
 						{editMode ?
+
 							<div className="input-group">
 								<input type="text"
 									className="form-control"
@@ -111,18 +112,34 @@ const Project = ({ match }: PathProps) => {
 									defaultValue={project.name} />
 								<div className="input-group-append">
 									<button type="button"
-										className="btn btn-outline-dark"
+										className="btn btn-outline-success btn-sm"
 										onClick={() => saveButtonPressed()}
 									>
-										save
+										<i className="fas fa-check" />
+									</button>
+									<button type="button"
+										className="btn btn-outline-danger btn-sm"
+										onClick={() => updateEditMode(!editMode)}
+									>
+										<i className="fas fa-times" />
 									</button>
 								</div>
 							</div>
+
 							:
-							<h1 className="d-flex">
-								<span className="badge badge-primary">{project.name}</span>
-								<button className="btn btn-outline-dark btn-sm" onClick={() => updateEditMode(!editMode)}>Edit</button>
-							</h1>
+							<div className="w-100">
+								{/* <h1 className=""> */}
+								<span className="badge badge-primary d-flex justify-content-between align-items-start">
+									<h4 className="py-1 px-2 m-0 text-left text-wrap">{project.name}</h4>
+									<button className="btn btn-sm p-0" 
+										title="edit"
+										onClick={() => updateEditMode(!editMode)}>
+										<i className="far fa-edit" />
+									</button>
+								</span>
+								{/* </h1> */}
+
+							</div>
 						}
 
 					</div>
