@@ -14,14 +14,16 @@ const getFeatureById = (featureId: string) => {
 };
 
 const getFeaturesByProjectId = (projectId: string) => {
-  const config = {
-    params: { projectId: projectId }
-  };
+  // const config = {
+  //   params: { projectId: projectId }
+  // };
   return axios.get(`/api/feature/ProjectId/${projectId}`);
 }
 
 const updateFeatureById = (featureId: string, data: object) => {
-  return axios.put(`api/feature/${featureId}`, data)
+  console.log('from axios')
+  console.log(data)
+  return axios.put(`/api/feature/${featureId}`, data)
 };
 
 export {

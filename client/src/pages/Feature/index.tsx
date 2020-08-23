@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { featureRequest } from '../../httpRequests';
+import Tag from '../../components/Tag';
 
 type PathProps = {
 	history: boolean;
@@ -33,7 +34,6 @@ const Feature = ({ match }: PathProps) => {
 
 	const [featureId] = useState(match.params.id);
 	const [feature, updateFeature] = useState<FeatureObj | undefined>(undefined);
-	const [editStatus, updateEditStatus] = useState(false);
 
 	useEffect(() => {
 		console.log('making GET api call to get feature data...');
@@ -44,30 +44,46 @@ const Feature = ({ match }: PathProps) => {
 				updateFeature(res.data)
 			})
 			.catch(err => console.error(err))
-		// updateFeature({
-		// 	_id: '5f3cb26ecb0be8061d7e0ee3',
-		// 	name: 'some feature',
-		// 	description: 'some description',
-		// 	status: 'active',
-		// 	tags: ['test', 'ux', 'dev work'],
-		// 	projectId: '5f3c50c6770db46d5cd47941',
-		// 	assigneeId: ''
-		// })
 	}, [featureId])
 
-	console.log(featureId);
+	const saveButtonPressed = () => {
+		if (feature) {
+			featureRequest
+				.updateFeatureById(featureId, feature)
+				.then(res => console.log(res))
+				.catch(err => console.error(err))
+		} else {
+			console.log('feature is undefined...')
+		}
+	}
+
 	return (
 		<div className="container">
 
 			{/* if feature is available */}
 			{feature ?
 				<div id='feature-found'>
-					<div className="col-12">
-						<h3>{feature.name}</h3>
+
+					<div className="row mb-2">
+						<div className="col-12">
+							<h2 className="text-left">{feature.name}</h2>
+						</div>
 					</div>
+
 					<div className="row">
 						<div className="col-12 col-md-5">
 
+							<div>
+								<hr className="my-2" />
+							</div>
+
+							<div className="py-1 d-flex align-items-center flex-wrap">
+								{
+									feature.tags.map(tag => {
+										return (<Tag key={tag} name={tag} />)
+									})
+								}
+							</div>
 
 							<label>Status: </label>
 							<div className="input-group">
@@ -76,7 +92,8 @@ const Feature = ({ match }: PathProps) => {
 									onChange={(event) => {
 										console.log(event.target.selectedOptions[0].value)
 										updateFeature({ ...feature, status: event.target.selectedOptions[0].value })
-									}}>
+									}}
+								>
 									<option value='open'>Open</option>
 									<option value='active'>Active</option>
 									<option value='complete'>Complete</option>
@@ -86,12 +103,14 @@ const Feature = ({ match }: PathProps) => {
 								<div className="input-group-append">
 									<button className="btn btn-outline-dark"
 										type="button"
-										onClick={() => console.log('saved...')}
+										onClick={() => {
+											console.log('saving...');
+											saveButtonPressed()
+										}}
 									>
 										Save
 									</button>
 								</div>
-								{feature.status}
 							</div>
 
 							{feature.tags}
@@ -103,24 +122,26 @@ const Feature = ({ match }: PathProps) => {
 						</div>
 					</div>
 
-
-
-
-					<div className="row">
-						<button className="btn btn-danger btn-sm"
-							onClick={() => console.log(featureId)}>
-							console.log featureId
-				</button>
-
-						<button className="btn btn-danger btn-sm"
-							onClick={() => console.log(feature)}>
-							console.log feature state
-				</button>
-					</div>
 				</div>
 				:
 				<div><h2>No feature found</h2></div>
 			}
+
+
+			<div className="col-3">
+				<button className="btn btn-danger btn-sm my-1"
+					onClick={() => console.log(featureId)}
+				>
+					console.log featureId
+				</button>
+
+				<button className="btn btn-danger btn-sm my-1"
+					onClick={() => console.log(feature)}
+				>
+					console.log feature state
+				</button>
+			</div>
+
 
 		</div>
 	)

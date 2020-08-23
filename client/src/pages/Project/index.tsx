@@ -110,7 +110,12 @@ const Project = ({ match }: PathProps) => {
 									placeholder="Project name"
 									defaultValue={project.name} />
 								<div className="input-group-append">
-									<button type="button" className="btn btn-outline-dark" onClick={() => saveButtonPressed()}>save</button>
+									<button type="button"
+										className="btn btn-outline-dark"
+										onClick={() => saveButtonPressed()}
+									>
+										save
+									</button>
 								</div>
 							</div>
 							:
