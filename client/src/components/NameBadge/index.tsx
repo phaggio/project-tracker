@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 type PropsType = {
   type: string;
   name: string;
-  onChangeFunc: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  // onChangeFunc: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   saveButtonPressed: (type: string, part: string, payload: string) => void;
 }
 

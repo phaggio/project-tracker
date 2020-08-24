@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { projectRequest, featureRequest, workItemRequest } from '../../httpRequests';
 import { parseTags } from '../../util';
 import NameBadge from '../../components/NameBadge';
+import TagsDiv from '../../components/TagsDiv';
 import AddNewButton from '../../components/AddNewButton';
 import Tag from '../../components/Tag';
 import FeatureLink from '../../components/FeatureLink';
@@ -58,7 +59,6 @@ type ProjectObj = {
 	tags: string[]
 }
 
-
 const Project = ({ match }: PathProps) => {
 	console.log('Rendering Project page...');
 
@@ -74,7 +74,6 @@ const Project = ({ match }: PathProps) => {
 	const [features, updateFeatures] = useState<FeatureArray>([]);
 	const [workItems, updateWorkItems] = useState<WorkItemArray>([]);
 
-	const [editNameMode, updateEditNameMode] = useState(false);
 	const [editTagsMode, updateEditTagsMode] = useState(false);
 	const [editDescriptionMode, updateEditDescriptionMode] = useState(false);
 
@@ -134,17 +133,19 @@ const Project = ({ match }: PathProps) => {
 			.then(data => console.log(data))
 	}, [project])
 
-	const saveButtonPressed = (type: string, part: string, payload: string) => {
+	const saveButtonPressed = (type: string, part: string, payload: string | string[]) => {
 		console.log(type);
 		console.log(part);
 		console.log(payload)
 		switch (part) {
 			case 'name':
-				updateProject({ ...project, name: payload });
+				if (typeof payload === 'string') updateProject({ ...project, name: payload });
 				break;
 			case 'description':
 				console.log('update desc')
 				break;
+			case 'tags':
+				if (payload instanceof Array) updateProject({ ...project, tags: payload })
 			default:
 				break;
 		}
@@ -155,131 +156,20 @@ const Project = ({ match }: PathProps) => {
 			<div className="row">
 
 				<div className="col-12 col-md-6 col-lg-8 border border-primary rounded d-flex flex-column">
-					<div className="py-1">
 
+					<div className="pt-2">
 						<NameBadge type='project'
 							name={project.name}
-							onChangeFunc={handleInput}
 							saveButtonPressed={saveButtonPressed} />
-
-						{/* {editNameMode ?
-							<div className="input-group">
-								<input type="text"
-									className="form-control"
-									id="name"
-									onChange={event => handleInput(event)}
-									placeholder="Project name"
-									defaultValue={project.name} />
-								<div className="input-group-append">
-									<button type="button"
-										className="btn btn-outline-success btn-sm"
-										onClick={() => {
-											saveButtonPressed();
-											updateEditNameMode(!editNameMode);
-										}}
-									>
-										<i className="fas fa-check" />
-									</button>
-									<button type="button"
-										className="btn btn-outline-danger btn-sm"
-										onClick={() => updateEditNameMode(!editNameMode)}
-									>
-										<i className="fas fa-times" />
-									</button>
-								</div>
-							</div>
-							:
-							<div className="d-flex align-items-start">
-								<span className="badge badge-primary d-flex justify-content-between align-items-start">
-									<h4 className="py-1 px-2 m-0 text-left text-wrap">{project.name}</h4>
-								</span>
-								<button className="btn btn-sm p-0 d-flex align-items-start"
-									title="edit"
-									onClick={() => updateEditNameMode(!editNameMode)}>
-									<i className="far fa-edit" />
-								</button>
-							</div>
-						} */}
-
+						<hr className="mt-3" />
 					</div>
 
-
-
-					<div>
-						<hr className="my-2" />
+					<div className="pt-2">
+						<TagsDiv type="project" tags={project.tags} saveButtonPressed={saveButtonPressed} />
+						<hr className="mt-3" />
 					</div>
 
-
-
-
-					{editTagsMode ?
-
-						<div className="form-group">
-							<label className="mr-1">{`Tags: {`}</label>
-							{
-								project.tags ? project.tags.map(tag => {
-									return (<span className="badge badge-info mr-1 my-1" key={tag}>{tag}</span>)
-								}) : ``
-							}
-							<label>{`}`}</label>
-							<div className="input-group">
-								<input type="text"
-									className="form-control text-wrap"
-									id="tags"
-									onChange={event => {
-										handleInput(event)
-									}}
-									placeholder="Separate tags by comma"
-									defaultValue={`${[...project.tags]}`}
-								/>
-								<div className="input-group-append">
-									<button type="button"
-										className="btn btn-outline-success btn-sm"
-										onClick={() => {
-											// saveButtonPressed();
-											updateEditTagsMode(!editTagsMode);
-										}}
-									>
-										<i className="fas fa-check" />
-									</button>
-									<button type="button"
-										className="btn btn-outline-danger btn-sm"
-										onClick={() => updateEditTagsMode(!editTagsMode)}
-									>
-										<i className="fas fa-times" />
-									</button>
-								</div>
-							</div>
-							<small>Separate tags by comma</small>
-
-						</div>
-						:
-						<div className="d-flex align-items-start">
-
-							<div className="d-flex align-items-start flex-wrap">
-								<label className="my-0 mr-1 p-0">{`Tags: {`}</label>
-								{
-									project.tags.map(tag => {
-										return (<Tag key={tag} name={tag} />)
-									})
-								}
-								<label className="my-0 p-0">{`}`}</label>
-							</div>
-
-							<button className="btn btn-sm p-0 d-flex align-items-start"
-								title="edit"
-								onClick={() => updateEditTagsMode(!editTagsMode)}>
-								<i className="far fa-edit" />
-							</button>
-						</div>
-					}
-
-					<div>
-						<hr className="my-2" />
-					</div>
-
-
-					<div className="py-1">
+					<div className="pt-1">
 						{
 							editDescriptionMode ?
 								<div className="form-group">

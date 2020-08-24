@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { projectRequest, featureRequest } from '../../httpRequests';
+import NameBadge from '../../components/NameBadge';
 import Tag from '../../components/Tag';
 import { updateProject } from '../../httpRequests/projects';
-
 
 type PathProps = {
 	history: boolean;
@@ -23,6 +23,7 @@ type MatchParams = {
 
 type FeatureObj = {
 	_id: string;
+	type: string;
 	status: string;
 	name: string;
 	description: string;
@@ -43,7 +44,16 @@ const Feature = ({ match }: PathProps) => {
 	console.log(`Rendering Feature page... `);
 
 	const [featureId] = useState<string | undefined>(match.params.id);
-	const [feature, updateFeature] = useState<FeatureObj | undefined>(undefined);
+	const [feature, updateFeature] = useState<FeatureObj>({
+		_id: '',
+		type: 'feature',
+		status: 'open',
+		name: '',
+		description: '',
+		tags: [],
+		projectId: '',
+		assigneeId: ''
+	});
 	const [projectId, updateProjectId] = useState<string | undefined>(undefined);
 	const [project, updateProject] = useState<ProjectObj | undefined>(undefined);
 
@@ -84,89 +94,84 @@ const Feature = ({ match }: PathProps) => {
 
 	return (
 		<div className="container">
-			
-			{/* if feature is available */}
-			{feature ?
-				<div>
-					<div className="row mb-2">
-						<div className="col-12">
-							<h5 className="text-left">{feature.name}</h5>
-						</div>
-					</div>
+			<div className="row">
+				<div className="col-12 col-md-6 col-lg-8 border border-primary rounded d-flex flex-column">
+					<div className="my-1 py-1">
+						<NameBadge type='feature'
+							name={feature.name}
+							saveButtonPressed={saveButtonPressed} />
 
-					<div className="row">
-						<div className="col-12 col-md-5">
 
-							<div>
-								<hr className="my-2" />
-							</div>
+							<div className="row">
+								<div className="col-12 col-md-5">
 
-							<div className="py-1 d-flex align-items-center flex-wrap">
-								{
-									feature.tags.map(tag => {
-										return (<Tag key={tag} name={tag} />)
-									})
-								}
-							</div>
+									<div>
+										<hr className="my-2" />
+									</div>
 
-							<label>Status: </label>
-							<div className="input-group">
-								<select className="custom-select"
-									defaultValue={feature.status}
-									onChange={(event) => {
-										console.log(event.target.selectedOptions[0].value)
-										updateFeature({ ...feature, status: event.target.selectedOptions[0].value })
-									}}
-								>
-									<option value='open'>Open</option>
-									<option value='active'>Active</option>
-									<option value='complete'>Complete</option>
-									<option value='in-review'>In-review</option>
-									<option value='close'>Close</option>
-								</select>
-								<div className="input-group-append">
-									<button className="btn btn-outline-dark"
-										type="button"
-										onClick={() => {
-											console.log('saving...');
-											saveButtonPressed()
-										}}
-									>
-										Save
+									<div className="py-1 d-flex align-items-center flex-wrap">
+										{
+											feature.tags.map(tag => {
+												return (<Tag key={tag} name={tag} />)
+											})
+										}
+									</div>
+
+									<label>Status: </label>
+									<div className="input-group">
+										<select className="custom-select"
+											defaultValue={feature.status}
+											onChange={(event) => {
+												console.log(event.target.selectedOptions[0].value)
+												updateFeature({ ...feature, status: event.target.selectedOptions[0].value })
+											}}
+										>
+											<option value='open'>Open</option>
+											<option value='active'>Active</option>
+											<option value='complete'>Complete</option>
+											<option value='in-review'>In-review</option>
+											<option value='close'>Close</option>
+										</select>
+										<div className="input-group-append">
+											<button className="btn btn-outline-dark"
+												type="button"
+												onClick={() => {
+													console.log('saving...');
+													saveButtonPressed()
+												}}
+											>
+												Save
 									</button>
+										</div>
+									</div>
+
+									{feature.tags}
+									{feature.assigneeId}
+								</div>
+								<div className="col-12 col-md-7">
+									<h4>Description</h4>
+									<p>{feature.description}</p>
 								</div>
 							</div>
 
-							{feature.tags}
-							{feature.assigneeId}
-						</div>
-						<div className="col-12 col-md-7">
-							<h4>Description</h4>
-							<p>{feature.description}</p>
+
+
+						<div className="col-3">
+							<button className="btn btn-danger btn-sm my-1"
+								onClick={() => console.log(featureId)}
+							>
+								console.log featureId
+				</button>
+
+							<button className="btn btn-danger btn-sm my-1"
+								onClick={() => console.log(feature)}
+							>
+								console.log feature state
+				</button>
 						</div>
 					</div>
-
 				</div>
-				:
-				<div><h2>No feature found</h2></div>
-			}
-
-
-			<div className="col-3">
-				<button className="btn btn-danger btn-sm my-1"
-					onClick={() => console.log(featureId)}
-				>
-					console.log featureId
-				</button>
-
-				<button className="btn btn-danger btn-sm my-1"
-					onClick={() => console.log(feature)}
-				>
-					console.log feature state
-				</button>
 			</div>
-
-
 		</div>
 	)
 }
