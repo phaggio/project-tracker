@@ -6,7 +6,7 @@ const parseTags = (str: string): string[] => {
   const lowerCaseStr = str.toLowerCase();
   let outputArr: string[] = [];
   // only non-empty string, separated by comma
-  const inputArr = lowerCaseStr.split(',').forEach((item: string) => {
+  lowerCaseStr.split(',').forEach((item: string) => {
     if (item.trim().length > 0) outputArr.push(item.trim());
   })
 

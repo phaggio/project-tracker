@@ -15,7 +15,16 @@ const findAllWorkItems = (request: Request, response: Response) => {
     .catch(err => response.status(422).json(err))
 }
 
+const findWorkItemsByParentId = (request: Request, response: Response) => {
+  const parentId = request.params.id;
+  WorkItem
+    .find({ parentId: parentId })
+    .then(data => response.json(data))
+    .catch(err => response.json(err))
+}
+
 export {
   createNewWorkItem,
-  findAllWorkItems
+  findAllWorkItems,
+  findWorkItemsByParentId
 }

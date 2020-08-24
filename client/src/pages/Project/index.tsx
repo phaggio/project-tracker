@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { projectRequest, featureRequest } from '../../httpRequests';
+import { projectRequest, featureRequest, workItemRequest } from '../../httpRequests';
 import { parseTags } from '../../util';
+import NameBadge from '../../components/NameBadge';
 import AddNewButton from '../../components/AddNewButton';
 import Tag from '../../components/Tag';
 import FeatureLink from '../../components/FeatureLink';
+import WorkItemLink from '../../components/WorkItemLink';
+import ConsoleLogButton from '../../components/ConsoleLogButton';
 
 type PathProps = {
 	history: boolean;
@@ -35,6 +38,18 @@ type FeatureObj = {
 
 type FeatureArray = FeatureObj[];
 
+type WorkItemObj = {
+	_id: string;
+	type: string;
+	status: string;
+	name: string;
+	description: string;
+	tags: string[];
+	parentId: string;
+}
+
+type WorkItemArray = WorkItemObj[];
+
 type ProjectObj = {
 	_id: string;
 	name: string,
@@ -57,6 +72,7 @@ const Project = ({ match }: PathProps) => {
 	});
 
 	const [features, updateFeatures] = useState<FeatureArray>([]);
+	const [workItems, updateWorkItems] = useState<WorkItemArray>([]);
 
 	const [editNameMode, updateEditNameMode] = useState(false);
 	const [editTagsMode, updateEditTagsMode] = useState(false);
@@ -64,14 +80,19 @@ const Project = ({ match }: PathProps) => {
 
 	const buttons = [
 		{
-			name: 'New feature',
+			name: 'Feature',
 			url: `/new/feature/project/${project.name}/${project._id}`,
 			ariaLabel: 'add-new-feature'
 		},
 		{
-			name: 'New work item',
+			name: 'Work item',
 			url: `/new/workitem/project/${project.name}/${project._id}`,
 			ariaLabel: 'add-new-work-item'
+		},
+		{
+			name: 'Bug',
+			url: `/new/bug/project/${project.name}/${project._id}`,
+			ariaLabel: 'add-new-bug'
 		}
 	]
 
@@ -84,6 +105,9 @@ const Project = ({ match }: PathProps) => {
 			featureRequest
 				.getFeaturesByProjectId(projectId)
 				.then(res => updateFeatures(res.data));
+			workItemRequest
+				.getWorkItemsByParentId(projectId)
+				.then(res => updateWorkItems(res.data));
 		}
 	}, [projectId, match])
 
@@ -99,26 +123,46 @@ const Project = ({ match }: PathProps) => {
 				break;
 			case 'tags':
 				updateProject({ ...project, tags: parseTags(input) })
-				parseTags(input);
 				break;
 			default:
 				break;
 		}
 	};
 
-	const saveButtonPressed = () => {
+	useEffect(() => {
 		projectRequest.updateProject(projectId, project)
 			.then(data => console.log(data))
+	}, [project])
+
+	const saveButtonPressed = (type: string, part: string, payload: string) => {
+		console.log(type);
+		console.log(part);
+		console.log(payload)
+		switch (part) {
+			case 'name':
+				updateProject({ ...project, name: payload });
+				break;
+			case 'description':
+				console.log('update desc')
+				break;
+			default:
+				break;
+		}
 	}
 
 	return (
 		<div className="container">
 			<div className="row">
 
-				<div className="col-12 col-md-4 col-lg-4 border border-primary d-flex flex-column">
+				<div className="col-12 col-md-6 col-lg-8 border border-primary rounded d-flex flex-column">
 					<div className="py-1">
 
-						{editNameMode ?
+						<NameBadge type='project'
+							name={project.name}
+							onChangeFunc={handleInput}
+							saveButtonPressed={saveButtonPressed} />
+
+						{/* {editNameMode ?
 							<div className="input-group">
 								<input type="text"
 									className="form-control"
@@ -155,7 +199,7 @@ const Project = ({ match }: PathProps) => {
 									<i className="far fa-edit" />
 								</button>
 							</div>
-						}
+						} */}
 
 					</div>
 
@@ -192,7 +236,7 @@ const Project = ({ match }: PathProps) => {
 									<button type="button"
 										className="btn btn-outline-success btn-sm"
 										onClick={() => {
-											saveButtonPressed();
+											// saveButtonPressed();
 											updateEditTagsMode(!editTagsMode);
 										}}
 									>
@@ -243,7 +287,7 @@ const Project = ({ match }: PathProps) => {
 										<label>Description <small>(Optional)</small></label>
 										<div className="d-flex align-items-start">
 											<button className="btn btn-outline-success btn-sm py-0" onClick={() => {
-												saveButtonPressed();
+												// saveButtonPressed();
 												updateEditDescriptionMode(!editDescriptionMode);
 											}}>
 												<i className="fas fa-check" />
@@ -258,8 +302,9 @@ const Project = ({ match }: PathProps) => {
 									<textarea
 										className="form-control"
 										id="description"
+										style={{ whiteSpace: 'pre-wrap', height: '150px' }}
 										defaultValue={project.description}
-										style={project.description.length > 60 ? { height: '140px' } : { height: '90px' }}
+										// style={project.description.length > 60 ? { height: '140px' } : { height: '90px' }}
 										onChange={event => handleInput(event)}
 										placeholder="Description" />
 
@@ -281,10 +326,7 @@ const Project = ({ match }: PathProps) => {
 
 				</div>
 
-				<div className="col-12 col-md-8 col-lg-8 border border-danger">
-					<div className="row py-1 d-flex justify-content-end border border-success rounded">
-						<AddNewButton buttons={buttons} small={true} />
-					</div>
+				<div className="col-12 col-md-6 col-lg-4 border border-danger rounded">
 
 					<div>
 						WILL NEED TO SHOW project status summary here, with graphs and numbers, etc.
@@ -297,38 +339,47 @@ const Project = ({ match }: PathProps) => {
 			{/* end of first row */}
 
 
+
+			{/* second row begins */}
 			<div className="row mt-1 border border-info rounded">
-				<div className="col-12 col-md-4 border border-success rounded">
-					<h4>Features</h4>
+				<div className="col-12 d-flex justify-content-between align-items-center">
+					<h4>Items</h4>
+					<AddNewButton buttons={buttons} small={true} />
+				</div>
 
-					{features ? features.map(feature => {
-						return (
+				{/* <div className="row border border-dark rounded"> */}
+
+				{features ? features.map(feature => {
+					return (
+						<div className="col-12 col-sm-6 col-md-4 col-lg-3 my-1"
+							key={feature._id}>
 							<FeatureLink key={feature._id} featureData={feature} />
-						)
-					})
-						:
-						''
-					}
+						</div>
+					)
+				})
+					:
+					''
+				}
+				{workItems ? workItems.map(workItem => {
+					return (
+						<div className="col-12 col-sm-6 col-md-4 col-lg-3 my-1"
+							key={workItem._id}>
+							<WorkItemLink key={workItem._id} workItemData={workItem} />
+						</div>
+					)
+				})
+					:
+					''
+				}
+				{/* </div> */}
 
-				</div>
-				<div className="col-12 col-md-8 border border-secondary rounded">
-
-				</div>
 			</div>
+			{/* end of second row */}
 
 
-			<button className="btn btn-danger btn-sm mt-1"
-				onClick={() => console.log(features)}
-			>
-				console.log features state
-			</button>
-
-			<button className="btn btn-danger btn-sm mt-1"
-				onClick={() => console.log(project)}
-			>
-				console.log project state
-			</button>
-
+			<ConsoleLogButton state={project} name="project" />
+			<ConsoleLogButton state={features} name="features" />
+			<ConsoleLogButton state={workItems} name="work item" />
 		</div>
 	)
 };

@@ -1,6 +1,7 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
 export interface IWorkItem extends Document {
+  status: string;
   name: string;
   description: string;
   type: string;
@@ -11,6 +12,11 @@ export interface IWorkItem extends Document {
 }
 
 const WorkItemSchema: Schema = new Schema({
+  status: {
+    type: String,
+    default: 'open'
+  },
+
   name: {
     type: String,
     required: true

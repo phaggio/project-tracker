@@ -14,13 +14,14 @@ type FeatureData = {
 
 const FeatureLink = (props: FeatureLinkProps) => {
   return (
-    <div>
-      <Link className="btn btn-warning btn-sm w-100 text-left mb-1"
-        to={`/feature/${props.featureData._id}`}>
-        {props.featureData.name}
-      </Link>
-    </div>
+
+    <Link className="btn btn-warning border border-dark w-100 text-left text-truncate"
+      title={props.featureData.name}
+      to={`/feature/${props.featureData._id}`}>
+      {props.featureData.name}
+    </Link>
+
   )
 }
 
-export default FeatureLink
+export default FeatureLink;
