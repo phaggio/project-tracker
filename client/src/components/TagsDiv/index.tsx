@@ -5,7 +5,7 @@ import { parseTags } from '../../util';
 type PropsType = {
   type: string;
   tags: string[];
-  saveButtonPressed: (type: string, part: string, payload: string[]) => void;
+  saveButtonPressed: (part: string, payload: string[]) => void;
 }
 
 const TagsDiv = (props: PropsType) => {
@@ -43,7 +43,7 @@ const TagsDiv = (props: PropsType) => {
               <button type="button"
                 className="btn btn-outline-success btn-sm"
                 onClick={() => {
-                  props.saveButtonPressed(props.type, 'tags', draft);
+                  props.saveButtonPressed('tags', draft);
                   updateEditMode(!editMode);
                 }}
               >

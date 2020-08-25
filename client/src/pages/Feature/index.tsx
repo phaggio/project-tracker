@@ -79,8 +79,7 @@ const Feature = ({ match }: PathProps) => {
 		}
 	}, [feature])
 
-	const saveButtonPressed = (type: string, part: string, payload: string | string[]) => {
-		console.log(type)
+	const saveButtonPressed = (part: string, payload: string | string[]) => {
 		switch (part) {
 			case ('name'):
 				if (typeof payload === 'string' && feature) updateFeature({ ...feature, name: payload });

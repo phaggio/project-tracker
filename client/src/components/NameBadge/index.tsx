@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 type PropsType = {
   type: string;
   name: string;
-  saveButtonPressed: (type: string, part: string, payload: string) => void;
+  saveButtonPressed: (part: string, payload: string) => void;
 }
 
 const NameBadge = (props: PropsType) => {
@@ -43,7 +43,7 @@ const NameBadge = (props: PropsType) => {
               id="name"
               disabled={draft.trim().length === 0}
               onClick={() => {
-                props.saveButtonPressed(props.type, 'name', draft);
+                props.saveButtonPressed('name', draft);
                 updateEditMode(!editMode);
               }}
             >
