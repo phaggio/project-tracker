@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { AxiosResponse } from 'axios';
 import { featureRequest, projectRequest, userRequest, workItemRequest } from '../../httpRequests';
-import FormGroup from '../../components/FormGroup';
-import ParentList from '../../components/ParentList';
-import UserList from '../../components/UserList';
+import FormGroupInput from '../../components/FormGroupInput';
+import FormGroupTextArea from '../../components/FormGroupTextArea';
 import ConsoleLogButton from '../../components/ConsoleLogButton';
 
 type PathProps = {
@@ -25,17 +24,33 @@ type MatchParams = {
   id: string;
 };
 
+type WorkItemType = {
+  status: string;
+  parentId: string | null;
+  parentType: string | null;
+  name: string;
+  description: string;
+  type: string;
+  tags: string[];
+  assigneeId: string | null
+}
+
 const NewWorkItem = ({ match }: PathProps) => {
   const [projects, updateProjects] = useState([]);
   const [features, updateFeatures] = useState([]);
   const [users, updateUsers] = useState([]);
 
-  const [parentType, updateParentType] = useState(match.params.type ? match.params.type : '');
-  const [parentName, updateParentName] = useState(match.params.name ? match.params.name : '');
-  const [parentId, updateParentId] = useState(match.params.id ? match.params.id : '');
-  const [name, updateName] = useState('');
-  const [assigneeId, updateAssigneeId] = useState('');
-  const [description, updateDescription] = useState('');
+  const [workItem, updateWorkItem] = useState<WorkItemType>({
+    status: 'open',
+    parentId: match.params.id ? match.params.id : '',
+    parentType: match.params.type ? match.params.type : '',
+    name: '',
+    description: '',
+    type: 'workItem',
+    tags: [],
+    assigneeId: ''
+  })
+
   const [tags, updateTags] = useState<string[]>([])
 
   const [disableAddButton, updateDisableAddButton] = useState(true);
@@ -59,43 +74,40 @@ const NewWorkItem = ({ match }: PathProps) => {
       })
   }, [])
 
-  const parseParentInfo = (str: string) => {
-    const infoArr = str.split('/');
-    updateParentType(infoArr[0] ? infoArr[0].trim() : '');
-    updateParentName(infoArr[1] ? infoArr[1].trim() : '');
-    updateParentId(infoArr[2] ? infoArr[2].trim() : '');
+
+  const parseParentType = (str: string) => {
+    const inputArr = str.split('/');
+    return inputArr[0] ? inputArr[0] : null;
   };
 
-  const parseAssignee = (str: string) => {
-    const start = str.indexOf('(');
-    const end = str.indexOf(')');
-    return str.slice(start + 1, end);
+  const parseParentId = (str: string) => {
+    const inputArr = str.split('/');
+    return inputArr[2] ? inputArr[2] : null;
   }
 
-  const updateInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const id = event.target.id;
-    const input = event.target.value.trim();
+  const parseAssigneeId = (str: string) => {
+    const assigneeArr = str.split('/');
+    return assigneeArr[2] ? assigneeArr[2] : null;
+  }
+
+  const updateFormInput = (id: string, str: string) => {
     switch (id) {
-      case 'parent':
-        parseParentInfo(input);
-        break;
       case 'name':
-        input ? updateDisableAddButton(false) : updateDisableAddButton(true);
-        updateName(input);
+        if (str.trim()) updateWorkItem({ ...workItem, name: str })
+        str.trim() ? updateDisableAddButton(false) : updateDisableAddButton(true)
         break;
       case 'description':
-        updateDescription(input);
+        if (str.trim()) updateWorkItem({ ...workItem, description: str })
+        break;
+      case 'parent':
+        updateWorkItem({ ...workItem, parentId: parseParentId(str), parentType: parseParentType(str) })
         break;
       case 'assignee':
-        updateAssigneeId(parseAssignee(input));
+        updateWorkItem({ ...workItem, assigneeId: parseAssigneeId(str) });
         break;
       default:
         break;
     }
-  };
-
-  const updateFormInput = (id: string, str: string) => {
-    console.log(id, str);
   }
 
   const updateTagsInput = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -114,14 +126,7 @@ const NewWorkItem = ({ match }: PathProps) => {
   const submitButtonPressed = (event: React.FormEvent) => {
     event.preventDefault(); //default action is clear the form
     console.log(`submit button pressed..`)
-    const data = {
-      parentId: parentId,
-      parentType: parentType,
-      name: name,
-      tags: tags,
-      description: description,
-      assigneeId: assigneeId
-    };
+    const data = workItem;
     console.log(`sending`, data);
     workItemRequest.addNewWorkItem(data)
       .then((response: AxiosResponse) => console.log(response))
@@ -134,31 +139,23 @@ const NewWorkItem = ({ match }: PathProps) => {
       <form
         onSubmit={event => submitButtonPressed(event)}
       >
+        <FormGroupInput label="Parent item"
+          spellCheck={false}
+          optional={false}
+          id="parent"
+          listName="parents"
+          listArr={[...features, ...projects]}
+          placeholder="Parent item type/ parent item name/ parent item ID"
+          defaultValue={match.params ? `${match.params.type}/${match.params.name}/${match.params.id}` : ''}
+          defaultOption="No eligible parent item found"
+          onChangeFunction={updateFormInput} />
 
-        <div className="form-group">
-          <label>Parent item:</label>
-          <input type="text"
-            className="form-control"
-            id="parent"
-            list="projects"
-            onChange={event => updateInput(event)}
-            placeholder="Select parent item"
-            defaultValue={match.params.id ? `${parentType}/${parentName}/${parentId}` : ''}
-            spellCheck={false}
-          />
-          <ParentList dataArr={[...projects, ...features]}
-            listName="projects"
-            defaultOption="No project found" />
-        </div>
-
-        <div className="form-group">
-          <label>Work item name</label>
-          <input type="text"
-            id="name"
-            className="form-control"
-            onChange={event => updateInput(event)}
-            placeholder="Work item name" />
-        </div>
+        <FormGroupInput label="Work item name"
+          spellCheck={false}
+          optional={false}
+          id="name"
+          placeholder="work item name"
+          onChangeFunction={updateFormInput} />
 
         <div className="form-group">
           <label className="mr-1">{`Tags: {`}</label>
@@ -174,36 +171,22 @@ const NewWorkItem = ({ match }: PathProps) => {
           />
         </div>
 
-        <div className="form-group">
-          <label>Description <small>(Optional)</small></label>
-          <input type="text"
-            id="description"
-            className="form-control"
-            onChange={event => updateInput(event)}
-            placeholder="Description" />
-        </div>
+        <FormGroupTextArea label="Description"
+          spellCheck={true}
+          optional={true}
+          id="description"
+          placeholder="Work item description..."
+          onChangeFunction={updateFormInput} />
 
-        <FormGroup label="Assign to: "
+        <FormGroupInput label="Assign to: "
+          spellCheck={false}
+          optional={true}
           id="assignee"
+          placeholder="Type/ Assignee name/ ID"
           listName="assignees"
           listArr={users}
-          placeholder="Assignee name/ ID"
-          onChangeFunction={updateFormInput}
-        />
-
-
-        <div className="form-group">
-          <label>Assign to: </label>
-          <input type="text"
-            className="form-control"
-            id="assignee"
-            list="assignees"
-            onChange={event => updateInput(event)}
-            placeholder="Assignee" />
-          <UserList dataArr={users}
-            listName="assignees"
-            defaultOption="No user found" />
-        </div>
+          defaultOption="No user found"
+          onChangeFunction={updateFormInput} />
 
         <button type="submit"
           className="btn btn-success"
@@ -215,12 +198,8 @@ const NewWorkItem = ({ match }: PathProps) => {
 
 
 
-
       <div className="d-flex flex-column col-4">
-        <ConsoleLogButton name="parentName" state={parentName} />
-        <ConsoleLogButton name="name" state={name} />
-        <ConsoleLogButton name="desc" state={description} />
-        <ConsoleLogButton name="assigneeId" state={assigneeId} />
+        <ConsoleLogButton name="work item" state={workItem} />
         <ConsoleLogButton name="projects" state={projects} />
         <ConsoleLogButton name="features" state={features} />
         <ConsoleLogButton name="users" state={users} />
