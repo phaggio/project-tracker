@@ -24,7 +24,6 @@ type MatchParams = {
 
 
 const NewFeature = ({ match }: PathProps) => {
-  // console.log(match.params)
   console.log('rendering NewFeature page...')
   const [disableCreateButton, updateDisableCreateButton] = useState(true);
   const [projects, updateProjects] = useState([]);

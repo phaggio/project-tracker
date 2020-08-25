@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { AxiosResponse } from 'axios';
 import { featureRequest, projectRequest, userRequest, workItemRequest } from '../../httpRequests';
+import FormGroup from '../../components/FormGroup';
 import ParentList from '../../components/ParentList';
 import UserList from '../../components/UserList';
+import ConsoleLogButton from '../../components/ConsoleLogButton';
 
 type PathProps = {
   history: boolean;
@@ -38,6 +40,7 @@ const NewWorkItem = ({ match }: PathProps) => {
 
   const [disableAddButton, updateDisableAddButton] = useState(true);
 
+  // initial GET for projects, features, users selection lists
   useEffect(() => {
     projectRequest.getAllProjects()
       .then((response: AxiosResponse) => {
@@ -90,6 +93,10 @@ const NewWorkItem = ({ match }: PathProps) => {
         break;
     }
   };
+
+  const updateFormInput = (id: string, str: string) => {
+    console.log(id, str);
+  }
 
   const updateTagsInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const str = event.target.value;
@@ -176,6 +183,15 @@ const NewWorkItem = ({ match }: PathProps) => {
             placeholder="Description" />
         </div>
 
+        <FormGroup label="Assign to: "
+          id="assignee"
+          listName="assignees"
+          listArr={users}
+          placeholder="Assignee name/ ID"
+          onChangeFunction={updateFormInput}
+        />
+
+
         <div className="form-group">
           <label>Assign to: </label>
           <input type="text"
@@ -200,36 +216,19 @@ const NewWorkItem = ({ match }: PathProps) => {
 
 
 
-      <div className="d-flex flex-column">
-        <button className="btn btn-danger btn-sm mt-2"
-          onClick={() => console.log(parentType, parentName, parentId)}
-        >
-          console.log parent state
-        </button>
-        <button className="btn btn-danger btn-sm mt-2"
-          onClick={() => console.log(name, description, assigneeId)}
-        >
-          console.log work item state
-        </button>
-        <button className="btn btn-danger btn-sm mt-2"
-          onClick={() => {
-            console.log(projects);
-            console.log(features);
-          }}
-        >
-          console.log projects features state
-        </button>
-
-        <button className="btn btn-danger btn-sm mt-2"
-          onClick={() => {
-            console.log(users);
-          }}
-        >
-          console.log users state
-        </button>
+      <div className="d-flex flex-column col-4">
+        <ConsoleLogButton name="parentName" state={parentName} />
+        <ConsoleLogButton name="name" state={name} />
+        <ConsoleLogButton name="desc" state={description} />
+        <ConsoleLogButton name="assigneeId" state={assigneeId} />
+        <ConsoleLogButton name="projects" state={projects} />
+        <ConsoleLogButton name="features" state={features} />
+        <ConsoleLogButton name="users" state={users} />
       </div>
-    </div>
 
+
+
+    </div>
   )
 };
 

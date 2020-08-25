@@ -4,7 +4,6 @@ import NameBadge from '../../components/NameBadge';
 import TagsDiv from '../../components/TagsDiv';
 import StatusDropDown from '../../components/StatusDropDown';
 import { updateProject } from '../../httpRequests/projects';
-import { response } from 'express';
 
 type PathProps = {
 	history: boolean;
