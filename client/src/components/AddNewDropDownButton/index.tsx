@@ -10,39 +10,39 @@ type Button = {
 	name: string;
 	url: string;
 	ariaLabel: string;
+	title: string;
 }
 
-const AddNewButton = (props: PropsType) => {
+const AddNewDropDownButton = (props: PropsType) => {
 	return (
 
-		<div className="dropdown">
+		<div className="btn-group">
 
 			<button className={`btn btn-success dropdown-toggle ${props.small ? 'btn-sm' : ''}`}
 				type="button"
 				id="dropdownMenuButton"
+				title="add new"
 				data-toggle="dropdown"
-				aria-haspopup="true"
-				aria-expanded="false"
+				// aria-haspopup="true"
+				// aria-expanded="false"
 			>
-				Add New
+				Add new
       </button>
 			<div className="dropdown-menu"
 				aria-labelledby="dropdownMenuButton"
 			>
-
-				{
-					props.buttons.map(button => {
-						return (
-							<Link className="dropdown-item"
-								key={button.name}
-								aria-label={button.ariaLabel}
-								to={button.url}
-							>
-								{button.name}
-							</Link>
-						)
-					})
-				}
+				{props.buttons.map(button => {
+					return (
+						<Link className="dropdown-item"
+							key={button.name}
+							aria-label={button.ariaLabel}
+							title={button.title}
+							to={button.url}
+						>
+							{button.name}
+						</Link>
+					)
+				})}
 			</div>
 
 		</div>
@@ -50,4 +50,4 @@ const AddNewButton = (props: PropsType) => {
 	)
 }
 
-export default AddNewButton;
+export default AddNewDropDownButton;

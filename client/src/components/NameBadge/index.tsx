@@ -14,11 +14,11 @@ const NameBadge = (props: PropsType) => {
       case 'project':
         return 'primary';
       case 'feature':
-        return 'warning'
+        return 'warning';
       case 'workItem':
-        return 'light'
+        return 'light';
       default:
-        return 'primary'
+        return 'primary';
     }
   })(props.type)
 
@@ -68,6 +68,7 @@ const NameBadge = (props: PropsType) => {
               {props.name}
             </h4>
           </span>
+          {/* edit button on upper right hand corner */}
           <button className="btn btn-sm p-0 d-flex align-items-start"
             title="edit"
             onClick={() => {

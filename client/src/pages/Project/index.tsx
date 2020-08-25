@@ -3,7 +3,8 @@ import { projectRequest, featureRequest, workItemRequest } from '../../httpReque
 import { parseTags } from '../../util';
 import NameBadge from '../../components/NameBadge';
 import TagsDiv from '../../components/TagsDiv';
-import AddNewButton from '../../components/AddNewButton';
+import DescriptionTextArea from '../../components/DescriptionTextArea';
+import AddNewDropDownButton from '../../components/AddNewDropDownButton';
 import FeatureLink from '../../components/FeatureLink';
 import WorkItemLink from '../../components/WorkItemLink';
 import ConsoleLogButton from '../../components/ConsoleLogButton';
@@ -73,24 +74,24 @@ const Project = ({ match }: PathProps) => {
 	const [features, updateFeatures] = useState<FeatureArray>([]);
 	const [workItems, updateWorkItems] = useState<WorkItemArray>([]);
 
-	const [editTagsMode, updateEditTagsMode] = useState(false);
-	const [editDescriptionMode, updateEditDescriptionMode] = useState(false);
-
 	const buttons = [
 		{
 			name: 'Feature',
 			url: `/new/feature/project/${project.name}/${project._id}`,
-			ariaLabel: 'add-new-feature'
+			ariaLabel: 'add-new-feature',
+			title: 'add new feature'
 		},
 		{
 			name: 'Work item',
 			url: `/new/workitem/project/${project.name}/${project._id}`,
-			ariaLabel: 'add-new-work-item'
+			ariaLabel: 'add-new-work-item',
+			title: 'add new work item'
 		},
 		{
 			name: 'Bug',
 			url: `/new/bug/project/${project.name}/${project._id}`,
-			ariaLabel: 'add-new-bug'
+			ariaLabel: 'add-new-bug',
+			title: 'add new bug'
 		}
 	]
 
@@ -109,39 +110,18 @@ const Project = ({ match }: PathProps) => {
 		}
 	}, [projectId, match])
 
-	const handleInput = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-		const id = event.target.id;
-		const input = event.target.value;
-		switch (id) {
-			case 'name':
-				updateProject({ ...project, name: input })
-				break;
-			case 'description':
-				updateProject({ ...project, description: input })
-				break;
-			case 'tags':
-				updateProject({ ...project, tags: parseTags(input) })
-				break;
-			default:
-				break;
-		}
-	};
-
 	useEffect(() => {
 		projectRequest.updateProject(projectId, project)
 			.then(data => console.log(data))
 	}, [project])
 
-	const saveButtonPressed = (type: string, part: string, payload: string | string[]) => {
-		console.log(type);
-		console.log(part);
-		console.log(payload)
+	const saveButtonPressed = (part: string, payload: string | string[]) => {
 		switch (part) {
 			case 'name':
 				if (typeof payload === 'string') updateProject({ ...project, name: payload });
 				break;
 			case 'description':
-				console.log('update desc')
+				if (typeof payload === 'string') updateProject({ ...project, description: payload });
 				break;
 			case 'tags':
 				if (payload instanceof Array) updateProject({ ...project, tags: payload })
@@ -157,60 +137,18 @@ const Project = ({ match }: PathProps) => {
 				<div className="col-12 col-sm-6 col-md-7 col-lg-8 border border-primary rounded d-flex flex-column">
 
 					<div className="pt-2">
-						<NameBadge type='project'
-							name={project.name}
-							saveButtonPressed={saveButtonPressed} />
+						<NameBadge type='project' name={project.name} saveButtonPressed={saveButtonPressed} />
 						<hr className="mt-3" />
 					</div>
 
 					<div className="pt-2">
-						<TagsDiv type="project" tags={project.tags} saveButtonPressed={saveButtonPressed} />
+						<TagsDiv
+							type="project" tags={project.tags} saveButtonPressed={saveButtonPressed} />
 						<hr className="mt-3" />
 					</div>
 
-					<div className="pt-1">
-						{
-							editDescriptionMode ?
-								<div className="form-group">
-									<div className="d-flex justify-content-between">
-										<label>Description <small>(Optional)</small></label>
-										<div className="d-flex align-items-start">
-											<button className="btn btn-outline-success btn-sm py-0" onClick={() => {
-												// saveButtonPressed();
-												updateEditDescriptionMode(!editDescriptionMode);
-											}}>
-												<i className="fas fa-check" />
-											</button>
-											<button className="btn btn-outline-danger btn-sm py-0" onClick={() => {
-												updateEditDescriptionMode(!editDescriptionMode)
-											}}>
-												<i className="fas fa-times" />
-											</button>
-										</div>
-									</div>
-									<textarea
-										className="form-control"
-										id="description"
-										style={{ whiteSpace: 'pre-wrap', height: '150px' }}
-										defaultValue={project.description}
-										// style={project.description.length > 60 ? { height: '140px' } : { height: '90px' }}
-										onChange={event => handleInput(event)}
-										placeholder="Description" />
-
-								</div>
-								:
-								<div>
-									<div className="d-flex">
-										<h5 className="mr-1">Description</h5>
-										<button className="btn btn-sm p-0 d-flex align-items-start"
-											title="edit"
-											onClick={() => updateEditDescriptionMode(!editDescriptionMode)}>
-											<i className="far fa-edit" />
-										</button>
-									</div>
-									<p>{project.description}</p>
-								</div>
-						}
+					<div className="pt-2">
+						<DescriptionTextArea type="project" text={project.description} saveButtonPressed={saveButtonPressed} />
 					</div>
 
 				</div>
@@ -233,10 +171,8 @@ const Project = ({ match }: PathProps) => {
 			<div className="row mt-1 border border-info rounded">
 				<div className="col-12 d-flex justify-content-between align-items-center">
 					<h4>Items</h4>
-					<AddNewButton buttons={buttons} small={true} />
+					<AddNewDropDownButton buttons={buttons} small={true} />
 				</div>
-
-				{/* <div className="row border border-dark rounded"> */}
 
 				{features ? features.map(feature => {
 					return (
@@ -260,7 +196,7 @@ const Project = ({ match }: PathProps) => {
 					:
 					''
 				}
-				{/* </div> */}
+
 
 			</div>
 			{/* end of second row */}

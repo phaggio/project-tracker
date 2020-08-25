@@ -16,9 +16,9 @@ const TagsDiv = (props: PropsType) => {
     updateDraft(props.tags)
   }, [props.tags])
 
-  {
-    return (
-      editMode ?
+  return (
+    <div>
+      {editMode ?
         <div className="form-group">
           <label className="mr-1"> {`Tags: {`}</label>
           {
@@ -65,7 +65,6 @@ const TagsDiv = (props: PropsType) => {
         :
 
         <div className="d-flex align-items-start">
-
           <div className="d-flex align-items-start flex-wrap">
             <label className="my-0 mr-1 p-0">{`Tags: {`}</label>
             {
@@ -85,8 +84,9 @@ const TagsDiv = (props: PropsType) => {
             <i className="far fa-edit" />
           </button>
         </div>
-    )
-  }
+      }
+    </div>
+  )
 }
 
 export default TagsDiv
