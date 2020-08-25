@@ -4,7 +4,6 @@ import { parseTags } from '../../util';
 import NameBadge from '../../components/NameBadge';
 import TagsDiv from '../../components/TagsDiv';
 import AddNewButton from '../../components/AddNewButton';
-import Tag from '../../components/Tag';
 import FeatureLink from '../../components/FeatureLink';
 import WorkItemLink from '../../components/WorkItemLink';
 import ConsoleLogButton from '../../components/ConsoleLogButton';
@@ -155,7 +154,7 @@ const Project = ({ match }: PathProps) => {
 		<div className="container">
 			<div className="row">
 
-				<div className="col-12 col-md-6 col-lg-8 border border-primary rounded d-flex flex-column">
+				<div className="col-12 col-sm-6 col-md-7 col-lg-8 border border-primary rounded d-flex flex-column">
 
 					<div className="pt-2">
 						<NameBadge type='project'
@@ -216,7 +215,7 @@ const Project = ({ match }: PathProps) => {
 
 				</div>
 
-				<div className="col-12 col-md-6 col-lg-4 border border-danger rounded">
+				<div className="col-12 col-sm-6 col-md-5 col-lg-4 border border-danger rounded">
 
 					<div>
 						WILL NEED TO SHOW project status summary here, with graphs and numbers, etc.
