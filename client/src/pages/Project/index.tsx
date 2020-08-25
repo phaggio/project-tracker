@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { projectRequest, featureRequest, workItemRequest } from '../../httpRequests';
-import { parseTags } from '../../util';
 import NameBadge from '../../components/NameBadge';
 import TagsDiv from '../../components/TagsDiv';
 import DescriptionTextArea from '../../components/DescriptionTextArea';

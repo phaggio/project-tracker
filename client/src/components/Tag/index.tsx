@@ -6,7 +6,9 @@ type TagProps = {
 
 const Tag = (props: TagProps) => {
   return (
-    <span className="badge badge-info mr-1 my-1">{props.name}</span>
+    <span className="badge badge-info d-flex align-items-center mr-1">
+      {props.name}
+    </span>
   )
 }
 

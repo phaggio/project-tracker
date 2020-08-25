@@ -23,7 +23,7 @@ const TagsDiv = (props: PropsType) => {
           <label className="mr-1"> {`Tags: {`}</label>
           {
             draft.length > 0 ? draft.map(tag => {
-              return (<span className="badge badge-info mr-1 my-1" key={tag}>{tag}</span>)
+              return (<span className="badge badge-info mr-1" key={tag}>{tag}</span>)
             }) : ``
           }
           <label> {`}`}</label>
@@ -65,17 +65,17 @@ const TagsDiv = (props: PropsType) => {
         :
 
         <div className="d-flex align-items-start">
-          <div className="d-flex align-items-start flex-wrap">
-            <label className="my-0 mr-1 p-0">{`Tags: {`}</label>
+          <div className="d-flex flex-wrap align-items-baseline">
+            <label className="my-0 mr-1">{`Tags: {`}</label>
             {
               props.tags.map(tag => {
                 return (<Tag key={tag} name={tag} />)
               })
             }
-            <label className="my-0 p-0">{`}`}</label>
+            <label className="my-0">{`}`}</label>
           </div>
 
-          <button className="btn btn-sm p-0 d-flex align-items-start"
+          <button className="btn btn-sm p-0 ml-1"
             title="edit"
             onClick={() => {
               console.log(draft)
