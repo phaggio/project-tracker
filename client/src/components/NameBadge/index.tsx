@@ -27,7 +27,9 @@ const NameBadge = (props: PropsType) => {
       {editMode ?
         <div>
           <div className="d-flex justify-content-between">
-            <label className="m-0">{`${props.type.charAt(0).toUpperCase()}${props.type.slice(1)} name`}</label>
+            <label className="m-0 font-weight-light">
+              {`${props.type.charAt(0).toUpperCase()}${props.type.slice(1)} name`}
+            </label>
             <div className="d-flex">
               <button type="button"
                 style={{ width: '30px' }}
@@ -65,7 +67,9 @@ const NameBadge = (props: PropsType) => {
         :
         <div>
           <div className="d-flex justify-content-between">
-            <label className="m-0">{`${props.type.charAt(0).toUpperCase()}${props.type.slice(1)} name`}</label>
+            <label className="m-0 font-weight-light">
+              {`${props.type.charAt(0).toUpperCase()}${props.type.slice(1)} name`}
+            </label>
             {/* edit button on upper right hand corner */}
             <button className="btn btn-sm p-0 ml-1"
               title="edit"
