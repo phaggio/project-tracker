@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { projectRequest, featureRequest } from '../../httpRequests';
+import { projectRequest, featureRequest, userRequest } from '../../httpRequests';
 import NameBadge from '../../components/NameBadge';
 import TagsDiv from '../../components/TagsDiv';
+import AssigneeDiv from '../../components/AssigneeDiv'
 import StatusDropDown from '../../components/StatusDropDown';
-import { updateProject } from '../../httpRequests/projects';
+import ConsoleLogButton from '../../components/ConsoleLogButton'
 
 type PathProps = {
 	history: boolean;
@@ -31,6 +32,7 @@ type FeatureObj = {
 	tags: string[];
 	projectId: string;
 	assigneeId: string;
+	assignee: string;
 }
 
 type ProjectObj = {
@@ -48,6 +50,7 @@ const Feature = ({ match }: PathProps) => {
 	const [feature, updateFeature] = useState<FeatureObj | undefined>();
 	const [projectId, updateProjectId] = useState<string | undefined>(undefined);
 	const [project, updateProject] = useState<ProjectObj | undefined>(undefined);
+	const [users, updateUsers] = useState();
 
 	useEffect(() => {
 		console.log('making GET api call to get feature data...');
@@ -78,16 +81,25 @@ const Feature = ({ match }: PathProps) => {
 		}
 	}, [feature])
 
+	useEffect(() => {
+		userRequest.getUser()
+			.then(res => updateUsers(res.data))
+	}, [])
+
 	const saveButtonPressed = (part: string, payload: string | string[]) => {
 		switch (part) {
 			case ('name'):
 				if (typeof payload === 'string' && feature) updateFeature({ ...feature, name: payload });
 				break;
+			case 'tags':
+				if (payload instanceof Array && feature) updateFeature({ ...feature, tags: payload });
+				break;
+			case 'status':
+				if (typeof payload === 'string' && feature) updateFeature({ ...feature, status: payload });
+				break;
 			case 'description':
 				console.log('update desc')
 				break;
-			case 'tags':
-				if (payload instanceof Array && feature) updateFeature({ ...feature, tags: payload })
 			default:
 				break;
 		}
@@ -100,7 +112,6 @@ const Feature = ({ match }: PathProps) => {
 				<div>
 					{/* start of first row */}
 					< div className="row">
-
 
 						<div className="col-12 col-sm-6 col-md-7 col-lg-8 border border-primary rounded d-flex flex-column">
 							<div className="pt-2">
@@ -117,44 +128,18 @@ const Feature = ({ match }: PathProps) => {
 								<hr className="mt-3" />
 							</div>
 
-							<div>
-								<StatusDropDown type="feature"
-									status={feature.status}
-									saveButtonPressed={() => console.log('pressed')} />
-
+							<div className="pt-2">
+								<AssigneeDiv type="feature"
+									assignee={feature.assignee}
+									saveButtonPressed={saveButtonPressed}
+									users={users} />
 							</div>
 
 							<div className="pt-2">
-								<label>Status: </label>
-								<div className="input-group">
-									<select className="custom-select"
-										defaultValue={feature.status}
-										onChange={(event) => {
-											console.log(event.target.selectedOptions[0].value)
-											updateFeature({ ...feature, status: event.target.selectedOptions[0].value })
-										}}
-									>
-										<option value='open'>Open</option>
-										<option value='active'>Active</option>
-										<option value='complete'>Complete</option>
-										<option value='in-review'>In-review</option>
-										<option value='close'>Close</option>
-									</select>
-									<div className="input-group-append">
-										<button className="btn btn-light border border-dark"
-											type="button"
-											onClick={() => {
-												console.log('saving...');
-												// saveButtonPressed()
-											}}
-										>
-											Save
-									</button>
-									</div>
-								</div>
+								<StatusDropDown type="feature"
+									status={feature.status}
+									saveButtonPressed={saveButtonPressed} />
 							</div>
-
-
 						</div>
 
 					</div>
@@ -187,6 +172,8 @@ const Feature = ({ match }: PathProps) => {
 				>
 					console.log feature state
 				</button>
+
+				<ConsoleLogButton name='users' state={users} />
 			</div >
 
 
