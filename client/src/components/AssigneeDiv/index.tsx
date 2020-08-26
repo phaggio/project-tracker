@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import ConsoleLogButton from '../ConsoleLogButton';
 import SearchSelectBox from '../SearchSelectBox';
 
 type PropsType = {
   type: string;
   assignee: string;
-  users: userObj[] | undefined;
+  users: userObj[];
   saveButtonPressed: (part: string, payload: string) => void;
 }
 
@@ -20,11 +20,7 @@ type userObj = {
 const AssigneeDiv = (props: PropsType) => {
   const [editMode, updateEditMode] = useState(false);
   const [draft, updateDraft] = useState(props.assignee);
-  const [users, updateUsers] = useState<userObj[] | undefined>();
-
-  useEffect(() => {
-    updateUsers(props.users)
-  }, [])
+  const [users] = useState<userObj[]>(props.users);
 
   return (
     <div>
@@ -39,7 +35,7 @@ const AssigneeDiv = (props: PropsType) => {
                 id="assignee"
                 disabled={draft.trim().length === 0}
                 onClick={() => {
-                  // props.saveButtonPressed('assignee', draft);
+                  props.saveButtonPressed('assignee', draft);
                   updateEditMode(!editMode);
                 }}>
                 <i className="fas fa-check" datatype={props.type} />
@@ -66,11 +62,12 @@ const AssigneeDiv = (props: PropsType) => {
         }
       </div>
 
-      {editMode ?
-        <SearchSelectBox users={users ? users : []} onChange={updateDraft} />
+      {editMode && users.length > 0 ?
+        <SearchSelectBox defaultValue={props.assignee}
+          users={users} onChange={updateDraft} />
         :
         <div>
-
+          <h5>{props.assignee}</h5>
         </div>
       }
 

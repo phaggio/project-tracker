@@ -4,7 +4,7 @@ import NameBadge from '../../components/NameBadge';
 import TagsDiv from '../../components/TagsDiv';
 import AssigneeDiv from '../../components/AssigneeDiv'
 import StatusDropDown from '../../components/StatusDropDown';
-import ConsoleLogButton from '../../components/ConsoleLogButton'
+import ConsoleLogButton from '../../components/ConsoleLogButton';
 
 type PathProps = {
 	history: boolean;
@@ -50,7 +50,7 @@ const Feature = ({ match }: PathProps) => {
 	const [feature, updateFeature] = useState<FeatureObj | undefined>();
 	const [projectId, updateProjectId] = useState<string | undefined>(undefined);
 	const [project, updateProject] = useState<ProjectObj | undefined>(undefined);
-	const [users, updateUsers] = useState();
+	const [users, updateUsers] = useState([]);
 
 	useEffect(() => {
 		console.log('making GET api call to get feature data...');
@@ -100,6 +100,8 @@ const Feature = ({ match }: PathProps) => {
 			case 'description':
 				console.log('update desc')
 				break;
+			case 'assignee':
+				console.log('need to update assignee!!!')
 			default:
 				break;
 		}
@@ -108,7 +110,7 @@ const Feature = ({ match }: PathProps) => {
 	return (
 		<div className="container">
 
-			{feature ?
+			{feature !== undefined ?
 				<div>
 					{/* start of first row */}
 					< div className="row">
@@ -128,12 +130,16 @@ const Feature = ({ match }: PathProps) => {
 								<hr className="mt-3" />
 							</div>
 
-							<div className="pt-2">
-								<AssigneeDiv type="feature"
-									assignee={feature.assignee}
-									saveButtonPressed={saveButtonPressed}
-									users={users} />
-							</div>
+							{users.length > 0 ?
+								<div className="pt-2">
+									<AssigneeDiv type="feature"
+										assignee={feature.assignee}
+										saveButtonPressed={saveButtonPressed}
+										users={users} />
+								</div>
+								:
+								''
+							}
 
 							<div className="pt-2">
 								<StatusDropDown type="feature"

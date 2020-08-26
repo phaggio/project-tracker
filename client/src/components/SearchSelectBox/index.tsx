@@ -1,7 +1,8 @@
-import React, { useState, useEffect, Props } from 'react';
-import { userRequest } from '../../httpRequests'
+import React, { useState, useEffect } from 'react';
+import ConsoleLogButton from '../ConsoleLogButton';
 
 type PropsType = {
+  defaultValue: string;
   users: userObj[];
   onChange: (str: string) => void;
 }
@@ -17,22 +18,21 @@ type userObj = {
 const SearchSelectBox = (props: PropsType) => {
   console.log(props)
   console.log('rendering search select box')
-  const [staticData, updateStaticData] = useState<userObj[]>([]);
-  const [draft, updateDraft] = useState("")
+  const [staticData, updateStaticData] = useState<userObj[]>(props.users);
+  const [current, updateCurrent] = useState(props.defaultValue)
   const [currentHover, updateCurrentHover] = useState('');
   const [active, updateActive] = useState(false);
-  const [data, updateData] = useState<userObj[]>([]);
+  const [data, updateData] = useState<userObj[]>(props.users);
   const [filter, updateFilter] = useState('');
 
-
+  // init update to load all available users
   useEffect(() => {
-    userRequest.getUser()
-      .then(res => {
-        updateStaticData(res.data)
-        updateData(res.data);
-      })
+    console.log(props.users)
+    updateStaticData(props.users);
+    updateData(props.users);
   }, [])
 
+  // filter selection
   useEffect(() => {
     updateData(
       staticData.filter(item => {
@@ -53,21 +53,21 @@ const SearchSelectBox = (props: PropsType) => {
     <div className="select-box d-flex flex-column">
 
       <div className="btn-group d-flex justify-content-between mb-2">
-        <div className="bg-dark w-100 text-light px-3 py-1 rounded-left">
-          {draft}
+        <div className="bg-light w-100 text-dark px-3 py-1 rounded-left">
+          {current}
         </div>
-        <button className="btn btn-dark btn-sm dropdown-toggle dropdown-toggle-split"
+        <button className="btn btn-light btn-sm dropdown-toggle dropdown-toggle-split"
           onClick={() => updateActive(!active)}>
         </button>
       </div>
 
-      <div className="bg-dark rounded"
+      <div className="bg-light rounded"
         style={active ?
           {
             maxHeight: 150,
             opacity: 1,
             transitionProperty: 'all',
-            transitionDuration: '1s'
+            transitionDuration: '0.5s'
           }
           :
           {
@@ -75,31 +75,32 @@ const SearchSelectBox = (props: PropsType) => {
             opacity: 0,
             overflow: 'hidden',
             transitionProperty: 'all',
-            transitionDuration: '1s'
+            transitionDuration: '0.5s'
           }}
       >
 
-        <div className="search-box bg-dark rounded px-3 py-1">
+        <div className="search-box bg-light rounded px-3 py-1">
           <input type="text"
             className="w-100"
             placeholder="start typing..."
             onChange={event => updateFilter(event.target.value)} />
         </div>
 
-        <div className="bg-dark text-light rounded-bottom m-0"
+        <div className="bg-light text-dark rounded-bottom m-0"
           style={{
             maxHeight: 110,
-            opacity: 0.7,
+            opacity: 0.8,
             overflowY: 'scroll'
           }}>
 
           {data.length > 0 ? data.map(item => {
             return (
               <div key={item._id}
-                className={`px-3 py-1 ${currentHover === item._id ? 'bg-secondary' : ''}`}
+                className={`px-3 py-1 ${currentHover === item._id ? 'bg-dark text-light' : ''}`}
                 onClick={() => {
                   updateActive(false);
-                  updateDraft(item._id!)
+                  updateCurrent(item.fullName);
+                  props.onChange(item._id);
                 }}
                 style={{ cursor: 'pointer' }}
                 onMouseEnter={() => updateCurrentHover(item._id)}
@@ -114,10 +115,10 @@ const SearchSelectBox = (props: PropsType) => {
 
 
           {/* hard coded examples  */}
-          <div className={`px-3 py-1 ${currentHover === '5' ? 'bg-secondary' : ''}`}
+          <div className={`px-3 py-1 ${currentHover === '5' ? 'bg-dark text-light' : ''}`}
             onClick={() => {
               updateActive(false);
-              updateDraft("Tesla")
+              updateCurrent("Tesla")
             }}
             style={{ cursor: 'pointer' }}
             onMouseEnter={() => updateCurrentHover('5')}
@@ -128,7 +129,7 @@ const SearchSelectBox = (props: PropsType) => {
           <div className={`px-3 py-1 ${currentHover === '1' ? 'bg-secondary' : ''}`}
             onClick={() => {
               updateActive(false);
-              updateDraft("Wahoo")
+              updateCurrent("Wahoo")
             }}
             style={{ cursor: 'pointer' }}
             onMouseEnter={() => updateCurrentHover('1')}
@@ -136,45 +137,12 @@ const SearchSelectBox = (props: PropsType) => {
             <label className="m-0" style={{ cursor: 'pointer' }}>Wahoo</label>
           </div>
 
-          <div className={`px-3 py-1 ${currentHover === '2' ? 'bg-secondary' : ''}`}
-            onClick={() => {
-              updateActive(false);
-              updateDraft("film")
-            }}
-            style={{ cursor: 'pointer' }}
-            onMouseEnter={() => updateCurrentHover('2')}
-            onMouseLeave={() => updateCurrentHover('0')}>
-            <label className="m-0" style={{ cursor: 'pointer' }}>Film</label>
-          </div>
-
-          <div className={`px-3 py-1 ${currentHover === '3' ? 'bg-secondary' : ''}`}
-            onClick={() => {
-              updateActive(false);
-              updateDraft("test")
-            }}
-            style={{ cursor: 'pointer' }}
-            onMouseEnter={() => updateCurrentHover('3')}
-            onMouseLeave={() => updateCurrentHover('0')}>
-            <label className="m-0" style={{ cursor: 'pointer' }}>Test</label>
-          </div>
-
-          <div className={`px-3 py-1 ${currentHover === '4' ? 'bg-secondary' : ''}`}
-            onClick={() => {
-              updateActive(false);
-              updateDraft("sony")
-            }}
-            style={{ cursor: 'pointer' }}
-            onMouseEnter={() => updateCurrentHover('4')}
-            onMouseLeave={() => updateCurrentHover('0')}>
-            <label className="m-0" style={{ cursor: 'pointer' }}>Sony</label>
-          </div>
-
 
         </div>
 
-
       </div>
-
+          
+      <ConsoleLogButton name="data" state={data}/>
     </div>
   )
 }
