@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { projectRequest, featureRequest, userRequest } from '../../httpRequests';
-import NameBadge from '../../components/NameBadge';
+import NameBadge from '../../components/NameBadgeDiv';
 import TagsDiv from '../../components/TagsDiv';
 import AssigneeDiv from '../../components/AssigneeDiv'
 import StatusDropDown from '../../components/StatusDropDown';

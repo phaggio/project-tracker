@@ -6,7 +6,7 @@ type PropsType = {
   disabled?: boolean;
   payload: string | string[];
   toggleEditState: (boolean: boolean) => void;
-  pressed: (id: string, payload: string | string[]) => void;
+  pressed: (id: string, payload: any) => void;
 }
 
 const SaveButton = (props: PropsType) => {
@@ -20,6 +20,7 @@ const SaveButton = (props: PropsType) => {
       onClick={() => {
         props.pressed(props.id, props.payload);
         props.toggleEditState(!props.editState);
+        console.log(props.id, props.payload)
       }}>
       <i className="fas fa-check" />
     </button>

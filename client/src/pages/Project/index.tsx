@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { projectRequest, featureRequest, workItemRequest } from '../../httpRequests';
-import NameBadge from '../../components/NameBadge';
+import NameBadgeDiv from '../../components/NameBadgeDiv';
 import TagsDiv from '../../components/TagsDiv';
 import DescriptionTextArea from '../../components/DescriptionTextArea';
 import AddNewDropDownButton from '../../components/AddNewDropDownButton';
@@ -136,7 +136,7 @@ const Project = ({ match }: PathProps) => {
 				<div className="col-12 col-sm-6 col-md-7 col-lg-8 border border-primary rounded d-flex flex-column">
 
 					<div className="pt-2">
-						<NameBadge type='project' name={project.name} saveButtonPressed={saveButtonPressed} />
+						<NameBadgeDiv type='project' name={project.name} saveButtonPressed={saveButtonPressed} />
 						<hr className="mt-3" />
 					</div>
 
