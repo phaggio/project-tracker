@@ -3,7 +3,7 @@ import { projectRequest, featureRequest, userRequest } from '../../httpRequests'
 import NameBadge from '../../components/NameBadgeDiv';
 import TagsDiv from '../../components/TagsDiv';
 import AssigneeDiv from '../../components/AssigneeDiv'
-import StatusDropDown from '../../components/StatusDropDown';
+import StatusDropDown from '../../components/StatusDiv';
 import ConsoleLogButton from '../../components/ConsoleLogButton';
 
 type PathProps = {

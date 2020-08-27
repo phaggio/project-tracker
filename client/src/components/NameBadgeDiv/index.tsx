@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import EditButton from '../EditButton';
 import SaveButton from '../SaveButton';
 import CancelButton from '../CancelButton';
+import { capitalizeWord } from '../../util';
 
 type PropsType = {
   type: string;
@@ -31,7 +32,7 @@ const NameBadge = (props: PropsType) => {
 
       <div className="d-flex justify-content-between align-items-baseline">
         <label className="font-weight-light">
-          {`${props.type.charAt(0).toUpperCase()}${props.type.slice(1)} name`}
+          {`${capitalizeWord(props.type)} name`}
         </label>
         {editMode ?
           <div className="d-flex">
@@ -67,7 +68,7 @@ const NameBadge = (props: PropsType) => {
         </div>
       }
 
-      
+
     </div>
   )
 }
