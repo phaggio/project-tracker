@@ -4,7 +4,6 @@ import SaveButton from '../SaveButton';
 import CancelButton from '../CancelButton';
 
 type PropsType = {
-  type: string;
   text: string;
   saveButtonPressed: (part: string, payload: string) => void;
 }
@@ -44,9 +43,8 @@ const DescriptionDiv = (props: PropsType) => {
           <textarea
             className="form-control"
             id="description"
-            style={{ whiteSpace: 'pre-wrap', height: '150px' }}
             defaultValue={props.text}
-            // style={project.description.length > 60 ? { height: '140px' } : { height: '90px' }}
+            style={props.text.length > 150 ? { height: '140px', whiteSpace: 'pre-wrap' } : { height: '80px', whiteSpace: 'pre-wrap' }}
             onChange={(event) => {
               updateDraft(event.target.value)
             }}

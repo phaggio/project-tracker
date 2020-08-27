@@ -148,7 +148,7 @@ const Project = ({ match }: PathProps) => {
 						</div>
 
 						<div className="pt-2">
-							<DescriptionDiv type="project" text={project.description} saveButtonPressed={saveButtonPressed} />
+							<DescriptionDiv text={project.description} saveButtonPressed={saveButtonPressed} />
 						</div>
 
 					</div>

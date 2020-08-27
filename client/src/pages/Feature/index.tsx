@@ -4,7 +4,9 @@ import NameBadge from '../../components/NameBadgeDiv';
 import TagsDiv from '../../components/TagsDiv';
 import AssigneeDiv from '../../components/AssigneeDiv'
 import StatusDropDown from '../../components/StatusDiv';
+import DescriptionDiv from '../../components/DescriptionDiv';
 import ConsoleLogButton from '../../components/ConsoleLogButton';
+
 
 type PathProps = {
 	history: boolean;
@@ -98,7 +100,7 @@ const Feature = ({ match }: PathProps) => {
 				if (typeof payload === 'string' && feature) updateFeature({ ...feature, status: payload });
 				break;
 			case 'description':
-				console.log('update desc')
+				if (typeof payload === 'string' && feature) updateFeature({ ...feature, description: payload });
 				break;
 			case 'assignee':
 				console.log('need to update assignee!!!')
@@ -154,10 +156,9 @@ const Feature = ({ match }: PathProps) => {
 
 					{/* start of second row */}
 					<div className="row">
-						<div>
-							<div className="col-12 col-sm-6 col-md-12">
-								<h4>Description</h4>
-								<p>{feature.description}</p>
+						<div className="col-12 border border-warning">
+							<div className="pt-2">
+								<DescriptionDiv text={feature.description} saveButtonPressed={saveButtonPressed} />
 							</div>
 						</div>
 					</div>
