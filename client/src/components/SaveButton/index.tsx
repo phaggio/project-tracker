@@ -1,0 +1,29 @@
+import React from 'react';
+
+type PropsType = {
+  id: string;
+  editState: boolean;
+  disabled?: boolean;
+  payload: string | string[];
+  toggleEditState: (boolean: boolean) => void;
+  pressed: (id: string, payload: string | string[]) => void;
+}
+
+const SaveButton = (props: PropsType) => {
+
+  return (
+    <button type="button"
+      style={{ width: '30px' }}
+      className="btn btn-outline-success btn-sm py-0"
+      id={props.id}
+      disabled={props.disabled}
+      onClick={() => {
+        props.pressed(props.id, props.payload);
+        props.toggleEditState(!props.editState);
+      }}>
+      <i className="fas fa-check" />
+    </button>
+  )
+}
+
+export default SaveButton

@@ -26,8 +26,8 @@ const NameBadge = (props: PropsType) => {
     <div>
       {editMode ?
         <div>
-          <div className="d-flex justify-content-between">
-            <label className="m-0 font-weight-light">
+          <div className="d-flex justify-content-between align-items-baseline">
+            <label className="font-weight-light">
               {`${props.type.charAt(0).toUpperCase()}${props.type.slice(1)} name`}
             </label>
             <div className="d-flex">

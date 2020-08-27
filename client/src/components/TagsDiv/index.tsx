@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import EditButton from '../EditButton';
+import SaveButton from '../SaveButton';
+import CancelButton from '../CancelButton';
 import Tag from '../Tag';
 import { parseTags } from '../../util';
 
 type PropsType = {
   type: string;
   tags: string[];
-  saveButtonPressed: (part: string, payload: string[]) => void;
+  saveButtonPressed: (part: string, payload: string | string[]) => void;
 }
 
 const TagsDiv = (props: PropsType) => {
@@ -15,16 +17,33 @@ const TagsDiv = (props: PropsType) => {
 
   return (
     <div>
-      {editMode ?
+      {/* label and buttons */}
+      <div className="d-flex justify-content-between align-items-baseline">
+        <label className="font-weight-light">Tags</label>
+        {/* switch between edit button and save/cancel buttons */}
+        {editMode ?
+          <div className="d-flex">
+            <SaveButton id="tags"
+              editState={editMode}
+              toggleEditState={updateEditMode}
+              payload={draft}
+              pressed={props.saveButtonPressed} />
+            <CancelButton editState={editMode} toggleEditState={updateEditMode} />
+          </div>
+          :
+          // upper right hand edit button
+          <EditButton editState={editMode} onClick={updateEditMode} />
+        }
+      </div>
 
+      {/* tags */}
+      {editMode ?
         <div className="form-group">
-          <label className="mr-1"> {`Tags: {`}</label>
           {
             draft.length > 0 ? draft.map(tag => {
               return (<span className="badge badge-info mr-1" key={tag}>{tag}</span>)
             }) : ``
           }
-          <label> {`}`}</label>
           <div className="input-group">
             <input type="text"
               className="form-control text-wrap"
@@ -35,27 +54,6 @@ const TagsDiv = (props: PropsType) => {
               placeholder="Separate tags by comma"
               defaultValue={`${[...props.tags]}`}
             />
-
-            <div className="input-group-append">
-              {/* save button */}
-              <button type="button"
-                className="btn btn-outline-success btn-sm"
-                onClick={() => {
-                  props.saveButtonPressed('tags', draft);
-                  updateEditMode(!editMode);
-                }}
-              >
-                <i className="fas fa-check" />
-              </button>
-
-              {/* cancel button */}
-              <button type="button"
-                className="btn btn-outline-danger btn-sm"
-                onClick={() => updateEditMode(!editMode)}
-              >
-                <i className="fas fa-times" />
-              </button>
-            </div>
           </div>
           <small>Separate tags by comma</small>
         </div >
@@ -63,23 +61,15 @@ const TagsDiv = (props: PropsType) => {
         :
 
         // non-edit mode
-        <div className="d-flex align-items-start justify-content-between">
-
-          <div className="d-flex flex-wrap align-items-baseline">
-            <label className="my-0 mr-1">{`Tags: {`}</label>
-            {
-              props.tags.map(tag => {
-                return (<Tag key={tag} name={tag} />)
-              })
-            }
-            <label className="my-0">{`}`}</label>
-          </div>
-
-          {/* upper right hand edit button */}
-          <EditButton editState={editMode} onClick={updateEditMode} />
+        <div className="d-flex flex-wrap align-items-baseline">
+          {
+            props.tags.map(tag => {
+              return (<Tag key={tag} name={tag} />)
+            })
+          }
         </div>
-
       }
+
     </div>
   )
 }
