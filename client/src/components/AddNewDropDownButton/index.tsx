@@ -15,7 +15,6 @@ type Button = {
 
 const AddNewDropDownButton = (props: PropsType) => {
 	return (
-
 		<div className="btn-group">
 
 			<button className={`btn btn-success dropdown-toggle ${props.small ? 'btn-sm' : ''}`}
@@ -23,8 +22,6 @@ const AddNewDropDownButton = (props: PropsType) => {
 				id="dropdownMenuButton"
 				title="add new"
 				data-toggle="dropdown"
-				// aria-haspopup="true"
-				// aria-expanded="false"
 			>
 				Add new
       </button>
@@ -46,7 +43,6 @@ const AddNewDropDownButton = (props: PropsType) => {
 			</div>
 
 		</div>
-
 	)
 }
 

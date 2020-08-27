@@ -62,13 +62,7 @@ const Project = ({ match }: PathProps) => {
 	console.log('Rendering Project page...');
 
 	const [projectId] = useState(match ? match.params.id : '');
-	const [project, updateProject] = useState<ProjectObj>({
-		_id: '',
-		type: '',
-		name: '',
-		description: '',
-		tags: []
-	});
+	const [project, updateProject] = useState<ProjectObj | undefined>();
 
 	const [features, updateFeatures] = useState<FeatureArray>([]);
 	const [workItems, updateWorkItems] = useState<WorkItemArray>([]);
@@ -76,19 +70,19 @@ const Project = ({ match }: PathProps) => {
 	const buttons = [
 		{
 			name: 'Feature',
-			url: `/new/feature/project/${project.name}/${project._id}`,
+			url: `/new/feature/project/${project?.name}/${project?._id}`,
 			ariaLabel: 'add-new-feature',
 			title: 'add new feature'
 		},
 		{
 			name: 'Work item',
-			url: `/new/workitem/project/${project.name}/${project._id}`,
+			url: `/new/workitem/project/${project?.name}/${project?._id}`,
 			ariaLabel: 'add-new-work-item',
 			title: 'add new work item'
 		},
 		{
 			name: 'Bug',
-			url: `/new/bug/project/${project.name}/${project._id}`,
+			url: `/new/bug/project/${project?.name}/${project?._id}`,
 			ariaLabel: 'add-new-bug',
 			title: 'add new bug'
 		}
@@ -110,66 +104,75 @@ const Project = ({ match }: PathProps) => {
 	}, [projectId, match])
 
 	useEffect(() => {
-		projectRequest.updateProject(projectId, project)
-			.then(data => console.log(data))
+		if (project) {
+			projectRequest
+				.updateProject(projectId, project)
+				.then(data => console.log(data))
+				.catch(err => console.error(err))
+		}
+
 	}, [project])
 
 	const saveButtonPressed = (part: string, payload: string | string[]) => {
-		switch (part) {
-			case 'name':
-				if (typeof payload === 'string') updateProject({ ...project, name: payload });
-				break;
-			case 'description':
-				if (typeof payload === 'string') updateProject({ ...project, description: payload });
-				break;
-			case 'tags':
-				if (payload instanceof Array) updateProject({ ...project, tags: payload })
-			default:
-				break;
+		if (project) {
+			switch (part) {
+				case 'name':
+					if (typeof payload === 'string') updateProject({ ...project, name: payload });
+					break;
+				case 'description':
+					if (typeof payload === 'string') updateProject({ ...project, description: payload });
+					break;
+				case 'tags':
+					if (payload instanceof Array) updateProject({ ...project, tags: payload })
+				default:
+					break;
+			}
 		}
 	}
 
 	return (
 		<div className="container">
-			<div className="row">
+			{project !== undefined ?
+				<div className="row">
+					<div className="col-12 col-sm-6 col-md-7 col-lg-8 border border-primary rounded d-flex flex-column">
 
-				<div className="col-12 col-sm-6 col-md-7 col-lg-8 border border-primary rounded d-flex flex-column">
+						<div className="pt-2">
+							<NameBadgeDiv type='project' name={project.name} saveButtonPressed={saveButtonPressed} />
+							<hr className="mt-3" />
+						</div>
 
-					<div className="pt-2">
-						<NameBadgeDiv type='project' name={project.name} saveButtonPressed={saveButtonPressed} />
-						<hr className="mt-3" />
+						<div className="pt-2">
+							<TagsDiv
+								type="project" tags={project.tags} saveButtonPressed={saveButtonPressed} />
+							<hr className="mt-3" />
+						</div>
+
+						<div className="pt-2">
+							<DescriptionDiv type="project" text={project.description} saveButtonPressed={saveButtonPressed} />
+						</div>
+
 					</div>
 
-					<div className="pt-2">
-						<TagsDiv
-							type="project" tags={project.tags} saveButtonPressed={saveButtonPressed} />
-						<hr className="mt-3" />
-					</div>
+					<div className="col-12 col-sm-6 col-md-5 col-lg-4 border border-danger rounded">
 
-					<div className="pt-2">
-						<DescriptionDiv type="project" text={project.description} saveButtonPressed={saveButtonPressed} />
-					</div>
-
-				</div>
-
-				<div className="col-12 col-sm-6 col-md-5 col-lg-4 border border-danger rounded">
-
-					<div>
-						WILL NEED TO SHOW project status summary here, with graphs and numbers, etc.
+						<div>
+							WILL NEED TO SHOW project status summary here, with graphs and numbers, etc.
 						<br />
 						WORK IN PROGRESS.........................
 					</div>
 
+					</div>
 				</div>
-			</div>
-			{/* end of first row */}
-
+				// end of first row
+				:
+				''
+			}
 
 
 			{/* second row begins */}
 			<div className="row mt-1 border border-info rounded">
-				<div className="col-12 d-flex justify-content-between align-items-center">
-					<h4>Items</h4>
+				<div className="col-12 d-flex justify-content-between align-items-baseline">
+					<label className="font-weight-light">Items</label>
 					<AddNewDropDownButton buttons={buttons} small={true} />
 				</div>
 
