@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { projectRequest, featureRequest, workItemRequest } from '../../httpRequests';
 import NameBadgeDiv from '../../components/NameBadgeDiv';
 import TagsDiv from '../../components/TagsDiv';
-import DescriptionTextArea from '../../components/DescriptionTextArea';
+import DescriptionDiv from '../../components/DescriptionDiv';
 import AddNewDropDownButton from '../../components/AddNewDropDownButton';
 import FeatureLink from '../../components/FeatureLink';
 import WorkItemLink from '../../components/WorkItemLink';
@@ -147,7 +147,7 @@ const Project = ({ match }: PathProps) => {
 					</div>
 
 					<div className="pt-2">
-						<DescriptionTextArea type="project" text={project.description} saveButtonPressed={saveButtonPressed} />
+						<DescriptionDiv type="project" text={project.description} saveButtonPressed={saveButtonPressed} />
 					</div>
 
 				</div>
