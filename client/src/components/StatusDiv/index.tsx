@@ -21,6 +21,11 @@ const StatusDiv = (props: PropsType) => {
         <label className="font-weight-light">Status: </label>
         {editMode ?
           <div className="d-flex">
+            <SaveButton id="status"
+              editState={editMode}
+              toggleEditState={updateEditMode}
+              payload={draft}
+              pressed={props.saveButtonPressed} />
             <CancelButton editState={editMode} toggleEditState={updateEditMode} />
           </div>
           :
@@ -42,24 +47,12 @@ const StatusDiv = (props: PropsType) => {
             <option value='in-review'>In-review</option>
             <option value='closed'>Closed</option>
           </select>
-
-          <div className="input-group-append">
-            <button className="btn btn-light border border-dark"
-              type="button"
-              onClick={() => {
-                props.saveButtonPressed('status', draft)
-              }}
-            >
-              Save
-              </button>
-          </div>
         </div>
         :
         <div>
           <h5>{`${capitalizeWord(props.status)}`}</h5>
         </div>
       }
-
 
     </div>
   )
