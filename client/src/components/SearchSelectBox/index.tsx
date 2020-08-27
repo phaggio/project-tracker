@@ -16,7 +16,6 @@ type userObj = {
 }
 
 const SearchSelectBox = (props: PropsType) => {
-  console.log(props)
   console.log('rendering search select box')
   const [staticData, updateStaticData] = useState<userObj[]>(props.users);
   const [current, updateCurrent] = useState(props.defaultValue)
@@ -24,13 +23,6 @@ const SearchSelectBox = (props: PropsType) => {
   const [active, updateActive] = useState(false);
   const [data, updateData] = useState<userObj[]>(props.users);
   const [filter, updateFilter] = useState('');
-
-  // init update to load all available users
-  useEffect(() => {
-    console.log(props.users)
-    updateStaticData(props.users);
-    updateData(props.users);
-  }, [])
 
   // filter selection
   useEffect(() => {
@@ -52,6 +44,7 @@ const SearchSelectBox = (props: PropsType) => {
   return (
     <div className="select-box d-flex flex-column">
 
+      {/* currently selected assignee and dropdown button */}
       <div className="btn-group d-flex justify-content-between mb-2">
         <div className="bg-light w-100 text-dark px-3 py-1 rounded-left">
           {current}
@@ -126,16 +119,6 @@ const SearchSelectBox = (props: PropsType) => {
             <label className="m-0" style={{ cursor: 'pointer' }}>Tesla</label>
           </div>
 
-          <div className={`px-3 py-1 ${currentHover === '1' ? 'bg-secondary' : ''}`}
-            onClick={() => {
-              updateActive(false);
-              updateCurrent("Wahoo")
-            }}
-            style={{ cursor: 'pointer' }}
-            onMouseEnter={() => updateCurrentHover('1')}
-            onMouseLeave={() => updateCurrentHover('0')}>
-            <label className="m-0" style={{ cursor: 'pointer' }}>Wahoo</label>
-          </div>
 
 
         </div>

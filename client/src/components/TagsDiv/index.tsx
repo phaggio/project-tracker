@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import EditButton from '../EditButton';
 import Tag from '../Tag';
 import { parseTags } from '../../util';
 
@@ -10,15 +11,12 @@ type PropsType = {
 
 const TagsDiv = (props: PropsType) => {
   const [editMode, updateEditMode] = useState<boolean>(false);
-  const [draft, updateDraft] = useState<string[]>([]);
-
-  useEffect(() => {
-    updateDraft(props.tags)
-  }, [props.tags])
+  const [draft, updateDraft] = useState<string[]>(props.tags);
 
   return (
     <div>
       {editMode ?
+
         <div className="form-group">
           <label className="mr-1"> {`Tags: {`}</label>
           {
@@ -64,7 +62,9 @@ const TagsDiv = (props: PropsType) => {
 
         :
 
-        <div className="d-flex align-items-start">
+        // non-edit mode
+        <div className="d-flex align-items-start justify-content-between">
+
           <div className="d-flex flex-wrap align-items-baseline">
             <label className="my-0 mr-1">{`Tags: {`}</label>
             {
@@ -75,15 +75,10 @@ const TagsDiv = (props: PropsType) => {
             <label className="my-0">{`}`}</label>
           </div>
 
-          <button className="btn btn-sm p-0 ml-1"
-            title="edit"
-            onClick={() => {
-              console.log(draft)
-              updateEditMode(!editMode)
-            }}>
-            <i className="far fa-edit" />
-          </button>
+          {/* upper right hand edit button */}
+          <EditButton editState={editMode} onClick={updateEditMode} />
         </div>
+
       }
     </div>
   )
