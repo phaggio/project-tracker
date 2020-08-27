@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import EditButton from '../EditButton';
 import SaveButton from '../SaveButton';
 import CancelButton from '../CancelButton';
@@ -39,18 +39,19 @@ const TagsDiv = (props: PropsType) => {
       {/* tags */}
       {editMode ?
         <div className="form-group">
-          {
-            draft.length > 0 ? draft.map(tag => {
-              return (<span className="badge badge-info mr-1" key={tag}>{tag}</span>)
-            }) : ``
-          }
+          <small>(Optional)</small>
+          <div>
+            {
+              draft.length > 0 ? draft.map(tag => {
+                return (<span className="badge badge-info mr-1" key={tag}>{tag}</span>)
+              }) : ``
+            }
+          </div>
           <div className="input-group">
             <input type="text"
               className="form-control text-wrap"
               id="tags"
-              onChange={event => {
-                updateDraft(parseTags(event.target.value))
-              }}
+              onChange={event => updateDraft(parseTags(event.target.value))}
               placeholder="Separate tags by comma"
               defaultValue={`${[...props.tags]}`}
             />
