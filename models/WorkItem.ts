@@ -36,12 +36,17 @@ const WorkItemSchema: Schema = new Schema({
     index: true
   },
 
-  parentId: {
+  parentType: {
     type: String,
     default: null
   },
 
-  parentType: {
+  parentName: {
+    type: String,
+    default: 'No parent item'
+  },
+
+  parentId: {
     type: String,
     default: null
   },

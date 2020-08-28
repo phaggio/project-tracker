@@ -1,5 +1,18 @@
 import axios from 'axios';
 
+const createNewUser = (data: object) => {
+  console.log(data);
+  return axios.post('/api/user/new', data);
+};
+
+const getAllUsers = () => {
+  return axios.get('/api/user');
+};
+
+const getUserById = (id: string) => {
+  return axios.get(`/api/user/${id}`);
+};
+
 const getUser = (_id: string | undefined = (undefined)) => {
   const config = {
     params: { _id: _id }
@@ -7,12 +20,9 @@ const getUser = (_id: string | undefined = (undefined)) => {
   return axios.get('/api/user/', config);
 };
 
-const createNewUser = (data: object) => {
-  console.log(data);
-  return axios.post('/api/user/new', data);
-};
-
 export {
-  getUser,
-  createNewUser
+  createNewUser,
+  getAllUsers,
+  getUserById,
+  getUser
 };
