@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
+import EditButton from '../EditButton';
+import SaveButton from '../SaveButton';
+import CancelButton from '../CancelButton';
 import ConsoleLogButton from '../ConsoleLogButton';
 import SearchSelectBox from '../SearchSelectBox';
 
+
 type PropsType = {
-  type: string;
   assignee: string;
   users: userObj[];
   saveButtonPressed: (part: string, payload: string) => void;
@@ -29,36 +32,16 @@ const AssigneeDiv = (props: PropsType) => {
         {
           editMode ?
             <div className="d-flex">
-              <button type="button"
-                style={{ width: '30px' }}
-                className="btn btn-outline-success btn-sm py-0"
-                id="assignee"
-                disabled={draft.trim().length === 0}
-                onClick={() => {
-                  props.saveButtonPressed('assignee', draft);
-                  updateEditMode(!editMode);
-                }}>
-                <i className="fas fa-check" datatype={props.type} />
-              </button>
-              <button type="button"
-                style={{ width: '30px' }}
-                className="btn btn-outline-danger btn-sm py-0"
-                onClick={() => {
-                  updateEditMode(!editMode);
-                  console.log(users)
-                }}>
-                <i className="fas fa-times" />
-              </button>
+              <SaveButton id="assignee"
+                editState={editMode}
+                toggleEditState={updateEditMode}
+                pressed={props.saveButtonPressed}
+                payload={draft} />
+              <CancelButton editState={editMode} toggleEditState={updateEditMode} />
             </div>
             :
             // edit button on upper right hand corner
-            <button className="btn btn-sm p-0"
-              title="edit"
-              onClick={() => {
-                updateEditMode(!editMode);
-              }}>
-              <i className="far fa-edit" />
-            </button>
+            <EditButton editState={editMode} onClick={updateEditMode} />
         }
       </div>
 

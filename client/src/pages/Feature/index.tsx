@@ -149,8 +149,7 @@ const Feature = ({ match }: PathProps) => {
 
 							{users.length > 0 ?
 								<div className="pt-2">
-									<AssigneeDiv type="feature"
-										assignee={feature.assignee}
+									<AssigneeDiv assignee={feature.assignee}
 										saveButtonPressed={saveButtonPressed}
 										users={users} />
 								</div>
