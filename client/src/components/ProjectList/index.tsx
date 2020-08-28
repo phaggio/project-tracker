@@ -2,18 +2,18 @@ import React from 'react';
 import NewButton from '../NewButton';
 import ProjectLink from '../ProjectLink';
 
-interface projectListProps {
-  projects: project[];
+type PropsType = {
+  projects: ProjectType[];
 }
 
-interface project {
+type ProjectType = {
   _id: string;
   name: string;
   description: string;
   tags: string[];
 }
 
-const ProjectList = ({ projects }: projectListProps) => {
+const ProjectList = ({ projects }: PropsType) => {
 
   if (projects) {
     console.log(`From ProjectList component, found ${projects.length} projects in database.`)
@@ -25,7 +25,7 @@ const ProjectList = ({ projects }: projectListProps) => {
     <div className="d-flex flex-column">
 
       <div className="d-flex flex-row justify-content-between align-items-baseline">
-        <h6 className="">Projects</h6>
+        <label className="font-weight-light">Projects</label>
         <NewButton
           name="New project"
           url="/new/project"

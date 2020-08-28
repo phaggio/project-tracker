@@ -3,9 +3,7 @@ import { projectRequest, featureRequest, workItemRequest } from '../../httpReque
 import NameBadgeDiv from '../../components/NameBadgeDiv';
 import TagsDiv from '../../components/TagsDiv';
 import DescriptionDiv from '../../components/DescriptionDiv';
-import AddNewDropDownButton from '../../components/AddNewDropDownButton';
-import FeatureLink from '../../components/FeatureLink';
-import WorkItemLink from '../../components/WorkItemLink';
+import ChildrenItemsDiv from '../../components/ChildrenItemsDiv';
 import ConsoleLogButton from '../../components/ConsoleLogButton';
 
 type PathProps = {
@@ -67,26 +65,6 @@ const Project = ({ match }: PathProps) => {
 	const [features, updateFeatures] = useState<FeatureArray>([]);
 	const [workItems, updateWorkItems] = useState<WorkItemArray>([]);
 
-	const buttons = [
-		{
-			name: 'Feature',
-			url: `/new/feature/project/${project?.name}/${project?._id}`,
-			ariaLabel: 'add-new-feature',
-			title: 'add new feature'
-		},
-		{
-			name: 'Work item',
-			url: `/new/workitem/project/${project?.name}/${project?._id}`,
-			ariaLabel: 'add-new-work-item',
-			title: 'add new work item'
-		},
-		{
-			name: 'Bug',
-			url: `/new/bug/project/${project?.name}/${project?._id}`,
-			ariaLabel: 'add-new-bug',
-			title: 'add new bug'
-		}
-	]
 
 	useEffect(() => {
 		if (match) {
@@ -106,7 +84,7 @@ const Project = ({ match }: PathProps) => {
 	useEffect(() => {
 		if (project) {
 			projectRequest
-				.updateProject(projectId, project)
+				.updateProject(project._id, project)
 				.then(data => console.log(data))
 				.catch(err => console.error(err))
 		}
@@ -123,7 +101,8 @@ const Project = ({ match }: PathProps) => {
 					if (typeof payload === 'string') updateProject({ ...project, description: payload });
 					break;
 				case 'tags':
-					if (payload instanceof Array) updateProject({ ...project, tags: payload })
+					if (payload instanceof Array) updateProject({ ...project, tags: payload });
+					break;
 				default:
 					break;
 			}
@@ -171,42 +150,20 @@ const Project = ({ match }: PathProps) => {
 
 			{/* second row begins */}
 			<div className="row mt-1 border border-info rounded">
-				<div className="col-12 d-flex justify-content-between align-items-baseline">
-					<label className="font-weight-light">Items</label>
-					<AddNewDropDownButton buttons={buttons} small={true} />
-				</div>
-
-				{features ? features.map(feature => {
-					return (
-						<div className="col-12 col-sm-6 col-md-4 col-lg-3 my-1"
-							key={feature._id}>
-							<FeatureLink key={feature._id} featureData={feature} />
-						</div>
-					)
-				})
+				{project ?
+					<ChildrenItemsDiv _id={projectId} type='project' name={project.name} children={[...features, ...workItems]} />
 					:
 					''
 				}
-				{workItems ? workItems.map(workItem => {
-					return (
-						<div className="col-12 col-sm-6 col-md-4 col-lg-3 my-1"
-							key={workItem._id}>
-							<WorkItemLink key={workItem._id} workItemData={workItem} />
-						</div>
-					)
-				})
-					:
-					''
-				}
-
-
 			</div>
 			{/* end of second row */}
 
+			<div className="col-3">
+				<ConsoleLogButton state={project} name="project" />
+				<ConsoleLogButton state={features} name="features" />
+				<ConsoleLogButton state={workItems} name="work item" />
+			</div>
 
-			<ConsoleLogButton state={project} name="project" />
-			<ConsoleLogButton state={features} name="features" />
-			<ConsoleLogButton state={workItems} name="work item" />
 		</div>
 	)
 };

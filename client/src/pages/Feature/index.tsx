@@ -167,19 +167,12 @@ const Feature = ({ match }: PathProps) => {
 				: ''
 			}
 
+
+
+
 			< div className="col-3" >
-				<button className="btn btn-danger btn-sm my-1"
-					onClick={() => console.log(featureId)}
-				>
-					console.log featureId
-				</button>
-
-				<button className="btn btn-danger btn-sm my-1"
-					onClick={() => console.log(feature)}
-				>
-					console.log feature state
-				</button>
-
+				<ConsoleLogButton name="feature" state={feature} />
+				<ConsoleLogButton name="feature Id" state={featureId} />
 				<ConsoleLogButton name='users' state={users} />
 			</div >
 

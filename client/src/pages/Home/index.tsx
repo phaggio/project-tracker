@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import ProjectList from '../../components/ProjectList';
 import { projectRequest, featureRequest, workItemRequest } from '../../httpRequests';
+import ConsoleLogButton from '../../components/ConsoleLogButton';
 
-type projectType = {
+type ProjectType = {
   _id: string;
   name: string;
   description: string;
@@ -10,25 +11,23 @@ type projectType = {
 }
 
 const Home = () => {
-  const [projects, updateProjects] = useState<projectType[]>([]);
+  const [projects, updateProjects] = useState<ProjectType[]>([]);
   const [features, updateFeatures] = useState([]);
   const [workItems, updateWorkItems] = useState([]);
 
+  // init Get calls to get all available project/feature/workitem data
   useEffect(() => {
     try {
       projectRequest.getAllProjects()
         .then(res => {
-          console.log(res.data);
           updateProjects(res.data)
         })
       featureRequest.getAllFeatures()
         .then(res => {
-          console.log(res.data);
           updateFeatures(res.data);
         })
       workItemRequest.getAllWorkItems()
         .then(res => {
-          console.log(res.data);
           updateWorkItems(res.data);
         })
     } catch (err) {
@@ -41,10 +40,8 @@ const Home = () => {
 
       <div className="row">
 
-        <div className="col-12 col-md-4 border border-success rounded text-truncate">
-          {/* <div className="d-flex flex-column border border-success rounded"> */}
+        <div className="col-12 col-md-4 border border-success rounded">
           <ProjectList projects={projects} />
-          {/* </div> */}
         </div>
 
         <div className="col-12 col-md-8 border border-secondary rounded">
@@ -68,23 +65,13 @@ const Home = () => {
       </div>
 
 
-      <button className="btn btn-danger btn-sm my-1" type="button" onClick={() => {
-        console.log(projects)
-      }}>
-        console.log projects state
-      </button>
-      <br />
-      <button className="btn btn-danger btn-sm my-1" type="button" onClick={() => {
-        console.log(features)
-      }}>
-        console.log features state
-      </button>
-      <br />
-      <button className="btn btn-danger btn-sm my-1" type="button" onClick={() => {
-        console.log(workItems)
-      }}>
-        console.log workItems state
-      </button>
+      {/* debug buttons */}
+      <div className="col-3">
+        <ConsoleLogButton name="projects" state={projects} />
+        <ConsoleLogButton name="features" state={features} />
+        <ConsoleLogButton name="work items" state={workItems} />
+      </div>
+
     </div>
   )
 };
