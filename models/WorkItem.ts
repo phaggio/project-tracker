@@ -14,7 +14,7 @@ export interface IWorkItem extends Document {
 const WorkItemSchema: Schema = new Schema({
   status: {
     type: String,
-    default: 'open'
+    default: 'Open'
   },
 
   name: {
@@ -28,7 +28,7 @@ const WorkItemSchema: Schema = new Schema({
 
   type: {
     type: String,
-    default: 'workitem'
+    default: 'workItem'
   },
 
   tags: {
@@ -49,7 +49,13 @@ const WorkItemSchema: Schema = new Schema({
   assigneeId: {
     type: String,
     default: null
+  },
+
+  assignee: {
+    type: String,
+    default: 'Unassigned'
   }
+  
 })
 
 export default mongoose.model<IWorkItem>('WorkItem', WorkItemSchema);

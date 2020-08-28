@@ -15,7 +15,7 @@ export interface IFeature extends Document {
 const FeatureSchema: Schema = new Schema({
   status: {
     type: String,
-    default: 'open'
+    default: 'Open'
   },
   type: {
     type: String,

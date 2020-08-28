@@ -3,7 +3,7 @@ import { projectRequest, featureRequest, userRequest } from '../../httpRequests'
 import NameBadge from '../../components/NameBadgeDiv';
 import TagsDiv from '../../components/TagsDiv';
 import AssigneeDiv from '../../components/AssigneeDiv'
-import StatusDropDown from '../../components/StatusDiv';
+import StatusDiv from '../../components/StatusDiv';
 import DescriptionDiv from '../../components/DescriptionDiv';
 import ConsoleLogButton from '../../components/ConsoleLogButton';
 
@@ -144,7 +144,7 @@ const Feature = ({ match }: PathProps) => {
 							}
 
 							<div className="pt-2">
-								<StatusDropDown type="feature"
+								<StatusDiv type="feature"
 									status={feature.status}
 									saveButtonPressed={saveButtonPressed} />
 							</div>
