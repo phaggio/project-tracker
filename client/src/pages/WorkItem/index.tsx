@@ -33,7 +33,7 @@ type WorkItemType = {
 
 
 const WorkItem = ({ match }: PathProps) => {
-  console.log(match.params);
+  console.log(match.params.id);
 
   const [workItem, updateWorkItem] = useState<WorkItemType | undefined>();
 
@@ -42,20 +42,23 @@ const WorkItem = ({ match }: PathProps) => {
       console.log('param exists, need to make API call');
       workItemRequest
         .getWorkItemById(match.params.id)
-        .then(res => updateWorkItem(res.data))
+        .then(res => {
+          console.log(res.data);
+          // if res.data.name does not exist, incorrect _id in URL
+          if (res.data.name) updateWorkItem(res.data);
+        })
         .catch(err => console.error(err))
     }
   }, []);
 
   useEffect(() => {
-    console.log('need to update api request')
     if (workItem) {
       workItemRequest
         .updateWorkItemById(match.params.id, workItem)
         .then(res => console.log(res.data))
         .catch(err => console.error(err))
     }
-  }, [workItem])
+  }, [workItem]);
 
 
   const saveButtonPressed = (part: string, payload: string | string[]) => {
@@ -83,30 +86,39 @@ const WorkItem = ({ match }: PathProps) => {
     <div className="container">
       {workItem ?
         <div>
+          {/* first row */}
           <div className="row">
             <div className="col-12 col-sm-6 col-md-8 col-lg-9">
               <div className="pt-2">
-                <NameBadge type="workItem" name={workItem.name} saveButtonPressed={saveButtonPressed} />
+                <NameBadge type="workItem"
+                  name={workItem.name}
+                  saveButtonPressed={saveButtonPressed} />
                 <hr className="mt-3" />
               </div>
 
               <div className="pt-2">
-                <TagsDiv type="workItem" tags={workItem.tags} saveButtonPressed={saveButtonPressed} />
+                <TagsDiv type="workItem"
+                  tags={workItem.tags}
+                  saveButtonPressed={saveButtonPressed} />
                 <hr className="mt-3" />
               </div>
 
               <div className="pt-2">
-                <StatusDiv type="workItem" status={workItem.status} saveButtonPressed={saveButtonPressed} />
+                <StatusDiv type="workItem"
+                  status={workItem.status}
+                  saveButtonPressed={saveButtonPressed} />
                 <hr className="mt-3" />
               </div>
 
             </div>
           </div>
 
+          {/* second row */}
           <div className="row">
             <div className="col-12">
               <div className="pt-2">
-                <DescriptionDiv text={workItem.description} saveButtonPressed={saveButtonPressed} />
+                <DescriptionDiv text={workItem.description}
+                  saveButtonPressed={saveButtonPressed} />
               </div>
             </div>
           </div>

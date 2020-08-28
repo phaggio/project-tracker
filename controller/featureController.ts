@@ -14,12 +14,7 @@ const findAll = (request: Request, response: Response) => {
 };
 
 const findById = (request: Request, response: Response) => {
-  console.log('request.query')
-  console.log(request.query);
   const param = request.params;
-  const query = request.query;
-  console.log('request.params')
-  console.log(param)
   Feature.findById(param.id)
     .then(data => response.json(data))
     .catch(err => response.status(422).json(err))

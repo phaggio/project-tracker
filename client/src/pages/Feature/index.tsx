@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { projectRequest, featureRequest, userRequest } from '../../httpRequests';
+import { projectRequest, featureRequest, userRequest, workItemRequest } from '../../httpRequests';
 import NameBadge from '../../components/NameBadgeDiv';
 import TagsDiv from '../../components/TagsDiv';
 import AssigneeDiv from '../../components/AssigneeDiv'
 import StatusDiv from '../../components/StatusDiv';
 import DescriptionDiv from '../../components/DescriptionDiv';
+import ChildrenItemsDiv from '../../components/ChildrenItemsDiv';
 import ConsoleLogButton from '../../components/ConsoleLogButton';
 
 
@@ -45,6 +46,15 @@ type ProjectObj = {
 	tags: string[]
 }
 
+type WorkItemType = {
+	_id: string;
+	status: string;
+	name: string;
+	description: string;
+	type: string;
+	parentId?: string;
+}
+
 const Feature = ({ match }: PathProps) => {
 	console.log(`Rendering Feature page... `);
 
@@ -52,6 +62,7 @@ const Feature = ({ match }: PathProps) => {
 	const [feature, updateFeature] = useState<FeatureObj | undefined>();
 	const [projectId, updateProjectId] = useState<string | undefined>(undefined);
 	const [project, updateProject] = useState<ProjectObj | undefined>(undefined);
+	const [workItems, updateWorkItems] = useState<WorkItemType[] | undefined>()
 	const [users, updateUsers] = useState([]);
 
 	useEffect(() => {
@@ -63,6 +74,10 @@ const Feature = ({ match }: PathProps) => {
 					console.log('Received feature data, updating feature state...')
 					updateFeature(res.data)
 				})
+				.catch(err => console.error(err));
+			workItemRequest
+				.getWorkItemsByParentId(featureId)
+				.then(res => updateWorkItems(res.data))
 				.catch(err => console.error(err))
 		}
 	}, [featureId])
@@ -85,7 +100,7 @@ const Feature = ({ match }: PathProps) => {
 
 	useEffect(() => {
 		userRequest.getUser()
-			.then(res => updateUsers(res.data))
+			.then(res => updateUsers(res.data));
 	}, [])
 
 	const saveButtonPressed = (part: string, payload: string | string[]) => {
@@ -112,7 +127,7 @@ const Feature = ({ match }: PathProps) => {
 	return (
 		<div className="container">
 
-			{feature !== undefined ?
+			{feature !== undefined && workItems !== undefined ?
 				<div>
 					{/* start of first row */}
 					< div className="row">
@@ -156,11 +171,19 @@ const Feature = ({ match }: PathProps) => {
 
 					{/* start of second row */}
 					<div className="row">
-						<div className="col-12 border border-warning">
+						<div className="col-12 d-flex flex-column border border-warning rounded">
 							<div className="pt-2">
 								<DescriptionDiv text={feature.description} saveButtonPressed={saveButtonPressed} />
 							</div>
+
+
+
+
 						</div>
+
+
+						<ChildrenItemsDiv type="feature" children={workItems} _id={feature._id} name={feature.name} />
+
 					</div>
 					{/* end of second row */}
 				</div>

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import EditButton from '../EditButton';
 import SaveButton from '../SaveButton';
 import CancelButton from '../CancelButton';
-import { capitalizeWord } from '../../util';
 
 type PropsType = {
   type: string;
@@ -25,14 +24,27 @@ const NameBadge = (props: PropsType) => {
       default:
         return 'primary';
     }
-  })(props.type)
+  })(props.type);
+
+  const typeName = ((type: string) => {
+    switch (type) {
+      case 'project':
+        return 'Project name';
+      case 'feature':
+        return 'Feature name';
+      case 'workItem':
+        return 'Work item name';
+      default:
+        break;
+    }
+  })(props.type);
 
   return (
     <div>
 
       <div className="d-flex justify-content-between align-items-baseline">
         <label className="font-weight-light">
-          {`${capitalizeWord(props.type)} name`}
+          {typeName}
         </label>
         {editMode ?
           <div className="d-flex">

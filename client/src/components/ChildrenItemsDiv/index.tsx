@@ -44,21 +44,24 @@ const ChildrenItemsDiv = (props: PropsType) => {
 
 
   return (
-    <div className="container">
+    <div className="container border border-info rounded">
       <div className="d-flex justify-content-between align-items-baseline">
         <label className="font-weight-light">Children items</label>
         <AddNewDropDownButton buttons={buttons} small={true} />
       </div>
 
       <div className="row">
-        {props.children.map(item => {
+        {props.children.length > 0 ? props.children.map(item => {
           return (
             <div className="col-12 col-sm-6 col-md-4 col-lg-3 my-1"
               key={item._id}>
               <ItemLink itemData={item} />
             </div>
           )
-        })}
+        })
+          :
+          <div className="col-12 col-sm-6 col-md-4 col-lg-3 my-1">No children</div>
+        }
       </div>
 
     </div>

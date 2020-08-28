@@ -9,7 +9,6 @@ const findAllProjects = (request: Request, response: Response) => {
 };
 
 const findByName = (request: Request, response: Response) => {
-  console.log(request.query.name);
   const name = request.query.name;
   const query: object = {
     name: {
@@ -17,7 +16,8 @@ const findByName = (request: Request, response: Response) => {
       $options: 'i'
     }
   };
-  Project.find(query)
+  Project
+    .find(query)
     .then(data => response.json(data))
     .catch(err => response.status(422).json(err));
 };
@@ -25,19 +25,22 @@ const findByName = (request: Request, response: Response) => {
 const findById = (request: Request, response: Response) => {
   console.log(`Project controller... querying project by ID: ${request.query._id}`)
   const query = request.query;
-  Project.findById(query._id)
+  Project
+    .findById(query._id)
     .then(data => response.json(data))
     .catch(err => response.status(422).json(err))
 }
 
 const createNewProject = (request: Request, response: Response) => {
-  Project.create(request.body)
+  Project
+    .create(request.body)
     .then(data => response.json(data))
     .catch(err => response.status(422).json(err));
 };
 
 const updateProject = (request: Request, response: Response) => {
-  Project.findOneAndUpdate({ _id: request.params.id }, request.body)
+  Project
+    .findOneAndUpdate({ _id: request.params.id }, request.body)
     .then(data => response.json(data))
     .catch(err => response.json(err));
 }

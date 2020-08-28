@@ -33,12 +33,9 @@ const findWorkItemsByParentId = (request: Request, response: Response) => {
 
 const updateWorkItemById = (request: Request, response: Response) => {
   const id = request.params.id;
-  console.log('request.params')
-  console.log(request.params)
   const data = request.body;
-  console.log('request.query.body')
-  console.log(data);
-  WorkItem.findOneAndUpdate({ _id: id }, data)
+  WorkItem
+    .findOneAndUpdate({ _id: id }, data)
     .then(data => response.json(data))
     .catch(err => response.json(err))
 };
