@@ -9,6 +9,11 @@ import DescriptionDiv from '../../components/DescriptionDiv';
 import ChildrenItemsDiv from '../../components/ChildrenItemsDiv';
 import ConsoleLogButton from '../../components/ConsoleLogButton';
 
+type AssigneeType = {
+	assignee: string;
+	assigneeId: string | null;
+}
+
 type ProjectObj = {
 	_id: string;
 	name: string,
@@ -25,7 +30,7 @@ const Feature = ({ match }: PathProps) => {
 	const [projectId, updateProjectId] = useState<string | undefined>(undefined);
 	const [project, updateProject] = useState<ProjectObj | undefined>(undefined);
 	const [workItems, updateWorkItems] = useState<WorkItemType[] | undefined>()
-	const [users, updateUsers] = useState([]);
+	const [users, updateUsers] = useState<[] | undefined>(undefined);
 
 	useEffect(() => {
 		console.log('making GET api call to get feature data...');
@@ -60,12 +65,18 @@ const Feature = ({ match }: PathProps) => {
 		}
 	}, [feature])
 
+	// init Get to get all users data
 	useEffect(() => {
 		userRequest.getUser()
 			.then(res => updateUsers(res.data));
-	}, [])
+	}, []);
 
-	const saveButtonPressed = (part: string, payload: string | string[] | object) => {
+	// a custom function that checks whether the object is AssigneeType obj
+	const isAssigneeType = (arg: any): arg is AssigneeType => {
+		return arg.assignee !== undefined;
+	};
+
+	const saveButtonPressed = (part: string, payload: string | string[] | AssigneeType) => {
 		switch (part) {
 			case ('name'):
 				if (typeof payload === 'string' && feature) updateFeature({ ...feature, name: payload });
@@ -80,7 +91,9 @@ const Feature = ({ match }: PathProps) => {
 				if (typeof payload === 'string' && feature) updateFeature({ ...feature, description: payload });
 				break;
 			case 'assignee':
-				console.log('need to update assignee!!!')
+				if (isAssigneeType(payload) && feature) {
+					updateFeature({ ...feature, assignee: payload.assignee, assigneeId: payload.assigneeId })
+				}
 			default:
 				break;
 		}
@@ -109,7 +122,7 @@ const Feature = ({ match }: PathProps) => {
 								<hr className="mt-2" />
 							</div>
 
-							{users.length > 0 ?
+							{users ?
 								<div className="pt-1">
 									<AssigneeDiv assigneeId={feature.assigneeId}
 										assignee={feature.assignee}
@@ -145,9 +158,9 @@ const Feature = ({ match }: PathProps) => {
 						</div>
 
 
-						<ChildrenItemsDiv type="feature" 
-							children={workItems} 
-							_id={feature._id} 
+						<ChildrenItemsDiv type="feature"
+							children={workItems}
+							_id={feature._id}
 							name={feature.name} />
 
 					</div>
