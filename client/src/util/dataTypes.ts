@@ -22,7 +22,7 @@ type WorkItemType = {
   description: string;
   type: string;
   tags: string[];
-  parentType: string;
+  parentType: string | null;
   parentName: string;
   parentId: string;
   assigneeId: string | null;
@@ -35,11 +35,24 @@ type FeatureType = {
 	name: string;
   description: string;
   type: string;
-	tags: string[];
-  parentId: string | null;
+  tags: string[];
+  parentType: string | null;
   parentName: string;
+  parentId: string | null;
 	assigneeId: string | null;
 	assignee: string;
+};
+
+type ProjectType = {
+  _id: string;
+	name: string,
+  description: string;
+  status: string;
+	type: string;
+  tags: string[];
+  features: string[];
+  workItems: string[];
+  bugs: string[];
 }
 
 export type {
@@ -47,5 +60,6 @@ export type {
   MatchObj,
   MatchParams,
   WorkItemType,
-  FeatureType
+  FeatureType,
+  ProjectType
 };

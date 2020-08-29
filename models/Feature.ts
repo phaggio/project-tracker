@@ -6,9 +6,10 @@ export interface IFeature extends Document {
   name: string;
   description: string;
   tags: string[];
-  parentId: string;
+  parentType: string | null;
   parentName: string;
-  assigneeID: string;
+  parentId: string | null;
+  assigneeID: string | null;
   assignee: string;
   workItems: string[];
 }
@@ -35,7 +36,7 @@ const FeatureSchema: Schema = new Schema({
     index: true
   },
 
-  parentId: {
+  parentType: {
     type: String,
     default: null
   },
@@ -43,6 +44,11 @@ const FeatureSchema: Schema = new Schema({
   parentName: {
     type: String,
     default: 'Unassigned'
+  },
+
+  parentId: {
+    type: String,
+    default: null
   },
 
   assigneeId: {

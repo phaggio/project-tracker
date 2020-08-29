@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { PathProps, FeatureType, WorkItemType } from '../../util/dataTypes';
+import { PathProps, ProjectType, FeatureType, WorkItemType } from '../../util/dataTypes';
 import { projectRequest, featureRequest, userRequest, workItemRequest } from '../../httpRequests';
 import NameBadge from '../../components/NameBadgeDiv';
 import TagsDiv from '../../components/TagsDiv';
-import AssigneeDiv from '../../components/AssigneeDiv'
+import AssigneeDiv from '../../components/AssigneeDiv';
+import ParentItemDiv from '../../components/ParentItemDiv';
 import StatusDiv from '../../components/StatusDiv';
 import DescriptionDiv from '../../components/DescriptionDiv';
 import ChildrenItemsDiv from '../../components/ChildrenItemsDiv';
@@ -14,12 +15,10 @@ type AssigneeType = {
 	assigneeId: string | null;
 }
 
-type ProjectObj = {
-	_id: string;
-	name: string,
-	description: string;
-	type: string;
-	tags: string[]
+type ParentType = {
+	parentType: string | null;
+	parentName: string;
+	parentId: string | null
 }
 
 const Feature = ({ match }: PathProps) => {
@@ -28,7 +27,7 @@ const Feature = ({ match }: PathProps) => {
 	const [featureId] = useState<string | undefined>(match.params.id);
 	const [feature, updateFeature] = useState<FeatureType | undefined>();
 	const [projectId, updateProjectId] = useState<string | undefined>(undefined);
-	const [project, updateProject] = useState<ProjectObj | undefined>(undefined);
+	const [project, updateProject] = useState<ProjectType | undefined>(undefined);
 	const [workItems, updateWorkItems] = useState<WorkItemType[] | undefined>()
 	const [users, updateUsers] = useState<[] | undefined>(undefined);
 
@@ -99,6 +98,17 @@ const Feature = ({ match }: PathProps) => {
 		}
 	}
 
+	const updateParent = (part: string, payload: ParentType) => {
+		if (part === 'parent' && feature) {
+			updateFeature({
+				...feature,
+				parentType: payload.parentType,
+				parentName: payload.parentName,
+				parentId: payload.parentId
+			})
+		}
+	}
+
 	return (
 		<div className="container">
 
@@ -133,6 +143,14 @@ const Feature = ({ match }: PathProps) => {
 								:
 								''
 							}
+
+							<div>
+								<ParentItemDiv type="feature"
+									parentType={feature.parentType}
+									parentName={feature.parentName}
+									parentId={feature.parentId}
+									saveButtonPressed={updateParent} />
+							</div>
 
 							<div className="pt-1">
 								<StatusDiv type="feature"

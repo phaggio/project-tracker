@@ -2,19 +2,20 @@ import React, { useState } from 'react';
 import EditButton from '../EditButton';
 import SaveButton from '../SaveButton';
 import CancelButton from '../CancelButton';
+import ConsoleLogButton from '../ConsoleLogButton';
 
 type PropsType = {
   type: string;
-  parentType: string;
+  parentType: string | null;
   parentName: string;
-  parentId: string;
+  parentId: string | null;
   saveButtonPressed: (part: string, payload: PayloadType) => void;
 }
 
 type PayloadType = {
-  parentType: string;
+  parentType: string | null;
   parentName: string;
-  parentId: string;
+  parentId: string | null;
 }
 
 const ParentItemDiv = (props: PropsType) => {
@@ -55,6 +56,8 @@ const ParentItemDiv = (props: PropsType) => {
           <h5>{props.parentName}</h5>
         </div>
       }
+
+      <ConsoleLogButton name="draft" state={draft} />
 
     </div>
   )
