@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { PathProps, FeatureType, WorkItemType } from '../../util/dataTypes';
 import { projectRequest, featureRequest, userRequest, workItemRequest } from '../../httpRequests';
 import NameBadge from '../../components/NameBadgeDiv';
 import TagsDiv from '../../components/TagsDiv';
@@ -8,36 +9,6 @@ import DescriptionDiv from '../../components/DescriptionDiv';
 import ChildrenItemsDiv from '../../components/ChildrenItemsDiv';
 import ConsoleLogButton from '../../components/ConsoleLogButton';
 
-
-type PathProps = {
-	history: boolean;
-	location: string;
-	match: MatchObj;
-};
-
-type MatchObj = {
-	isExact: boolean;
-	params: MatchParams;
-	path: string;
-	url: string;
-};
-
-type MatchParams = {
-	id: string;
-};
-
-type FeatureObj = {
-	_id: string;
-	type: string;
-	status: string;
-	name: string;
-	description: string;
-	tags: string[];
-	projectId: string;
-	assigneeId: string;
-	assignee: string;
-}
-
 type ProjectObj = {
 	_id: string;
 	name: string,
@@ -46,20 +17,11 @@ type ProjectObj = {
 	tags: string[]
 }
 
-type WorkItemType = {
-	_id: string;
-	status: string;
-	name: string;
-	description: string;
-	type: string;
-	parentId?: string;
-}
-
 const Feature = ({ match }: PathProps) => {
 	console.log(`Rendering Feature page... `);
 
 	const [featureId] = useState<string | undefined>(match.params.id);
-	const [feature, updateFeature] = useState<FeatureObj | undefined>();
+	const [feature, updateFeature] = useState<FeatureType | undefined>();
 	const [projectId, updateProjectId] = useState<string | undefined>(undefined);
 	const [project, updateProject] = useState<ProjectObj | undefined>(undefined);
 	const [workItems, updateWorkItems] = useState<WorkItemType[] | undefined>()
@@ -83,7 +45,7 @@ const Feature = ({ match }: PathProps) => {
 	}, [featureId])
 
 	useEffect(() => {
-		if (feature && feature.projectId !== projectId && projectId !== undefined) {
+		if (feature && feature.parentId !== projectId && projectId !== undefined) {
 			projectRequest.getProjectById(projectId)
 				.then(res => {
 					console.log('Received project data, updating project data...')

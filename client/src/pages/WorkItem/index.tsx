@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { PathProps, WorkItemType } from '../../util/dataTypes'
 import { projectRequest, featureRequest, workItemRequest, userRequest } from '../../httpRequests';
 import NameBadge from '../../components/NameBadgeDiv';
 import TagsDiv from '../../components/TagsDiv';
@@ -8,41 +9,10 @@ import StatusDiv from '../../components/StatusDiv';
 import DescriptionDiv from '../../components/DescriptionDiv';
 import ConsoleLogButton from '../../components/ConsoleLogButton';
 
-type PathProps = {
-  history: boolean;
-  location: string;
-  match: MatchObj;
-};
-
-type MatchObj = {
-  isExact: boolean;
-  params: MatchParams;
-  path: string;
-  url: string;
-};
-
-type MatchParams = {
-  id: string;
-};
-
-type WorkItemType = {
-  _id: string;
-  status: string;
-  name: string;
-  description: string;
-  tags: string[];
-  parentType: string;
-  parentName: string;
-  parentId: string;
-  assigneeId: string | null;
-  assignee: string;
-}
-
 type AssigneeType = {
   assignee: string;
   assigneeId: string | null;
 }
-
 
 const WorkItem = ({ match }: PathProps) => {
   console.log('Rendering WorkItem page...');

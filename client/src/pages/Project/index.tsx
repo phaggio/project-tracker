@@ -1,27 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { PathProps } from '../../util/dataTypes'
 import { projectRequest, featureRequest, workItemRequest } from '../../httpRequests';
 import NameBadgeDiv from '../../components/NameBadgeDiv';
 import TagsDiv from '../../components/TagsDiv';
 import DescriptionDiv from '../../components/DescriptionDiv';
 import ChildrenItemsDiv from '../../components/ChildrenItemsDiv';
 import ConsoleLogButton from '../../components/ConsoleLogButton';
-
-type PathProps = {
-	history: boolean;
-	location: string;
-	match: MatchObj;
-};
-
-type MatchObj = {
-	isExact: boolean;
-	params: MatchParams;
-	path: string;
-	url: string;
-};
-
-type MatchParams = {
-	id: string;
-};
 
 type FeatureObj = {
 	_id: string;
@@ -64,7 +48,6 @@ const Project = ({ match }: PathProps) => {
 
 	const [features, updateFeatures] = useState<FeatureArray>([]);
 	const [workItems, updateWorkItems] = useState<WorkItemArray>([]);
-
 
 	useEffect(() => {
 		if (match) {
@@ -116,15 +99,15 @@ const Project = ({ match }: PathProps) => {
 					<div className="col-12 col-sm-6 col-md-7 col-lg-8 border border-primary rounded d-flex flex-column">
 
 						<div className="pt-1">
-							<NameBadgeDiv type='project' 
-								name={project.name} 
+							<NameBadgeDiv type='project'
+								name={project.name}
 								saveButtonPressed={saveButtonPressed} />
 							<hr className="mt-2" />
 						</div>
 
 						<div className="pt-1">
-							<TagsDiv type="project" 
-								tags={project.tags} 
+							<TagsDiv type="project"
+								tags={project.tags}
 								saveButtonPressed={saveButtonPressed} />
 							<hr className="mt-2" />
 						</div>
@@ -156,9 +139,9 @@ const Project = ({ match }: PathProps) => {
 			{/* second row begins */}
 			<div className="row mt-1 border border-info rounded">
 				{project ?
-					<ChildrenItemsDiv _id={projectId} 
-						type='project' 
-						name={project.name} 
+					<ChildrenItemsDiv _id={projectId}
+						type='project'
+						name={project.name}
 						children={[...features, ...workItems]} />
 					:
 					''

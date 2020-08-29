@@ -16,7 +16,6 @@ type DataObj = {
   description: string;
   type: string;
   parentId?: string;
-  projectId?: string;
 }
 
 const ChildrenItemsDiv = (props: PropsType) => {
