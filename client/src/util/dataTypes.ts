@@ -53,6 +53,13 @@ type ProjectType = {
   features: string[];
   workItems: string[];
   bugs: string[];
+};
+
+// payload type for updating item parent info.
+type ParentPayloadType = {
+	parentType: string | null;
+	parentName: string;
+	parentId: string | null
 }
 
 export type {
@@ -61,5 +68,6 @@ export type {
   MatchParams,
   WorkItemType,
   FeatureType,
-  ProjectType
+  ProjectType,
+  ParentPayloadType
 };

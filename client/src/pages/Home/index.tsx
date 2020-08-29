@@ -1,14 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { ProjectType } from '../../util/dataTypes';
 import ProjectList from '../../components/ProjectList';
 import { projectRequest, featureRequest, workItemRequest } from '../../httpRequests';
 import ConsoleLogButton from '../../components/ConsoleLogButton';
-
-type ProjectType = {
-  _id: string;
-  name: string;
-  description: string;
-  tags: string[];
-}
 
 const Home = () => {
   const [projects, updateProjects] = useState<ProjectType[]>([]);

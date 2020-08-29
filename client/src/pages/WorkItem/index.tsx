@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { PathProps, ProjectType, FeatureType, WorkItemType } from '../../util/dataTypes'
+import { PathProps, ProjectType, FeatureType, WorkItemType, ParentPayloadType } from '../../util/dataTypes'
 import { projectRequest, featureRequest, workItemRequest, userRequest } from '../../httpRequests';
 import NameBadge from '../../components/NameBadgeDiv';
 import TagsDiv from '../../components/TagsDiv';
@@ -12,12 +12,6 @@ import ConsoleLogButton from '../../components/ConsoleLogButton';
 type AssigneeType = {
   assignee: string;
   assigneeId: string | null;
-}
-
-type ParentPayloadType = {
-  parentType: string | null;
-  parentName: string;
-  parentId: string | null;
 }
 
 const WorkItem = ({ match }: PathProps) => {
