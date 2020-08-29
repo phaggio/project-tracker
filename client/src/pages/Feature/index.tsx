@@ -145,11 +145,11 @@ const Feature = ({ match }: PathProps) => {
 							}
 
 							<div>
-								<ParentItemDiv type="feature"
+								{/* <ParentItemDiv type="feature"
 									parentType={feature.parentType}
 									parentName={feature.parentName}
 									parentId={feature.parentId}
-									saveButtonPressed={updateParent} />
+									saveButtonPressed={updateParent} /> */}
 							</div>
 
 							<div className="pt-1">

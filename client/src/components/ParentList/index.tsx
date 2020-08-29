@@ -1,6 +1,6 @@
 import React from 'react';
 
-type ParentListProps = {
+type PropsType = {
   dataArr: Item[];
   listName: string;
   defaultOption: string;
@@ -12,7 +12,7 @@ type Item = {
   _id: string;
 }
 
-const ParentList = ({ dataArr, listName, defaultOption }: ParentListProps) => {
+const ParentList = ({ dataArr, listName, defaultOption }: PropsType) => {
   return (
 
     <datalist id={listName}>

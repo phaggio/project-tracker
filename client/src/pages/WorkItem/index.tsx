@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { PathProps, WorkItemType } from '../../util/dataTypes'
+import { PathProps, ProjectType, FeatureType, WorkItemType } from '../../util/dataTypes'
 import { projectRequest, featureRequest, workItemRequest, userRequest } from '../../httpRequests';
 import NameBadge from '../../components/NameBadgeDiv';
 import TagsDiv from '../../components/TagsDiv';
@@ -14,13 +14,19 @@ type AssigneeType = {
   assigneeId: string | null;
 }
 
+type ParentPayloadType = {
+  parentType: string | null;
+  parentName: string;
+  parentId: string | null;
+}
+
 const WorkItem = ({ match }: PathProps) => {
   console.log('Rendering WorkItem page...');
   console.log(match.params.id);
 
   const [workItem, updateWorkItem] = useState<WorkItemType | undefined>();
-  const [features, updateFeatures] = useState();
-  const [projects, updateProjects] = useState();
+  const [features, updateFeatures] = useState<FeatureType[] | undefined>();
+  const [projects, updateProjects] = useState<ProjectType[] | undefined>();
   const [users, updateUsers] = useState<[] | undefined>(undefined);
 
 
@@ -70,9 +76,6 @@ const WorkItem = ({ match }: PathProps) => {
       case 'tags':
         if (payload instanceof Array && workItem) updateWorkItem({ ...workItem, tags: payload });
         break;
-      case 'parent':
-        console.log('need to update parentId');
-        break;
       case 'status':
         if (typeof payload === 'string' && workItem) updateWorkItem({ ...workItem, status: payload });
         break;
@@ -89,14 +92,20 @@ const WorkItem = ({ match }: PathProps) => {
     }
   }
 
-  const updateParent = (part: string, payload: object) => {
-    console.log(part, payload);
-    console.log('need to update workItem when ready...')
+  const updateParent = (part: string, payload: ParentPayloadType) => {
+    if (part === 'parent' && workItem) {
+      updateWorkItem({
+        ...workItem,
+        parentType: payload.parentType,
+        parentName: payload.parentName,
+        parentId: payload.parentId
+      })
+    }
   };
 
   return (
     <div className="container">
-      {workItem !== undefined && users !== undefined ?
+      {(workItem !== undefined && users !== undefined && projects !== undefined && features !== undefined) ?
         <div>
           {/* first row */}
           <div className="row">
@@ -111,6 +120,7 @@ const WorkItem = ({ match }: PathProps) => {
             </div>
 
             <div className="col-12 col-sm-6 col-md-8 col-lg-9 border border-dark rounded">
+
               <div className="pt-1">
                 <TagsDiv type="workItem"
                   tags={workItem.tags}
@@ -126,12 +136,14 @@ const WorkItem = ({ match }: PathProps) => {
                 <hr className="mt-2" />
               </div>
 
-
               <div className="pt-1">
                 <ParentItemDiv type="workItem"
-                  parentType={workItem.parentType}
-                  parentName={workItem.parentName}
-                  parentId={workItem.parentId}
+                  currentParent={{
+                    parentType: workItem.parentType,
+                    parentName: workItem.parentName,
+                    parentId: workItem.parentId
+                  }}
+                  parents={[...projects, ...features]}
                   saveButtonPressed={updateParent} />
                 <hr className="mt-2" />
               </div>

@@ -15,7 +15,7 @@ type DataObj = {
   name: string;
   description: string;
   type: string;
-  parentId?: string;
+  parentId?: string | null;
 }
 
 const ChildrenItemsDiv = (props: PropsType) => {

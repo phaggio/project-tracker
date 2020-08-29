@@ -53,7 +53,7 @@ const SearchSelectBox = (props: PropsType) => {
   }, [filter])
 
   return (
-    <div className="select-box d-flex flex-column">
+    <div className="d-flex flex-column">
 
       {/* currently selected assignee and dropdown button */}
       <div className="btn-group d-flex justify-content-between mb-2">
@@ -136,7 +136,7 @@ const SearchSelectBox = (props: PropsType) => {
             onClick={() => {
               updateActive(false);
               updateCurrentAssignee('Test Users');
-              props.onChange({assignee: 'Test User', assigneeId: 'test id'})
+              props.onChange({ assignee: 'Test User', assigneeId: 'test id' })
             }}
             style={{ cursor: 'pointer' }}
             onMouseEnter={() => updateCurrentHover('5')}
@@ -151,7 +151,9 @@ const SearchSelectBox = (props: PropsType) => {
 
       </div>
 
-      <ConsoleLogButton name="data" state={data} />
+      <div className="col-3">
+        <ConsoleLogButton name="select box data" state={data} />
+      </div>
     </div>
   )
 }

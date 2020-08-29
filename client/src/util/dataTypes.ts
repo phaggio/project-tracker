@@ -24,7 +24,7 @@ type WorkItemType = {
   tags: string[];
   parentType: string | null;
   parentName: string;
-  parentId: string;
+  parentId: string | null;
   assigneeId: string | null;
   assignee: string;
 };

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ParentSelectBox from '../ParentSelectBox';
 import EditButton from '../EditButton';
 import SaveButton from '../SaveButton';
 import CancelButton from '../CancelButton';
@@ -6,25 +7,27 @@ import ConsoleLogButton from '../ConsoleLogButton';
 
 type PropsType = {
   type: string;
-  parentType: string | null;
-  parentName: string;
-  parentId: string | null;
-  saveButtonPressed: (part: string, payload: PayloadType) => void;
+  currentParent: ParentPayloadType;
+  parents: ParentType[];
+  saveButtonPressed: (part: string, payload: ParentPayloadType) => void;
 }
 
-type PayloadType = {
+type ParentType = {
+  type: string;
+  name: string;
+  _id: string;
+}
+
+type ParentPayloadType = {
   parentType: string | null;
   parentName: string;
   parentId: string | null;
 }
 
 const ParentItemDiv = (props: PropsType) => {
+
   const [editMode, updateEditMode] = useState<boolean>(false);
-  const [draft, updateDraft] = useState<PayloadType>({
-    parentType: props.parentType,
-    parentName: props.parentName,
-    parentId: props.parentId
-  })
+  const [draft, updateDraft] = useState<ParentPayloadType>(props.currentParent);
 
 
   return (
@@ -49,16 +52,19 @@ const ParentItemDiv = (props: PropsType) => {
 
       {editMode ?
         <div>
-          Need drop down list here
+          <ParentSelectBox currentParent={props.currentParent}
+            parents={props.parents}
+            onChange={updateDraft}
+          />
         </div>
         :
         <div>
-          <h5>{props.parentName}</h5>
+          <h5>{props.currentParent.parentName}</h5>
         </div>
       }
 
       <ConsoleLogButton name="draft" state={draft} />
-
+      <ConsoleLogButton name="parents" state={props.parents} />
     </div>
   )
 }

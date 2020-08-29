@@ -6,9 +6,11 @@ export interface IWorkItem extends Document {
   description: string;
   type: string;
   tags: string[];
-  parentId: string;
-  parentType: string;
-  assigneeId: string;
+  parentType: string | null;
+  parentName: string;
+  parentId: string | null;
+  assigneeId: string | null;
+  assignee: string;
 }
 
 const WorkItemSchema: Schema = new Schema({
@@ -43,7 +45,7 @@ const WorkItemSchema: Schema = new Schema({
 
   parentName: {
     type: String,
-    default: 'No parent item'
+    default: 'Unassigned'
   },
 
   parentId: {

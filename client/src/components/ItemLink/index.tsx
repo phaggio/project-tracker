@@ -11,7 +11,7 @@ type DataObj = {
   name: string;
   description: string;
   type: string;
-  parentId?: string;
+  parentId?: string | null;
   projectId?: string;
 }
 
