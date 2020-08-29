@@ -103,7 +103,7 @@ const Feature = ({ match }: PathProps) => {
 			.then(res => updateUsers(res.data));
 	}, [])
 
-	const saveButtonPressed = (part: string, payload: string | string[]) => {
+	const saveButtonPressed = (part: string, payload: string | string[] | object) => {
 		switch (part) {
 			case ('name'):
 				if (typeof payload === 'string' && feature) updateFeature({ ...feature, name: payload });
@@ -133,34 +133,37 @@ const Feature = ({ match }: PathProps) => {
 					< div className="row">
 
 						<div className="col-12 col-sm-6 col-md-7 col-lg-8 border border-primary rounded d-flex flex-column">
-							<div className="pt-2">
+							<div className="pt-1">
 								<NameBadge type='feature'
 									name={feature.name}
 									saveButtonPressed={saveButtonPressed} />
-								<hr className="mt-3" />
+								<hr className="mt-2" />
 							</div>
 
-							<div className="pt-2">
+							<div className="pt-1">
 								<TagsDiv type="feature"
 									tags={feature.tags}
 									saveButtonPressed={saveButtonPressed} />
-								<hr className="mt-3" />
+								<hr className="mt-2" />
 							</div>
 
 							{users.length > 0 ?
-								<div className="pt-2">
-									<AssigneeDiv assignee={feature.assignee}
+								<div className="pt-1">
+									<AssigneeDiv assigneeId={feature.assigneeId}
+										assignee={feature.assignee}
 										saveButtonPressed={saveButtonPressed}
 										users={users} />
+									<hr className="mt-2" />
 								</div>
 								:
 								''
 							}
 
-							<div className="pt-2">
+							<div className="pt-1">
 								<StatusDiv type="feature"
 									status={feature.status}
 									saveButtonPressed={saveButtonPressed} />
+								<hr className="mt-2" />
 							</div>
 						</div>
 
@@ -171,17 +174,19 @@ const Feature = ({ match }: PathProps) => {
 					{/* start of second row */}
 					<div className="row">
 						<div className="col-12 d-flex flex-column border border-warning rounded">
-							<div className="pt-2">
-								<DescriptionDiv text={feature.description} saveButtonPressed={saveButtonPressed} />
+							<div className="pt-1">
+								<DescriptionDiv text={feature.description}
+									saveButtonPressed={saveButtonPressed} />
+								<hr className="mt-2" />
 							</div>
-
-
-
 
 						</div>
 
 
-						<ChildrenItemsDiv type="feature" children={workItems} _id={feature._id} name={feature.name} />
+						<ChildrenItemsDiv type="feature" 
+							children={workItems} 
+							_id={feature._id} 
+							name={feature.name} />
 
 					</div>
 					{/* end of second row */}

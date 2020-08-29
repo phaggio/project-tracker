@@ -115,19 +115,24 @@ const Project = ({ match }: PathProps) => {
 				<div className="row">
 					<div className="col-12 col-sm-6 col-md-7 col-lg-8 border border-primary rounded d-flex flex-column">
 
-						<div className="pt-2">
-							<NameBadgeDiv type='project' name={project.name} saveButtonPressed={saveButtonPressed} />
-							<hr className="mt-3" />
+						<div className="pt-1">
+							<NameBadgeDiv type='project' 
+								name={project.name} 
+								saveButtonPressed={saveButtonPressed} />
+							<hr className="mt-2" />
 						</div>
 
-						<div className="pt-2">
-							<TagsDiv
-								type="project" tags={project.tags} saveButtonPressed={saveButtonPressed} />
-							<hr className="mt-3" />
+						<div className="pt-1">
+							<TagsDiv type="project" 
+								tags={project.tags} 
+								saveButtonPressed={saveButtonPressed} />
+							<hr className="mt-2" />
 						</div>
 
-						<div className="pt-2">
-							<DescriptionDiv text={project.description} saveButtonPressed={saveButtonPressed} />
+						<div className="pt-1">
+							<DescriptionDiv text={project.description}
+								saveButtonPressed={saveButtonPressed} />
+							<hr className="mt-2" />
 						</div>
 
 					</div>
@@ -151,7 +156,10 @@ const Project = ({ match }: PathProps) => {
 			{/* second row begins */}
 			<div className="row mt-1 border border-info rounded">
 				{project ?
-					<ChildrenItemsDiv _id={projectId} type='project' name={project.name} children={[...features, ...workItems]} />
+					<ChildrenItemsDiv _id={projectId} 
+						type='project' 
+						name={project.name} 
+						children={[...features, ...workItems]} />
 					:
 					''
 				}

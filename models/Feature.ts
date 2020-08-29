@@ -6,7 +6,8 @@ export interface IFeature extends Document {
   name: string;
   description: string;
   tags: string[];
-  projectId: string;
+  parentId: string;
+  parentName: string;
   assigneeID: string;
   assignee: string;
   workItems: string[];
@@ -33,14 +34,22 @@ const FeatureSchema: Schema = new Schema({
     type: [String],
     index: true
   },
-  projectId: {
+
+  parentId: {
     type: String,
     default: null
   },
+
+  parentName: {
+    type: String,
+    default: 'Unassigned'
+  },
+
   assigneeId: {
     type: String,
     default: null
   },
+
   assignee: {
     type: String,
     default: 'Unassigned'

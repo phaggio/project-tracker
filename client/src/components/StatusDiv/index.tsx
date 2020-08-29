@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import EditButton from '../EditButton';
 import SaveButton from '../SaveButton';
 import CancelButton from '../CancelButton';
-import { capitalizeWord } from '../../util';
+import { capitalizeWord } from '../../util/functions';
 
 type PropsType = {
   type: string;

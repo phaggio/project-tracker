@@ -3,7 +3,7 @@ import EditButton from '../EditButton';
 import SaveButton from '../SaveButton';
 import CancelButton from '../CancelButton';
 import Tag from '../Tag';
-import { parseTags } from '../../util';
+import { parseTags } from '../../util/functions';
 
 type PropsType = {
   type: string;

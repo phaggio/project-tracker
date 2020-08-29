@@ -1,24 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import ConsoleLogButton from '../ConsoleLogButton';
 
+// a drop down component
+// input: an array of objects
+
 type PropsType = {
-  defaultValue: string;
+  currentAssigneeId: string | null;
+  currentAssignee: string;
   users: userObj[];
-  onChange: (str: string) => void;
+  onChange: (assigneeObj: AssigneeObj) => void;
+}
+
+type AssigneeObj = {
+  assignee: string;
+  assigneeId: string | null;
 }
 
 type userObj = {
   type: string;
   firstName: string;
   lastName: string;
+  email: string;
   fullName: string;
   _id: string;
 }
 
 const SearchSelectBox = (props: PropsType) => {
-  console.log('rendering search select box')
+  console.log('Rendering search select box...')
   const [staticData, updateStaticData] = useState<userObj[]>(props.users);
-  const [current, updateCurrent] = useState(props.defaultValue)
+  // current selected users
+  const [currentAssignee, updateCurrentAssignee] = useState(props.currentAssignee);
   const [currentHover, updateCurrentHover] = useState('');
   const [active, updateActive] = useState(false);
   const [data, updateData] = useState<userObj[]>(props.users);
@@ -47,7 +58,7 @@ const SearchSelectBox = (props: PropsType) => {
       {/* currently selected assignee and dropdown button */}
       <div className="btn-group d-flex justify-content-between mb-2">
         <div className="bg-light w-100 text-dark px-3 py-1 rounded-left">
-          {current}
+          {currentAssignee}
         </div>
         <button className="btn btn-light btn-sm dropdown-toggle dropdown-toggle-split"
           onClick={() => updateActive(!active)}>
@@ -86,14 +97,27 @@ const SearchSelectBox = (props: PropsType) => {
             overflowY: 'scroll'
           }}>
 
+          {/* Unassigned option */}
+          <div className={`px-3 py-1 ${currentHover === 'Unassigned' ? 'bg-dark text-light' : ''}`}
+            onClick={() => {
+              updateActive(false);
+              updateCurrentAssignee('Unassigned');
+              props.onChange({ assignee: 'Unassigned', assigneeId: null });
+            }}
+            style={{ cursor: 'pointer' }}
+            onMouseEnter={() => updateCurrentHover('Unassigned')}
+            onMouseLeave={() => updateCurrentHover('')}>
+            <label className="m-0" style={{ cursor: 'pointer' }}>Unassigned</label>
+          </div>
+
           {data.length > 0 ? data.map(item => {
             return (
               <div key={item._id}
                 className={`px-3 py-1 ${currentHover === item._id ? 'bg-dark text-light' : ''}`}
                 onClick={() => {
                   updateActive(false);
-                  updateCurrent(item.fullName);
-                  props.onChange(item._id);
+                  updateCurrentAssignee(item.fullName);
+                  props.onChange({ assignee: item.fullName, assigneeId: item._id });
                 }}
                 style={{ cursor: 'pointer' }}
                 onMouseEnter={() => updateCurrentHover(item._id)}
@@ -111,21 +135,23 @@ const SearchSelectBox = (props: PropsType) => {
           <div className={`px-3 py-1 ${currentHover === '5' ? 'bg-dark text-light' : ''}`}
             onClick={() => {
               updateActive(false);
-              updateCurrent("Tesla")
+              updateCurrentAssignee('Test Users');
+              props.onChange({assignee: 'Test User', assigneeId: 'test id'})
             }}
             style={{ cursor: 'pointer' }}
             onMouseEnter={() => updateCurrentHover('5')}
             onMouseLeave={() => updateCurrentHover('0')}>
-            <label className="m-0" style={{ cursor: 'pointer' }}>Tesla</label>
+            <label className="m-0" style={{ cursor: 'pointer' }}>Test User</label>
           </div>
 
 
 
         </div>
+        {/* end of scroll selection */}
 
       </div>
-          
-      <ConsoleLogButton name="data" state={data}/>
+
+      <ConsoleLogButton name="data" state={data} />
     </div>
   )
 }

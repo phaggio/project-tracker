@@ -5,11 +5,16 @@ import CancelButton from '../CancelButton';
 import ConsoleLogButton from '../ConsoleLogButton';
 import SearchSelectBox from '../SearchSelectBox';
 
-
 type PropsType = {
+  assigneeId: string | null;
   assignee: string;
   users: userObj[];
-  saveButtonPressed: (part: string, payload: string) => void;
+  saveButtonPressed: (part: string, payload: PayloadObj) => void;
+}
+
+type PayloadObj = {
+  assigneeId: string | null;
+  assignee: string;
 }
 
 type userObj = {
@@ -17,12 +22,16 @@ type userObj = {
   firstName: string;
   lastName: string;
   fullName: string;
+  email: string;
   _id: string;
 }
 
 const AssigneeDiv = (props: PropsType) => {
   const [editMode, updateEditMode] = useState(false);
-  const [draft, updateDraft] = useState(props.assignee);
+  const [draft, updateDraft] = useState<PayloadObj>({
+    assignee: props.assignee,
+    assigneeId: props.assigneeId
+  });
   const [users] = useState<userObj[]>(props.users);
 
   return (
@@ -45,18 +54,21 @@ const AssigneeDiv = (props: PropsType) => {
         }
       </div>
 
-      {editMode && users.length > 0 ?
-        <SearchSelectBox defaultValue={props.assignee}
-          users={users} onChange={updateDraft} />
+      {editMode ?
+        <SearchSelectBox currentAssigneeId={props.assigneeId}
+          currentAssignee={props.assignee}
+          users={users}
+          onChange={updateDraft} />
         :
         <div>
           <h5>{props.assignee}</h5>
         </div>
       }
 
-      <hr className="mt-3" />
-      <button onClick={() => console.log(users)}>check users state in AssigneeDiv</button>
-      <ConsoleLogButton state={draft} name="draft" />
+      <hr className="mt-2" />
+
+      <ConsoleLogButton state={draft} name="assignee draft" />
+      <ConsoleLogButton state={users} name="users" />
     </div >
   )
 }
