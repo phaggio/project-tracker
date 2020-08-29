@@ -26,48 +26,40 @@ const Feature = ({ match }: PathProps) => {
 
 	const [featureId] = useState<string | undefined>(match.params.id);
 	const [feature, updateFeature] = useState<FeatureType | undefined>();
-	const [projectId, updateProjectId] = useState<string | undefined>(undefined);
-	const [project, updateProject] = useState<ProjectType | undefined>(undefined);
+	const [projects, updateProjects] = useState<ProjectType[] | undefined>(undefined)
 	const [workItems, updateWorkItems] = useState<WorkItemType[] | undefined>()
 	const [users, updateUsers] = useState<[] | undefined>(undefined);
 
+	// update feature in database when feature state changes
 	useEffect(() => {
-		console.log('making GET api call to get feature data...');
-		if (featureId !== undefined) {
+		if (feature) {
 			featureRequest
-				.getFeatureById(featureId)
-				.then(res => {
-					console.log('Received feature data, updating feature state...')
-					updateFeature(res.data)
-				})
-				.catch(err => console.error(err));
-			workItemRequest
-				.getWorkItemsByParentId(featureId)
-				.then(res => updateWorkItems(res.data))
-				.catch(err => console.error(err))
-		}
-	}, [featureId])
-
-	useEffect(() => {
-		if (feature && feature.parentId !== projectId && projectId !== undefined) {
-			projectRequest.getProjectById(projectId)
-				.then(res => {
-					console.log('Received project data, updating project data...')
-					updateProject(res.data)
-				})
-				.catch(err => console.error(err))
-		}
-		if (featureId && feature) {
-			featureRequest.updateFeatureById(featureId, feature)
+				.updateFeatureById(match.params.id, feature)
 				.then(res => console.log(res.data))
 				.catch(err => console.error(err))
 		}
 	}, [feature])
 
-	// init Get to get all users data
+	// init Get to get all projects, users data for selection and current feature data and its children items
 	useEffect(() => {
-		userRequest.getUser()
-			.then(res => updateUsers(res.data));
+		if (match.params.id) {
+			featureRequest
+				.getFeatureById(match.params.id)
+				.then(res => updateFeature(res.data))
+				.catch(err => console.error(err))
+			userRequest
+				.getUser()
+				.then(res => updateUsers(res.data))
+				.catch(err => console.error(err))
+			projectRequest
+				.getAllProjects()
+				.then(res => updateProjects(res.data))
+				.catch(err => console.error(err))
+			workItemRequest
+				.getWorkItemsByParentId(match.params.id)
+				.then(res => updateWorkItems(res.data))
+				.catch(err => console.error(err))
+		}
 	}, []);
 
 	// a custom function that checks whether the object is AssigneeType obj
@@ -112,7 +104,7 @@ const Feature = ({ match }: PathProps) => {
 	return (
 		<div className="container">
 
-			{feature !== undefined && workItems !== undefined ?
+			{feature !== undefined && projects !== undefined && workItems !== undefined ?
 				<div>
 					{/* start of first row */}
 					< div className="row">
@@ -145,11 +137,14 @@ const Feature = ({ match }: PathProps) => {
 							}
 
 							<div>
-								{/* <ParentItemDiv type="feature"
-									parentType={feature.parentType}
-									parentName={feature.parentName}
-									parentId={feature.parentId}
-									saveButtonPressed={updateParent} /> */}
+								<ParentItemDiv type="feature"
+									currentParent={{
+										parentType: feature.parentType,
+										parentName: feature.parentName,
+										parentId: feature.parentId
+									}}
+									parents={projects}
+									saveButtonPressed={updateParent} />
 							</div>
 
 							<div className="pt-1">
@@ -186,8 +181,6 @@ const Feature = ({ match }: PathProps) => {
 				</div>
 				: ''
 			}
-
-
 
 
 			< div className="col-3" >
