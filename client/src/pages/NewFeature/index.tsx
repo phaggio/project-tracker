@@ -1,24 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { PathProps } from '../../util/dataTypes'
+import { ProjectType, ItemType, PathProps, ParentPayloadType, AssigneePayloadType } from '../../util/dataTypes'
 import { AxiosResponse } from 'axios';
-import { featureRequest, projectRequest, itemRequest } from '../../httpRequests';
-import ParentList from '../../components/ParentList';
+import { projectRequest, itemRequest, userRequest } from '../../httpRequests';
 import ParentSelectBox from '../../components/ParentSelectBox';
+import AssigneeSelectBox from '../../components/AssigneeSelectBox';
 import ConsoleLogButton from '../../components/ConsoleLogButton';
-import { response } from 'express';
+
 
 const NewFeature = ({ match }: PathProps) => {
   console.log('Rendering NewFeature page...');
 
   const [disableCreateButton, updateDisableCreateButton] = useState(true);
-  const [projects, updateProjects] = useState([]);
-  const [items, updateItems] = useState([]);
+  const [projects, updateProjects] = useState<ProjectType[] | undefined>(); // potential parents
+  const [items, updateItems] = useState<ItemType[] | undefined>(); // potential parents
+  const [users, updateUsers] = useState([]) // potential assignees
+  const [parents, updateParents] = useState<(ProjectType | ItemType)[]>([]);
 
-  const [parentType, updateParentType] = useState(match.params.parentType ? match.params.parentType : '');
-  const [parentId, updateParentId] = useState(match.params.parentId ? match.params.parentId : '')
-  const [name, updateName] = useState('');
-  const [assignee, updateAssignee] = useState('');
-  const [description, updateDescription] = useState('');
+  const [currentParent, updateCurrentParent] = useState<ProjectType | ItemType | undefined>()
+  const [draft, updateDraft] = useState({});
+
   const [tags] = useState([])
 
   // initial GET request to get list of projects for dropdown selection
@@ -31,62 +31,83 @@ const NewFeature = ({ match }: PathProps) => {
     itemRequest
       .getAllWorkItems()
       .then((response: AxiosResponse) => updateItems(response.data))
+      .catch(err => console.error(err))
+    userRequest
+      .getAllUsers()
+      .then((response: AxiosResponse) => updateUsers(response.data))
+      .catch(err => console.error(err))
+    // add parentId to draft if found in URL params
+    if (match.params.parentId !== undefined) updateDraft({ parentId: match.params.parentId })
   }, [])
 
-  const parseParentInfo = (str: string) => {
-    const infoArr = str.split('/');
-    updateParentType(infoArr[0] ? infoArr[0].trim() : '');
-    updateParentId(infoArr[1] ? infoArr[1].trim() : '');
-  }
+  // update parents state once projects and items loaded
+  useEffect(() => {
+    if (projects && items) {
+      updateParents([...projects, ...items]);
+      if (match.params.parentId) {
+        if (match.params.parentType === 'project') {
+          for (const project of projects) {
+            if (project._id === match.params.parentId) {
+              updateCurrentParent(project);
+              break;
+            }
+          }
+        } else if (match.params.parentType === 'item') {
+          for (const item of items) {
+            if (item._id === match.params.parentId) {
+              updateCurrentParent(item);
+              break;
+            }
+          }
+        }
+      }
+    }
+
+  }, [projects, items])
+
+
 
 
   const submitButtonPressed = (event: React.FormEvent) => {
     event.preventDefault();
     console.log(`submit button pressed..`)
 
-    // need to make proper API call and what to show to user after creating the feature.
-    const data = {
-      projectId: parentId,
-      type: 'feature',
-      name: name,
-      description: description,
-      assignee: assignee,
-      tags: tags
-    };
-    console.log(`sending`, data);
-    featureRequest.addNewFeature(data)
-      .then((response: AxiosResponse) => console.log(response))
-      .catch(err => console.error(err));
+
+    // featureRequest.addNewFeature(data)
+    //   .then((response: AxiosResponse) => console.log(response))
+    //   .catch(err => console.error(err));
   };
 
-  const handleParentInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInput = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const id = event.target.id;
     const input = event.target.value.trim();
-    if (input) parseParentInfo(input);
-  };
+    switch (id) {
+      case 'name':
+        updateDraft({ ...draft, name: input });
+        updateDisableCreateButton(input ? false : true);
+        break;
+      case 'description':
+        updateDraft({ ...draft, description: input });
+      default:
+        break;
+    }
+  }
 
-  const handleNameInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const input = event.target.value.trim();
-    input ? updateDisableCreateButton(false) : updateDisableCreateButton(true);
-    updateName(input);
-  };
+  const handleParentSelection = (payload: ParentPayloadType) => {
+    console.log(payload);
+    updateDraft({ ...draft, parentId: payload.parentId })
+  }
 
-  const handleDescriptionInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const input = event.target.value.trim();
-    updateDescription(input);
-  };
+  const handleAssigneeInput = (payload: AssigneePayloadType) => {
+    console.log(payload)
+    updateDraft({ ...draft, assigneeId: payload.assigneeId })
+  }
 
-  const handleAssigneeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const input = event.target.value.trim();
-    updateAssignee(input);
-  };
 
 
   return (
     <div className="container">
-      <form
-        method="POST"
-        onSubmit={submitButtonPressed}
-      >
+      <div>
 
         <div className="form-group">
           <div className="d-flex justify-content-between align-items-baseline">
@@ -94,42 +115,46 @@ const NewFeature = ({ match }: PathProps) => {
             <small>Required</small>
           </div>
           <input type="text"
+            id="name"
             className="form-control"
-            onChange={event => handleNameInput(event)}
-            placeholder="enter name..." />
+            onChange={event => handleInput(event)}
+            placeholder="enter name ..." />
         </div>
 
-        <div className="form-group">
+        <div className="">
           <label className="font-weight-light">Parent</label>
-          <input type="text"
-            className="form-control"
-            list="projects"
-            onChange={event => handleParentInput(event)}
-            placeholder="Select parent item"
-            defaultValue={match.params.parentId ? `${parentType}/${parentId}` : ''}
-            spellCheck={false}
-          />
-          <ParentList dataArr={projects}
-            listName="projects"
-            defaultOption="No project found" />
+          <ParentSelectBox currentParent={{
+            parentType: match.params.parentType ? match.params.parentType : null,
+            parentName: currentParent ? currentParent.name : 'null',
+            parentId: match.params.parentId ? match.params.parentId : null
+          }}
+            parents={parents}
+            onChange={handleParentSelection} />
         </div>
 
-
-
         <div className="form-group">
-          <label>Description</label>
+          <label className="font-weight-light">Description</label>
           <textarea
+            id="description"
             className="form-control"
-            onChange={event => handleDescriptionInput(event)}
-            placeholder="Description" />
+            style={{ height: 120 }}
+            onChange={event => handleInput(event)}
+            placeholder="enter description ..." />
         </div>
 
+        <div>
+          <label className="font-weight-light">Assign to:</label>
+          <AssigneeSelectBox currentAssigneeId={null}
+            currentAssignee="Unassigned" users={users} onChange={handleAssigneeInput} />
+        </div>
+
+
         <div className="form-group">
-          <label>Assign to: </label>
+          <label className="font-weight-light">Assign to: </label>
           <input type="text"
             className="form-control"
-            onChange={event => handleAssigneeInput(event)}
-            placeholder="Assignee" />
+            // onChange={event => handleAssigneeInput(event)}
+            placeholder="select an assignee ..." />
         </div>
 
         <button type="submit"
@@ -138,39 +163,15 @@ const NewFeature = ({ match }: PathProps) => {
         >Add feature
         </button>
 
-      </form>
-
-      <div className="col-3">
-        <ConsoleLogButton name="match" state={match} />
-        <ConsoleLogButton name="projects" state={projects} />
-        <ConsoleLogButton name="items" state={items} />
       </div>
 
-      <button className="btn btn-danger btn-sm m-1"
-        onClick={() => console.log(
-          `
-          name: ${name} 
-          description ${description} 
-          assignee ${assignee}`)}>
-        console.log input states
-      </button>
-      <br />
-      <button className="btn btn-danger btn-sm m-1"
-        onClick={() => console.log(projects)}>
-        console.log projects states
-      </button>
-
-      <br />
-      <button className="btn btn-danger btn-sm m-1"
-        onClick={() => console.log(parentId, parentType)}>
-        console.log parent states
-      </button>
-
-      <br />
-      <button className="btn btn-danger btn-sm m-1"
-        onClick={() => console.log(parentType)}>
-        console.log parent type
-      </button>
+      <div className="col-5">
+        <ConsoleLogButton name="match params" state={match.params} />
+        <ConsoleLogButton name="projects" state={projects} />
+        <ConsoleLogButton name="items" state={items} />
+        <ConsoleLogButton name="users" state={users} />
+        <ConsoleLogButton name="draft" state={draft} />
+      </div>
 
     </div>
   )

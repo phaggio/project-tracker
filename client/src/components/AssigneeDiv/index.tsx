@@ -3,7 +3,7 @@ import EditButton from '../EditButton';
 import SaveButton from '../SaveButton';
 import CancelButton from '../CancelButton';
 import ConsoleLogButton from '../ConsoleLogButton';
-import SearchSelectBox from '../SearchSelectBox';
+import AssigneeSelectBox from '../AssigneeSelectBox';
 
 type PropsType = {
   assigneeId: string | null;
@@ -55,7 +55,7 @@ const AssigneeDiv = (props: PropsType) => {
       </div>
 
       {editMode ?
-        <SearchSelectBox currentAssigneeId={props.assigneeId}
+        <AssigneeSelectBox currentAssigneeId={props.assigneeId}
           currentAssignee={props.assignee}
           users={users}
           onChange={updateDraft} />

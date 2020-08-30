@@ -15,12 +15,13 @@ type ParentType = {
 }
 
 const ParentSelectBox = (props: PropsType) => {
-  const constantParents = props.parents;
+  const constantParents = (props.parents);
 
-  const [currentParent, updateCurrentParent] = useState<ParentPayloadType>(props.currentParent);
+  const [currentParent, updateCurrentParent] = useState(props.currentParent);
 
   const [currentHover, updateCurrentHover] = useState<string>('');
   const [active, updateActive] = useState<boolean>(false);
+
   const [filteredParents, updateFilteredParents] = useState<ParentType[]>(props.parents);
   const [filter, updateFilter] = useState<string>('');
 
@@ -38,7 +39,11 @@ const ParentSelectBox = (props: PropsType) => {
         return match;
       })
     )
-  }, [filter])
+  }, [filter]);
+
+  useEffect(() => {
+    updateFilteredParents(constantParents)
+  }, [constantParents])
 
 
   return (
@@ -86,16 +91,16 @@ const ParentSelectBox = (props: PropsType) => {
           }}>
 
           {/* Unassigned option */}
-          <div className={`px-3 py-1 ${currentHover === 'Unassigned' ? 'bg-dark text-light' : ''}`}
+          <div className={`px-3 py-1 ${currentHover === '(open)' ? 'bg-dark text-light' : ''}`}
             onClick={() => {
               updateActive(false);
-              updateCurrentParent({ parentType: null, parentName: 'Unassigned', parentId: null });
-              props.onChange({ parentType: null, parentName: 'Unassigned', parentId: null });
+              updateCurrentParent({ parentType: null, parentName: '(open)', parentId: null });
+              props.onChange({ parentType: null, parentName: '(open)', parentId: null });
             }}
             style={{ cursor: 'pointer' }}
-            onMouseEnter={() => updateCurrentHover('Unassigned')}
+            onMouseEnter={() => updateCurrentHover('(open)')}
             onMouseLeave={() => updateCurrentHover('')}>
-            <label className="m-0" style={{ cursor: 'pointer' }}>Unassigned</label>
+            <label className="m-0" style={{ cursor: 'pointer' }}>(open)</label>
           </div>
 
           {
@@ -124,7 +129,9 @@ const ParentSelectBox = (props: PropsType) => {
 
       </div>
 
-      <div className="col-3">
+      <div className="col-5">
+        <ConsoleLogButton name="current parents" state={currentParent} />
+        <ConsoleLogButton name="constant parents" state={constantParents} />
         <ConsoleLogButton name="filtered parents" state={filteredParents} />
       </div>
 

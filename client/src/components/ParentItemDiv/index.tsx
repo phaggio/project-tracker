@@ -63,8 +63,11 @@ const ParentItemDiv = (props: PropsType) => {
         </div>
       }
 
-      <ConsoleLogButton name="draft" state={draft} />
-      <ConsoleLogButton name="parents" state={props.parents} />
+      <div className="col-3">
+        <ConsoleLogButton name="draft" state={draft} />
+        <ConsoleLogButton name="parents" state={props.currentParent} />
+        <ConsoleLogButton name="parents" state={props.parents} />
+      </div>
     </div>
   )
 }

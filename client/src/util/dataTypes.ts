@@ -73,6 +73,11 @@ type ParentPayloadType = {
   parentType: string | null;
   parentName: string;
   parentId: string | null
+};
+
+type AssigneePayloadType = {
+  assigneeId: string | null;
+  assignee: string;
 }
 
 export type {
@@ -83,5 +88,6 @@ export type {
   ItemType,
   FeatureType,
   ProjectType,
-  ParentPayloadType
+  ParentPayloadType,
+  AssigneePayloadType
 };

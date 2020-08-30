@@ -25,24 +25,25 @@ type userObj = {
   _id: string;
 }
 
-const SearchSelectBox = (props: PropsType) => {
+const AssigneeSelectBox = (props: PropsType) => {
   console.log('Rendering search select box...')
-  const [staticData, updateStaticData] = useState<userObj[]>(props.users);
+  const constantUsers = (props.users);
   // current selected users
   const [currentAssignee, updateCurrentAssignee] = useState(props.currentAssignee);
+
   const [currentHover, updateCurrentHover] = useState('');
   const [active, updateActive] = useState(false);
-  const [data, updateData] = useState<userObj[]>(props.users);
+
+  const [filteredUsers, updateFilteredUsers] = useState<userObj[]>(props.users);
   const [filter, updateFilter] = useState('');
 
   // filter selection
   useEffect(() => {
-    updateData(
-      staticData.filter(item => {
-        const words = item.fullName!.split(' ');
+    updateFilteredUsers(
+      constantUsers.filter(user => {
+        const words = user.fullName!.split(' ');
         let match = false;
         words.forEach(word => {
-          console.log(word.toLowerCase(), filter.toLowerCase())
           if (word.toLowerCase().startsWith(filter.toLowerCase())) {
             match = true;
           }
@@ -51,6 +52,10 @@ const SearchSelectBox = (props: PropsType) => {
       })
     )
   }, [filter])
+
+  useEffect(() => {
+    updateFilteredUsers(constantUsers);
+  }, [constantUsers])
 
   return (
     <div className="d-flex flex-column">
@@ -110,19 +115,19 @@ const SearchSelectBox = (props: PropsType) => {
             <label className="m-0" style={{ cursor: 'pointer' }}>Unassigned</label>
           </div>
 
-          {data.length > 0 ? data.map(item => {
+          {filteredUsers.length > 0 ? filteredUsers.map(user => {
             return (
-              <div key={item._id}
-                className={`px-3 py-1 ${currentHover === item._id ? 'bg-dark text-light' : ''}`}
+              <div key={user._id}
+                className={`px-3 py-1 ${currentHover === user._id ? 'bg-dark text-light' : ''}`}
                 onClick={() => {
                   updateActive(false);
-                  updateCurrentAssignee(item.fullName);
-                  props.onChange({ assignee: item.fullName, assigneeId: item._id });
+                  updateCurrentAssignee(user.fullName);
+                  props.onChange({ assignee: user.fullName, assigneeId: user._id });
                 }}
                 style={{ cursor: 'pointer' }}
-                onMouseEnter={() => updateCurrentHover(item._id)}
+                onMouseEnter={() => updateCurrentHover(user._id)}
                 onMouseLeave={() => updateCurrentHover('')}>
-                <label className="m-0" style={{ cursor: 'pointer' }}>{item.fullName}</label>
+                <label className="m-0" style={{ cursor: 'pointer' }}>{user.fullName}</label>
               </div>
             )
           })
@@ -151,11 +156,12 @@ const SearchSelectBox = (props: PropsType) => {
 
       </div>
 
-      <div className="col-3">
-        <ConsoleLogButton name="select box data" state={data} />
+      <div className="col-5">
+        <ConsoleLogButton name="filtered users" state={filteredUsers} />
+        <ConsoleLogButton name="current assignee" state={currentAssignee} />
       </div>
     </div>
   )
 }
 
-export default SearchSelectBox
+export default AssigneeSelectBox
