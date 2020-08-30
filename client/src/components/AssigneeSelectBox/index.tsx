@@ -156,7 +156,7 @@ const AssigneeSelectBox = (props: PropsType) => {
 
       </div>
 
-      <div className="col-5">
+      <div className="div">
         <ConsoleLogButton name="filtered users" state={filteredUsers} />
         <ConsoleLogButton name="current assignee" state={currentAssignee} />
       </div>

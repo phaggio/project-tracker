@@ -8,6 +8,7 @@ import ConsoleLogButton from '../ConsoleLogButton';
 type PropsType = {
   type: string;
   currentParent: ParentPayloadType;
+  currentParentId: string | null;
   parents: ParentType[];
   saveButtonPressed: (part: string, payload: ParentPayloadType) => void;
 }
@@ -52,8 +53,9 @@ const ParentItemDiv = (props: PropsType) => {
 
       {editMode ?
         <div>
-          <ParentSelectBox currentParent={props.currentParent}
-            parentId={props.currentParent.parentId}
+          <ParentSelectBox 
+            // currentParent={props.currentParent}
+            parentId={props.currentParentId}
             parents={props.parents}
             onChange={updateDraft}
           />

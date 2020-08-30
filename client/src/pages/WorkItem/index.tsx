@@ -137,6 +137,7 @@ const WorkItem = ({ match }: PathProps) => {
                     parentName: workItem.parentName,
                     parentId: workItem.parentId
                   }}
+                  currentParentId={workItem.parentId}
                   parents={[...projects, ...features]}
                   saveButtonPressed={updateParent} />
                 <hr className="mt-2" />

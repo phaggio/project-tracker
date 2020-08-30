@@ -140,6 +140,7 @@ const Feature = ({ match }: PathProps) => {
 										parentName: feature.parentName,
 										parentId: feature.parentId
 									}}
+									currentParentId={feature.parentId}
 									parents={projects}
 									saveButtonPressed={updateParent} />
 							</div>

@@ -3,7 +3,7 @@ import { ParentPayloadType } from '../../util/dataTypes';
 import ConsoleLogButton from '../ConsoleLogButton';
 
 type PropsType = {
-  currentParent: ParentPayloadType;
+  // currentParent: ParentPayloadType;
   parentId: string | null;
   parents: ParentType[];
   onChange: (parentObj: ParentPayloadType) => void;
@@ -145,7 +145,7 @@ const ParentSelectBox = (props: PropsType) => {
 
       </div>
 
-      <div className="col-5">
+      <div className="">
         <ConsoleLogButton name="current parents" state={currentParent} />
         <ConsoleLogButton name="constant parents" state={constantParents} />
         <ConsoleLogButton name="filtered parents" state={filteredParents} />
