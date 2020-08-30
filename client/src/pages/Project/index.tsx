@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PathProps } from '../../util/dataTypes'
-import { projectRequest, featureRequest, workItemRequest } from '../../httpRequests';
+import { projectRequest, featureRequest, itemRequest } from '../../httpRequests';
 import NameBadgeDiv from '../../components/NameBadgeDiv';
 import TagsDiv from '../../components/TagsDiv';
 import DescriptionDiv from '../../components/DescriptionDiv';
@@ -58,7 +58,7 @@ const Project = ({ match }: PathProps) => {
 			featureRequest
 				.getFeaturesByProjectId(projectId)
 				.then(res => updateFeatures(res.data));
-			workItemRequest
+			itemRequest
 				.getWorkItemsByParentId(projectId)
 				.then(res => updateWorkItems(res.data));
 		}

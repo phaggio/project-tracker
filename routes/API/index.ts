@@ -8,7 +8,7 @@ const router: Router = Router();
 
 router.use('/project', projectRoutes);
 router.use('/feature', featureRoutes);
-router.use('/workitem', workItemRoutes);
+router.use('/item', workItemRoutes);
 router.use('/user', userRoutes);
 
 export default router;

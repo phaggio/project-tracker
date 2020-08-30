@@ -1,17 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { ParentPayloadType } from '../../util/dataTypes';
 import ConsoleLogButton from '../ConsoleLogButton';
-
 
 type PropsType = {
   currentParent: ParentPayloadType;
   parents: ParentType[];
   onChange: (parentObj: ParentPayloadType) => void;
-}
-
-type ParentPayloadType = {
-  parentType: string | null;
-  parentName: string;
-  parentId: string | null;
 }
 
 type ParentType = {
@@ -37,7 +31,6 @@ const ParentSelectBox = (props: PropsType) => {
         const words = parent.name.split(' ');
         let match = false;
         words.forEach(word => {
-          console.log(word.toLowerCase(), filter.toLowerCase())
           if (word.toLowerCase().startsWith(filter.toLowerCase())) {
             match = true;
           }

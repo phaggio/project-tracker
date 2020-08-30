@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { PathProps, ProjectType, FeatureType, WorkItemType, ParentPayloadType } from '../../util/dataTypes';
-import { projectRequest, featureRequest, userRequest, workItemRequest } from '../../httpRequests';
+import { projectRequest, featureRequest, userRequest, itemRequest } from '../../httpRequests';
 import NameBadge from '../../components/NameBadgeDiv';
 import TagsDiv from '../../components/TagsDiv';
 import AssigneeDiv from '../../components/AssigneeDiv';
@@ -17,22 +17,12 @@ type AssigneeType = {
 
 const Feature = ({ match }: PathProps) => {
 	console.log(`Rendering Feature page... `);
+	const currentFeatureId = match.params.id;
 
-	const [featureId] = useState<string | undefined>(match.params.id);
 	const [feature, updateFeature] = useState<FeatureType | undefined>();
 	const [projects, updateProjects] = useState<ProjectType[] | undefined>(undefined)
 	const [workItems, updateWorkItems] = useState<WorkItemType[] | undefined>()
 	const [users, updateUsers] = useState<[] | undefined>(undefined);
-
-	// update feature in database when feature state changes
-	useEffect(() => {
-		if (feature) {
-			featureRequest
-				.updateFeatureById(match.params.id, feature)
-				.then(res => console.log(res.data))
-				.catch(err => console.error(err))
-		}
-	}, [feature])
 
 	// init Get to get all projects, users data for selection and current feature data and its children items
 	useEffect(() => {
@@ -49,12 +39,24 @@ const Feature = ({ match }: PathProps) => {
 				.getAllProjects()
 				.then(res => updateProjects(res.data))
 				.catch(err => console.error(err))
-			workItemRequest
+			itemRequest
 				.getWorkItemsByParentId(match.params.id)
 				.then(res => updateWorkItems(res.data))
 				.catch(err => console.error(err))
 		}
 	}, []);
+
+	// update feature in database when feature state changes
+	useEffect(() => {
+		if (feature) {
+			featureRequest
+				.updateFeatureById(currentFeatureId, feature)
+				.then(res => console.log(res.data))
+				.catch(err => console.error(err))
+		}
+	}, [feature])
+
+
 
 	// a custom function that checks whether the object is AssigneeType obj
 	const isAssigneeType = (arg: any): arg is AssigneeType => {
@@ -79,6 +81,7 @@ const Feature = ({ match }: PathProps) => {
 				if (isAssigneeType(payload) && feature) {
 					updateFeature({ ...feature, assignee: payload.assignee, assigneeId: payload.assigneeId })
 				}
+				break;
 			default:
 				break;
 		}
@@ -179,7 +182,6 @@ const Feature = ({ match }: PathProps) => {
 
 			< div className="col-3" >
 				<ConsoleLogButton name="feature" state={feature} />
-				<ConsoleLogButton name="feature Id" state={featureId} />
 				<ConsoleLogButton name='users' state={users} />
 			</div >
 

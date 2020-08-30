@@ -34,21 +34,6 @@ const ProjectSchema: Schema = new Schema({
   tags: {
     type: [String],
     index: true
-  },
-
-  features: {
-    type: [String],
-    default: []
-  },
-
-  workItems: {
-    type: [String],
-    default: []
-  },
-
-  bugs: {
-    type: [String],
-    default: []
   }
 })
 

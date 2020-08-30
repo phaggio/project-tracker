@@ -1,30 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { PathProps } from '../../util/dataTypes'
 import { AxiosResponse } from 'axios';
-import { featureRequest, projectRequest } from '../../httpRequests';
+import { featureRequest, projectRequest, itemRequest } from '../../httpRequests';
 import ParentList from '../../components/ParentList';
-
-type PathProps = {
-  history: boolean;
-  location: string;
-  match: MatchObj;
-};
-
-type MatchObj = {
-  isExact: boolean;
-  params: MatchParams;
-  path: string;
-  url: string;
-};
-
-type MatchParams = {
-  type: string;
-  name: string;
-  id: string;
-};
-
+import ConsoleLogButton from '../../components/ConsoleLogButton';
 
 const NewFeature = ({ match }: PathProps) => {
-  console.log('rendering NewFeature page...')
+  console.log('Rendering NewFeature page...');
+
   const [disableCreateButton, updateDisableCreateButton] = useState(true);
   const [projects, updateProjects] = useState([]);
 
@@ -152,7 +135,9 @@ const NewFeature = ({ match }: PathProps) => {
 
       </form>
 
-      <br />
+      <div className="col-3">
+        <ConsoleLogButton name="match" state={match} />
+      </div>
 
       <button className="btn btn-danger btn-sm m-1"
         onClick={() => console.log(

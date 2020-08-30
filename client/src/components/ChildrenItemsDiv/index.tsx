@@ -24,18 +24,18 @@ const ChildrenItemsDiv = (props: PropsType) => {
   let buttons = props.type === 'project' ? [
     {
       name: 'Feature',
-      url: `/new/feature/${props.type}/${props.name}/${props._id}`,
+      url: `/new/feature/${props.type}/${props._id}`,
       ariaLabel: 'add-new-feature',
       title: 'add new feature'
     }] : [];
   buttons = [...buttons, {
     name: 'Work item',
-    url: `/new/workitem/${props.type}/${props.name}/${props._id}`,
+    url: `/new/workitem/${props.type}/${props._id}`,
     ariaLabel: 'add-new-work-item',
     title: 'add new work item'
   }, {
     name: 'Bug',
-    url: `/new/bug/${props.type}/${props.name}/${props._id}`,
+    url: `/new/bug/${props.type}/${props._id}`,
     ariaLabel: 'add-new-bug',
     title: 'add new bug'
   }]

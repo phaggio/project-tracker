@@ -12,6 +12,8 @@ type MatchObj = {
 };
 
 type MatchParams = {
+  type: string;
+  name: string;
   id: string;
 };
 

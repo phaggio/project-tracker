@@ -3,7 +3,7 @@ import Boards from './Boards';
 import Settings from './Settings';
 import NewProject from './NewProject';
 import NewFeature from './NewFeature';
-import NewWorkItem from './NewWorkItem';
+import NewWork from './NewWork';
 import NewUser from './NewUser';
 import Project from './Project';
 import Feature from './Feature';
@@ -15,7 +15,7 @@ export {
   Settings,
   NewProject,
   NewFeature,
-  NewWorkItem,
+  NewWork,
   NewUser,
   Project,
   Feature,

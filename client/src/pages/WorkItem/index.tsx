@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PathProps, ProjectType, FeatureType, WorkItemType, ParentPayloadType } from '../../util/dataTypes'
-import { projectRequest, featureRequest, workItemRequest, userRequest } from '../../httpRequests';
+import { projectRequest, featureRequest, itemRequest, userRequest } from '../../httpRequests';
 import NameBadge from '../../components/NameBadgeDiv';
 import TagsDiv from '../../components/TagsDiv';
 import AssigneeDiv from '../../components/AssigneeDiv';
@@ -28,7 +28,7 @@ const WorkItem = ({ match }: PathProps) => {
   useEffect(() => {
     if (match.params.id) {
       console.log('param exists, need to make API call');
-      workItemRequest
+      itemRequest
         .getWorkItemById(match.params.id)
         .then(res => {
           // if res.data.name does not exist, incorrect _id in URL
@@ -49,7 +49,7 @@ const WorkItem = ({ match }: PathProps) => {
 
   useEffect(() => {
     if (workItem) {
-      workItemRequest
+      itemRequest
         .updateWorkItemById(match.params.id, workItem)
         .then(res => console.log(res.data))
         .catch(err => console.error(err))

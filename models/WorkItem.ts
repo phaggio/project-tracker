@@ -1,22 +1,28 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
 export interface IWorkItem extends Document {
+  parentId: string | null;
   status: string;
   name: string;
   description: string;
   type: string;
   tags: string[];
-  parentType: string | null;
-  parentName: string;
-  parentId: string | null;
   assigneeId: string | null;
-  assignee: string;
 }
 
 const WorkItemSchema: Schema = new Schema({
+  parentId: {
+    type: String,
+    default: null,
+    index: true
+  },
+
   status: {
     type: String,
-    default: 'Open'
+    default: 'Open',
+    required: true,
+    index: true,
+    enum: ['Open', 'Active', 'Completed', 'In-review', 'Closed']
   },
 
   name: {
@@ -30,7 +36,10 @@ const WorkItemSchema: Schema = new Schema({
 
   type: {
     type: String,
-    default: 'workItem'
+    required: true,
+    default: 'workItem',
+    index: true,
+    enum: ['feature', 'workItem', 'bug']
   },
 
   tags: {
@@ -38,31 +47,11 @@ const WorkItemSchema: Schema = new Schema({
     index: true
   },
 
-  parentType: {
-    type: String,
-    default: null
-  },
-
-  parentName: {
-    type: String,
-    default: 'Unassigned'
-  },
-
-  parentId: {
-    type: String,
-    default: null
-  },
-  
   assigneeId: {
     type: String,
     default: null
-  },
-
-  assignee: {
-    type: String,
-    default: 'Unassigned'
   }
-  
+
 })
 
 export default mongoose.model<IWorkItem>('WorkItem', WorkItemSchema);

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { AxiosResponse } from 'axios';
-import { featureRequest, projectRequest, userRequest, workItemRequest } from '../../httpRequests';
+import { featureRequest, projectRequest, userRequest, itemRequest } from '../../httpRequests';
 import FormGroupInput from '../../components/FormGroupInput';
 import FormGroupTextArea from '../../components/FormGroupTextArea';
 import ConsoleLogButton from '../../components/ConsoleLogButton';
@@ -35,7 +35,7 @@ type WorkItemType = {
   assigneeId: string | null
 }
 
-const NewWorkItem = ({ match }: PathProps) => {
+const NewWork = ({ match }: PathProps) => {
   const [projects, updateProjects] = useState([]);
   const [features, updateFeatures] = useState([]);
   const [users, updateUsers] = useState([]);
@@ -128,7 +128,7 @@ const NewWorkItem = ({ match }: PathProps) => {
     console.log(`submit button pressed..`)
     const data = workItem;
     console.log(`sending`, data);
-    workItemRequest.addNewWorkItem(data)
+    itemRequest.addNewWorkItem(data)
       .then((response: AxiosResponse) => console.log(response))
       .catch(err => console.error(err));
   };
@@ -212,4 +212,4 @@ const NewWorkItem = ({ match }: PathProps) => {
 };
 
 
-export default NewWorkItem;
+export default NewWork;

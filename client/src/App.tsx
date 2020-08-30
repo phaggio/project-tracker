@@ -13,8 +13,8 @@ const App = () => {
         <Route exact={true} path='/boards' component={pages.Boards} />
         <Route exact={true} path='/settings' component={pages.Settings} />
         <Route exact={true} path='/new/project' component={pages.NewProject} />
-        <Route exact={true} path='/new/feature/:type?/:name?/:id?' component={pages.NewFeature} />
-        <Route exact={false} path='/new/workitem/:type?/:name?/:id?' component={pages.NewWorkItem} />
+        <Route exact={true} path='/new/feature/:parentType?/:parentId?' component={pages.NewFeature} />
+        <Route exact={false} path='/new/work/:parentType?/:parentId?' component={pages.NewWork} />
         <Route exact={true} path='/new/user' component={pages.NewUser} />
         <Route exact={false} path='/project/:id?' component={pages.Project} />
         <Route exact={false} path='/feature/:id?' component={pages.Feature} />
