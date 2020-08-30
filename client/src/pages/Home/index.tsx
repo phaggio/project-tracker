@@ -1,18 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { ProjectType } from '../../util/dataTypes';
+import { ProjectType, ItemType } from '../../util/dataTypes';
 import ProjectList from '../../components/ProjectList';
 import { projectRequest, itemRequest } from '../../httpRequests';
 import ConsoleLogButton from '../../components/ConsoleLogButton';
-
-type ItemType = {
-  parentId: string | null;
-  status: string;
-  name: string;
-  description: string;
-  type: string;
-  tags: string[];
-  assigneeId: string | null;
-}
 
 const Home = () => {
   const [projects, updateProjects] = useState<ProjectType[]>([]);

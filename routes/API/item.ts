@@ -5,7 +5,7 @@ import {
   findWorkItemById,
   findWorkItemsByParentId,
   updateWorkItemById
-} from '../../controller/workItemController';
+} from '../../controller/itemController';
 
 const router: Router = Router();
 

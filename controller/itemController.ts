@@ -1,15 +1,15 @@
-import { WorkItem } from '../models';
+import { Item } from '../models';
 import { Request, Response } from 'express';
 
 const createNewWorkItem = (request: Request, response: Response) => {
-  WorkItem
+  Item
     .create(request.body)
     .then(data => response.json(data))
     .catch(err => console.error(err));
 }
 
 const findAllWorkItems = (request: Request, response: Response) => {
-  WorkItem
+  Item
     .find()
     .then(data => response.json(data))
     .catch(err => response.status(422).json(err))
@@ -17,7 +17,7 @@ const findAllWorkItems = (request: Request, response: Response) => {
 
 const findWorkItemById = (request: Request, response: Response) => {
   const id = request.params.id;
-  WorkItem
+  Item
     .findOne({ _id: id })
     .then(data => response.json(data))
     .catch(err => response.json(err))
@@ -25,7 +25,7 @@ const findWorkItemById = (request: Request, response: Response) => {
 
 const findWorkItemsByParentId = (request: Request, response: Response) => {
   const parentId = request.params.id;
-  WorkItem
+  Item
     .find({ parentId: parentId })
     .then(data => response.json(data))
     .catch(err => response.json(err))
@@ -34,7 +34,7 @@ const findWorkItemsByParentId = (request: Request, response: Response) => {
 const updateWorkItemById = (request: Request, response: Response) => {
   const id = request.params.id;
   const data = request.body;
-  WorkItem
+  Item
     .findOneAndUpdate({ _id: id }, data)
     .then(data => response.json(data))
     .catch(err => response.json(err))

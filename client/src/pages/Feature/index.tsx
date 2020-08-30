@@ -26,7 +26,7 @@ const Feature = ({ match }: PathProps) => {
 
 	// init Get to get all projects, users data for selection and current feature data and its children items
 	useEffect(() => {
-		if (match.params.id) {
+		if (match.params.parentId) {
 			featureRequest
 				.getFeatureById(match.params.id)
 				.then(res => updateFeature(res.data))
@@ -40,7 +40,7 @@ const Feature = ({ match }: PathProps) => {
 				.then(res => updateProjects(res.data))
 				.catch(err => console.error(err))
 			itemRequest
-				.getWorkItemsByParentId(match.params.id)
+				.getWorkItemsByParentId(match.params.parentId)
 				.then(res => updateWorkItems(res.data))
 				.catch(err => console.error(err))
 		}

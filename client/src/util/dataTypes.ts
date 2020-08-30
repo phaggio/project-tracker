@@ -12,10 +12,21 @@ type MatchObj = {
 };
 
 type MatchParams = {
-  type: string;
-  name: string;
+  parentType: string;
+  parentId: string;
   id: string;
 };
+
+type ItemType = {
+  _id: string;
+  parentId: string | null;
+  status: string;
+  name: string;
+  description: string;
+  type: string;
+  tags: string[];
+  assigneeId: string | null;
+}
 
 type WorkItemType = {
   _id: string;
@@ -32,25 +43,25 @@ type WorkItemType = {
 };
 
 type FeatureType = {
-	_id: string;
-	status: string;
-	name: string;
+  _id: string;
+  status: string;
+  name: string;
   description: string;
   type: string;
   tags: string[];
   parentType: string | null;
   parentName: string;
   parentId: string | null;
-	assigneeId: string | null;
-	assignee: string;
+  assigneeId: string | null;
+  assignee: string;
 };
 
 type ProjectType = {
   _id: string;
-	name: string,
+  name: string,
   description: string;
   status: string;
-	type: string;
+  type: string;
   tags: string[];
   features: string[];
   workItems: string[];
@@ -59,9 +70,9 @@ type ProjectType = {
 
 // payload type for updating item parent info.
 type ParentPayloadType = {
-	parentType: string | null;
-	parentName: string;
-	parentId: string | null
+  parentType: string | null;
+  parentName: string;
+  parentId: string | null
 }
 
 export type {
@@ -69,6 +80,7 @@ export type {
   MatchObj,
   MatchParams,
   WorkItemType,
+  ItemType,
   FeatureType,
   ProjectType,
   ParentPayloadType

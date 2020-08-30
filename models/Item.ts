@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
-export interface IWorkItem extends Document {
+export interface IItem extends Document {
   parentId: string | null;
   status: string;
   name: string;
@@ -10,7 +10,7 @@ export interface IWorkItem extends Document {
   assigneeId: string | null;
 }
 
-const WorkItemSchema: Schema = new Schema({
+const ItemSchema: Schema = new Schema({
   parentId: {
     type: String,
     default: null,
@@ -54,4 +54,4 @@ const WorkItemSchema: Schema = new Schema({
 
 })
 
-export default mongoose.model<IWorkItem>('WorkItem', WorkItemSchema);
+export default mongoose.model<IItem>('Item', ItemSchema);

@@ -1,14 +1,14 @@
 import { Router } from 'express';
 import projectRoutes from './project';
 import featureRoutes from './feature';
-import workItemRoutes from './workItem';
+import itemRoutes from './item';
 import userRoutes from './user';
 
 const router: Router = Router();
 
 router.use('/project', projectRoutes);
 router.use('/feature', featureRoutes);
-router.use('/item', workItemRoutes);
+router.use('/item', itemRoutes);
 router.use('/user', userRoutes);
 
 export default router;

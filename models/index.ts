@@ -1,11 +1,11 @@
 import User from './User';
 import Project from './Project';
 import Feature from './Feature';
-import WorkItem from './WorkItem'
+import Item from './Item';
 
 export {
   User,
   Project,
   Feature,
-  WorkItem
+  Item
 }

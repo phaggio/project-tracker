@@ -3,17 +3,19 @@ import { PathProps } from '../../util/dataTypes'
 import { AxiosResponse } from 'axios';
 import { featureRequest, projectRequest, itemRequest } from '../../httpRequests';
 import ParentList from '../../components/ParentList';
+import ParentSelectBox from '../../components/ParentSelectBox';
 import ConsoleLogButton from '../../components/ConsoleLogButton';
+import { response } from 'express';
 
 const NewFeature = ({ match }: PathProps) => {
   console.log('Rendering NewFeature page...');
 
   const [disableCreateButton, updateDisableCreateButton] = useState(true);
   const [projects, updateProjects] = useState([]);
+  const [items, updateItems] = useState([]);
 
-  const [parentName, updateParentName] = useState(match.params.name ? match.params.name : '');
-  const [parentType, updateParentType] = useState(match.params.type ? match.params.type : '');
-  const [parentId, updateParentId] = useState(match.params.id ? match.params.id : '')
+  const [parentType, updateParentType] = useState(match.params.parentType ? match.params.parentType : '');
+  const [parentId, updateParentId] = useState(match.params.parentId ? match.params.parentId : '')
   const [name, updateName] = useState('');
   const [assignee, updateAssignee] = useState('');
   const [description, updateDescription] = useState('');
@@ -26,14 +28,15 @@ const NewFeature = ({ match }: PathProps) => {
       .getAllProjects()
       .then((response: AxiosResponse) => updateProjects(response.data))
       .catch(err => console.error(err))
-
+    itemRequest
+      .getAllWorkItems()
+      .then((response: AxiosResponse) => updateItems(response.data))
   }, [])
 
   const parseParentInfo = (str: string) => {
     const infoArr = str.split('/');
     updateParentType(infoArr[0] ? infoArr[0].trim() : '');
-    updateParentName(infoArr[1] ? infoArr[1].trim() : '');
-    updateParentId(infoArr[2] ? infoArr[2].trim() : '');
+    updateParentId(infoArr[1] ? infoArr[1].trim() : '');
   }
 
 
@@ -86,13 +89,24 @@ const NewFeature = ({ match }: PathProps) => {
       >
 
         <div className="form-group">
-          <label>Parent item:</label>
+          <div className="d-flex justify-content-between align-items-baseline">
+            <label className="font-weight-light">Feature name</label>
+            <small>Required</small>
+          </div>
+          <input type="text"
+            className="form-control"
+            onChange={event => handleNameInput(event)}
+            placeholder="enter name..." />
+        </div>
+
+        <div className="form-group">
+          <label className="font-weight-light">Parent</label>
           <input type="text"
             className="form-control"
             list="projects"
             onChange={event => handleParentInput(event)}
             placeholder="Select parent item"
-            defaultValue={match.params.id ? `${parentType}/${parentName}/${parentId}` : ''}
+            defaultValue={match.params.parentId ? `${parentType}/${parentId}` : ''}
             spellCheck={false}
           />
           <ParentList dataArr={projects}
@@ -100,16 +114,7 @@ const NewFeature = ({ match }: PathProps) => {
             defaultOption="No project found" />
         </div>
 
-        <div className="form-group">
-          <div className="d-flex justify-content-between align-items-baseline">
-            <h5>Feature name</h5>
-            <small>Required</small>
-          </div>
-          <input type="text"
-            className="form-control"
-            onChange={event => handleNameInput(event)}
-            placeholder="Feature name" />
-        </div>
+
 
         <div className="form-group">
           <label>Description</label>
@@ -137,11 +142,13 @@ const NewFeature = ({ match }: PathProps) => {
 
       <div className="col-3">
         <ConsoleLogButton name="match" state={match} />
+        <ConsoleLogButton name="projects" state={projects} />
+        <ConsoleLogButton name="items" state={items} />
       </div>
 
       <button className="btn btn-danger btn-sm m-1"
         onClick={() => console.log(
-          `parent item: ${parentName}
+          `
           name: ${name} 
           description ${description} 
           assignee ${assignee}`)}>
@@ -155,7 +162,7 @@ const NewFeature = ({ match }: PathProps) => {
 
       <br />
       <button className="btn btn-danger btn-sm m-1"
-        onClick={() => console.log(parentId, parentName, parentType)}>
+        onClick={() => console.log(parentId, parentType)}>
         console.log parent states
       </button>
 
