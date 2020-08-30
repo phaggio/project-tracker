@@ -4,6 +4,7 @@ import ConsoleLogButton from '../ConsoleLogButton';
 
 type PropsType = {
   currentParent: ParentPayloadType;
+  parentId: string | null;
   parents: ParentType[];
   onChange: (parentObj: ParentPayloadType) => void;
 }
@@ -15,9 +16,14 @@ type ParentType = {
 }
 
 const ParentSelectBox = (props: PropsType) => {
+
   const constantParents = (props.parents);
 
-  const [currentParent, updateCurrentParent] = useState(props.currentParent);
+  const [currentParent, updateCurrentParent] = useState<ParentPayloadType>({
+    parentType: null,
+    parentName: '(open)',
+    parentId: null
+  });
 
   const [currentHover, updateCurrentHover] = useState<string>('');
   const [active, updateActive] = useState<boolean>(false);
@@ -42,8 +48,18 @@ const ParentSelectBox = (props: PropsType) => {
   }, [filter]);
 
   useEffect(() => {
-    updateFilteredParents(constantParents)
+    // update filteredParents with the parent data from api call
+    updateFilteredParents(constantParents);
+    // if props.parentId exists, find current/default parent type and name
+    if (props.parentId !== null) {
+      props.parents.forEach(parent => {
+        if (parent._id === props.parentId) {
+          updateCurrentParent({ parentType: parent.type, parentName: parent.name, parentId: parent._id });
+        }
+      })
+    }
   }, [constantParents])
+
 
 
   return (

@@ -6,7 +6,6 @@ import ParentSelectBox from '../../components/ParentSelectBox';
 import AssigneeSelectBox from '../../components/AssigneeSelectBox';
 import ConsoleLogButton from '../../components/ConsoleLogButton';
 
-
 const NewFeature = ({ match }: PathProps) => {
   console.log('Rendering NewFeature page...');
 
@@ -37,7 +36,7 @@ const NewFeature = ({ match }: PathProps) => {
       .then((response: AxiosResponse) => updateUsers(response.data))
       .catch(err => console.error(err))
     // add parentId to draft if found in URL params
-    if (match.params.parentId !== undefined) updateDraft({ parentId: match.params.parentId })
+    if (match.params.parentId !== undefined) updateDraft({ ...draft, parentId: match.params.parentId })
   }, [])
 
   // update parents state once projects and items loaded
@@ -125,9 +124,10 @@ const NewFeature = ({ match }: PathProps) => {
           <label className="font-weight-light">Parent</label>
           <ParentSelectBox currentParent={{
             parentType: match.params.parentType ? match.params.parentType : null,
-            parentName: currentParent ? currentParent.name : 'null',
+            parentName: 'null',
             parentId: match.params.parentId ? match.params.parentId : null
           }}
+            parentId={match.params.parentId ? match.params.parentId : null}
             parents={parents}
             onChange={handleParentSelection} />
         </div>

@@ -53,6 +53,7 @@ const ParentItemDiv = (props: PropsType) => {
       {editMode ?
         <div>
           <ParentSelectBox currentParent={props.currentParent}
+            parentId={props.currentParent.parentId}
             parents={props.parents}
             onChange={updateDraft}
           />
