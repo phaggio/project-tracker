@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ProjectType, ItemType, PathProps, ParentPayloadType, AssigneePayloadType } from '../../util/dataTypes'
+import { ProjectType, ItemType, PathProps, ParentPayloadType, AssigneePayloadType } from '../../util/dataTypes';
 import { AxiosResponse } from 'axios';
 import { projectRequest, itemRequest, userRequest } from '../../httpRequests';
 import ParentSelectBox from '../../components/ParentSelectBox';

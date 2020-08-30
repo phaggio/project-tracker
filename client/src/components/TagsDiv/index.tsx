@@ -40,10 +40,11 @@ const TagsDiv = (props: PropsType) => {
       {editMode ?
         <div className="form-group">
           <small>(Optional)</small>
-          <div>
+          <div className="d-flex flex-wrap align-items-baseline">
             {
               draft.length > 0 ? draft.map(tag => {
-                return (<span className="badge badge-info mr-1" key={tag}>{tag}</span>)
+                // return (<span className="badge badge-info mr-1" key={tag}>{tag}</span>)
+                return (<Tag key={tag} name={tag} />)
               }) : ``
             }
           </div>

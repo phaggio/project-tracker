@@ -33,21 +33,27 @@ const Home = () => {
         <div className="col-12 col-md-8 border border-secondary rounded">
           <h4>Snapshot</h4>
 
-          <div className="d-flex justify-content-between">
-            <div className="d-flex flex-row align-items-baseline border border-primary rounded w-auto px-3 shadow">
+          <div className="d-flex justify-content-between flex-wrap">
+            <div className="d-flex flex-row align-items-baseline border border-primary rounded w-auto px-3 my-2 shadow">
               <div className="display-3 text-primary">{`${projects.length}`}</div>
               <small className="ml-2">Projects</small>
             </div>
 
-            <div className="d-flex flex-row align-items-baseline border border-info rounded-lg w-auto px-3 shadow">
-              <div className="display-3 text-warning">Need feature count</div>
+            <div className="d-flex flex-row align-items-baseline border border-info rounded-lg w-auto px-3 my-2 shadow">
+              <div className="display-3 text-warning">{items.filter(item => item.type === 'feature').length}</div>
               <small className="ml-2">Features</small>
             </div>
 
-            <div className="d-flex flex-row align-items-baseline border border-secondary rounded w-auto px-3 shadow">
-              <div className="display-3 text-secondary">{`${items.length}`}</div>
-              <small className="ml-2">Work items</small>
+            <div className="d-flex flex-row align-items-baseline border border-secondary rounded w-auto px-3 my-2 shadow">
+              <div className="display-3 text-secondary">{items.filter(item => item.type === 'workItem').length}</div>
+              <small className="ml-2">Work item</small>
             </div>
+
+            <div className="d-flex flex-row align-items-baseline border border-secondary rounded w-auto px-3 my-2 shadow">
+              <div className="display-3 text-danger">{items.filter(item => item.type === 'bug').length}</div>
+              <small className="ml-2">Bugs</small>
+            </div>
+
           </div>
         </div>
 
@@ -55,7 +61,7 @@ const Home = () => {
 
 
       {/* debug buttons */}
-      <div className="col-3">
+      <div className="col-5">
         <ConsoleLogButton name="projects" state={projects} />
         <ConsoleLogButton name="work items" state={items} />
       </div>

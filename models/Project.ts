@@ -28,7 +28,7 @@ const ProjectSchema: Schema = new Schema({
 
   type: {
     type: String,
-    default: 'Project'
+    default: 'project'
   },
 
   tags: {
