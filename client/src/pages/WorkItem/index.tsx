@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { PathProps, ProjectType, WorkItemType } from '../../util/dataTypes'
+import { PathProps, ProjectType, ItemType } from '../../util/dataTypes'
 import { projectRequest, itemRequest, userRequest } from '../../httpRequests';
 import NameBadge from '../../components/NameBadgeDiv';
 import TagsDiv from '../../components/TagsDiv';
@@ -10,10 +10,10 @@ import DescriptionDiv from '../../components/DescriptionDiv';
 import ConsoleLogButton from '../../components/ConsoleLogButton';
 
 const WorkItem = ({ match }: PathProps) => {
-  const [workItem, updateWorkItem] = useState<WorkItemType | undefined>();
+  const [workItem, updateWorkItem] = useState<ItemType | undefined>();
 
   const [projects, updateProjects] = useState<ProjectType[] | undefined>(); // potential parents
-  const [items, updateItems] = useState<WorkItemType[] | undefined>(); // potential parents
+  const [items, updateItems] = useState<ItemType[] | undefined>(); // potential parents
   const [users, updateUsers] = useState<[] | undefined>(undefined); // potential assignees
 
   const [update, toggleUpdate] = useState(false);

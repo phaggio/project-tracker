@@ -14,6 +14,7 @@ const Project = ({ match }: PathProps) => {
 	const [update, toggleUpdate] = useState<boolean>(false);
 
 	const [items, updateItems] = useState<ItemType[]>([]);
+	const [children, updateChildren] = useState<ItemType[]>([])
 
 	useEffect(() => {
 		if (match.params.id !== undefined) {
@@ -23,6 +24,10 @@ const Project = ({ match }: PathProps) => {
 			itemRequest
 				.getWorkItemsByParentId(match.params.id)
 				.then(res => updateItems(res.data));
+			itemRequest
+				.getWorkItemsByParentId(match.params.id)
+				.then((res) => updateChildren(res.data))
+				.catch(err => console.error(err))
 		}
 	}, [match.params])
 
@@ -106,7 +111,7 @@ const Project = ({ match }: PathProps) => {
 					<ChildrenItemsDiv _id={match.params.id}
 						type='project'
 						name={project.name}
-						children={[...items]} />
+						children={children} />
 					:
 					'no children item...'
 				}

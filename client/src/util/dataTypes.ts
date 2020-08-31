@@ -38,18 +38,6 @@ type ItemType = {
   assigneeId: string | null;
 }
 
-type WorkItemType = {
-  _id: string;
-  status: string;
-  name: string;
-  description: string;
-  type: string;
-  tags: string[];
-  parentId: string | null;
-  assigneeId: string | null;
-  assignee: string;
-};
-
 type FeatureType = {
   _id: string;
   status: string;
@@ -90,7 +78,6 @@ export type {
   MatchType,
   ParamsType,
   NewItemType,
-  WorkItemType,
   ItemType,
   FeatureType,
   ProjectType,

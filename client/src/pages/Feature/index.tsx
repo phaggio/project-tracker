@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { PathProps, ProjectType, FeatureType, WorkItemType } from '../../util/dataTypes';
+import { PathProps, ProjectType, FeatureType, ItemType } from '../../util/dataTypes';
 import { projectRequest, userRequest, itemRequest } from '../../httpRequests';
 import NameBadge from '../../components/NameBadgeDiv';
 import TagsDiv from '../../components/TagsDiv';
@@ -11,18 +11,14 @@ import ChildrenItemsDiv from '../../components/ChildrenItemsDiv';
 import ConsoleLogButton from '../../components/ConsoleLogButton';
 import { AxiosResponse } from 'axios';
 
-type AssigneeType = {
-	assignee: string;
-	assigneeId: string | null;
-}
-
 const Feature = ({ match }: PathProps) => {
 	console.log(`Rendering Feature page... `);
 	const [feature, updateFeature] = useState<FeatureType | undefined>();
 
 	const [projects, updateProjects] = useState<ProjectType[] | undefined>(undefined) // potential parents
-	const [items, updateItems] = useState<WorkItemType[] | undefined>() // potential parnets
+	const [items, updateItems] = useState<ItemType[] | undefined>() // potential parents
 	const [users, updateUsers] = useState<[]>([]); // potential assignee
+	const [children, updateChildren] = useState<ItemType[]>([]); // all children of this feature
 
 	const [loading, updateLoading] = useState<boolean>(true);
 	const [update, toggleUpdate] = useState<boolean>(false);
@@ -41,13 +37,17 @@ const Feature = ({ match }: PathProps) => {
 			userRequest
 				.getAllUsers()
 				.then((response: AxiosResponse) => updateUsers(response.data))
-				.catch(err => console.error(err))
+				.catch(err => console.error(err));
 			itemRequest
 				.getWorkItemById(match.params.id)
 				.then((response: AxiosResponse) => {
 					updateLoading(!loading);
 					updateFeature(response.data);
 				})
+				.catch(err => console.error(err));
+			itemRequest
+				.getWorkItemsByParentId(match.params.id)
+				.then((response: AxiosResponse) => updateChildren(response.data))
 				.catch(err => console.error(err))
 		}
 	}, []);
@@ -62,7 +62,7 @@ const Feature = ({ match }: PathProps) => {
 		}
 	}, [feature, update])
 
-	const saveButtonPressed = (part: string, payload: string | string[] | AssigneeType) => {
+	const saveButtonPressed = (part: string, payload: string | string[]) => {
 		if (feature) {
 			switch (part) {
 				case ('name'):
@@ -153,7 +153,7 @@ const Feature = ({ match }: PathProps) => {
 
 
 						<ChildrenItemsDiv type="feature"
-							children={items}
+							children={children}
 							_id={feature._id}
 							name={feature.name} />
 
