@@ -1,4 +1,5 @@
 import React from 'react';
+import { ItemType } from '../../util/dataTypes'
 import AddNewDropDownButton from '../AddNewDropDownButton';
 import ItemLink from '../ItemLink';
 
@@ -7,16 +8,6 @@ type PropsType = {
   name: string; // name of current project/feature this ChildrenItemsDiv is on
   _id: string; // _id of current project/feature this ChildrenItemsDiv is on
   children: ItemType[]; // all children of this project/feature
-}
-
-type ItemType = {
-  _id: string;
-  status: string;
-  name: string;
-  description: string;
-  tags: string[];
-  type: string;
-  parentId?: string | null;
 }
 
 const ChildrenItemsDiv = (props: PropsType) => {

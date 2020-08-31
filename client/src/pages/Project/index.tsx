@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { PathProps } from '../../util/dataTypes'
+import { PathProps, ProjectType, ItemType } from '../../util/dataTypes'
 import { projectRequest, itemRequest } from '../../httpRequests';
 import NameBadgeDiv from '../../components/NameBadgeDiv';
 import TagsDiv from '../../components/TagsDiv';
@@ -7,52 +7,35 @@ import DescriptionDiv from '../../components/DescriptionDiv';
 import ChildrenItemsDiv from '../../components/ChildrenItemsDiv';
 import ConsoleLogButton from '../../components/ConsoleLogButton';
 
-type ItemType = {
-	_id: string;
-	type: string; // feature or work item
-	status: string;
-	name: string;
-	description: string;
-	tags: string[];
-	parentId: string; // should be same as this project's _id
-}
-
-type ProjectType = {
-	_id: string;
-	name: string,
-	description: string;
-	type: string;
-	tags: string[]
-}
-
 const Project = ({ match }: PathProps) => {
 	console.log('Rendering Project page...');
 
-	const [projectId] = useState(match.params.id ? match.params.id : '');
 	const [project, updateProject] = useState<ProjectType | undefined>();
+	const [update, toggleUpdate] = useState<boolean>(false);
 
 	const [items, updateItems] = useState<ItemType[]>([]);
 
 	useEffect(() => {
-		if (match) {
-			console.log(`projectId found in URL, making initial GET api call to get project info...`)
+		if (match.params.id !== undefined) {
 			projectRequest
-				.getProjectById(projectId)
+				.getProjectById(match.params.id)
 				.then(res => updateProject(res.data));
 			itemRequest
-				.getWorkItemsByParentId(projectId)
+				.getWorkItemsByParentId(match.params.id)
 				.then(res => updateItems(res.data));
 		}
-	}, [projectId, match])
+	}, [match.params])
 
 	useEffect(() => {
-		if (project && projectId) {
+		if (project && match.params.id !== undefined && update === true) {
 			projectRequest
-				.updateProject(projectId, project)
+				.updateProject(match.params.id, project)
 				.then(data => console.log(data))
 				.catch(err => console.error(err))
+			toggleUpdate(!update)
 		}
-	}, [project])
+
+	}, [project, update])
 
 	const saveButtonPressed = (part: string, payload: string | string[]) => {
 		if (project) {
@@ -69,6 +52,7 @@ const Project = ({ match }: PathProps) => {
 				default:
 					break;
 			}
+			toggleUpdate(!update)
 		}
 	}
 
@@ -118,8 +102,8 @@ const Project = ({ match }: PathProps) => {
 
 			{/* second row begins */}
 			<div className="row mt-1 border border-info rounded">
-				{project ?
-					<ChildrenItemsDiv _id={projectId}
+				{project && match.params.id !== undefined ?
+					<ChildrenItemsDiv _id={match.params.id}
 						type='project'
 						name={project.name}
 						children={[...items]} />

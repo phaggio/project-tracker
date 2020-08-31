@@ -71,9 +71,6 @@ type ProjectType = {
   status: string;
   type: string;
   tags: string[];
-  features: string[];
-  workItems: string[];
-  bugs: string[];
 };
 
 // payload type for updating item parent info.
