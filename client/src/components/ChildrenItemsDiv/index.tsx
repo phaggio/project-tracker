@@ -3,10 +3,10 @@ import AddNewDropDownButton from '../AddNewDropDownButton';
 import ItemLink from '../ItemLink';
 
 type PropsType = {
-  type: string; // project or feature
-  name: string; // name of current project/feature
-  _id: string; // _id of current project/feature
-  children: DataObj[];
+  type: string; // whether this ChildrenItemsDiv is on project or feature page
+  name: string; // name of current project/feature this ChildrenItemsDiv is on
+  _id: string; // _id of current project/feature this ChildrenItemsDiv is on
+  children: DataObj[]; // all children of this project/feature
 }
 
 type DataObj = {
@@ -30,7 +30,7 @@ const ChildrenItemsDiv = (props: PropsType) => {
     }] : [];
   buttons = [...buttons, {
     name: 'Work item',
-    url: `/new/workitem/${props.type}/${props._id}`,
+    url: `/new/work/${props.type}/${props._id}`,
     ariaLabel: 'add-new-work-item',
     title: 'add new work item'
   }, {
@@ -39,8 +39,6 @@ const ChildrenItemsDiv = (props: PropsType) => {
     ariaLabel: 'add-new-bug',
     title: 'add new bug'
   }]
-
-
 
   return (
     <div className="container border border-info rounded">

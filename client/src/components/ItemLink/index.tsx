@@ -2,10 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 type PropsType = {
-  itemData: DataObj;
+  itemData: DataType;
 }
 
-type DataObj = {
+type DataType = {
   _id: string;
   status: string;
   name: string;

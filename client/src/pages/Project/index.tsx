@@ -1,38 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { PathProps } from '../../util/dataTypes'
-import { projectRequest, featureRequest, itemRequest } from '../../httpRequests';
+import { projectRequest, itemRequest } from '../../httpRequests';
 import NameBadgeDiv from '../../components/NameBadgeDiv';
 import TagsDiv from '../../components/TagsDiv';
 import DescriptionDiv from '../../components/DescriptionDiv';
 import ChildrenItemsDiv from '../../components/ChildrenItemsDiv';
 import ConsoleLogButton from '../../components/ConsoleLogButton';
 
-type FeatureObj = {
+type ItemType = {
 	_id: string;
-	type: string;
+	type: string; // feature or work item
 	status: string;
 	name: string;
 	description: string;
 	tags: string[];
-	projectId: string;
-	assigneeId: string;
+	parentId: string; // should be same as this project's _id
 }
 
-type FeatureArray = FeatureObj[];
-
-type WorkItemObj = {
-	_id: string;
-	type: string;
-	status: string;
-	name: string;
-	description: string;
-	tags: string[];
-	parentId: string;
-}
-
-type WorkItemArray = WorkItemObj[];
-
-type ProjectObj = {
+type ProjectType = {
 	_id: string;
 	name: string,
 	description: string;
@@ -44,10 +29,9 @@ const Project = ({ match }: PathProps) => {
 	console.log('Rendering Project page...');
 
 	const [projectId] = useState(match ? match.params.id : '');
-	const [project, updateProject] = useState<ProjectObj | undefined>();
+	const [project, updateProject] = useState<ProjectType | undefined>();
 
-	const [features, updateFeatures] = useState<FeatureArray>([]);
-	const [workItems, updateWorkItems] = useState<WorkItemArray>([]);
+	const [items, updateItems] = useState<ItemType[]>([]);
 
 	useEffect(() => {
 		if (match) {
@@ -55,12 +39,9 @@ const Project = ({ match }: PathProps) => {
 			projectRequest
 				.getProjectById(projectId)
 				.then(res => updateProject(res.data));
-			featureRequest
-				.getFeaturesByProjectId(projectId)
-				.then(res => updateFeatures(res.data));
 			itemRequest
 				.getWorkItemsByParentId(projectId)
-				.then(res => updateWorkItems(res.data));
+				.then(res => updateItems(res.data));
 		}
 	}, [projectId, match])
 
@@ -71,7 +52,6 @@ const Project = ({ match }: PathProps) => {
 				.then(data => console.log(data))
 				.catch(err => console.error(err))
 		}
-
 	}, [project])
 
 	const saveButtonPressed = (part: string, payload: string | string[]) => {
@@ -142,23 +122,20 @@ const Project = ({ match }: PathProps) => {
 					<ChildrenItemsDiv _id={projectId}
 						type='project'
 						name={project.name}
-						children={[...features, ...workItems]} />
+						children={[...items]} />
 					:
-					''
+					'no children item...'
 				}
 			</div>
 			{/* end of second row */}
 
 			<div className="col-3">
 				<ConsoleLogButton state={project} name="project" />
-				<ConsoleLogButton state={features} name="features" />
-				<ConsoleLogButton state={workItems} name="work item" />
+				<ConsoleLogButton state={items} name="items" />
 			</div>
 
 		</div>
 	)
 };
-
-
 
 export default Project

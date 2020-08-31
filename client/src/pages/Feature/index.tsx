@@ -17,6 +17,7 @@ type AssigneeType = {
 
 const Feature = ({ match }: PathProps) => {
 	console.log(`Rendering Feature page... `);
+	console.log(match)
 	const currentFeatureId = match.params.id;
 
 	const [feature, updateFeature] = useState<FeatureType | undefined>();
@@ -177,7 +178,7 @@ const Feature = ({ match }: PathProps) => {
 					</div>
 					{/* end of second row */}
 				</div>
-				: ''
+				: 'nothing'
 			}
 
 
