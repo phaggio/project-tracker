@@ -31,6 +31,8 @@ const ParentItemDiv = (props: PropsType) => {
           updateParentName(parent.name);
         }
       })
+    } else {
+      updateParentName('(open)')
     }
   }, [props.currentParentId])
 
@@ -68,7 +70,7 @@ const ParentItemDiv = (props: PropsType) => {
         :
         <div>
           <h5 className="mb-0">{parentName}</h5>
-          <small className="">{`(${props.currentParentId})`}</small>
+          <small className="">{`Parent ID: (${props.currentParentId ? props.currentParentId : 'n/a'})`}</small>
         </div>
       }
 

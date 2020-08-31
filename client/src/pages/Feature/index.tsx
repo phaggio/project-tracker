@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { PathProps, ProjectType, FeatureType, WorkItemType, ParentPayloadType } from '../../util/dataTypes';
+import { PathProps, ProjectType, FeatureType, WorkItemType } from '../../util/dataTypes';
 import { projectRequest, userRequest, itemRequest } from '../../httpRequests';
 import NameBadge from '../../components/NameBadgeDiv';
 import TagsDiv from '../../components/TagsDiv';
@@ -18,22 +18,18 @@ type AssigneeType = {
 
 const Feature = ({ match }: PathProps) => {
 	console.log(`Rendering Feature page... `);
-	const currentFeatureId = match.params.id;
 	const [feature, updateFeature] = useState<FeatureType | undefined>();
 
 	const [projects, updateProjects] = useState<ProjectType[] | undefined>(undefined) // potential parents
 	const [items, updateItems] = useState<WorkItemType[] | undefined>() // potential parnets
-	const [users, updateUsers] = useState<[] | undefined>(undefined); // potential assignee
+	const [users, updateUsers] = useState<[]>([]); // potential assignee
 
-	const [loading, updateLoading] = useState(true);
+	const [loading, updateLoading] = useState<boolean>(true);
+	const [update, toggleUpdate] = useState<boolean>(false);
 
-	// init Get to get all projects, users data for selection and current feature data and its children items
+	// INIT GET to get all projects, users data for selection and current feature data and its children items
 	useEffect(() => {
-		if (match.params.id) {
-			userRequest
-				.getAllUsers()
-				.then((response: AxiosResponse) => updateUsers(response.data))
-				.catch(err => console.error(err))
+		if (match.params.id !== undefined) {
 			projectRequest
 				.getAllProjects()
 				.then((response: AxiosResponse) => updateProjects(response.data))
@@ -42,58 +38,55 @@ const Feature = ({ match }: PathProps) => {
 				.getAllWorkItems()
 				.then((response: AxiosResponse) => updateItems(response.data))
 				.catch(err => console.error(err))
-		}
-	}, []);
-
-	useEffect(() => {
-		console.log(`param id is ${currentFeatureId} `);
-		if (match.params.id) {
+			userRequest
+				.getAllUsers()
+				.then((response: AxiosResponse) => updateUsers(response.data))
+				.catch(err => console.error(err))
 			itemRequest
 				.getWorkItemById(match.params.id)
-				.then(response => {
+				.then((response: AxiosResponse) => {
 					updateLoading(!loading);
 					updateFeature(response.data);
 				})
 				.catch(err => console.error(err))
 		}
+	}, []);
 
-	}, [currentFeatureId])
-
-	// a custom function that checks whether the object is AssigneeType obj
-	const isAssigneeType = (arg: any): arg is AssigneeType => {
-		return arg.assignee !== undefined;
-	};
+	useEffect(() => {
+		if (feature && update === true) {
+			itemRequest
+				.updateWorkItemById(feature._id, feature)
+				.then(data => console.log(data))
+				.catch(err => console.error(err))
+			toggleUpdate(!update)
+		}
+	}, [feature, update])
 
 	const saveButtonPressed = (part: string, payload: string | string[] | AssigneeType) => {
-		switch (part) {
-			case ('name'):
-				if (typeof payload === 'string' && feature) updateFeature({ ...feature, name: payload });
-				break;
-			case 'tags':
-				if (payload instanceof Array && feature) updateFeature({ ...feature, tags: payload });
-				break;
-			case 'status':
-				if (typeof payload === 'string' && feature) updateFeature({ ...feature, status: payload });
-				break;
-			case 'description':
-				if (typeof payload === 'string' && feature) updateFeature({ ...feature, description: payload });
-				break;
-			case 'assignee':
-				if (isAssigneeType(payload) && feature) {
-					updateFeature({ ...feature, assignee: payload.assignee, assigneeId: payload.assigneeId })
-				}
-				break;
-			default:
-				break;
-		}
-	}
-
-	const updateParent = (part: string, payload: string) => {
-		if (part === 'parent' && feature) {
-			updateFeature({
-				...feature,
-				parentId: payload
-			})
+		if (feature) {
+			switch (part) {
+				case ('name'):
+					if (typeof payload === 'string') updateFeature({ ...feature, name: payload });
+					break;
+				case 'tags':
+					if (payload instanceof Array) updateFeature({ ...feature, tags: payload });
+					break;
+				case 'assigneeId':
+					if (typeof payload === 'string' || payload === null) updateFeature({ ...feature, assigneeId: payload });
+					break;
+				case 'parentId':
+					if (typeof payload === 'string' || payload === null) updateFeature({ ...feature, parentId: payload });
+					break;
+				case 'status':
+					if (typeof payload === 'string') updateFeature({ ...feature, status: payload });
+					break;
+				case 'description':
+					if (typeof payload === 'string') updateFeature({ ...feature, description: payload });
+					break;
+				default:
+					break;
+			}
+			toggleUpdate(!update)
 		}
 	}
 
@@ -120,22 +113,19 @@ const Feature = ({ match }: PathProps) => {
 								<hr className="mt-2" />
 							</div>
 
-							{users ?
-								<div className="pt-1">
-									<AssigneeDiv assigneeId={feature.assigneeId}
-										saveButtonPressed={saveButtonPressed}
-										users={users} />
-									<hr className="mt-2" />
-								</div>
-								:
-								'users is not found...'
-							}
+
+							<div className="pt-1">
+								<AssigneeDiv assigneeId={feature.assigneeId}
+									saveButtonPressed={saveButtonPressed}
+									users={users} />
+								<hr className="mt-2" />
+							</div>
 
 							<div>
 								<ParentItemDiv type="feature"
 									currentParentId={feature.parentId}
 									parents={projects}
-									saveButtonPressed={updateParent} />
+									saveButtonPressed={saveButtonPressed} />
 							</div>
 
 							<div className="pt-1">
@@ -176,7 +166,7 @@ const Feature = ({ match }: PathProps) => {
 
 
 			< div className="col-6" >
-				<ConsoleLogButton name="param id" state={currentFeatureId} />
+				<ConsoleLogButton name="param id" state={match.params.id} />
 				<ConsoleLogButton name="match param" state={match.params} />
 				<ConsoleLogButton name="feature" state={feature} />
 				<ConsoleLogButton name="projects" state={projects} />
