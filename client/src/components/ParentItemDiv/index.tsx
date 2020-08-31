@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ParentSelectBox from '../ParentSelectBox';
 import EditButton from '../EditButton';
 import SaveButton from '../SaveButton';
@@ -7,10 +7,9 @@ import ConsoleLogButton from '../ConsoleLogButton';
 
 type PropsType = {
   type: string;
-  currentParent: ParentPayloadType;
   currentParentId: string | null;
   parents: ParentType[];
-  saveButtonPressed: (part: string, payload: ParentPayloadType) => void;
+  saveButtonPressed: (part: string, payload: string) => void;
 }
 
 type ParentType = {
@@ -19,26 +18,31 @@ type ParentType = {
   _id: string;
 }
 
-type ParentPayloadType = {
-  parentType: string | null;
-  parentName: string;
-  parentId: string | null;
-}
-
 const ParentItemDiv = (props: PropsType) => {
-
   const [editMode, updateEditMode] = useState<boolean>(false);
-  const [draft, updateDraft] = useState<ParentPayloadType>(props.currentParent);
+  const [draft, updateDraft] = useState<string | null>(props.currentParentId); //stores selected parentId, which is passed to SaveButton
+  const [parentName, updateParentName] = useState<string>('(open)'); //default parent name 
 
+  // display current parent name if found
+  useEffect(() => {
+    if (props.currentParentId !== null) {
+      props.parents.forEach(parent => {
+        if (parent._id === props.currentParentId) {
+          updateParentName(parent.name);
+        }
+      })
+    }
+  }, [props.currentParentId])
 
   return (
     <div>
+      {/* label and edit button */}
       <div className="d-flex justify-content-between align-items-baseline">
         <label className="font-weight-light">Parent</label>
 
         {editMode ?
           <div>
-            <SaveButton id="parent"
+            <SaveButton id="parentId"
               editState={editMode}
               toggleEditState={updateEditMode}
               payload={draft}
@@ -50,11 +54,12 @@ const ParentItemDiv = (props: PropsType) => {
           <EditButton editState={editMode} onClick={updateEditMode} />
         }
       </div>
+      {/* end of label and edit button */}
+
 
       {editMode ?
         <div>
-          <ParentSelectBox 
-            // currentParent={props.currentParent}
+          <ParentSelectBox
             parentId={props.currentParentId}
             parents={props.parents}
             onChange={updateDraft}
@@ -62,13 +67,14 @@ const ParentItemDiv = (props: PropsType) => {
         </div>
         :
         <div>
-          <h5>{props.currentParent.parentName}</h5>
+          <h5 className="mb-0">{parentName}</h5>
+          <small className="">{`(${props.currentParentId})`}</small>
         </div>
       }
 
-      <div className="col-3">
+      <div className="col-8">
         <ConsoleLogButton name="draft" state={draft} />
-        <ConsoleLogButton name="parents" state={props.currentParent} />
+        <ConsoleLogButton name="props.currentParentId" state={props.currentParentId} />
         <ConsoleLogButton name="parents" state={props.parents} />
       </div>
     </div>

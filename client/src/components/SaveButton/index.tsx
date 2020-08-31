@@ -4,7 +4,7 @@ type PropsType = {
   id: string;
   editState: boolean;
   disabled?: boolean;
-  payload: string | string[] | object;
+  payload: string | string[] | object | null;
   toggleEditState: (boolean: boolean) => void;
   pressed: (id: string, payload: any) => void;
 }

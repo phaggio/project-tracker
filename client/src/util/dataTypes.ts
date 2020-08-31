@@ -45,8 +45,6 @@ type WorkItemType = {
   description: string;
   type: string;
   tags: string[];
-  parentType: string | null;
-  parentName: string;
   parentId: string | null;
   assigneeId: string | null;
   assignee: string;

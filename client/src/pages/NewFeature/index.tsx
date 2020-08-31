@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ProjectType, ItemType, PathProps, ParentPayloadType, AssigneePayloadType } from '../../util/dataTypes';
+import { ProjectType, ItemType, PathProps } from '../../util/dataTypes';
 import { AxiosResponse } from 'axios';
 import { projectRequest, itemRequest, userRequest } from '../../httpRequests';
 import ParentSelectBox from '../../components/ParentSelectBox';
@@ -70,14 +70,14 @@ const NewFeature = ({ match }: PathProps) => {
     }
   }
 
-  const handleParentSelection = (payload: ParentPayloadType) => {
+  const handleParentSelection = (payload: string | null) => {
     console.log(payload);
-    updateDraft({ ...draft, parentId: payload.parentId })
+    updateDraft({ ...draft, parentId: payload })
   };
 
-  const handleAssigneeInput = (payload: AssigneePayloadType) => {
+  const handleAssigneeInput = (payload: string | null) => {
     console.log(payload)
-    updateDraft({ ...draft, assigneeId: payload.assigneeId })
+    updateDraft({ ...draft, assigneeId: payload })
   };
 
   return (
@@ -116,7 +116,7 @@ const NewFeature = ({ match }: PathProps) => {
       <div>
         <label className="font-weight-light">Assign to:</label>
         <AssigneeSelectBox currentAssigneeId={null}
-          currentAssignee="Unassigned" users={users} onChange={handleAssigneeInput} />
+          users={users} onChange={handleAssigneeInput} />
       </div>
 
       <div className="pt-2">

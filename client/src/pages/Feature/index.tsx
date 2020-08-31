@@ -19,18 +19,17 @@ type AssigneeType = {
 const Feature = ({ match }: PathProps) => {
 	console.log(`Rendering Feature page... `);
 	const currentFeatureId = match.params.id;
-
 	const [feature, updateFeature] = useState<FeatureType | undefined>();
-	const [projects, updateProjects] = useState<ProjectType[] | undefined>(undefined)
-	const [items, updateItems] = useState<WorkItemType[] | undefined>()
-	const [users, updateUsers] = useState<[] | undefined>(undefined);
+
+	const [projects, updateProjects] = useState<ProjectType[] | undefined>(undefined) // potential parents
+	const [items, updateItems] = useState<WorkItemType[] | undefined>() // potential parnets
+	const [users, updateUsers] = useState<[] | undefined>(undefined); // potential assignee
 
 	const [loading, updateLoading] = useState(true);
 
 	// init Get to get all projects, users data for selection and current feature data and its children items
 	useEffect(() => {
 		if (match.params.id) {
-			console.log('getting all items...')
 			userRequest
 				.getAllUsers()
 				.then((response: AxiosResponse) => updateUsers(response.data))
@@ -59,11 +58,6 @@ const Feature = ({ match }: PathProps) => {
 		}
 
 	}, [currentFeatureId])
-
-	// will use it to update feature.
-	useEffect(() => {
-		console.log('feature updated...')
-	}, [feature])
 
 	// a custom function that checks whether the object is AssigneeType obj
 	const isAssigneeType = (arg: any): arg is AssigneeType => {
@@ -94,13 +88,11 @@ const Feature = ({ match }: PathProps) => {
 		}
 	}
 
-	const updateParent = (part: string, payload: ParentPayloadType) => {
+	const updateParent = (part: string, payload: string) => {
 		if (part === 'parent' && feature) {
 			updateFeature({
 				...feature,
-				parentType: payload.parentType,
-				parentName: payload.parentName,
-				parentId: payload.parentId
+				parentId: payload
 			})
 		}
 	}
@@ -131,7 +123,6 @@ const Feature = ({ match }: PathProps) => {
 							{users ?
 								<div className="pt-1">
 									<AssigneeDiv assigneeId={feature.assigneeId}
-										assignee={feature.assignee}
 										saveButtonPressed={saveButtonPressed}
 										users={users} />
 									<hr className="mt-2" />
@@ -142,11 +133,6 @@ const Feature = ({ match }: PathProps) => {
 
 							<div>
 								<ParentItemDiv type="feature"
-									currentParent={{
-										parentType: feature.parentType,
-										parentName: feature.parentName,
-										parentId: feature.parentId
-									}}
 									currentParentId={feature.parentId}
 									parents={projects}
 									saveButtonPressed={updateParent} />

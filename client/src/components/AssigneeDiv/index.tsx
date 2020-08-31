@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import EditButton from '../EditButton';
 import SaveButton from '../SaveButton';
 import CancelButton from '../CancelButton';
@@ -7,32 +7,35 @@ import AssigneeSelectBox from '../AssigneeSelectBox';
 
 type PropsType = {
   assigneeId: string | null;
-  assignee: string;
-  users: userObj[];
-  saveButtonPressed: (part: string, payload: PayloadObj) => void;
+  users: UserType[];
+  saveButtonPressed: (part: string, payload: string) => void;
 }
 
-type PayloadObj = {
-  assigneeId: string | null;
-  assignee: string;
-}
-
-type userObj = {
+type UserType = {
+  _id: string;
   type: string;
   firstName: string;
   lastName: string;
   fullName: string;
   email: string;
-  _id: string;
 }
 
 const AssigneeDiv = (props: PropsType) => {
   const [editMode, updateEditMode] = useState(false);
-  const [draft, updateDraft] = useState<PayloadObj>({
-    assignee: props.assignee,
-    assigneeId: props.assigneeId
-  });
-  const [users] = useState<userObj[]>(props.users);
+  const [draft, updateDraft] = useState<string | null>(props.assigneeId);
+
+  const [assigneeName, updateAssigneeName] = useState<string>('Unassigned'); //default parent name 
+
+  // display current parent name if found
+  useEffect(() => {
+    if (props.assigneeId !== null) {
+      props.users.forEach(user => {
+        if (user._id === props.assigneeId) {
+          updateAssigneeName(user.fullName);
+        }
+      })
+    }
+  }, [props.assigneeId])
 
   return (
     <div>
@@ -41,7 +44,7 @@ const AssigneeDiv = (props: PropsType) => {
         {
           editMode ?
             <div className="d-flex">
-              <SaveButton id="assignee"
+              <SaveButton id="assigneeId"
                 editState={editMode}
                 toggleEditState={updateEditMode}
                 pressed={props.saveButtonPressed}
@@ -56,19 +59,18 @@ const AssigneeDiv = (props: PropsType) => {
 
       {editMode ?
         <AssigneeSelectBox currentAssigneeId={props.assigneeId}
-          currentAssignee={props.assignee}
-          users={users}
+          users={props.users}
           onChange={updateDraft} />
         :
         <div>
-          <h5>{props.assignee}</h5>
+          <h5>{assigneeName}</h5>
         </div>
       }
 
       <hr className="mt-2" />
 
       <ConsoleLogButton state={draft} name="assignee draft" />
-      <ConsoleLogButton state={users} name="users" />
+      <ConsoleLogButton state={props.users} name="props.users" />
     </div >
   )
 }

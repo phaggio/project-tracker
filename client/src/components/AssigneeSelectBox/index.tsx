@@ -6,14 +6,8 @@ import ConsoleLogButton from '../ConsoleLogButton';
 
 type PropsType = {
   currentAssigneeId: string | null;
-  currentAssignee?: string;
   users: UserType[];
-  onChange: (assigneePayload: AssigneePayloadType) => void;
-}
-
-type AssigneePayloadType = {
-  assignee: string;
-  assigneeId: string | null;
+  onChange: (selectedAssignee: string | null) => void;
 }
 
 type UserType = {
@@ -26,10 +20,7 @@ type UserType = {
 }
 
 const AssigneeSelectBox = (props: PropsType) => {
-  console.log('Rendering search select box...')
-  const constantUsers = (props.users);
-  // current selected users
-  const [currentAssignee, updateCurrentAssignee] = useState(props.currentAssignee ? props.currentAssignee : 'Unassigned');
+  const [currentAssigneeName, updateCurrentAssigneeName] = useState<string>('Unassigned');
 
   const [currentHover, updateCurrentHover] = useState('');
   const [active, updateActive] = useState(false);
@@ -40,22 +31,25 @@ const AssigneeSelectBox = (props: PropsType) => {
   // filter selection
   useEffect(() => {
     updateFilteredUsers(
-      constantUsers.filter(user => {
+      props.users.filter(user => {
         const words = user.fullName!.split(' ');
         let match = false;
         words.forEach(word => {
-          if (word.toLowerCase().startsWith(filter.toLowerCase())) {
-            match = true;
-          }
+          if (word.toLowerCase().startsWith(filter.toLowerCase())) match = true;
         })
         return match;
       })
     )
-  }, [filter])
+  }, [filter]);
 
   useEffect(() => {
-    updateFilteredUsers(constantUsers);
-  }, [constantUsers])
+    updateFilteredUsers(props.users);
+    if (props.currentAssigneeId !== null) {
+      props.users.forEach(user => {
+        if (user._id === props.currentAssigneeId) updateCurrentAssigneeName(user.fullName)
+      })
+    }
+  }, [props.users]);
 
   return (
     <div className="d-flex flex-column">
@@ -63,7 +57,7 @@ const AssigneeSelectBox = (props: PropsType) => {
       {/* currently selected assignee and dropdown button */}
       <div className="btn-group d-flex justify-content-between mb-2">
         <div className="bg-light w-100 text-dark px-3 py-1 rounded-left">
-          {currentAssignee}
+          {currentAssigneeName}
         </div>
         <button className="btn btn-light btn-sm dropdown-toggle dropdown-toggle-split"
           onClick={() => updateActive(!active)}>
@@ -106,8 +100,8 @@ const AssigneeSelectBox = (props: PropsType) => {
           <div className={`px-3 py-1 ${currentHover === 'Unassigned' ? 'bg-dark text-light' : ''}`}
             onClick={() => {
               updateActive(false);
-              updateCurrentAssignee('Unassigned');
-              props.onChange({ assignee: 'Unassigned', assigneeId: null });
+              updateCurrentAssigneeName('Unassigned');
+              props.onChange(null);
             }}
             style={{ cursor: 'pointer' }}
             onMouseEnter={() => updateCurrentHover('Unassigned')}
@@ -121,8 +115,8 @@ const AssigneeSelectBox = (props: PropsType) => {
                 className={`px-3 py-1 ${currentHover === user._id ? 'bg-dark text-light' : ''}`}
                 onClick={() => {
                   updateActive(false);
-                  updateCurrentAssignee(user.fullName);
-                  props.onChange({ assignee: user.fullName, assigneeId: user._id });
+                  updateCurrentAssigneeName(user.fullName);
+                  props.onChange(user._id);
                 }}
                 style={{ cursor: 'pointer' }}
                 onMouseEnter={() => updateCurrentHover(user._id)}
@@ -134,23 +128,6 @@ const AssigneeSelectBox = (props: PropsType) => {
             :
             ''
           }
-
-
-          {/* hard coded examples  */}
-          <div className={`px-3 py-1 ${currentHover === '5' ? 'bg-dark text-light' : ''}`}
-            onClick={() => {
-              updateActive(false);
-              updateCurrentAssignee('Test Users');
-              props.onChange({ assignee: 'Test User', assigneeId: 'test id' })
-            }}
-            style={{ cursor: 'pointer' }}
-            onMouseEnter={() => updateCurrentHover('5')}
-            onMouseLeave={() => updateCurrentHover('0')}>
-            <label className="m-0" style={{ cursor: 'pointer' }}>Test User</label>
-          </div>
-
-
-
         </div>
         {/* end of scroll selection */}
 
@@ -158,7 +135,7 @@ const AssigneeSelectBox = (props: PropsType) => {
 
       <div className="div">
         <ConsoleLogButton name="filtered users" state={filteredUsers} />
-        <ConsoleLogButton name="current assignee" state={currentAssignee} />
+        <ConsoleLogButton name="props.assigneeId" state={props.currentAssigneeId} />
       </div>
     </div>
   )

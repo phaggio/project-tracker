@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { ParentPayloadType } from '../../util/dataTypes';
 import ConsoleLogButton from '../ConsoleLogButton';
 
 type PropsType = {
-  // currentParent: ParentPayloadType;
   parentId: string | null; // current/default parentId
   parents: ParentType[]; // available parents for this item
-  onChange: (selectedParent: ParentPayloadType) => void;
+  onChange: (selectedParentId: string | null) => void; // takes parentId string
 }
 
 type ParentType = {
@@ -16,14 +14,7 @@ type ParentType = {
 }
 
 const ParentSelectBox = (props: PropsType) => {
-
-  const constantParents = (props.parents);
-
-  const [currentParent, updateCurrentParent] = useState<ParentPayloadType>({
-    parentType: null,
-    parentName: '(open)',
-    parentId: null
-  });
+  const [currentParentName, updateCurrentParentName] = useState<string>('(open)');
 
   const [currentHover, updateCurrentHover] = useState<string>('');
   const [active, updateActive] = useState<boolean>(false);
@@ -34,13 +25,11 @@ const ParentSelectBox = (props: PropsType) => {
   // filter parent list based on search input
   useEffect(() => {
     updateFilteredParents(
-      constantParents.filter(parent => {
+      props.parents.filter(parent => {
         const words = parent.name.split(' ');
         let match = false;
         words.forEach(word => {
-          if (word.toLowerCase().startsWith(filter.toLowerCase())) {
-            match = true;
-          }
+          if (word.toLowerCase().startsWith(filter.toLowerCase())) match = true;
         })
         return match;
       })
@@ -49,17 +38,14 @@ const ParentSelectBox = (props: PropsType) => {
 
   useEffect(() => {
     // update filteredParents with the parent data from api call
-    updateFilteredParents(constantParents);
+    updateFilteredParents(props.parents);
     // if props.parentId exists, find current/default parent type and name
     if (props.parentId !== null) {
       props.parents.forEach(parent => {
-        if (parent._id === props.parentId) {
-          updateCurrentParent({ parentType: parent.type, parentName: parent.name, parentId: parent._id });
-        }
+        if (parent._id === props.parentId) updateCurrentParentName(parent.name)
       })
     }
-  }, [constantParents])
-
+  }, [props.parents]);
 
 
   return (
@@ -67,7 +53,7 @@ const ParentSelectBox = (props: PropsType) => {
       {/* current parent and dropdown button */}
       <div className="btn-group d-flex justify-content-between mb-2">
         <div className="bg-light w-100 text-dark px-3 py-1 rounded-left">
-          {currentParent.parentName}
+          {currentParentName}
         </div>
         <button className="btn btn-light btn-sm dropdown-toggle dropdown-toggle-split"
           onClick={() => updateActive(!active)}>
@@ -110,8 +96,8 @@ const ParentSelectBox = (props: PropsType) => {
           <div className={`px-3 py-1 ${currentHover === '(open)' ? 'bg-dark text-light' : ''}`}
             onClick={() => {
               updateActive(false);
-              updateCurrentParent({ parentType: null, parentName: '(open)', parentId: null });
-              props.onChange({ parentType: null, parentName: '(open)', parentId: null });
+              updateCurrentParentName('(open)');
+              props.onChange(null);
             }}
             style={{ cursor: 'pointer' }}
             onMouseEnter={() => updateCurrentHover('(open)')}
@@ -126,8 +112,8 @@ const ParentSelectBox = (props: PropsType) => {
                   className={`px-3 py-1 ${currentHover === parent._id ? 'bg-dark text-light' : ''}`}
                   onClick={() => {
                     updateActive(false);
-                    updateCurrentParent({ parentType: parent.type, parentName: parent.name, parentId: parent._id });
-                    props.onChange({ parentType: parent.type, parentName: parent.name, parentId: parent._id });
+                    updateCurrentParentName(parent.name);
+                    props.onChange(parent._id);
                   }}
                   style={{ cursor: 'pointer' }}
                   onMouseEnter={() => updateCurrentHover(parent._id)}
@@ -147,8 +133,7 @@ const ParentSelectBox = (props: PropsType) => {
 
       <div className="col-12">
         <ConsoleLogButton name="parentId" state={props.parentId} />
-        <ConsoleLogButton name="current parents" state={currentParent} />
-        <ConsoleLogButton name="constant parents" state={constantParents} />
+        <ConsoleLogButton name="props.parents" state={props.parents} />
         <ConsoleLogButton name="filtered parents" state={filteredParents} />
       </div>
 

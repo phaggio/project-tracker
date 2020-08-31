@@ -67,12 +67,12 @@ const NewWork = ({ match }: PathProps) => {
       .catch(err => console.error(err));
   };
 
-  const updateParent = (parent: ParentPayloadType) => updateDraft({ ...draft, parentId: parent.parentId });
+  const updateParent = (parent: string | null) => updateDraft({ ...draft, parentId: parent });
 
   const updateDesc = (text: string) => updateDraft({ ...draft, description: text });
 
-  const updateAssignee = (assigneePayload: AssigneePayloadType) => {
-    updateDraft({ ...draft, assigneeId: assigneePayload.assigneeId })
+  const updateAssignee = (payload: string | null) => {
+    updateDraft({ ...draft, assigneeId: payload })
   };
 
   const updateStatus = (status: string) => updateDraft({ ...draft, status: status });
