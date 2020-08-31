@@ -118,7 +118,7 @@ const Project = ({ match }: PathProps) => {
 			</div>
 			{/* end of second row */}
 
-			<div className="col-3">
+			<div className="mt-4 col-6">
 				<ConsoleLogButton state={project} name="project" />
 				<ConsoleLogButton state={items} name="items" />
 			</div>

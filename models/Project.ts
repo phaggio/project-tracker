@@ -16,13 +16,14 @@ const ProjectSchema: Schema = new Schema({
   },
 
   description: {
-    type: String
+    type: String,
+    default: ''
   },
 
   status: {
     type: String,
     default: 'Open',
-    enum: ['Open', 'Closed', 'Archived']
+    enum: ['Open', 'Archived']
   },
 
   type: {

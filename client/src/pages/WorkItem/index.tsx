@@ -150,8 +150,6 @@ const WorkItem = ({ match }: PathProps) => {
 
       }
 
-
-
       <div className="col-6">
         <ConsoleLogButton name="projects" state={projects} />
         <ConsoleLogButton name="items" state={items} />

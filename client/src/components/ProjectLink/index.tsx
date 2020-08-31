@@ -1,23 +1,20 @@
 import React from 'react';
+import { ProjectType } from '../../util/dataTypes';
 import { Link } from 'react-router-dom';
 
-type ProjectLinkProps = {
-  data: dataType
+type PropsType = {
+  project: ProjectType
 };
 
-type dataType = {
-  _id: string;
-  name: string;
-};
-
-const ProjectLink = (props: ProjectLinkProps) => {
+const ProjectLink = ({ project }: PropsType) => {
+  
   return (
     <Link
       className="mb-1 text-truncate"
-      title={props.data.name}
-      to={`/project/${props.data._id}`}
+      title={project.name}
+      to={`/project/${project._id}`}
     >
-      {props.data.name}
+      {project.name}
     </Link>
   )
 };

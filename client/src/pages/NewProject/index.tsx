@@ -4,7 +4,7 @@ import ConsoleLogButton from '../../components/ConsoleLogButton';
 import { AxiosResponse } from 'axios';
 import { projectRequest } from '../../httpRequests';
 
-type ProjectInputType = {
+type NewProjectType = {
 	name: string;
 	description: string;
 	tags: string[];
@@ -12,7 +12,7 @@ type ProjectInputType = {
 
 const NewProject = () => {
 	const [disableCreateButton, updateDisableCreateButton] = useState(true);
-	const [projectInput, updateProjectInput] = useState<ProjectInputType>(
+	const [projectInput, updateProjectInput] = useState<NewProjectType>(
 		{ name: '', description: '', tags: [] }
 	);
 	const [tags, updateTags] = useState<string[]>([]);

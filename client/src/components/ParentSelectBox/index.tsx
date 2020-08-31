@@ -99,7 +99,6 @@ const ParentSelectBox = (props: PropsType) => {
           {/* Unassigned option */}
           <div className={`px-3 py-1 ${currentHover === '(open)' ? 'bg-dark text-light' : ''}`}
             onClick={() => {
-              console.log('(open) option pressed')
               updateActive(false);
               updateSelectedParentId(null);
               updateCurrentParentName('(open)')
@@ -117,7 +116,6 @@ const ParentSelectBox = (props: PropsType) => {
                 <div key={parent._id}
                   className={`px-3 py-1 ${currentHover === parent._id ? 'bg-dark text-light' : ''}`}
                   onClick={() => {
-                    console.log(`${parent.name} option pressed`)
                     updateActive(false);
                     updateSelectedParentId(parent._id);
                     updateCurrentParentName(parent.name);

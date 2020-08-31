@@ -1,4 +1,5 @@
 import React from 'react';
+import { ProjectType } from '../../util/dataTypes';
 import NewButton from '../NewButton';
 import ProjectLink from '../ProjectLink';
 
@@ -6,20 +7,7 @@ type PropsType = {
   projects: ProjectType[];
 }
 
-type ProjectType = {
-  _id: string;
-  name: string;
-  description: string;
-  tags: string[];
-}
-
 const ProjectList = ({ projects }: PropsType) => {
-
-  if (projects) {
-    console.log(`From ProjectList component, found ${projects.length} projects in database.`)
-  } else {
-    console.log(`From ProjectList component, cannot find any project in database.`)
-  }
 
   return (
     <div className="d-flex flex-column">
@@ -35,13 +23,13 @@ const ProjectList = ({ projects }: PropsType) => {
 
       <div className="d-flex flex-column">
         {(projects) ?
-          projects.map(project => {
+          projects.map(one => {
             return (
-              <ProjectLink key={project._id} data={project} />
+              <ProjectLink key={one._id} project={one} />
             )
           })
           :
-          <p>No project</p>
+          <small>No project</small>
         }
       </div>
 
