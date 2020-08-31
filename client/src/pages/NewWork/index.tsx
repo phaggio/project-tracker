@@ -8,12 +8,6 @@ import DescriptionTextarea from '../../components/DescriptionTextarea';
 import AssigneeSelectBox from '../../components/AssigneeSelectBox';
 import StatusSelection from '../../components/StatusSelection';
 import ConsoleLogButton from '../../components/ConsoleLogButton';
-import { ParentPayloadType } from '../../util/dataTypes';
-
-type AssigneePayloadType = {
-  assignee: string;
-  assigneeId: string | null;
-}
 
 const NewWork = ({ match }: PathProps) => {
   const [projects, updateProjects] = useState([]);
@@ -21,7 +15,7 @@ const NewWork = ({ match }: PathProps) => {
   const [users, updateUsers] = useState([]);
 
   const [draft, updateDraft] = useState<NewItemType>({
-    status: 'open',
+    status: 'Open',
     parentId: match.params.parentId ? match.params.parentId : null,
     name: '',
     description: '',
@@ -138,7 +132,7 @@ const NewWork = ({ match }: PathProps) => {
           <button type="submit"
             className="btn btn-success"
             disabled={disableAddButton}
-            onClick={submitButtonPressed}
+            onClick={(event) => submitButtonPressed(event)}
           >Add work item
         </button>
         </div>

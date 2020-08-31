@@ -41,11 +41,11 @@ const StatusDiv = (props: PropsType) => {
               updateDraft(event.target.selectedOptions[0].value)
             }}
           >
-            <option value='open'>Open</option>
-            <option value='active'>Active</option>
-            <option value='completed'>Completed</option>
-            <option value='in-review'>In-review</option>
-            <option value='closed'>Closed</option>
+            <option value='Open'>Open</option>
+            <option value='Active'>Active</option>
+            <option value='Completed'>Completed</option>
+            <option value='In-review'>In-review</option>
+            <option value='Closed'>Closed</option>
           </select>
         </div>
         :
