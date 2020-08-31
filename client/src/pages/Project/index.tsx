@@ -28,7 +28,7 @@ type ProjectType = {
 const Project = ({ match }: PathProps) => {
 	console.log('Rendering Project page...');
 
-	const [projectId] = useState(match ? match.params.id : '');
+	const [projectId] = useState(match.params.id ? match.params.id : '');
 	const [project, updateProject] = useState<ProjectType | undefined>();
 
 	const [items, updateItems] = useState<ItemType[]>([]);
@@ -46,9 +46,9 @@ const Project = ({ match }: PathProps) => {
 	}, [projectId, match])
 
 	useEffect(() => {
-		if (project) {
+		if (project && projectId) {
 			projectRequest
-				.updateProject(project._id, project)
+				.updateProject(projectId, project)
 				.then(data => console.log(data))
 				.catch(err => console.error(err))
 		}

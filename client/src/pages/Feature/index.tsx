@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { PathProps, ProjectType, FeatureType, WorkItemType, ParentPayloadType } from '../../util/dataTypes';
-import { projectRequest, featureRequest, userRequest, itemRequest } from '../../httpRequests';
+import { projectRequest, userRequest, itemRequest } from '../../httpRequests';
 import NameBadge from '../../components/NameBadgeDiv';
 import TagsDiv from '../../components/TagsDiv';
 import AssigneeDiv from '../../components/AssigneeDiv';
@@ -9,6 +9,7 @@ import StatusDiv from '../../components/StatusDiv';
 import DescriptionDiv from '../../components/DescriptionDiv';
 import ChildrenItemsDiv from '../../components/ChildrenItemsDiv';
 import ConsoleLogButton from '../../components/ConsoleLogButton';
+import { AxiosResponse } from 'axios';
 
 type AssigneeType = {
 	assignee: string;
@@ -17,47 +18,52 @@ type AssigneeType = {
 
 const Feature = ({ match }: PathProps) => {
 	console.log(`Rendering Feature page... `);
-	console.log(match)
 	const currentFeatureId = match.params.id;
 
 	const [feature, updateFeature] = useState<FeatureType | undefined>();
 	const [projects, updateProjects] = useState<ProjectType[] | undefined>(undefined)
-	const [workItems, updateWorkItems] = useState<WorkItemType[] | undefined>()
+	const [items, updateItems] = useState<WorkItemType[] | undefined>()
 	const [users, updateUsers] = useState<[] | undefined>(undefined);
+
+	const [loading, updateLoading] = useState(true);
 
 	// init Get to get all projects, users data for selection and current feature data and its children items
 	useEffect(() => {
-		if (match.params.parentId) {
-			featureRequest
-				.getFeatureById(match.params.id)
-				.then(res => updateFeature(res.data))
-				.catch(err => console.error(err))
+		if (match.params.id) {
+			console.log('getting all items...')
 			userRequest
-				.getUser()
-				.then(res => updateUsers(res.data))
+				.getAllUsers()
+				.then((response: AxiosResponse) => updateUsers(response.data))
 				.catch(err => console.error(err))
 			projectRequest
 				.getAllProjects()
-				.then(res => updateProjects(res.data))
+				.then((response: AxiosResponse) => updateProjects(response.data))
 				.catch(err => console.error(err))
 			itemRequest
-				.getWorkItemsByParentId(match.params.parentId)
-				.then(res => updateWorkItems(res.data))
+				.getAllWorkItems()
+				.then((response: AxiosResponse) => updateItems(response.data))
 				.catch(err => console.error(err))
 		}
 	}, []);
 
-	// update feature in database when feature state changes
 	useEffect(() => {
-		if (feature) {
-			featureRequest
-				.updateFeatureById(currentFeatureId, feature)
-				.then(res => console.log(res.data))
+		console.log(`param id is ${currentFeatureId} `);
+		if (match.params.id) {
+			itemRequest
+				.getWorkItemById(match.params.id)
+				.then(response => {
+					updateLoading(!loading);
+					updateFeature(response.data);
+				})
 				.catch(err => console.error(err))
 		}
+
+	}, [currentFeatureId])
+
+	// will use it to update feature.
+	useEffect(() => {
+		console.log('feature updated...')
 	}, [feature])
-
-
 
 	// a custom function that checks whether the object is AssigneeType obj
 	const isAssigneeType = (arg: any): arg is AssigneeType => {
@@ -102,7 +108,7 @@ const Feature = ({ match }: PathProps) => {
 	return (
 		<div className="container">
 
-			{feature !== undefined && projects !== undefined && workItems !== undefined ?
+			{!loading && feature !== undefined && projects !== undefined && items !== undefined ?
 				<div>
 					{/* start of first row */}
 					< div className="row">
@@ -131,7 +137,7 @@ const Feature = ({ match }: PathProps) => {
 									<hr className="mt-2" />
 								</div>
 								:
-								''
+								'users is not found...'
 							}
 
 							<div>
@@ -171,19 +177,24 @@ const Feature = ({ match }: PathProps) => {
 
 
 						<ChildrenItemsDiv type="feature"
-							children={workItems}
+							children={items}
 							_id={feature._id}
 							name={feature.name} />
 
 					</div>
 					{/* end of second row */}
 				</div>
-				: 'nothing'
+				:
+				'feature is not found'
 			}
 
 
-			< div className="col-3" >
+			< div className="col-6" >
+				<ConsoleLogButton name="param id" state={currentFeatureId} />
+				<ConsoleLogButton name="match param" state={match.params} />
 				<ConsoleLogButton name="feature" state={feature} />
+				<ConsoleLogButton name="projects" state={projects} />
+				<ConsoleLogButton name="items" state={items} />
 				<ConsoleLogButton name='users' state={users} />
 			</div >
 

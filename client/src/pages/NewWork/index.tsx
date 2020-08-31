@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { PathProps, NewItemType } from '../../util/dataTypes';
 import { AxiosResponse } from 'axios';
 import { projectRequest, userRequest, itemRequest } from '../../httpRequests';
 import ParentSelectBox from '../../components/ParentSelectBox';
@@ -8,34 +9,6 @@ import AssigneeSelectBox from '../../components/AssigneeSelectBox';
 import StatusSelection from '../../components/StatusSelection';
 import ConsoleLogButton from '../../components/ConsoleLogButton';
 import { ParentPayloadType } from '../../util/dataTypes';
-
-type PathProps = {
-  history: boolean;
-  location: string;
-  match: MatchType;
-};
-
-type MatchType = {
-  isExact: boolean;
-  params: ParamsType;
-  path: string;
-  url: string;
-};
-
-type ParamsType = {
-  parentType: string | undefined;
-  parentId: string | undefined;
-};
-
-type NewItemType = {
-  status: string;
-  parentId: string | null;
-  name: string;
-  description: string;
-  type: string;
-  tags: string[];
-  assigneeId: string | null;
-}
 
 type AssigneePayloadType = {
   assignee: string;

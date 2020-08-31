@@ -1,21 +1,31 @@
 type PathProps = {
   history: boolean;
   location: string;
-  match: MatchObj;
+  match: MatchType;
 };
 
-type MatchObj = {
+type MatchType = {
   isExact: boolean;
-  params: MatchParams;
+  params: ParamsType;
   path: string;
   url: string;
 };
 
-type MatchParams = {
-  parentType: string;
-  parentId: string;
-  id: string;
+type ParamsType = {
+  parentType: string | undefined;
+  parentId: string | undefined;
+  id: string | undefined;
 };
+
+type NewItemType = {
+  status: string;
+  parentId: string | null;
+  name: string;
+  description: string;
+  type: string;
+  tags: string[];
+  assigneeId: string | null;
+}
 
 type ItemType = {
   _id: string;
@@ -82,8 +92,9 @@ type AssigneePayloadType = {
 
 export type {
   PathProps,
-  MatchObj,
-  MatchParams,
+  MatchType,
+  ParamsType,
+  NewItemType,
   WorkItemType,
   ItemType,
   FeatureType,

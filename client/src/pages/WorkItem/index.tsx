@@ -50,7 +50,7 @@ const WorkItem = ({ match }: PathProps) => {
   useEffect(() => {
     if (workItem) {
       itemRequest
-        .updateWorkItemById(match.params.id, workItem)
+        .updateWorkItemById(workItem._id, workItem)
         .then(res => console.log(res.data))
         .catch(err => console.error(err))
     }
