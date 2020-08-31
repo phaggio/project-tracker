@@ -14,6 +14,7 @@ type ParentType = {
 }
 
 const ParentSelectBox = (props: PropsType) => {
+  const [selectedParentId, updateSelectedParentId] = useState<string | null>(props.parentId);
   const [currentParentName, updateCurrentParentName] = useState<string>('(open)');
 
   const [currentHover, updateCurrentHover] = useState<string>('');
@@ -22,30 +23,33 @@ const ParentSelectBox = (props: PropsType) => {
   const [filteredParents, updateFilteredParents] = useState<ParentType[]>(props.parents);
   const [filter, updateFilter] = useState<string>('');
 
+  // once props.parents loaded and parentId is not null, look for parent name.
+  useEffect(() => {
+    if (props.parents.length !== filteredParents.length) {
+      console.log(`parents length = ${props.parents.length}, filtered parents length = ${filteredParents.length}`)
+      updateFilteredParents(props.parents);
+    }
+    // the currentParentName === '(open)' condition prevents making this calculation everytime we select an option
+    if (selectedParentId !== null && props.parents.length > 0 && currentParentName === '(open)') {
+      console.log('current parentID is not null, looking for parent name...')
+      props.parents.forEach(parent => {
+        if (parent._id === selectedParentId) updateCurrentParentName(parent.name)
+      })
+    }
+  }, [props.parents]);
+
+
   // filter parent list based on search input
   useEffect(() => {
     updateFilteredParents(
       props.parents.filter(parent => {
         const words = parent.name.split(' ');
         let match = false;
-        words.forEach(word => {
-          if (word.toLowerCase().startsWith(filter.toLowerCase())) match = true;
-        })
+        words.forEach(word => { if (word.toLowerCase().startsWith(filter.toLowerCase())) match = true })
         return match;
       })
     )
   }, [filter]);
-
-  useEffect(() => {
-    // update filteredParents with the parent data from api call
-    updateFilteredParents(props.parents);
-    // if props.parentId exists, find current/default parent type and name
-    if (props.parentId !== null) {
-      props.parents.forEach(parent => {
-        if (parent._id === props.parentId) updateCurrentParentName(parent.name)
-      })
-    }
-  }, [props.parents]);
 
 
   return (
@@ -95,8 +99,10 @@ const ParentSelectBox = (props: PropsType) => {
           {/* Unassigned option */}
           <div className={`px-3 py-1 ${currentHover === '(open)' ? 'bg-dark text-light' : ''}`}
             onClick={() => {
+              console.log('(open) option pressed')
               updateActive(false);
-              updateCurrentParentName('(open)');
+              updateSelectedParentId(null);
+              updateCurrentParentName('(open)')
               props.onChange(null);
             }}
             style={{ cursor: 'pointer' }}
@@ -111,7 +117,9 @@ const ParentSelectBox = (props: PropsType) => {
                 <div key={parent._id}
                   className={`px-3 py-1 ${currentHover === parent._id ? 'bg-dark text-light' : ''}`}
                   onClick={() => {
+                    console.log(`${parent.name} option pressed`)
                     updateActive(false);
+                    updateSelectedParentId(parent._id);
                     updateCurrentParentName(parent.name);
                     props.onChange(parent._id);
                   }}
@@ -132,8 +140,11 @@ const ParentSelectBox = (props: PropsType) => {
       </div>
 
       <div className="col-12">
-        <ConsoleLogButton name="parentId" state={props.parentId} />
+        <ConsoleLogButton name="props.parentId" state={props.parentId} />
+        <ConsoleLogButton name="selectedParentId" state={selectedParentId} />
+        <ConsoleLogButton name="currentParentName" state={currentParentName} />
         <ConsoleLogButton name="props.parents" state={props.parents} />
+
         <ConsoleLogButton name="filtered parents" state={filteredParents} />
       </div>
 

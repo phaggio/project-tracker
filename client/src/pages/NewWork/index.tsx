@@ -10,9 +10,9 @@ import StatusSelection from '../../components/StatusSelection';
 import ConsoleLogButton from '../../components/ConsoleLogButton';
 
 const NewWork = ({ match }: PathProps) => {
-  const [projects, updateProjects] = useState([]);
-  const [items, updateItems] = useState([]);
-  const [users, updateUsers] = useState([]);
+  const [projects, updateProjects] = useState([]); // potential parents
+  const [items, updateItems] = useState([]); // potential parents
+  const [users, updateUsers] = useState([]); // potential assignee
 
   const [draft, updateDraft] = useState<NewItemType>({
     status: 'Open',

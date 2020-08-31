@@ -58,7 +58,6 @@ const ParentItemDiv = (props: PropsType) => {
       </div>
       {/* end of label and edit button */}
 
-
       {editMode ?
         <div>
           <ParentSelectBox

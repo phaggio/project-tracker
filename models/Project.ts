@@ -6,12 +6,10 @@ interface IProject extends Document {
   status: string;
   type: string;
   tags: string[];
-  features: string[];
-  workItems: string[];
-  bugs: string[];
 }
 
 const ProjectSchema: Schema = new Schema({
+  
   name: {
     type: String,
     minlength: 1
@@ -23,7 +21,8 @@ const ProjectSchema: Schema = new Schema({
 
   status: {
     type: String,
-    default: 'Open'
+    default: 'Open',
+    enum: ['Open', 'Closed', 'Archived']
   },
 
   type: {
@@ -35,6 +34,7 @@ const ProjectSchema: Schema = new Schema({
     type: [String],
     index: true
   }
+  
 })
 
 export default mongoose.model<IProject>('Project', ProjectSchema);

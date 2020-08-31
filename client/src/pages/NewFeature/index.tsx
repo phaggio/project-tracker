@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ProjectType, ItemType, PathProps } from '../../util/dataTypes';
+import { ProjectType, ItemType, PathProps, NewItemType } from '../../util/dataTypes';
 import { AxiosResponse } from 'axios';
 import { projectRequest, itemRequest, userRequest } from '../../httpRequests';
 import ParentSelectBox from '../../components/ParentSelectBox';
@@ -7,17 +7,25 @@ import AssigneeSelectBox from '../../components/AssigneeSelectBox';
 import ConsoleLogButton from '../../components/ConsoleLogButton';
 
 const NewFeature = ({ match }: PathProps) => {
-  console.log('Rendering NewFeature page...');
+  console.log('Rendering New Feature page...');
 
-  const [disableCreateButton, updateDisableCreateButton] = useState(true);
-  const [projects, updateProjects] = useState<ProjectType[] | undefined>(); // potential parents
-  const [items, updateItems] = useState<ItemType[] | undefined>(); // potential parents
+  const [projects, updateProjects] = useState<ProjectType[]>([]); // potential parents
+  const [items, updateItems] = useState<ItemType[]>([]); // potential parents
   const [users, updateUsers] = useState([]) // potential assignees
   const [parents, updateParents] = useState<(ProjectType | ItemType)[]>([]);
 
-  const [draft, updateDraft] = useState({});
+  const [draft, updateDraft] = useState<NewItemType>({
+    status: 'Open',
+    parentId: match.params.parentId ? match.params.parentId : null,
+    name: '',
+    description: '',
+    type: 'feature',
+    tags: [],
+    assigneeId: null
+  });
 
-  const [tags] = useState([])
+  const [tags] = useState<string[]>([]);
+  const [disableCreateButton, updateDisableCreateButton] = useState(true);
 
   // initial GET request to get list of projects for dropdown selection
   useEffect(() => {
@@ -70,10 +78,8 @@ const NewFeature = ({ match }: PathProps) => {
     }
   }
 
-  const handleParentSelection = (payload: string | null) => {
-    console.log(payload);
-    updateDraft({ ...draft, parentId: payload })
-  };
+
+  const updateParent = (parent: string | null) => updateDraft({ ...draft, parentId: parent });
 
   const handleAssigneeInput = (payload: string | null) => {
     console.log(payload)
@@ -95,12 +101,14 @@ const NewFeature = ({ match }: PathProps) => {
           placeholder="enter name ..." />
       </div>
 
-      <div className="form-group">
-        <label className="font-weight-light">Parent</label>
-        <ParentSelectBox
-          parentId={match.params.parentId ? match.params.parentId : null}
-          parents={parents}
-          onChange={handleParentSelection} />
+      <div className="form-group pt-2">
+        <div className="d-flex justify-content-between align-items-baseline">
+          <label className="font-weight-light">Parent</label>
+          <small>Optional</small>
+        </div>
+        <ParentSelectBox parentId={match.params.parentId !== undefined ? match.params.parentId : null} // pass default parentId if available
+          parents={[...projects, ...items]} // pass projects and items to parent select box
+          onChange={updateParent} />
       </div>
 
       <div className="form-group">
