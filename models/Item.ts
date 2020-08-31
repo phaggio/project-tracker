@@ -31,7 +31,8 @@ const ItemSchema: Schema = new Schema({
   },
 
   description: {
-    type: String
+    type: String,
+    default: ''
   },
 
   type: {

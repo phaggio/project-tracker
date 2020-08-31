@@ -35,7 +35,7 @@ const ChildrenItemsDiv = (props: PropsType) => {
   return (
     <div className="container border border-info rounded">
       <div className="d-flex justify-content-between align-items-baseline">
-        <label className="font-weight-light">Children items</label>
+        <label className="font-weight-light">Children items ({props.children.length})</label>
         <AddNewDropDownButton buttons={buttons} small={true} />
       </div>
 
