@@ -6,35 +6,35 @@ import ConsoleLogButton from '../ConsoleLogButton';
 
 type PropsType = {
   currentAssigneeId: string | null;
-  currentAssignee: string;
-  users: userObj[];
-  onChange: (assigneeObj: AssigneeObj) => void;
+  currentAssignee?: string;
+  users: UserType[];
+  onChange: (assigneePayload: AssigneePayloadType) => void;
 }
 
-type AssigneeObj = {
+type AssigneePayloadType = {
   assignee: string;
   assigneeId: string | null;
 }
 
-type userObj = {
+type UserType = {
+  _id: string;
   type: string;
   firstName: string;
   lastName: string;
   email: string;
   fullName: string;
-  _id: string;
 }
 
 const AssigneeSelectBox = (props: PropsType) => {
   console.log('Rendering search select box...')
   const constantUsers = (props.users);
   // current selected users
-  const [currentAssignee, updateCurrentAssignee] = useState(props.currentAssignee);
+  const [currentAssignee, updateCurrentAssignee] = useState(props.currentAssignee ? props.currentAssignee : 'Unassigned');
 
   const [currentHover, updateCurrentHover] = useState('');
   const [active, updateActive] = useState(false);
 
-  const [filteredUsers, updateFilteredUsers] = useState<userObj[]>(props.users);
+  const [filteredUsers, updateFilteredUsers] = useState<UserType[]>(props.users);
   const [filter, updateFilter] = useState('');
 
   // filter selection

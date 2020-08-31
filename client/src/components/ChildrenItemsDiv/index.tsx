@@ -6,14 +6,15 @@ type PropsType = {
   type: string; // whether this ChildrenItemsDiv is on project or feature page
   name: string; // name of current project/feature this ChildrenItemsDiv is on
   _id: string; // _id of current project/feature this ChildrenItemsDiv is on
-  children: DataObj[]; // all children of this project/feature
+  children: ItemType[]; // all children of this project/feature
 }
 
-type DataObj = {
+type ItemType = {
   _id: string;
   status: string;
   name: string;
   description: string;
+  tags: string[];
   type: string;
   parentId?: string | null;
 }

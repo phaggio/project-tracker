@@ -4,9 +4,9 @@ import ConsoleLogButton from '../ConsoleLogButton';
 
 type PropsType = {
   // currentParent: ParentPayloadType;
-  parentId: string | null;
-  parents: ParentType[];
-  onChange: (parentObj: ParentPayloadType) => void;
+  parentId: string | null; // current/default parentId
+  parents: ParentType[]; // available parents for this item
+  onChange: (selectedParent: ParentPayloadType) => void;
 }
 
 type ParentType = {
@@ -145,7 +145,8 @@ const ParentSelectBox = (props: PropsType) => {
 
       </div>
 
-      <div className="">
+      <div className="col-12">
+        <ConsoleLogButton name="parentId" state={props.parentId} />
         <ConsoleLogButton name="current parents" state={currentParent} />
         <ConsoleLogButton name="constant parents" state={constantParents} />
         <ConsoleLogButton name="filtered parents" state={filteredParents} />

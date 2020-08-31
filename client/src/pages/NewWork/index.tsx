@@ -1,215 +1,188 @@
 import React, { useState, useEffect } from 'react';
 import { AxiosResponse } from 'axios';
-import { featureRequest, projectRequest, userRequest, itemRequest } from '../../httpRequests';
-import FormGroupInput from '../../components/FormGroupInput';
-import FormGroupTextArea from '../../components/FormGroupTextArea';
+import { projectRequest, userRequest, itemRequest } from '../../httpRequests';
+import ParentSelectBox from '../../components/ParentSelectBox';
+import TagsInput from '../../components/TagsInput';
+import DescriptionTextarea from '../../components/DescriptionTextarea';
+import AssigneeSelectBox from '../../components/AssigneeSelectBox';
+import StatusSelection from '../../components/StatusSelection';
 import ConsoleLogButton from '../../components/ConsoleLogButton';
+import { ParentPayloadType } from '../../util/dataTypes';
 
 type PathProps = {
   history: boolean;
   location: string;
-  match: MatchObj;
+  match: MatchType;
 };
 
-type MatchObj = {
+type MatchType = {
   isExact: boolean;
-  params: MatchParams;
+  params: ParamsType;
   path: string;
   url: string;
 };
 
-type MatchParams = {
-  type: string;
-  name: string;
-  id: string;
+type ParamsType = {
+  parentType: string | undefined;
+  parentId: string | undefined;
 };
 
-type WorkItemType = {
+type NewItemType = {
   status: string;
   parentId: string | null;
-  parentType: string | null;
   name: string;
   description: string;
   type: string;
   tags: string[];
-  assigneeId: string | null
+  assigneeId: string | null;
+}
+
+type AssigneePayloadType = {
+  assignee: string;
+  assigneeId: string | null;
 }
 
 const NewWork = ({ match }: PathProps) => {
   const [projects, updateProjects] = useState([]);
-  const [features, updateFeatures] = useState([]);
+  const [items, updateItems] = useState([]);
   const [users, updateUsers] = useState([]);
 
-  const [workItem, updateWorkItem] = useState<WorkItemType>({
+  const [draft, updateDraft] = useState<NewItemType>({
     status: 'open',
-    parentId: match.params.id ? match.params.id : '',
-    parentType: match.params.type ? match.params.type : '',
+    parentId: match.params.parentId ? match.params.parentId : null,
     name: '',
     description: '',
     type: 'workItem',
     tags: [],
-    assigneeId: ''
-  })
+    assigneeId: null
+  });
 
   const [tags, updateTags] = useState<string[]>([])
-
   const [disableAddButton, updateDisableAddButton] = useState(true);
 
-  // initial GET for projects, features, users selection lists
+  // INIT GET for projects, items, users data for selection
   useEffect(() => {
-    projectRequest.getAllProjects()
-      .then((response: AxiosResponse) => {
-        console.log('adding projects to projects...');
-        updateProjects(response.data);
-      })
-    featureRequest.getAllFeatures()
-      .then((response: AxiosResponse) => {
-        console.log('adding features to features...');
-        updateFeatures(response.data);
-      });
-    userRequest.getUser()
-      .then((response: AxiosResponse) => {
-        console.log('adding users to users...');
-        updateUsers(response.data);
-      })
-  }, [])
+    projectRequest
+      .getAllProjects()
+      .then((response: AxiosResponse) => updateProjects(response.data))
+      .catch(err => console.error(err))
+    itemRequest
+      .getAllWorkItems()
+      .then((response: AxiosResponse) => updateItems(response.data))
+      .catch(err => console.error(err))
+    userRequest
+      .getAllUsers()
+      .then((response: AxiosResponse) => updateUsers(response.data))
+      .catch(err => console.error(err))
+  }, []);
 
+  useEffect(() => {
+    updateDraft({ ...draft, tags: tags })
+  }, [tags]);
 
-  const parseParentType = (str: string) => {
-    const inputArr = str.split('/');
-    return inputArr[0] ? inputArr[0] : null;
-  };
-
-  const parseParentId = (str: string) => {
-    const inputArr = str.split('/');
-    return inputArr[2] ? inputArr[2] : null;
+  const updateName = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const input = event.target.value.trim();
+    updateDraft({ ...draft, name: input });
+    updateDisableAddButton(input ? false : true);
   }
-
-  const parseAssigneeId = (str: string) => {
-    const assigneeArr = str.split('/');
-    return assigneeArr[2] ? assigneeArr[2] : null;
-  }
-
-  const updateFormInput = (id: string, str: string) => {
-    switch (id) {
-      case 'name':
-        if (str.trim()) updateWorkItem({ ...workItem, name: str })
-        str.trim() ? updateDisableAddButton(false) : updateDisableAddButton(true)
-        break;
-      case 'description':
-        if (str.trim()) updateWorkItem({ ...workItem, description: str })
-        break;
-      case 'parent':
-        updateWorkItem({ ...workItem, parentId: parseParentId(str), parentType: parseParentType(str) })
-        break;
-      case 'assignee':
-        updateWorkItem({ ...workItem, assigneeId: parseAssigneeId(str) });
-        break;
-      default:
-        break;
-    }
-  }
-
-  const updateTagsInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const str = event.target.value;
-    console.log(str);
-    let tagArr: string[] = []
-    // check for empty/space str between commas
-    str.split(',').forEach((item: string) => {
-      if (item.trim().length > 0) {
-        tagArr.push(item.trim());
-      }
-    });
-    updateTags(tagArr);
-  };
 
   const submitButtonPressed = (event: React.FormEvent) => {
     event.preventDefault(); //default action is clear the form
-    console.log(`submit button pressed..`)
-    const data = workItem;
-    console.log(`sending`, data);
-    itemRequest.addNewWorkItem(data)
+    itemRequest
+      .addNewWorkItem(draft)
       .then((response: AxiosResponse) => console.log(response))
       .catch(err => console.error(err));
   };
 
+  const updateParent = (parent: ParentPayloadType) => updateDraft({ ...draft, parentId: parent.parentId });
+
+  const updateDesc = (text: string) => updateDraft({ ...draft, description: text });
+
+  const updateAssignee = (assigneePayload: AssigneePayloadType) => {
+    updateDraft({ ...draft, assigneeId: assigneePayload.assigneeId })
+  };
+
+  const updateStatus = (status: string) => updateDraft({ ...draft, status: status });
 
   return (
     <div className="container">
-      <form
-        onSubmit={event => submitButtonPressed(event)}
-      >
-        <FormGroupInput label="Parent item"
-          spellCheck={false}
-          optional={false}
-          id="parent"
-          listName="parents"
-          listArr={[...features, ...projects]}
-          placeholder="Parent item type/ parent item name/ parent item ID"
-          defaultValue={match.params ? `${match.params.type}/${match.params.name}/${match.params.id}` : ''}
-          defaultOption="No eligible parent item found"
-          onChangeFunction={updateFormInput} />
+      <div className="col-12">
 
-        <FormGroupInput label="Work item name"
-          spellCheck={false}
-          optional={false}
-          id="name"
-          placeholder="work item name"
-          onChangeFunction={updateFormInput} />
-
-        <div className="form-group">
-          <label className="mr-1">{`Tags: {`}</label>
-          {
-            tags ? tags.map(tag => { return (<span className="badge badge-info mr-1 my-1" key={tag}>{tag}</span>) }) : ``
-          }
-          <label>{`}`}</label>
+        <div className="form-group pt-2">
+          <div className="d-flex justify-content-between align-items-baseline">
+            <label className="font-weight-light">Work item name</label>
+            <small>Required</small>
+          </div>
           <input type="text"
+            id="name"
             className="form-control"
-            id="tags"
-            onChange={event => updateTagsInput(event)}
-            placeholder="Separate tags by comma"
-          />
+            spellCheck={false}
+            onChange={event => updateName(event)}
+            placeholder="enter name ..." />
         </div>
 
-        <FormGroupTextArea label="Description"
-          spellCheck={true}
-          optional={true}
-          id="description"
-          placeholder="Work item description..."
-          onChangeFunction={updateFormInput} />
+        <div className="form-group pt-2">
+          <div className="d-flex justify-content-between align-items-baseline">
+            <label className="font-weight-light">Parent</label>
+            <small>Optional</small>
+          </div>
+          <ParentSelectBox parentId={match.params.parentId ? match.params.parentId : null}
+            parents={[...projects, ...items]} // pass projects and items to parent select box
+            onChange={updateParent} />
+        </div>
 
-        <FormGroupInput label="Assign to: "
-          spellCheck={false}
-          optional={true}
-          id="assignee"
-          placeholder="Type/ Assignee name/ ID"
-          listName="assignees"
-          listArr={users}
-          defaultOption="No user found"
-          onChangeFunction={updateFormInput} />
+        <div className="pt-2">
+          <div className="d-flex justify-content-between align-items-baseline">
+            <label className="font-weight-light">Tags</label>
+            <small>Optional</small>
+          </div>
+          <TagsInput tags={tags} onChange={updateTags} />
+        </div>
 
-        <button type="submit"
-          className="btn btn-success"
-          disabled={disableAddButton}
-        >Add work item
+        <div className="pt-2">
+          <div className="d-flex justify-content-between align-items-baseline">
+            <label className="font-weight-light">Assignee</label>
+          </div>
+          <AssigneeSelectBox currentAssigneeId={null} users={users} onChange={updateAssignee} />
+        </div>
+
+        <div className="pt-2">
+          <div className="d-flex justify-content-between align-items-baseline">
+            <label className="font-weight-light">Description</label>
+            <small>Optional</small>
+          </div>
+          <DescriptionTextarea text={draft.description} onChange={updateDesc} />
+        </div>
+
+        <div className="pt-2">
+          <div className="d-flex justify-content-between align-items-baseline">
+            <label className="font-weight-light">Status</label>
+          </div>
+          <StatusSelection defaultStatus="open" onChange={updateStatus} />
+        </div>
+
+        <div className="pt-2">
+          <button type="submit"
+            className="btn btn-success"
+            disabled={disableAddButton}
+            onClick={submitButtonPressed}
+          >Add work item
         </button>
+        </div>
 
-      </form>
-
-
-
-      <div className="d-flex flex-column col-4">
-        <ConsoleLogButton name="work item" state={workItem} />
-        <ConsoleLogButton name="projects" state={projects} />
-        <ConsoleLogButton name="features" state={features} />
-        <ConsoleLogButton name="users" state={users} />
       </div>
 
+
+      <div className="col-5">
+        <ConsoleLogButton name="match params" state={match.params} />
+        <ConsoleLogButton name="draft" state={draft} />
+        <ConsoleLogButton name="projects" state={projects} />
+        <ConsoleLogButton name="users" state={users} />
+      </div>
 
 
     </div>
   )
 };
-
 
 export default NewWork;
