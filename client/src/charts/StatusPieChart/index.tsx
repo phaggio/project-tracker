@@ -88,15 +88,15 @@ const StatusPieChart = (
   };
 
   return (
-    <PieChart width={320} height={230}>
+    <PieChart width={320} height={220}>
       <Pie
         activeIndex={activeIndex}
         activeShape={renderActiveShape}
         data={dataArr}
-        cx={160}
+        cx={150}
         cy={100}
         innerRadius={40}
-        outerRadius={60}
+        outerRadius={55}
         fill="#8884d8"
         dataKey="value"
         onMouseEnter={(e) => {

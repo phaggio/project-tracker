@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ProjectType, ItemType } from '../../util/dataTypes';
 import ProjectList from '../../components/ProjectList';
-import PieChart from '../../charts/PieChart';
+import PieChart from '../../charts/StatusPieChart';
 import { projectRequest, itemRequest } from '../../httpRequests';
 import ConsoleLogButton from '../../components/ConsoleLogButton';
 
@@ -22,70 +22,118 @@ const Home = () => {
     }
   }, [])
 
+  const fakeData = [
+    { name: 'Open', value: 70 },
+    { name: 'Active', value: 50 },
+    { name: 'Completed', value: 20 },
+    { name: 'In-review', value: 30 }
+  ]
+
+  const getStatusByType = (itemType: string, data: (ItemType | ProjectType)[]) => {
+    const result = data.forEach(item => {
+      if (item.type === itemType) console.log(item)
+    })
+  }
+
   return (
     <div className="container border border-primary rounded">
-
       <div className="row">
 
-        <div className="col-12 col-md-3 lg-4 border border-success rounded">
+        <div className="col-12 col-md-4 col-lg-4 col-xl-3 border border-success rounded">
           <ProjectList projects={projects} />
         </div>
 
-        <div className="col-12 col-md-9 lg-8 border border-secondary rounded">
+        <div className="col-12 col-md-8 col-lg-8 col-xl-9 border border-secondary rounded">
           <h4>Snapshot</h4>
 
-          <div className="d-flex flex-wrap">
-            <div className="d-flex flex-row align-items-baseline border border-primary rounded w-auto px-3 my-2 mr-2 shadow">
-              <div className="display-3 text-primary">{`${projects.length}`}</div>
-              <small className="ml-2">Projects</small>
-            </div>
+          {/* first row */}
+          <div className="row">
+            <div className="d-flex flex-wrap">
+              <div className="d-flex flex-row align-items-baseline border border-primary rounded w-auto px-3 my-2 mr-2 shadow">
+                <div className="display-3 text-primary">{`${projects.length}`}</div>
+                <small className="ml-2">Projects</small>
+              </div>
 
-            <div className="d-flex flex-row align-items-baseline border border-info rounded-lg w-auto px-3 my-2 mr-2 shadow">
-              <div className="display-3 text-warning">{items.filter(item => item.type === 'feature').length}</div>
-              <small className="ml-2">Features</small>
-            </div>
+              <div className="d-flex flex-row align-items-baseline border border-info rounded-lg w-auto px-3 my-2 mr-2 shadow">
+                <div className="display-3 text-warning">{items.filter(item => item.type === 'feature').length}</div>
+                <small className="ml-2">Features</small>
+              </div>
 
-            <div className="d-flex flex-row align-items-baseline border border-secondary rounded w-auto px-3 my-2 mr-2 shadow">
-              <div className="display-3 text-secondary">{items.filter(item => item.type === 'workItem').length}</div>
-              <small className="ml-2">Work items</small>
-            </div>
+              <div className="d-flex flex-row align-items-baseline border border-secondary rounded w-auto px-3 my-2 mr-2 shadow">
+                <div className="display-3 text-secondary">{items.filter(item => item.type === 'workItem').length}</div>
+                <small className="ml-2">Work items</small>
+              </div>
 
-            <div className="d-flex flex-row align-items-baseline border border-secondary rounded w-auto px-3 my-2 mr-2 shadow">
-              <div className="display-3 text-danger">{items.filter(item => item.type === 'bug').length}</div>
-              <small className="ml-2">Bugs</small>
+              <div className="d-flex flex-row align-items-baseline border border-secondary rounded w-auto px-3 my-2 mr-2 shadow">
+                <div className="display-3 text-danger">{items.filter(item => item.type === 'bug').length}</div>
+                <small className="ml-2">Bugs</small>
+              </div>
             </div>
           </div>
+          {/* end of first row */}
 
+
+          {/* second row */}
           <div className="row">
-            <div className="col-12">
-              <div className="d-flex">
-                <div className="d-flex flex-column justify-content-center rounded-lg w-auto px-3 my-2 mr-2 shadow w-100">
+            <div className="col-12 col-xl-6 px-xl-1">
+              <div className="d-flex rounded-lg shadow">
+                <div className="d-flex flex-column justify-content-center align-items-center px-3">
                   <div className="display-3 text-warning">{items.filter(item => item.type === 'feature').length}</div>
-                  <small className="ml-2">Features</small>
+                  <small className="">Features</small>
                 </div>
-                <PieChart dataArr={[
-                  { name: 'Open', value: 70 },
-                  { name: 'Active', value: 50 },
-                  { name: 'Completed', value: 20 },
-                  { name: 'In-review', value: 30 },
-                ]} />
+                <PieChart dataArr={fakeData} />
+              </div>
+            </div>
+            <div className="col-12 col-xl-6 px-xl-1">
+              <div className="d-flex rounded-lg shadow">
+                <div className="d-flex flex-column justify-content-center align-items-center px-3">
+                  <div className="display-3 text-secondary">{items.filter(item => item.type === 'workItem').length}</div>
+                  <small className="">Work</small>
+                </div>
+                <PieChart dataArr={fakeData} />
               </div>
             </div>
           </div>
 
 
-          Add something else here later...
+          {/* third row */}
+          <div className="row">
+            <div className="col-12 col-md-12 col-lg-6">
+              <div className="d-flex flex-column align-items-center">
+                <div>
+                  <label className="h3 text-warning mr-1">
+                    {items.filter(item => item.type === 'feature').length}
+                  </label>
+                  <label className="font-weight-light">Features</label>
+                  <hr className="m-0" />
+                </div>
+                <PieChart dataArr={fakeData} />
+              </div>
+            </div>
 
-          <PieChart dataArr={[
-            { name: 'Open', value: 70 },
-            { name: 'Active', value: 50 },
-            { name: 'Completed', value: 20 },
-            { name: 'In-review', value: 30 },
-          ]} />
+            <div className="col-12 col-md-12 col-lg-6">
+              <div className="d-flex flex-column align-items-center">
+                <div>
+                  <label className="h3 text-secondary mr-1">
+                    {items.filter(item => item.type === 'workItem').length}
+                  </label>
+                  <label className="font-weight-light">Work items</label>
+                  <hr className="m-0" />
+                </div>
+                <PieChart dataArr={fakeData} />
+              </div>
+            </div>
+
+          </div>
+          {/* end of third row */}
+
+
+
         </div>
+        {/* end of right side */}
 
       </div>
-
+      {/* end of main row */}
 
       {/* debug buttons */}
       <div className="col-5">
@@ -93,7 +141,7 @@ const Home = () => {
         <ConsoleLogButton name="work items" state={items} />
       </div>
 
-    </div>
+    </div >
   )
 };
 
