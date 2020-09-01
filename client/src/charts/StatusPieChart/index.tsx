@@ -10,6 +10,7 @@ const data = [
 
 type StatusPieChartProps = {
   dataArr: DataType[];
+  color: string;
 }
 
 type DataType = {
@@ -18,7 +19,7 @@ type DataType = {
 }
 
 const StatusPieChart = (
-  { dataArr }: StatusPieChartProps
+  { dataArr, color }: StatusPieChartProps
 ) => {
 
   const [activeIndex, updateActiveIndex] = useState(0);
@@ -97,7 +98,7 @@ const StatusPieChart = (
         cy={100}
         innerRadius={40}
         outerRadius={55}
-        fill="#8884d8"
+        fill={color}
         dataKey="value"
         onMouseEnter={(e) => {
           updateActiveIndex(dataArr.findIndex((obj: DataType) => obj.name === e.name))

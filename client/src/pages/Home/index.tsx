@@ -39,11 +39,11 @@ const Home = () => {
     <div className="container border border-primary rounded">
       <div className="row">
 
-        <div className="col-12 col-md-4 col-lg-4 col-xl-3 border border-success rounded">
+        <div className="col-12 col-md-4 col-lg-3 col-xl-3 border border-success rounded">
           <ProjectList projects={projects} />
         </div>
 
-        <div className="col-12 col-md-8 col-lg-8 col-xl-9 border border-secondary rounded">
+        <div className="col-12 col-md-8 col-lg-9 col-xl-9 border border-secondary rounded">
           <h4>Snapshot</h4>
 
           {/* first row */}
@@ -76,21 +76,21 @@ const Home = () => {
           {/* second row */}
           <div className="row">
             <div className="col-12 col-xl-6 px-xl-1">
-              <div className="d-flex rounded-lg shadow">
+              <div className="d-flex justify-content-center rounded-lg shadow">
                 <div className="d-flex flex-column justify-content-center align-items-center px-3">
                   <div className="display-3 text-warning">{items.filter(item => item.type === 'feature').length}</div>
                   <small className="">Features</small>
                 </div>
-                <PieChart dataArr={fakeData} />
+                <PieChart dataArr={fakeData} color='#FFC107' />
               </div>
             </div>
             <div className="col-12 col-xl-6 px-xl-1">
-              <div className="d-flex rounded-lg shadow">
+              <div className="d-flex justify-content-center rounded-lg shadow">
                 <div className="d-flex flex-column justify-content-center align-items-center px-3">
                   <div className="display-3 text-secondary">{items.filter(item => item.type === 'workItem').length}</div>
                   <small className="">Work</small>
                 </div>
-                <PieChart dataArr={fakeData} />
+                <PieChart dataArr={fakeData} color='#6C757D' />
               </div>
             </div>
           </div>
@@ -99,7 +99,7 @@ const Home = () => {
           {/* third row */}
           <div className="row">
             <div className="col-12 col-md-12 col-lg-6">
-              <div className="d-flex flex-column align-items-center">
+              <div className="d-flex flex-column align-items-center shadow rounded-lg p-2">
                 <div>
                   <label className="h3 text-warning mr-1">
                     {items.filter(item => item.type === 'feature').length}
@@ -107,12 +107,12 @@ const Home = () => {
                   <label className="font-weight-light">Features</label>
                   <hr className="m-0" />
                 </div>
-                <PieChart dataArr={fakeData} />
+                <PieChart dataArr={fakeData} color='#FFC107' />
               </div>
             </div>
 
             <div className="col-12 col-md-12 col-lg-6">
-              <div className="d-flex flex-column align-items-center">
+              <div className="d-flex flex-column align-items-center shadow rounded-lg p-2">
                 <div>
                   <label className="h3 text-secondary mr-1">
                     {items.filter(item => item.type === 'workItem').length}
@@ -120,7 +120,7 @@ const Home = () => {
                   <label className="font-weight-light">Work items</label>
                   <hr className="m-0" />
                 </div>
-                <PieChart dataArr={fakeData} />
+                <PieChart dataArr={fakeData} color='#6C757D' />
               </div>
             </div>
 
