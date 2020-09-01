@@ -1,6 +1,7 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
 export interface IItem extends Document {
+  createDate: Date;
   parentId: string | null;
   status: string;
   name: string;
@@ -11,6 +12,12 @@ export interface IItem extends Document {
 }
 
 const ItemSchema: Schema = new Schema({
+
+  createDate: {
+    type: Date,
+    default: Date.now
+  },
+
   parentId: {
     type: String,
     default: null,

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ProjectType, ItemType } from '../../util/dataTypes';
 import ProjectList from '../../components/ProjectList';
+import PieChart from '../../charts/PieChart';
 import { projectRequest, itemRequest } from '../../httpRequests';
 import ConsoleLogButton from '../../components/ConsoleLogButton';
 
@@ -26,11 +27,11 @@ const Home = () => {
 
       <div className="row">
 
-        <div className="col-12 col-md-4 border border-success rounded">
+        <div className="col-12 col-md-3 lg-4 border border-success rounded">
           <ProjectList projects={projects} />
         </div>
 
-        <div className="col-12 col-md-8 border border-secondary rounded">
+        <div className="col-12 col-md-9 lg-8 border border-secondary rounded">
           <h4>Snapshot</h4>
 
           <div className="d-flex flex-wrap">
@@ -53,9 +54,34 @@ const Home = () => {
               <div className="display-3 text-danger">{items.filter(item => item.type === 'bug').length}</div>
               <small className="ml-2">Bugs</small>
             </div>
-
           </div>
+
+          <div className="row">
+            <div className="col-12">
+              <div className="d-flex">
+                <div className="d-flex flex-column justify-content-center rounded-lg w-auto px-3 my-2 mr-2 shadow w-100">
+                  <div className="display-3 text-warning">{items.filter(item => item.type === 'feature').length}</div>
+                  <small className="ml-2">Features</small>
+                </div>
+                <PieChart dataArr={[
+                  { name: 'Open', value: 70 },
+                  { name: 'Active', value: 50 },
+                  { name: 'Completed', value: 20 },
+                  { name: 'In-review', value: 30 },
+                ]} />
+              </div>
+            </div>
+          </div>
+
+
           Add something else here later...
+
+          <PieChart dataArr={[
+            { name: 'Open', value: 70 },
+            { name: 'Active', value: 50 },
+            { name: 'Completed', value: 20 },
+            { name: 'In-review', value: 30 },
+          ]} />
         </div>
 
       </div>
