@@ -25,17 +25,16 @@ const ParentSelectBox = (props: PropsType) => {
 
   // once props.parents loaded and parentId is not null, look for parent name.
   useEffect(() => {
-    if (props.parents.length !== filteredParents.length) {
-      console.log(`parents length = ${props.parents.length}, filtered parents length = ${filteredParents.length}`)
-      updateFilteredParents(props.parents);
-    }
     // the currentParentName === '(open)' condition prevents making this calculation everytime we select an option
     if (selectedParentId !== null && props.parents.length > 0 && currentParentName === '(open)') {
-      console.log('current parentID is not null, looking for parent name...')
       props.parents.forEach(parent => {
         if (parent._id === selectedParentId) updateCurrentParentName(parent.name)
       })
     }
+  }, [props.parents, selectedParentId, currentParentName]);
+
+  useEffect(() => {
+    if (props.parents.length) updateFilteredParents(props.parents)
   }, [props.parents]);
 
 

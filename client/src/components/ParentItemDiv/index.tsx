@@ -34,7 +34,7 @@ const ParentItemDiv = (props: PropsType) => {
     } else {
       updateParentName('(open)')
     }
-  }, [props.currentParentId])
+  }, [props.currentParentId, props.parents])
 
   return (
     <div>

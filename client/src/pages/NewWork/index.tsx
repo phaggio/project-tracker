@@ -65,9 +65,7 @@ const NewWork = ({ match }: PathProps) => {
 
   const updateDesc = (text: string) => updateDraft({ ...draft, description: text });
 
-  const updateAssignee = (payload: string | null) => {
-    updateDraft({ ...draft, assigneeId: payload })
-  };
+  const updateAssignee = (payload: string | null) => updateDraft({ ...draft, assigneeId: payload });
 
   const updateStatus = (status: string) => updateDraft({ ...draft, status: status });
 
@@ -143,8 +141,6 @@ const NewWork = ({ match }: PathProps) => {
       <div className="col-5">
         <ConsoleLogButton name="match params" state={match.params} />
         <ConsoleLogButton name="draft" state={draft} />
-        <ConsoleLogButton name="projects" state={projects} />
-        <ConsoleLogButton name="users" state={users} />
       </div>
 
 
