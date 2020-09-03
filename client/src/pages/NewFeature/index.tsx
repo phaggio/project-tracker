@@ -3,6 +3,8 @@ import { ProjectType, ItemType, PathProps, NewItemType } from '../../util/dataTy
 import { AxiosResponse } from 'axios';
 import { projectRequest, itemRequest, userRequest } from '../../httpRequests';
 import ParentSelectBox from '../../components/ParentSelectBox';
+import TagsInput from '../../components/TagsInput';
+import DescriptionTextarea from '../../components/DescriptionTextarea';
 import AssigneeSelectBox from '../../components/AssigneeSelectBox';
 import ConsoleLogButton from '../../components/ConsoleLogButton';
 
@@ -24,12 +26,11 @@ const NewFeature = ({ match }: PathProps) => {
     assigneeId: null
   });
 
-  const [tags] = useState<string[]>([]);
-  const [disableCreateButton, updateDisableCreateButton] = useState(true);
+  const [tags, updateTags] = useState<string[]>([]);
+  const [disableAddButton, updateDisableAddButton] = useState(true);
 
   // initial GET request to get list of projects for dropdown selection
   useEffect(() => {
-    console.log('making initial GET api call...')
     projectRequest
       .getAllProjects()
       .then((response: AxiosResponse) => updateProjects(response.data))
@@ -43,49 +44,41 @@ const NewFeature = ({ match }: PathProps) => {
       .then((response: AxiosResponse) => updateUsers(response.data))
       .catch(err => console.error(err))
     // add parentId to draft if found in URL params and add item type
-    updateDraft({ ...draft, parentId: match.params.parentId ? match.params.parentId : null, type: 'feature' })
-
+    updateDraft({
+      ...draft,
+      parentId: match.params.parentId ? match.params.parentId : null,
+    })
   }, [])
 
   // update parents state once projects and items loaded
   useEffect(() => {
     if (projects && items) updateParents([...projects, ...items])
-  }, [projects, items])
+  }, [projects, items]);
 
+  // update draft when tags input updates
+  useEffect(() => {
+    updateDraft({ ...draft, tags: tags })
+  }, [tags]);
+
+  const updateName = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const input = event.target.value.trim();
+    updateDraft({ ...draft, name: input });
+    updateDisableAddButton(input ? false : true);
+  };
+
+  const updateDesc = (text: string) => updateDraft({ ...draft, description: text });
+
+  const updateParent = (parent: string | null) => updateDraft({ ...draft, parentId: parent });
+
+  const updateAssignee = (payload: string | null) => updateDraft({ ...draft, assigneeId: payload });
 
   const submitButtonPressed = (event: React.FormEvent) => {
     event.preventDefault();
-    console.log(draft)
     itemRequest
       .addNewWorkItem(draft)
       .then((response: AxiosResponse) => console.log(response))
       .catch(err => console.error(err))
   };
-
-  const handleInput = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const id = event.target.id;
-    const input = event.target.value.trim();
-    switch (id) {
-      case 'name':
-        updateDraft({ ...draft, name: input });
-        updateDisableCreateButton(input ? false : true);
-        break;
-      case 'description':
-        updateDraft({ ...draft, description: input });
-        break;
-      default:
-        break;
-    }
-  }
-
-
-  const updateParent = (parent: string | null) => updateDraft({ ...draft, parentId: parent });
-
-  const handleAssigneeInput = (payload: string | null) => {
-    console.log(payload)
-    updateDraft({ ...draft, assigneeId: payload })
-  };
-
   return (
     <div className="container">
 
@@ -97,7 +90,7 @@ const NewFeature = ({ match }: PathProps) => {
         <input type="text"
           id="name"
           className="form-control"
-          onChange={event => handleInput(event)}
+          onChange={event => updateName(event)}
           placeholder="enter name ..." />
       </div>
 
@@ -111,37 +104,40 @@ const NewFeature = ({ match }: PathProps) => {
           onChange={updateParent} />
       </div>
 
-      <div className="form-group">
-        <label className="font-weight-light">Description</label>
-        <textarea
-          id="description"
-          className="form-control"
-          style={{ height: 120 }}
-          onChange={event => handleInput(event)}
-          placeholder="enter description ..." />
+      <div className="pt-2">
+        <div className="d-flex justify-content-between align-items-baseline">
+          <label className="font-weight-light">Tags</label>
+          <small>Optional</small>
+        </div>
+        <TagsInput tags={tags} onChange={updateTags} />
+      </div>
+
+      <div className="pt-2">
+        <div className="d-flex justify-content-between align-items-baseline">
+          <label className="font-weight-light">Description</label>
+          <small>Optional</small>
+        </div>
+        <DescriptionTextarea text={draft.description} onChange={updateDesc} />
       </div>
 
       <div>
         <label className="font-weight-light">Assign to:</label>
         <AssigneeSelectBox currentAssigneeId={null}
-          users={users} onChange={handleAssigneeInput} />
+          users={users} onChange={updateAssignee} />
       </div>
 
       <div className="pt-2">
         <button type="submit"
           className="btn btn-success"
-          disabled={disableCreateButton}
+          disabled={disableAddButton}
           onClick={(event) => submitButtonPressed(event)}
         >Add feature
         </button>
       </div>
 
       <div className="div">
-        <ConsoleLogButton name="match params" state={match.params} />
-        <ConsoleLogButton name="projects" state={projects} />
-        <ConsoleLogButton name="items" state={items} />
+        <ConsoleLogButton name="params" state={match.params} />
         <ConsoleLogButton name="parents" state={parents} />
-        <ConsoleLogButton name="users" state={users} />
         <ConsoleLogButton name="draft" state={draft} />
       </div>
 

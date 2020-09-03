@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { ProjectType, ItemType } from '../../util/dataTypes';
+import { projectRequest, itemRequest } from '../../httpRequests';
 import ProjectList from '../../components/ProjectList';
 import PieChart from '../../charts/StatusPieChart';
-import { projectRequest, itemRequest } from '../../httpRequests';
+
 import ConsoleLogButton from '../../components/ConsoleLogButton';
 
 const Home = () => {
