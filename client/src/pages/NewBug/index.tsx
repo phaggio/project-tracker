@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { PathProps, NewItemType } from '../../util/dataTypes';
+import { projectRequest, itemRequest, userRequest } from '../../httpRequests';
 import { AxiosResponse } from 'axios';
-import { projectRequest, userRequest, itemRequest } from '../../httpRequests';
 import NameInput from '../../components/NameInput';
 import ParentSelectBox from '../../components/ParentSelectBox';
 import TagsInput from '../../components/TagsInput';
-import DescriptionTextarea from '../../components/DescriptionTextarea';
 import AssigneeSelectBox from '../../components/AssigneeSelectBox';
+import DescriptionTextarea from '../../components/DescriptionTextarea';
 import StatusSelection from '../../components/StatusSelection';
 import ConsoleLogButton from '../../components/ConsoleLogButton';
 
-const NewWork = ({ match }: PathProps) => {
+
+const NewBug = ({ match }: PathProps) => {
   const [projects, updateProjects] = useState([]); // potential parents
   const [items, updateItems] = useState([]); // potential parents
   const [users, updateUsers] = useState([]); // potential assignee
@@ -20,7 +21,7 @@ const NewWork = ({ match }: PathProps) => {
     parentId: match.params.parentId ? match.params.parentId : null,
     name: '',
     description: '',
-    type: 'workItem',
+    type: 'bug',
     tags: [],
     assigneeId: null
   });
@@ -76,7 +77,7 @@ const NewWork = ({ match }: PathProps) => {
 
         <div className="form-group pt-2">
           <div className="d-flex justify-content-between align-items-baseline">
-            <label className="font-weight-light">Work item name</label>
+            <label className="font-weight-light">Bug name</label>
             <small>Required</small>
           </div>
           <NameInput onChange={updateName} />
@@ -127,21 +128,17 @@ const NewWork = ({ match }: PathProps) => {
             className="btn btn-success"
             disabled={disableAddButton}
             onClick={(event) => submitButtonPressed(event)}
-          >Add work item
+          >Add bug
           </button>
         </div>
 
+
       </div>
 
-
-      <div className="col-5">
-        <ConsoleLogButton name="match params" state={match.params} />
-        <ConsoleLogButton name="draft" state={draft} />
-      </div>
-
-
+      <ConsoleLogButton name="match.params" state={match.params} />
+      <ConsoleLogButton name="draft" state={draft} />
     </div>
   )
-};
+}
 
-export default NewWork;
+export default NewBug;

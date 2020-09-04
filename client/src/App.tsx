@@ -15,6 +15,7 @@ const App = () => {
         <Route exact={true} path='/new/project' component={pages.NewProject} />
         <Route exact={true} path='/new/feature/:parentType?/:parentId?' component={pages.NewFeature} />
         <Route exact={false} path='/new/work/:parentType?/:parentId?' component={pages.NewWork} />
+        <Route exact={false} path='/new/bug/:parentType?/:parentId?' component={pages.NewBug} />
         <Route exact={true} path='/new/user' component={pages.NewUser} />
         <Route exact={false} path='/project/:id?' component={pages.Project} />
         <Route exact={false} path='/feature/:id?' component={pages.Feature} />

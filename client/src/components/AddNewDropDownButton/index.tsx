@@ -17,6 +17,7 @@ const AddNewDropDownButton = (props: PropsType) => {
 			ariaLabel: 'add-new-feature',
 			title: 'add new feature'
 		}] : [];
+
 	buttons = [...buttons, {
 		name: 'Work item',
 		url: `/new/work/${props.type && props._id ? `${props.type}/${props._id}` : ''}`,
@@ -28,7 +29,6 @@ const AddNewDropDownButton = (props: PropsType) => {
 		ariaLabel: 'add-new-bug',
 		title: 'add new bug'
 	}]
-
 
 	return (
 		<div className="btn-group">

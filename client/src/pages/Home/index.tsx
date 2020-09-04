@@ -35,8 +35,8 @@ const Home = () => {
         </div>
 
         <div className="col-12 col-md-8 col-lg-9 col-xl-9 border border-secondary rounded">
-          <div className="d-flex justify-content-between">
-            <div className="h4">Snapshot</div>
+          <div className="d-flex justify-content-between align-items-baseline">
+            <label className="font-weight-bold">Snapshot</label>
             <AddNewDropDownButton small={true} includeFeature={true} />
           </div>
 

@@ -4,6 +4,7 @@ import Settings from './Settings';
 import NewProject from './NewProject';
 import NewFeature from './NewFeature';
 import NewWork from './NewWork';
+import NewBug from './NewBug';
 import NewUser from './NewUser';
 import Project from './Project';
 import Feature from './Feature';
@@ -16,6 +17,7 @@ export {
   NewProject,
   NewFeature,
   NewWork,
+  NewBug,
   NewUser,
   Project,
   Feature,
