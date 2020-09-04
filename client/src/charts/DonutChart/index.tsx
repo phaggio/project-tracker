@@ -6,32 +6,6 @@ type PropsType = {
   data: number[];
 }
 
-// const title = 'Features'
-
-// const data = {
-//   labels: ['Open', 'Active', 'Completed',
-//     'In-review', 'Closed'],
-//   datasets: [
-//     {
-//       backgroundColor: [
-//         'BlanchedAlmond',
-//         'Orange',
-//         'ForestGreen',
-//         'DarkOrchid',
-//         'Gray'
-//       ],
-//       hoverBackgroundColor: [
-//         'Bisque',
-//         'DarkOrange',
-//         'DarkGreen',
-//         'DarkMagenta',
-//         'DimGray'
-//       ],
-//       data: [12, 24, 24, 5, 15]
-//     }
-//   ]
-// }
-
 const DonutChart = (props: PropsType) => {
 
   const data = {

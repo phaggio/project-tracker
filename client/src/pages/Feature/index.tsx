@@ -153,9 +153,9 @@ const Feature = ({ match }: PathProps) => {
 
 
 						<ChildrenItemsDiv type="feature"
+							includeFeature={false}
 							children={children}
-							_id={feature._id}
-							name={feature.name} />
+							_id={feature._id} />
 
 					</div>
 					{/* end of second row */}

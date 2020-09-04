@@ -110,7 +110,7 @@ const Project = ({ match }: PathProps) => {
 				{project && match.params.id !== undefined ?
 					<ChildrenItemsDiv _id={match.params.id}
 						type='project'
-						name={project.name}
+						includeFeature={true}
 						children={children} />
 					:
 					'no children item...'

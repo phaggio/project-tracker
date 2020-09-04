@@ -3,6 +3,7 @@ import { ProjectType, ItemType } from '../../util/dataTypes';
 import { countByStatus } from '../../util/functions'
 import { projectRequest, itemRequest } from '../../httpRequests';
 import ProjectList from '../../components/ProjectList';
+import AddNewDropDownButton from '../../components/AddNewDropDownButton';
 import DonutChart from '../../charts/DonutChart';
 
 import ConsoleLogButton from '../../components/ConsoleLogButton';
@@ -34,7 +35,10 @@ const Home = () => {
         </div>
 
         <div className="col-12 col-md-8 col-lg-9 col-xl-9 border border-secondary rounded">
-          <h4>Snapshot</h4>
+          <div className="d-flex justify-content-between">
+            <div className="h4">Snapshot</div>
+            <AddNewDropDownButton small={true} includeFeature={true} />
+          </div>
 
           {/* first row */}
           <div className="row">

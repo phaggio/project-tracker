@@ -4,39 +4,19 @@ import AddNewDropDownButton from '../AddNewDropDownButton';
 import ItemLink from '../ItemLink';
 
 type PropsType = {
+  includeFeature: boolean;
   type: string; // whether this ChildrenItemsDiv is on project or feature page
-  name: string; // name of current project/feature this ChildrenItemsDiv is on
   _id: string; // _id of current project/feature this ChildrenItemsDiv is on
   children: ItemType[]; // all children of this project/feature
 }
 
 const ChildrenItemsDiv = (props: PropsType) => {
 
-  // if current page is a project, add feature button to the drop down
-  let buttons = props.type === 'project' ? [
-    {
-      name: 'Feature',
-      url: `/new/feature/${props.type}/${props._id}`,
-      ariaLabel: 'add-new-feature',
-      title: 'add new feature'
-    }] : [];
-  buttons = [...buttons, {
-    name: 'Work item',
-    url: `/new/work/${props.type}/${props._id}`,
-    ariaLabel: 'add-new-work-item',
-    title: 'add new work item'
-  }, {
-    name: 'Bug',
-    url: `/new/bug/${props.type}/${props._id}`,
-    ariaLabel: 'add-new-bug',
-    title: 'add new bug'
-  }]
-
   return (
     <div className="container border border-info rounded">
       <div className="d-flex justify-content-between align-items-baseline">
         <label className="font-weight-light">Children items ({props.children.length})</label>
-        <AddNewDropDownButton buttons={buttons} small={true} />
+        <AddNewDropDownButton small={true} type={props.type} _id={props._id} includeFeature={props.includeFeature}/>
       </div>
 
       <div className="row">
