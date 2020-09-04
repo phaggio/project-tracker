@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { UserType } from '../../util/dataTypes';
 import EditButton from '../EditButton';
 import SaveButton from '../SaveButton';
 import CancelButton from '../CancelButton';
@@ -11,15 +12,6 @@ type PropsType = {
   saveButtonPressed: (part: string, payload: string) => void;
 }
 
-type UserType = {
-  _id: string;
-  type: string;
-  firstName: string;
-  lastName: string;
-  fullName: string;
-  email: string;
-}
-
 const AssigneeDiv = (props: PropsType) => {
   const [editMode, updateEditMode] = useState(false);
   const [draft, updateDraft] = useState<string | null>(props.assigneeId);
@@ -30,12 +22,10 @@ const AssigneeDiv = (props: PropsType) => {
   useEffect(() => {
     if (props.assigneeId !== null) {
       props.users.forEach(user => {
-        if (user._id === props.assigneeId) {
-          updateAssigneeName(user.fullName);
-        }
+        if (user._id === props.assigneeId) updateAssigneeName(user.fullName)
       })
     }
-  }, [props.assigneeId])
+  }, [props.assigneeId, props.users])
 
   return (
     <div>

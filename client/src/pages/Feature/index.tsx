@@ -41,7 +41,7 @@ const Feature = ({ match }: PathProps) => {
 			itemRequest
 				.getWorkItemById(match.params.id)
 				.then((response: AxiosResponse) => {
-					updateLoading(!loading);
+					updateLoading(previous => { return !previous });
 					updateFeature(response.data);
 				})
 				.catch(err => console.error(err));

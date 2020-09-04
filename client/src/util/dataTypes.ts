@@ -38,6 +38,7 @@ type ItemType = {
   assigneeId: string | null;
 }
 
+// not being used
 type FeatureType = {
   _id: string;
   status: string;
@@ -61,6 +62,15 @@ type ProjectType = {
   tags: string[];
 };
 
+type UserType = {
+  _id: string;
+  type: string;
+  firstName: string;
+  lastName: string;
+  fullName: string;
+  email: string;
+}
+
 // payload type for updating item parent info.
 type ParentPayloadType = {
   parentType: string | null;
@@ -81,6 +91,7 @@ export type {
   ItemType,
   FeatureType,
   ProjectType,
+  UserType,
   ParentPayloadType,
   AssigneePayloadType
 };
