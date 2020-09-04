@@ -24,6 +24,8 @@ const AssigneeDiv = (props: PropsType) => {
       props.users.forEach(user => {
         if (user._id === props.assigneeId) updateAssigneeName(user.fullName)
       })
+    } else {
+      updateAssigneeName('Unassigned');
     }
   }, [props.assigneeId, props.users])
 

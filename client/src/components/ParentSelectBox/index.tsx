@@ -1,16 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { ParentType } from '../../util/dataTypes';
 import ConsoleLogButton from '../ConsoleLogButton';
 
 type PropsType = {
   parentId: string | null; // current/default parentId
   parents: ParentType[]; // available parents for this item
   onChange: (selectedParentId: string | null) => void; // takes parentId string
-}
-
-type ParentType = {
-  type: string;
-  name: string;
-  _id: string;
 }
 
 const ParentSelectBox = (props: PropsType) => {
@@ -48,7 +43,7 @@ const ParentSelectBox = (props: PropsType) => {
         return match;
       })
     )
-  }, [filter]);
+  }, [filter, props.parents]);
 
 
   return (

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { ProjectType, ItemType } from '../../util/dataTypes';
 import { projectRequest, itemRequest } from '../../httpRequests';
 import ProjectList from '../../components/ProjectList';
+import DonutChart from '../../charts/DonutChart';
+
 // import StatusPieChart from '../../charts/StatusPieChart';
 // import ContentTreemap from '../../components/ContentTreemap'
 
@@ -19,25 +21,13 @@ const Home = () => {
       projectRequest
         .getAllProjects()
         .then(res => updateProjects(res.data))
-      itemRequest.getAllWorkItems()
+      itemRequest
+        .getAllWorkItems()
         .then(res => updateItems(res.data))
     } catch (err) {
       console.error(err)
     }
   }, [])
-
-  const fakeData = [
-    { name: 'Open', value: 70 },
-    { name: 'Active', value: 50 },
-    { name: 'Completed', value: 20 },
-    { name: 'In-review', value: 30 }
-  ]
-
-  const getStatusByType = (itemType: string, data: (ItemType | ProjectType)[]) => {
-    const result = data.forEach(item => {
-      if (item.type === itemType) console.log(item)
-    })
-  }
 
   return (
     <div className="container border border-primary rounded">
@@ -97,6 +87,9 @@ const Home = () => {
                 <StatusPieChart dataArr={fakeData} color='#6C757D' />
               </div>
             </div> */}
+
+
+
           </div>
 
 
@@ -134,7 +127,7 @@ const Home = () => {
           <div className="row">
             <div className="col-12">
               begin
-
+              <DonutChart />
 
             </div>
 

@@ -40,7 +40,7 @@ const AssigneeSelectBox = (props: PropsType) => {
         return match;
       })
     )
-  }, [filter]);
+  }, [filter, props.users]);
 
   useEffect(() => {
     updateFilteredUsers(props.users);
@@ -48,8 +48,8 @@ const AssigneeSelectBox = (props: PropsType) => {
       props.users.forEach(user => {
         if (user._id === props.currentAssigneeId) updateCurrentAssigneeName(user.fullName)
       })
-    }
-  }, [props.users]);
+    } 
+  }, [props.users, props.currentAssigneeId]);
 
   return (
     <div className="d-flex flex-column">
