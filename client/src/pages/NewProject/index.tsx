@@ -23,7 +23,7 @@ const NewProject = () => {
 	}, [projectInput.name]);
 
 	useEffect(() => {
-		updateProjectInput({ ...projectInput, tags: tags })
+		updateProjectInput(previous => { return { ...previous, tags: tags } })
 	}, [tags]);
 
 	const submitButtonPressed = (event: React.FormEvent) => {

@@ -20,7 +20,7 @@ const WorkItem = ({ match }: PathProps) => {
 
   // INIT GET api call to get all projects, items, and user data.
   useEffect(() => {
-    if (match.params.id) {
+    if (match.params.id !== undefined) {
       console.log('params.id exists, making GET API call to get current work item data...');
       itemRequest
         .getWorkItemById(match.params.id)
@@ -37,7 +37,7 @@ const WorkItem = ({ match }: PathProps) => {
         })
         .catch(err => console.error(err));
     }
-  }, []);
+  }, [match.params.id]);
 
   useEffect(() => {
     if (workItem !== undefined && update === true) {

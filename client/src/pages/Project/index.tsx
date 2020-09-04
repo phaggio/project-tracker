@@ -40,7 +40,7 @@ const Project = ({ match }: PathProps) => {
 			toggleUpdate(!update)
 		}
 
-	}, [project, update])
+	}, [project, update, match.params.id])
 
 	const saveButtonPressed = (part: string, payload: string | string[]) => {
 		if (project) {

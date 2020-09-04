@@ -44,7 +44,7 @@ const NewWork = ({ match }: PathProps) => {
   }, []);
 
   useEffect(() => {
-    updateDraft({ ...draft, tags: tags })
+    updateDraft(previous => { return { ...previous, tags: tags } })
   }, [tags]);
 
   const updateName = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,14 +53,6 @@ const NewWork = ({ match }: PathProps) => {
     updateDisableAddButton(input ? false : true);
   }
 
-  const submitButtonPressed = (event: React.FormEvent) => {
-    event.preventDefault(); //default action is clear the form
-    itemRequest
-      .addNewWorkItem(draft)
-      .then((response: AxiosResponse) => console.log(response))
-      .catch(err => console.error(err));
-  };
-
   const updateParent = (parent: string | null) => updateDraft({ ...draft, parentId: parent });
 
   const updateDesc = (text: string) => updateDraft({ ...draft, description: text });
@@ -68,6 +60,14 @@ const NewWork = ({ match }: PathProps) => {
   const updateAssignee = (payload: string | null) => updateDraft({ ...draft, assigneeId: payload });
 
   const updateStatus = (status: string) => updateDraft({ ...draft, status: status });
+
+  const submitButtonPressed = (event: React.FormEvent) => {
+    event.preventDefault(); //default action is clear the form
+    itemRequest
+      .addNewWorkItem(draft)
+      .then((response: AxiosResponse) => console.log(response))
+      .catch(err => console.error(err));
+  };
 
   return (
     <div className="container">

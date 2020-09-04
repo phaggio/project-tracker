@@ -43,11 +43,6 @@ const NewFeature = ({ match }: PathProps) => {
       .getAllUsers()
       .then((response: AxiosResponse) => updateUsers(response.data))
       .catch(err => console.error(err))
-    // add parentId to draft if found in URL params and add item type
-    updateDraft({
-      ...draft,
-      parentId: match.params.parentId ? match.params.parentId : null,
-    })
   }, [])
 
   // update parents state once projects and items loaded
@@ -57,7 +52,7 @@ const NewFeature = ({ match }: PathProps) => {
 
   // update draft when tags input updates
   useEffect(() => {
-    updateDraft({ ...draft, tags: tags })
+    updateDraft(previous => { return { ...previous, tags: tags } })
   }, [tags]);
 
   const updateName = (event: React.ChangeEvent<HTMLInputElement>) => {

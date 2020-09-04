@@ -50,7 +50,7 @@ const Feature = ({ match }: PathProps) => {
 				.then((response: AxiosResponse) => updateChildren(response.data))
 				.catch(err => console.error(err))
 		}
-	}, []);
+	}, [match.params.id]);
 
 	useEffect(() => {
 		if (feature && update === true) {

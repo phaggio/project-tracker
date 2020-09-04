@@ -2,13 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { ProjectType, ItemType } from '../../util/dataTypes';
 import { projectRequest, itemRequest } from '../../httpRequests';
 import ProjectList from '../../components/ProjectList';
-import PieChart from '../../charts/StatusPieChart';
+// import StatusPieChart from '../../charts/StatusPieChart';
+// import ContentTreemap from '../../components/ContentTreemap'
+
 
 import ConsoleLogButton from '../../components/ConsoleLogButton';
 
 const Home = () => {
   const [projects, updateProjects] = useState<ProjectType[]>([]);
   const [items, updateItems] = useState<ItemType[]>([]);
+
 
   // init Get calls to get all project and item data
   useEffect(() => {
@@ -76,13 +79,13 @@ const Home = () => {
 
           {/* second row */}
           <div className="row">
-            <div className="col-12 col-xl-6 px-xl-1">
+            {/* <div className="col-12 col-xl-6 px-xl-1">
               <div className="d-flex justify-content-center rounded-lg shadow">
                 <div className="d-flex flex-column justify-content-center align-items-center px-3">
                   <div className="display-3 text-warning">{items.filter(item => item.type === 'feature').length}</div>
                   <small className="">Features</small>
                 </div>
-                <PieChart dataArr={fakeData} color='#FFC107' />
+                <StatusPieChart dataArr={fakeData} color='#FFC107' />
               </div>
             </div>
             <div className="col-12 col-xl-6 px-xl-1">
@@ -91,14 +94,14 @@ const Home = () => {
                   <div className="display-3 text-secondary">{items.filter(item => item.type === 'workItem').length}</div>
                   <small className="">Work</small>
                 </div>
-                <PieChart dataArr={fakeData} color='#6C757D' />
+                <StatusPieChart dataArr={fakeData} color='#6C757D' />
               </div>
-            </div>
+            </div> */}
           </div>
 
 
           {/* third row */}
-          <div className="row">
+          {/* <div className="row">
             <div className="col-12 col-md-12 col-lg-6">
               <div className="d-flex flex-column align-items-center shadow rounded-lg p-2">
                 <div>
@@ -108,7 +111,7 @@ const Home = () => {
                   <label className="font-weight-light">Features</label>
                   <hr className="m-0" />
                 </div>
-                <PieChart dataArr={fakeData} color='#FFC107' />
+                <StatusPieChart dataArr={fakeData} color='#FFC107' />
               </div>
             </div>
 
@@ -121,13 +124,21 @@ const Home = () => {
                   <label className="font-weight-light">Work items</label>
                   <hr className="m-0" />
                 </div>
-                <PieChart dataArr={fakeData} color='#6C757D' />
+                <StatusPieChart dataArr={fakeData} color='#6C757D' />
               </div>
             </div>
 
-          </div>
+          </div> */}
           {/* end of third row */}
 
+          <div className="row">
+            <div className="col-12">
+              begin
+
+
+            </div>
+
+          </div>
 
 
         </div>
@@ -140,6 +151,8 @@ const Home = () => {
       <div className="col-5">
         <ConsoleLogButton name="projects" state={projects} />
         <ConsoleLogButton name="work items" state={items} />
+        <ConsoleLogButton name="window.innerwidth" state={window.innerWidth} />
+
       </div>
 
     </div >
