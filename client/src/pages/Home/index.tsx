@@ -1,19 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { ProjectType, ItemType } from '../../util/dataTypes';
+import { countByStatus } from '../../util/functions'
 import { projectRequest, itemRequest } from '../../httpRequests';
 import ProjectList from '../../components/ProjectList';
 import DonutChart from '../../charts/DonutChart';
-
-// import StatusPieChart from '../../charts/StatusPieChart';
-// import ContentTreemap from '../../components/ContentTreemap'
-
 
 import ConsoleLogButton from '../../components/ConsoleLogButton';
 
 const Home = () => {
   const [projects, updateProjects] = useState<ProjectType[]>([]);
   const [items, updateItems] = useState<ItemType[]>([]);
-
 
   // init Get calls to get all project and item data
   useEffect(() => {
@@ -42,7 +38,7 @@ const Home = () => {
 
           {/* first row */}
           <div className="row">
-            <div className="d-flex flex-wrap">
+            <div className="col-12 d-flex flex-wrap">
               <div className="d-flex flex-row align-items-baseline border border-primary rounded w-auto px-3 my-2 mr-2 shadow">
                 <div className="display-3 text-primary">{`${projects.length}`}</div>
                 <small className="ml-2">Projects</small>
@@ -69,69 +65,16 @@ const Home = () => {
 
           {/* second row */}
           <div className="row">
-            {/* <div className="col-12 col-xl-6 px-xl-1">
-              <div className="d-flex justify-content-center rounded-lg shadow">
-                <div className="d-flex flex-column justify-content-center align-items-center px-3">
-                  <div className="display-3 text-warning">{items.filter(item => item.type === 'feature').length}</div>
-                  <small className="">Features</small>
-                </div>
-                <StatusPieChart dataArr={fakeData} color='#FFC107' />
-              </div>
+            <div className="col-12 col-lg-6">
+              <DonutChart title="Features" data={countByStatus("feature", items)} />
             </div>
-            <div className="col-12 col-xl-6 px-xl-1">
-              <div className="d-flex justify-content-center rounded-lg shadow">
-                <div className="d-flex flex-column justify-content-center align-items-center px-3">
-                  <div className="display-3 text-secondary">{items.filter(item => item.type === 'workItem').length}</div>
-                  <small className="">Work</small>
-                </div>
-                <StatusPieChart dataArr={fakeData} color='#6C757D' />
-              </div>
-            </div> */}
-
-
-
+            <div className="col-12 col-lg-6">
+              <DonutChart title="Work items" data={countByStatus("workItem", items)} />
+            </div>
           </div>
+          {/* end of second row */}
 
 
-          {/* third row */}
-          {/* <div className="row">
-            <div className="col-12 col-md-12 col-lg-6">
-              <div className="d-flex flex-column align-items-center shadow rounded-lg p-2">
-                <div>
-                  <label className="h3 text-warning mr-1">
-                    {items.filter(item => item.type === 'feature').length}
-                  </label>
-                  <label className="font-weight-light">Features</label>
-                  <hr className="m-0" />
-                </div>
-                <StatusPieChart dataArr={fakeData} color='#FFC107' />
-              </div>
-            </div>
-
-            <div className="col-12 col-md-12 col-lg-6">
-              <div className="d-flex flex-column align-items-center shadow rounded-lg p-2">
-                <div>
-                  <label className="h3 text-secondary mr-1">
-                    {items.filter(item => item.type === 'workItem').length}
-                  </label>
-                  <label className="font-weight-light">Work items</label>
-                  <hr className="m-0" />
-                </div>
-                <StatusPieChart dataArr={fakeData} color='#6C757D' />
-              </div>
-            </div>
-
-          </div> */}
-          {/* end of third row */}
-
-          <div className="row">
-            <div className="col-12">
-              begin
-              <DonutChart />
-
-            </div>
-
-          </div>
 
 
         </div>
@@ -144,7 +87,8 @@ const Home = () => {
       <div className="col-5">
         <ConsoleLogButton name="projects" state={projects} />
         <ConsoleLogButton name="work items" state={items} />
-        <ConsoleLogButton name="window.innerwidth" state={window.innerWidth} />
+        <ConsoleLogButton name="feature count" state={countByStatus('feature', items)} />
+        <ConsoleLogButton name="workItem count" state={countByStatus('workItem', items)} />
 
       </div>
 
