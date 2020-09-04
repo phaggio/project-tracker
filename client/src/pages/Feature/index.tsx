@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { PathProps, ProjectType, FeatureType, ItemType } from '../../util/dataTypes';
+import { PathProps, ProjectType, ItemType } from '../../util/dataTypes';
 import { projectRequest, userRequest, itemRequest } from '../../httpRequests';
 import NameBadge from '../../components/NameBadgeDiv';
 import TagsDiv from '../../components/TagsDiv';
@@ -13,7 +13,7 @@ import { AxiosResponse } from 'axios';
 
 const Feature = ({ match }: PathProps) => {
 	console.log(`Rendering Feature page... `);
-	const [feature, updateFeature] = useState<FeatureType | undefined>();
+	const [feature, updateFeature] = useState<ItemType | undefined>();
 
 	const [projects, updateProjects] = useState<ProjectType[] | undefined>(undefined) // potential parents
 	const [items, updateItems] = useState<ItemType[] | undefined>() // potential parents

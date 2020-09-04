@@ -1,14 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { NewProjectType } from '../../util/dataTypes';
 import TagsInput from '../../components/TagsInput';
 import ConsoleLogButton from '../../components/ConsoleLogButton';
 import { AxiosResponse } from 'axios';
 import { projectRequest } from '../../httpRequests';
-
-type NewProjectType = {
-	name: string;
-	description: string;
-	tags: string[];
-}
 
 const NewProject = () => {
 	const [disableCreateButton, updateDisableCreateButton] = useState(true);
