@@ -1,26 +1,32 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { ItemType } from '../../util/dataTypes';
 
 type PropsType = {
-  itemData: DataType;
-}
+  item: ItemType;
+};
 
-type DataType = {
-  _id: string;
-  status: string;
-  name: string;
-  description: string;
-  type: string;
-  parentId?: string | null;
-  projectId?: string;
-}
+const ItemLink = ({ item }: PropsType) => {
+  let color: string = '';
+  switch (item.type) {
+    case 'feature':
+      color = 'btn-warning';
+      break;
+    case 'workItem':
+      color = 'btn-light';
+      break;
+    case 'bug':
+      color = 'btn-danger';
+      break;
+    default:
+      break;
+  };
 
-const ItemLink = ({ itemData }: PropsType) => {
   return (
-    <Link className={`btn ${itemData.type === 'feature' ? 'btn-warning' : 'btn-light'} border border-dark w-100 text-left text-truncate`}
-      title={itemData.name}
-      to={`/${itemData.type}/${itemData._id}`}>
-      {itemData.name}
+    <Link className={`btn ${color} border border-dark w-100 text-left text-truncate`}
+      title={item.name}
+      to={`/${item.type}/${item._id}`}>
+      {item.name}
     </Link>
   )
 }

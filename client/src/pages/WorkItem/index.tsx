@@ -59,7 +59,7 @@ const WorkItem = ({ match }: PathProps) => {
         case 'tags':
           if (payload instanceof Array) updateWorkItem({ ...workItem, tags: payload });
           break;
-        case 'assignee':
+        case 'assigneeId':
           if ((typeof payload === 'string' || payload === null)) updateWorkItem({ ...workItem, assigneeId: payload });
           break;
         case 'parentId':

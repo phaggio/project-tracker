@@ -24,7 +24,7 @@ const ChildrenItemsDiv = (props: PropsType) => {
           return (
             <div className="col-12 col-sm-6 col-md-4 col-lg-3 my-1"
               key={item._id}>
-              <ItemLink itemData={item} />
+              <ItemLink item={item} />
             </div>
           )
         })

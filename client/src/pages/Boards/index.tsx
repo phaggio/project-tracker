@@ -4,16 +4,12 @@ import React from 'react';
 const Boards = () => {
 
   return (
-    <div>this is boards page
-      <div className="container border border-secondary">
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste tempore ad perferendis porro voluptas, voluptatem qui nostrum! Quos, vel. Optio aspernatur perspiciatis dolore dolor qui vitae dolores sapiente eum repellendus.
+    <div className="container">
+      <div className="row">
+        <div className="col-12">
+          <h4>Coming soon ... </h4>
+        </div>
       </div>
-
-
-
-
-
-
     </div>
   )
 }
