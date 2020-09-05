@@ -7,6 +7,8 @@ import NameBadge from '../../components/NameBadgeDiv'
 import TagsDiv from '../../components/TagsDiv';
 import AssigneeDiv from '../../components/AssigneeDiv';
 import ParentItemDiv from '../../components/ParentItemDiv';
+import StatusDiv from '../../components/StatusDiv';
+import DescriptionDiv from '../../components/DescriptionDiv';
 
 import ConsoleLogButton from '../../components/ConsoleLogButton';
 
@@ -20,7 +22,7 @@ const Bug = ({ match }: PathProps) => {
   const [users, updateUsers] = useState<UserType[]>([]);
 
   const [parents, updateParents] = useState<ParentType[]>([]);
-  const [children, updateChildren] = useState<ItemType[]>([]);
+  // const [children, updateChildren] = useState<ItemType[]>([]);
 
 
   const [loading, updateLoading] = useState<boolean>(true);
@@ -45,74 +47,121 @@ const Bug = ({ match }: PathProps) => {
       itemRequest
         .getWorkItemById(match.params.id)
         .then((response: AxiosResponse) => {
-          updateLoading(previous => { return !previous });
           updateBug(response.data);
+          updateLoading(previous => { return !previous });
         })
         .catch(err => console.error(err));
-      itemRequest
-        .getWorkItemsByParentId(match.params.id)
-        .then((response: AxiosResponse) => updateChildren(response.data))
-        .catch(err => console.error(err))
+      // should bugs have children?
+      // itemRequest
+      //   .getWorkItemsByParentId(match.params.id)
+      //   .then((response: AxiosResponse) => updateChildren(response.data))
+      //   .catch(err => console.error(err))
     }
   }, [match.params.id]);
 
   useEffect(() => {
     updateParents(findParentsByType(['project', 'feature', 'workItem'], [...projects, ...items]))
-  }, [projects, items])
+  }, [projects, items]);
 
+  useEffect(() => {
+    if (bug && update === true) {
+      itemRequest
+        .updateWorkItemById(bug._id, bug)
+        .then(data => console.log(data))
+        .catch(err => console.error(err))
+      toggleUpdate(!update)
+    }
+  }, [bug, update]);
 
-  const saveButtonPressed = () => {
-    console.log('pressed');
-    console.log(items.length);
-    console.log(findParentsByType(['feature', 'workItem', 'project'], [...items, ...projects]).length)
+  const saveButtonPressed = (part: string, payload: string | string[]) => {
+    if (bug) {
+      switch (part) {
+        case ('name'):
+          if (typeof payload === 'string') updateBug({ ...bug, name: payload });
+          break;
+        case 'tags':
+          if (payload instanceof Array) updateBug({ ...bug, tags: payload });
+          break;
+        case 'assigneeId':
+          if (typeof payload === 'string' || payload === null) updateBug({ ...bug, assigneeId: payload });
+          break;
+        case 'parentId':
+          if (typeof payload === 'string' || payload === null) updateBug({ ...bug, parentId: payload });
+          break;
+        case 'status':
+          if (typeof payload === 'string') updateBug({ ...bug, status: payload });
+          break;
+        case 'description':
+          if (typeof payload === 'string') updateBug({ ...bug, description: payload });
+          break;
+        default:
+          break;
+      }
+      toggleUpdate(!update)
+    }
   }
-
   return (
     <div className="container">
 
       {bug ?
-        <div className="row">
-          <div className="col-12 col-sm-6 col-md-7 col-lg-8 border border-primary rounded d-flex flex-column">
+        <div>
+          <div className="row">
+            <div className="col-12 col-sm-6 col-md-7 col-lg-8 border border-primary rounded d-flex flex-column">
 
-            <div className="pt-1">
-              <NameBadge type='bug'
-                name={bug.name}
-                saveButtonPressed={saveButtonPressed} />
-              <hr className="mt-2" />
+              <div className="pt-1">
+                <NameBadge type='bug'
+                  name={bug.name}
+                  saveButtonPressed={saveButtonPressed} />
+                <hr className="mt-2" />
+              </div>
+
+              <div className="pt-1">
+                <TagsDiv type="feature"
+                  tags={bug.tags}
+                  saveButtonPressed={saveButtonPressed} />
+                <hr className="mt-2" />
+              </div>
+
+              <div className="pt-1">
+                <AssigneeDiv assigneeId={bug.assigneeId}
+                  saveButtonPressed={saveButtonPressed}
+                  users={users} />
+                <hr className="mt-2" />
+              </div>
+
+              <div>
+                <ParentItemDiv type="bug"
+                  currentParentId={bug.parentId}
+                  parents={parents}
+                  saveButtonPressed={saveButtonPressed} />
+              </div>
+
+              <div className="pt-1">
+                <StatusDiv type="bug"
+                  status={bug.status}
+                  saveButtonPressed={saveButtonPressed} />
+                <hr className="mt-2" />
+              </div>
             </div>
+          </div>
+          {/* end of first row */}
 
-            <div className="pt-1">
-              <TagsDiv type="feature"
-                tags={bug.tags}
-                saveButtonPressed={saveButtonPressed} />
-              <hr className="mt-2" />
+          <div className="row">
+            <div className="col-12 d-flex flex-column border border-warning rounded">
+              <div className="pt-1">
+                <DescriptionDiv text={bug.description}
+                  saveButtonPressed={saveButtonPressed} />
+                <hr className="mt-2" />
+              </div>
             </div>
-
-            <div className="pt-1">
-              <AssigneeDiv assigneeId={bug.assigneeId}
-                saveButtonPressed={saveButtonPressed}
-                users={users} />
-              <hr className="mt-2" />
-            </div>
-
-            <div>
-              <ParentItemDiv type="bug"
-                currentParentId={bug.parentId}
-                parents={parents}
-                saveButtonPressed={saveButtonPressed} />
-            </div>
-
           </div>
 
-
-
-
         </div>
-        // end of main row
-
         :
         ''
       }
+
+
       <div className="col-6">
         <ConsoleLogButton name="params" state={match.params} />
         <ConsoleLogButton name="bug" state={bug} />
