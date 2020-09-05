@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { PathProps, ProjectType, ItemType } from '../../util/dataTypes';
+import { countByStatus } from '../../util/functions';
 import { projectRequest, userRequest, itemRequest } from '../../httpRequests';
 import {
 	AssigneeDiv, ChildrenItemsDiv, ConsoleLogButton, DescriptionDiv, NameBadgeDiv, ParentItemDiv, StatusDiv, TagsDiv
 } from '../../components';
+import DoubleDonutChart from '../../charts/DoubleDonutChart';
 
 import { AxiosResponse } from 'axios';
 
@@ -94,7 +96,7 @@ const Feature = ({ match }: PathProps) => {
 					{/* start of first row */}
 					< div className="row">
 
-						<div className="col-12 col-sm-6 col-md-7 col-lg-8 border border-primary rounded d-flex flex-column">
+						<div className="col-12 col-md-7 col-lg-8 border border-primary rounded d-flex flex-column">
 
 							<div className="pt-1">
 								<NameBadgeDiv type='feature'
@@ -130,6 +132,9 @@ const Feature = ({ match }: PathProps) => {
 									saveButtonPressed={saveButtonPressed} />
 								<hr className="mt-2" />
 							</div>
+						</div>
+						<div className="col-12 col-md-5 col-lg-4 d-flex justify-content-center">
+							<DoubleDonutChart title="feature" data={countByStatus('workItem', children)} />
 						</div>
 
 					</div>

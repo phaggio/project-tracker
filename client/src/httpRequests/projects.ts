@@ -8,6 +8,7 @@ const getAllProjects = () => {
   return axios.get('/api/project');
 };
 
+// not being used.
 const getProjectByName = (projectName: string) => {
   console.log(projectName);
   const config = {
@@ -16,12 +17,8 @@ const getProjectByName = (projectName: string) => {
   return axios.get('/api/project/name', config);
 };
 
-const getProjectById = (projectId: string) => {
-  console.log(`projectID: ${projectId}`);
-  const config = {
-    params: { _id: projectId }
-  };
-  return axios.get('/api/project/id', config);
+const getProjectById = (id: string) => {
+  return axios.get(`/api/project/${id}`);
 };
 
 const updateProject = (id: string, data: object) => {

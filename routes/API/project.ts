@@ -6,13 +6,11 @@ const router: Router = Router();
 router.route('/')
   .get(findAllProjects)
 
-router.route('/id')
-  .get(findById)
-
 router.route('/:id')
   .get(findById)
   .put(updateProject)
 
+// not being used.
 router.route('/name')
   .get(findByName)
 
