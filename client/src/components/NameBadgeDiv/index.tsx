@@ -21,6 +21,8 @@ const NameBadge = (props: PropsType) => {
         return 'warning';
       case 'workItem':
         return 'light';
+      case 'bug':
+        return 'danger';
       default:
         return 'primary';
     }
@@ -34,6 +36,8 @@ const NameBadge = (props: PropsType) => {
         return 'Feature name';
       case 'workItem':
         return 'Work item name';
+      case 'bug':
+        return 'Bug name';
       default:
         break;
     }

@@ -1,4 +1,4 @@
-import { ItemType } from './dataTypes';
+import { ItemType, ParentType } from './dataTypes';
 
 // util functions
 
@@ -54,8 +54,16 @@ const countByStatus = (itemType: string, items: ItemType[]) => {
   return countArr;
 }
 
+const findParentsByType = (targetTypes: string[], parentArr: ParentType[]) => {
+  const filteredArr = parentArr.filter(parent => {
+    return targetTypes.includes(parent.type);
+  })
+  return filteredArr;
+}
+
 export {
   parseTags,
   capitalizeWord,
-  countByStatus
+  countByStatus,
+  findParentsByType
 }

@@ -99,6 +99,7 @@ const Feature = ({ match }: PathProps) => {
 					< div className="row">
 
 						<div className="col-12 col-sm-6 col-md-7 col-lg-8 border border-primary rounded d-flex flex-column">
+							
 							<div className="pt-1">
 								<NameBadge type='feature'
 									name={feature.name}
@@ -112,7 +113,6 @@ const Feature = ({ match }: PathProps) => {
 									saveButtonPressed={saveButtonPressed} />
 								<hr className="mt-2" />
 							</div>
-
 
 							<div className="pt-1">
 								<AssigneeDiv assigneeId={feature.assigneeId}

@@ -20,6 +20,7 @@ const App = () => {
         <Route exact={false} path='/project/:id?' component={pages.Project} />
         <Route exact={false} path='/feature/:id?' component={pages.Feature} />
         <Route exact={false} path='/workItem/:id?' component={pages.WorkItem} />
+        <Route exact={false} path='/bug/:id?' component={pages.Bug} />
       </Switch>
 
     </div>

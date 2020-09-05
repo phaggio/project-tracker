@@ -9,6 +9,7 @@ import NewUser from './NewUser';
 import Project from './Project';
 import Feature from './Feature';
 import WorkItem from './WorkItem';
+import Bug from './Bug';
 
 export {
   Home,
@@ -21,5 +22,6 @@ export {
   NewUser,
   Project,
   Feature,
-  WorkItem
+  WorkItem,
+  Bug
 }
