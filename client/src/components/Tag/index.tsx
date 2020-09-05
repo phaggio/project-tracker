@@ -1,10 +1,10 @@
 import React from 'react';
 
-type TagProps = {
+type PropsType = {
   name: string;
 }
 
-const Tag = (props: TagProps) => {
+const Tag = (props: PropsType) => {
   return (
     <span className="badge badge-info d-flex align-items-center mr-1 mb-1">
       {props.name}
@@ -12,4 +12,4 @@ const Tag = (props: TagProps) => {
   )
 }
 
-export default Tag
+export default Tag;

@@ -3,6 +3,8 @@ import Tag from '../Tag';
 import { parseTags } from '../../util/functions';
 
 type PropsType = {
+  id?: string;
+  placeholder?: string;
   tags: string[];
   onChange: (tags: string[]) => void;
 };
@@ -16,17 +18,18 @@ const TagsInput = (props: PropsType) => {
           return (<Tag key={tag} name={tag} />)
         })
           :
-          ``
+          ''
         }
       </div>
+
       <div className="input-group">
         <input type="text"
           className="form-control text-wrap"
-          id="tags"
+          id={props.id ? props.id : 'tags'}
           onChange={event => {
             props.onChange(parseTags(event.target.value));
           }}
-          placeholder="Separate tags by comma"
+          placeholder={props.placeholder ? props.placeholder : "enter tags ..."}
           defaultValue={`${[...props.tags]}`}
         />
       </div>

@@ -78,6 +78,13 @@ const Home = () => {
           </div>
           {/* end of second row */}
 
+          {/* third row */}
+          <div className="row">
+            <div className="col-12 col-lg-6">
+              <DonutChart title="Bugs" data={countByStatus("bug", items)} />
+            </div>
+          </div>
+          {/* end of third row */}
 
 
 

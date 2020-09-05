@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import EditButton from '../EditButton';
 import SaveButton from '../SaveButton';
 import CancelButton from '../CancelButton';
+import TagsInput from '../../components/TagsInput';
 import Tag from '../Tag';
 import { parseTags } from '../../util/functions';
 
@@ -40,12 +41,16 @@ const TagsDiv = (props: PropsType) => {
       {editMode ?
         <div className="form-group">
           <small>(Optional)</small>
-          <div className="d-flex flex-wrap align-items-baseline">
+
+          <TagsInput tags={draft} onChange={updateDraft}/>
+
+          {/* <div className="d-flex flex-wrap align-items-baseline">
             {
               draft.length > 0 ? draft.map(tag => {
-                // return (<span className="badge badge-info mr-1" key={tag}>{tag}</span>)
                 return (<Tag key={tag} name={tag} />)
-              }) : ``
+              })
+                :
+                ``
             }
           </div>
           <div className="input-group">
@@ -57,9 +62,9 @@ const TagsDiv = (props: PropsType) => {
               defaultValue={`${[...props.tags]}`}
             />
           </div>
-          <small>Separate tags by comma</small>
-        </div >
+          <small>Separate tags by comma</small> */}
 
+        </div >
         :
 
         // non-edit mode
