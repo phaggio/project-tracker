@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { PathProps, ProjectType, ItemType } from '../../util/dataTypes'
 import { projectRequest, itemRequest } from '../../httpRequests';
-import NameBadgeDiv from '../../components/NameBadgeDiv';
-import TagsDiv from '../../components/TagsDiv';
-import DescriptionDiv from '../../components/DescriptionDiv';
-import ChildrenItemsDiv from '../../components/ChildrenItemsDiv';
-import ConsoleLogButton from '../../components/ConsoleLogButton';
+import { ChildrenItemsDiv, ConsoleLogButton, DescriptionDiv, NameBadgeDiv, TagsDiv } from '../../components';
 
 const Project = ({ match }: PathProps) => {
 	console.log('Rendering Project page...');

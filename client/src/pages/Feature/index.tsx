@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { PathProps, ProjectType, ItemType } from '../../util/dataTypes';
 import { projectRequest, userRequest, itemRequest } from '../../httpRequests';
-import NameBadge from '../../components/NameBadgeDiv';
-import TagsDiv from '../../components/TagsDiv';
-import AssigneeDiv from '../../components/AssigneeDiv';
-import ParentItemDiv from '../../components/ParentItemDiv';
-import StatusDiv from '../../components/StatusDiv';
-import DescriptionDiv from '../../components/DescriptionDiv';
-import ChildrenItemsDiv from '../../components/ChildrenItemsDiv';
-import ConsoleLogButton from '../../components/ConsoleLogButton';
+import {
+	AssigneeDiv, ChildrenItemsDiv, ConsoleLogButton, DescriptionDiv, NameBadgeDiv, ParentItemDiv, StatusDiv, TagsDiv
+} from '../../components';
+
 import { AxiosResponse } from 'axios';
 
 const Feature = ({ match }: PathProps) => {
@@ -99,9 +95,9 @@ const Feature = ({ match }: PathProps) => {
 					< div className="row">
 
 						<div className="col-12 col-sm-6 col-md-7 col-lg-8 border border-primary rounded d-flex flex-column">
-							
+
 							<div className="pt-1">
-								<NameBadge type='feature'
+								<NameBadgeDiv type='feature'
 									name={feature.name}
 									saveButtonPressed={saveButtonPressed} />
 								<hr className="mt-2" />
@@ -166,11 +162,8 @@ const Feature = ({ match }: PathProps) => {
 
 
 			< div className="col-6" >
-				<ConsoleLogButton name="param id" state={match.params.id} />
 				<ConsoleLogButton name="match param" state={match.params} />
 				<ConsoleLogButton name="feature" state={feature} />
-				<ConsoleLogButton name="projects" state={projects} />
-				<ConsoleLogButton name="items" state={items} />
 				<ConsoleLogButton name='users' state={users} />
 			</div >
 

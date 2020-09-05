@@ -2,11 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { ProjectType, ItemType } from '../../util/dataTypes';
 import { countByStatus } from '../../util/functions'
 import { projectRequest, itemRequest } from '../../httpRequests';
-import ProjectList from '../../components/ProjectList';
-import AddNewDropDownButton from '../../components/AddNewDropDownButton';
+import { AddNewDropDownButton, ConsoleLogButton, ProjectList } from '../../components';
 import DonutChart from '../../charts/DonutChart';
 
-import ConsoleLogButton from '../../components/ConsoleLogButton';
 
 const Home = () => {
   const [projects, updateProjects] = useState<ProjectType[]>([]);

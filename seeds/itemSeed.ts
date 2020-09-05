@@ -71,7 +71,16 @@ const itemSeed: ItemType[] = [
     type: 'feature',
     tags: [],
     assigneeId: null
-  }
+  },
+  {
+    parentId: '101',
+    status: 'Open',
+    name: 'Dropdown to select parent',
+    description: 'Create a drop down selection for user to select parent item. It also gives user ability to search through parents.',
+    type: 'feature',
+    tags: ['ui', 'ux'],
+    assigneeId: null
+  },
 ]
 
 export default itemSeed

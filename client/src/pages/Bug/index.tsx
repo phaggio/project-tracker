@@ -3,15 +3,7 @@ import { PathProps, ItemType, ProjectType, UserType, ParentType } from '../../ut
 import { findParentsByType } from '../../util/functions';
 import { projectRequest, itemRequest, userRequest } from '../../httpRequests';
 import { AxiosResponse } from 'axios';
-import NameBadge from '../../components/NameBadgeDiv'
-import TagsDiv from '../../components/TagsDiv';
-import AssigneeDiv from '../../components/AssigneeDiv';
-import ParentItemDiv from '../../components/ParentItemDiv';
-import StatusDiv from '../../components/StatusDiv';
-import DescriptionDiv from '../../components/DescriptionDiv';
-
-import ConsoleLogButton from '../../components/ConsoleLogButton';
-
+import { AssigneeDiv, ConsoleLogButton, DescriptionDiv, NameBadgeDiv, ParentItemDiv, StatusDiv, TagsDiv } from '../../components';
 
 
 const Bug = ({ match }: PathProps) => {
@@ -103,13 +95,13 @@ const Bug = ({ match }: PathProps) => {
   return (
     <div className="container">
 
-      {bug ?
+      {bug && !loading ?
         <div>
           <div className="row">
             <div className="col-12 col-sm-6 col-md-7 col-lg-8 border border-primary rounded d-flex flex-column">
 
               <div className="pt-1">
-                <NameBadge type='bug'
+                <NameBadgeDiv type='bug'
                   name={bug.name}
                   saveButtonPressed={saveButtonPressed} />
                 <hr className="mt-2" />

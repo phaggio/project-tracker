@@ -1,13 +1,15 @@
 const projectSeed = [
   {
+    _id: '101',
     name: 'Project Tracker',
-    description: 'A web app that tracks project progress. User can add feature item to projects and add new work item or bug item to the features to track them.',
+    description: 'A web app that tracks project progress. User can add feature, work, and bug items to the project. User can also update/edit items parent, assignee, status, tags, etc.',
     type: 'project',
-    tags: ['full stack', 'mongodb', 'bootstrap', 'typescript', 'express.js', 'react.js']
+    tags: ['mern', 'mongodb', 'bootstrap', 'typescript', 'express.js', 'react.js']
   },
   {
+    _id: '101',
     name: 'Simple Weather',
-    description: 'A single page progressive web app that shows current weather info.',
+    description: 'A single page progressive web app that shows current weather info. The application can provide weather information of searched cities or user current location.',
     type: 'project',
     tags: ['pwa', 'ux', 'dark theme', 'api']
   },
