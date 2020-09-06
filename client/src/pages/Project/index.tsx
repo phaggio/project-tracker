@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { PathProps, ProjectType, ItemType } from '../../util/dataTypes'
+import { countByStatus, camelToNormal } from '../../util/functions';
 import { projectRequest, itemRequest } from '../../httpRequests';
 import { ChildrenItemsDiv, ConsoleLogButton, DescriptionDiv, NameBadgeDiv, TagsDiv } from '../../components';
+import DonutChart from '../../charts/DonutChart';
 
 const Project = ({ match }: PathProps) => {
 	console.log('Rendering Project page...');
@@ -10,7 +12,8 @@ const Project = ({ match }: PathProps) => {
 	const [update, toggleUpdate] = useState<boolean>(false);
 
 	const [items, updateItems] = useState<ItemType[]>([]);
-	const [children, updateChildren] = useState<ItemType[]>([])
+	const [children, updateChildren] = useState<ItemType[]>([]);
+	const [chartFilter, updateChartFilter] = useState<string>('all');
 
 	useEffect(() => {
 		if (match.params.id !== undefined) {
@@ -61,7 +64,7 @@ const Project = ({ match }: PathProps) => {
 		<div className="container">
 			{project !== undefined ?
 				<div className="row">
-					<div className="col-12 col-sm-6 col-md-7 col-lg-8 border border-primary rounded d-flex flex-column">
+					<div className="col-12 col-md-7 col-lg-7 border border-primary rounded d-flex flex-column">
 
 						<div className="pt-1">
 							<NameBadgeDiv type='project'
@@ -85,14 +88,24 @@ const Project = ({ match }: PathProps) => {
 
 					</div>
 
-					<div className="col-12 col-sm-6 col-md-5 col-lg-4 border border-danger rounded">
 
+					<div className="col-12 col-md-5 col-lg-5 border border-danger rounded">
 						<div>
-							WILL NEED TO SHOW project status summary here, with graphs and numbers, etc.
-						<br />
-						WORK IN PROGRESS.........................
-					</div>
+							<label className="font-weight-light">Filter items by: </label>
+							<select className="custom-select"
+								defaultValue='all'
+								onChange={(event) => {
+									updateChartFilter(event.target.selectedOptions[0].value)
+								}}
+							>
+								<option value='all'>All</option>
+								<option value='feature'>Feature</option>
+								<option value='workItem'>Work item</option>
+								<option value='bug'>Bug</option>
+							</select>
+						</div>
 
+						<DonutChart title={camelToNormal(chartFilter)} data={countByStatus(chartFilter, children)} />
 					</div>
 				</div>
 				// end of first row
@@ -117,6 +130,7 @@ const Project = ({ match }: PathProps) => {
 			<div className="mt-4 col-6">
 				<ConsoleLogButton state={project} name="project" />
 				<ConsoleLogButton state={items} name="items" />
+				<ConsoleLogButton state={chartFilter} name="chart filter" />
 			</div>
 
 		</div>

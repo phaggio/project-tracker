@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { PathProps, ProjectType, ItemType } from '../../util/dataTypes';
-import { countByStatus } from '../../util/functions';
 import { projectRequest, userRequest, itemRequest } from '../../httpRequests';
 import {
-	AssigneeDiv, ChildrenItemsDiv, ConsoleLogButton, DescriptionDiv, NameBadgeDiv, ParentItemDiv, StatusDiv, TagsDiv
+	AssigneeDiv, ChildrenItemsDiv, ConsoleLogButton, DescriptionDiv, NameBadgeDiv, 
+	ParentItemDiv, StatusDiv, TagsDiv
 } from '../../components';
-import DoubleDonutChart from '../../charts/DoubleDonutChart';
 
 import { AxiosResponse } from 'axios';
 
@@ -133,9 +132,10 @@ const Feature = ({ match }: PathProps) => {
 								<hr className="mt-2" />
 							</div>
 						</div>
-						<div className="col-12 col-md-5 col-lg-4 d-flex justify-content-center">
+
+						{/* <div className="col-12 col-md-5 col-lg-4 d-flex justify-content-center">
 							<DoubleDonutChart title="feature" data={countByStatus('workItem', children)} />
-						</div>
+						</div> */}
 
 					</div>
 					{/* end of first row */}

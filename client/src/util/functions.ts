@@ -26,10 +26,10 @@ const capitalizeWord = (str: string) => {
 
 // given items array and item type, return an array of counts by types
 const countByStatus = (itemType: string, items: ItemType[]) => {
-  const countArr = [0, 0, 0, 0, 0]
+  const countArr = [0, 0, 0, 0, 0];
   if (items.length === 0) return countArr;
   for (const item of items) {
-    if (item.type === itemType) {
+    if (item.type === itemType || itemType === 'all') {
       switch (item.status) {
         case 'Open':
           countArr[0]++;
@@ -61,9 +61,23 @@ const findParentsByType = (targetTypes: string[], parentArr: ParentType[]) => {
   return filteredArr;
 }
 
+const camelToNormal = (camelName: string) => {
+  let normal = camelName[0].toUpperCase();
+  for (let i = 1; i < camelName.length; ++i) {
+    if (camelName[i] === camelName[i].toUpperCase()) {
+      normal += ' ';
+      normal += camelName[i].toUpperCase();
+    } else {
+      normal += camelName[i]
+    }
+  }
+  return normal;
+}
+
 export {
   parseTags,
   capitalizeWord,
   countByStatus,
-  findParentsByType
+  findParentsByType,
+  camelToNormal
 }

@@ -35,7 +35,7 @@ const DonutChart = (props: PropsType) => {
   return (
     <div>
       <Doughnut data={data}
-        
+
         options={{
           title: {
             display: true,
@@ -45,9 +45,9 @@ const DonutChart = (props: PropsType) => {
           },
           legend: {
             display: true,
-            position: 'right'
+            position: "right"
           },
-          responsive: false
+          responsive: true
         }}
       />
 
