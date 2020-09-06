@@ -13,7 +13,7 @@ type PropsType = {
 const ChildrenItemsDiv = (props: PropsType) => {
 
   return (
-    <div className="container border border-info rounded">
+    <div>
       <div className="d-flex justify-content-between align-items-baseline">
         <label className="font-weight-light">Children items ({props.children.length})</label>
         <AddNewDropDownButton small={true} type={props.type} _id={props._id} includeFeature={props.includeFeature}/>

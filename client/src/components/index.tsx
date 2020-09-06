@@ -7,6 +7,7 @@ import ConsoleLogButton from './ConsoleLogButton';
 import DescriptionDiv from './DescriptionDiv';
 import DescriptionTextarea from './DescriptionTextarea';
 import EditButton from './EditButton';
+import FilterItemsDiv from './FilterItemsDiv';
 import ItemLink from './ItemLink';
 import NameBadgeDiv from './NameBadgeDiv';
 import NameInput from './NameInput';
@@ -34,6 +35,7 @@ export {
   DescriptionDiv,
   DescriptionTextarea,
   EditButton,
+  FilterItemsDiv,
   ItemLink,
   NameBadgeDiv,
   NameInput,

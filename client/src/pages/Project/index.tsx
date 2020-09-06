@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { PathProps, ProjectType, ItemType } from '../../util/dataTypes'
 import { countByStatus, camelToNormal } from '../../util/functions';
 import { projectRequest, itemRequest } from '../../httpRequests';
-import { ChildrenItemsDiv, ConsoleLogButton, DescriptionDiv, NameBadgeDiv, TagsDiv } from '../../components';
+import { ChildrenItemsDiv, ConsoleLogButton, DescriptionDiv, FilterItemsDiv, NameBadgeDiv, TagsDiv } from '../../components';
 import DonutChart from '../../charts/DonutChart';
 
 const Project = ({ match }: PathProps) => {
@@ -64,7 +64,7 @@ const Project = ({ match }: PathProps) => {
 		<div className="container">
 			{project !== undefined ?
 				<div className="row">
-					<div className="col-12 col-md-7 col-lg-7 border border-primary rounded d-flex flex-column">
+					<div className="col-12 col-md-6 col-lg-7 border border-primary rounded d-flex flex-column">
 
 						<div className="pt-1">
 							<NameBadgeDiv type='project'
@@ -80,31 +80,10 @@ const Project = ({ match }: PathProps) => {
 							<hr className="mt-2" />
 						</div>
 
-						<div className="pt-1">
-							<DescriptionDiv text={project.description}
-								saveButtonPressed={saveButtonPressed} />
-							<hr className="mt-2" />
-						</div>
-
 					</div>
 
-
-					<div className="col-12 col-md-5 col-lg-5 border border-danger rounded">
-						<div>
-							<label className="font-weight-light">Filter items by: </label>
-							<select className="custom-select"
-								defaultValue='all'
-								onChange={(event) => {
-									updateChartFilter(event.target.selectedOptions[0].value)
-								}}
-							>
-								<option value='all'>All</option>
-								<option value='feature'>Feature</option>
-								<option value='workItem'>Work item</option>
-								<option value='bug'>Bug</option>
-							</select>
-						</div>
-
+					<div className="col-12 col-md-6 col-lg-5 border border-danger rounded">
+						<FilterItemsDiv onChange={updateChartFilter} />
 						<DonutChart title={camelToNormal(chartFilter)} data={countByStatus(chartFilter, children)} />
 					</div>
 				</div>
@@ -115,16 +94,21 @@ const Project = ({ match }: PathProps) => {
 
 
 			{/* second row begins */}
-			<div className="row mt-1 border border-info rounded">
-				{project && match.params.id !== undefined ?
-					<ChildrenItemsDiv _id={match.params.id}
-						type='project'
-						includeFeature={true}
-						children={children} />
-					:
-					'no children item...'
-				}
-			</div>
+			{project && match.params.id !== undefined ?
+				<div className="row mt-1 border border-info rounded">
+					<div className="col-12">
+						<DescriptionDiv text={project.description}
+							saveButtonPressed={saveButtonPressed} />
+						<hr className="mt-2" />
+						<ChildrenItemsDiv _id={match.params.id}
+							type='project'
+							includeFeature={true}
+							children={children} />
+					</div>
+				</div>
+				:
+				'no children item...'
+			}
 			{/* end of second row */}
 
 			<div className="mt-4 col-6">
