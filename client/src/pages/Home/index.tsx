@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ProjectType, ItemType } from '../../util/dataTypes';
 import { countByStatus } from '../../util/functions'
 import { projectRequest, itemRequest } from '../../httpRequests';
-import { AddNewDropDownButton, ConsoleLogButton, ProjectList } from '../../components';
+import { AddNewDropDownButton, ProjectList } from '../../components';
 import DonutChart from '../../charts/DonutChart';
 
 
@@ -25,14 +25,14 @@ const Home = () => {
   }, [])
 
   return (
-    <div className="container border border-primary rounded">
+    <div className="container">
       <div className="row">
 
-        <div className="col-12 col-md-4 col-lg-3 col-xl-3 border border-success rounded">
+        <div className="col-12 col-md-4 col-lg-3 col-xl-3">
           <ProjectList projects={projects} />
         </div>
 
-        <div className="col-12 col-md-8 col-lg-9 col-xl-9 border border-secondary rounded">
+        <div className="col-12 col-md-8 col-lg-9 col-xl-9">
           <div className="d-flex justify-content-between align-items-baseline">
             <label className="font-weight-bold">Snapshot</label>
             <AddNewDropDownButton small={true} includeFeature={true} />
@@ -93,13 +93,6 @@ const Home = () => {
       {/* end of main row */}
 
       {/* debug buttons */}
-      <div className="col-5">
-        <ConsoleLogButton name="projects" state={projects} />
-        <ConsoleLogButton name="work items" state={items} />
-        <ConsoleLogButton name="feature count" state={countByStatus('feature', items)} />
-        <ConsoleLogButton name="workItem count" state={countByStatus('workItem', items)} />
-
-      </div>
 
     </div >
   )

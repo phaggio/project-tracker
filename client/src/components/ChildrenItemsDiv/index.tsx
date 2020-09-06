@@ -1,7 +1,7 @@
 import React from 'react';
 import { ItemType } from '../../util/dataTypes'
-import AddNewDropDownButton from '../AddNewDropDownButton';
-import ItemLink from '../ItemLink';
+import { AddNewDropDownButton, ItemLink } from '..';
+
 
 type PropsType = {
   includeFeature: boolean;
@@ -16,7 +16,10 @@ const ChildrenItemsDiv = (props: PropsType) => {
     <div>
       <div className="d-flex justify-content-between align-items-baseline">
         <label className="font-weight-light">Children items ({props.children.length})</label>
-        <AddNewDropDownButton small={true} type={props.type} _id={props._id} includeFeature={props.includeFeature}/>
+        <AddNewDropDownButton small={true}
+          type={props.type}
+          _id={props._id}
+          includeFeature={props.includeFeature} />
       </div>
 
       <div className="row">

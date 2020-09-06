@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { UserType } from '../../util/dataTypes';
-import EditButton from '../EditButton';
-import SaveButton from '../SaveButton';
-import CancelButton from '../CancelButton';
-import ConsoleLogButton from '../ConsoleLogButton';
-import AssigneeSelectBox from '../AssigneeSelectBox';
+import { EditButton, SaveButton, CancelButton, AssigneeSelectBox } from '..';
 
 type PropsType = {
   assigneeId: string | null;
@@ -59,10 +55,7 @@ const AssigneeDiv = (props: PropsType) => {
         </div>
       }
 
-      <hr className="mt-2" />
 
-      <ConsoleLogButton state={draft} name="assignee draft" />
-      <ConsoleLogButton state={props.users} name="props.users" />
     </div >
   )
 }

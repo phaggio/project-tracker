@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import ConsoleLogButton from '../ConsoleLogButton';
+import { UserType } from '../../util/dataTypes';
+// import { ConsoleLogButton } from '..';
 
 // a drop down component
 // input: an array of objects
@@ -8,15 +9,6 @@ type PropsType = {
   currentAssigneeId: string | null;
   users: UserType[];
   onChange: (selectedAssignee: string | null) => void;
-}
-
-type UserType = {
-  _id: string;
-  type: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  fullName: string;
 }
 
 const AssigneeSelectBox = (props: PropsType) => {
@@ -48,7 +40,7 @@ const AssigneeSelectBox = (props: PropsType) => {
       props.users.forEach(user => {
         if (user._id === props.currentAssigneeId) updateCurrentAssigneeName(user.fullName)
       })
-    } 
+    }
   }, [props.users, props.currentAssigneeId]);
 
   return (
@@ -133,10 +125,10 @@ const AssigneeSelectBox = (props: PropsType) => {
 
       </div>
 
-      <div className="div">
+      {/* <div className="div">
         <ConsoleLogButton name="filtered users" state={filteredUsers} />
         <ConsoleLogButton name="props.assigneeId" state={props.currentAssigneeId} />
-      </div>
+      </div> */}
     </div>
   )
 }

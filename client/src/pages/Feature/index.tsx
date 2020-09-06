@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { PathProps, ProjectType, ItemType } from '../../util/dataTypes';
 import { projectRequest, userRequest, itemRequest } from '../../httpRequests';
 import {
-	AssigneeDiv, ChildrenItemsDiv, ConsoleLogButton, DescriptionDiv, NameBadgeDiv, 
+	AssigneeDiv, ChildrenItemsDiv, DescriptionDiv, NameBadgeDiv,
 	ParentItemDiv, StatusDiv, TagsDiv
 } from '../../components';
 
@@ -143,20 +143,20 @@ const Feature = ({ match }: PathProps) => {
 
 					{/* start of second row */}
 					<div className="row">
-						<div className="col-12 d-flex flex-column border border-warning rounded">
+						<div className="col-12">
+
 							<div className="pt-1">
 								<DescriptionDiv text={feature.description}
 									saveButtonPressed={saveButtonPressed} />
 								<hr className="mt-2" />
 							</div>
 
+							<ChildrenItemsDiv type="feature"
+								includeFeature={false}
+								children={children}
+								_id={feature._id} />
 						</div>
 
-
-						<ChildrenItemsDiv type="feature"
-							includeFeature={false}
-							children={children}
-							_id={feature._id} />
 
 					</div>
 					{/* end of second row */}
@@ -164,13 +164,6 @@ const Feature = ({ match }: PathProps) => {
 				:
 				'feature is not found'
 			}
-
-
-			< div className="col-6" >
-				<ConsoleLogButton name="match param" state={match.params} />
-				<ConsoleLogButton name="feature" state={feature} />
-				<ConsoleLogButton name='users' state={users} />
-			</div >
 
 
 		</div >

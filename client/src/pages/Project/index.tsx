@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { PathProps, ProjectType, ItemType } from '../../util/dataTypes'
 import { countByStatus, camelToNormal } from '../../util/functions';
 import { projectRequest, itemRequest } from '../../httpRequests';
-import { ChildrenItemsDiv, ConsoleLogButton, DescriptionDiv, FilterItemsDiv, NameBadgeDiv, TagsDiv } from '../../components';
+import { ChildrenItemsDiv, DescriptionDiv, FilterItemsDiv, NameBadgeDiv, TagsDiv } from '../../components';
 import DonutChart from '../../charts/DonutChart';
 
 const Project = ({ match }: PathProps) => {
@@ -64,7 +64,7 @@ const Project = ({ match }: PathProps) => {
 		<div className="container">
 			{project !== undefined ?
 				<div className="row">
-					<div className="col-12 col-md-6 col-lg-7 border border-primary rounded d-flex flex-column">
+					<div className="col-12 col-md-6 col-lg-7 d-flex flex-column">
 
 						<div className="pt-1">
 							<NameBadgeDiv type='project'
@@ -82,7 +82,7 @@ const Project = ({ match }: PathProps) => {
 
 					</div>
 
-					<div className="col-12 col-md-6 col-lg-5 border border-danger rounded">
+					<div className="col-12 col-md-6 col-lg-5">
 						<FilterItemsDiv onChange={updateChartFilter} />
 						<DonutChart title={camelToNormal(chartFilter)} data={countByStatus(chartFilter, children)} />
 					</div>
@@ -95,7 +95,7 @@ const Project = ({ match }: PathProps) => {
 
 			{/* second row begins */}
 			{project && match.params.id !== undefined ?
-				<div className="row mt-1 border border-info rounded">
+				<div className="row mt-1">
 					<div className="col-12">
 						<DescriptionDiv text={project.description}
 							saveButtonPressed={saveButtonPressed} />
@@ -110,12 +110,6 @@ const Project = ({ match }: PathProps) => {
 				'no children item...'
 			}
 			{/* end of second row */}
-
-			<div className="mt-4 col-6">
-				<ConsoleLogButton state={project} name="project" />
-				<ConsoleLogButton state={items} name="items" />
-				<ConsoleLogButton state={chartFilter} name="chart filter" />
-			</div>
 
 		</div>
 	)
