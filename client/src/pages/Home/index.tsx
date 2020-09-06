@@ -32,7 +32,7 @@ const Home = () => {
           <ProjectList projects={projects} />
         </div>
 
-        <div className="col-12 col-md-8 col-lg-9 col-xl-9">
+        <div className="col-12 col-md-8 col-lg-9 col-xl-9 shadow-sm rounded p-2">
           <div className="d-flex justify-content-between align-items-baseline">
             <label className="font-weight-bold">Snapshot</label>
             <AddNewDropDownButton small={true} includeFeature={true} />

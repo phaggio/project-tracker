@@ -11,7 +11,6 @@ const Project = ({ match }: PathProps) => {
 	const [project, updateProject] = useState<ProjectType | undefined>();
 	const [update, toggleUpdate] = useState<boolean>(false);
 
-	const [items, updateItems] = useState<ItemType[]>([]);
 	const [children, updateChildren] = useState<ItemType[]>([]);
 	const [chartFilter, updateChartFilter] = useState<string>('all');
 
@@ -20,9 +19,6 @@ const Project = ({ match }: PathProps) => {
 			projectRequest
 				.getProjectById(match.params.id)
 				.then(res => updateProject(res.data));
-			itemRequest
-				.getWorkItemsByParentId(match.params.id)
-				.then(res => updateItems(res.data));
 			itemRequest
 				.getWorkItemsByParentId(match.params.id)
 				.then((res) => updateChildren(res.data))
@@ -36,9 +32,8 @@ const Project = ({ match }: PathProps) => {
 				.updateProject(match.params.id, project)
 				.then(data => console.log(data))
 				.catch(err => console.error(err))
-			toggleUpdate(!update)
+			toggleUpdate(previous => { return !previous })
 		}
-
 	}, [project, update, match.params.id])
 
 	const saveButtonPressed = (part: string, payload: string | string[]) => {

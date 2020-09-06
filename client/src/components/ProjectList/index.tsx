@@ -10,7 +10,7 @@ type PropsType = {
 const ProjectList = ({ projects }: PropsType) => {
 
   return (
-    <div className="d-flex flex-column">
+    <div className="shadow-sm rounded p-2">
 
       <div className="d-flex flex-row justify-content-between align-items-baseline">
         <label className="font-weight-light">Projects</label>
