@@ -23,7 +23,7 @@ const ItemLink = ({ item }: PropsType) => {
   };
 
   return (
-    <Link className={`btn ${color} border border-dark w-100 text-left text-truncate`}
+    <Link className={`btn ${color} w-100 text-left text-truncate shadow`}
       title={item.name}
       to={`/${item.type}/${item._id}`}>
       {item.name}

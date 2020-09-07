@@ -22,8 +22,8 @@ const ProjectList = ({ projects }: PropsType) => {
       </div>
 
       <div className="d-flex flex-column">
-        {(projects) ?
-          projects.map(one => {
+        {Array.from(projects).length > 0 ?
+          Array.from(projects).map(one => {
             return (
               <ProjectLink key={one._id} project={one} />
             )

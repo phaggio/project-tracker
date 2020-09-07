@@ -15,12 +15,15 @@ const Home = () => {
     try {
       projectRequest
         .getAllProjects()
-        .then(res => updateProjects(res.data))
+        .then(res => {
+          console.log(res.data)
+          updateProjects(Array.from(res.data))
+        })
       itemRequest
         .getAllWorkItems()
-        .then(res => updateItems(res.data))
+        .then(res => updateItems(Array.from(res.data)))
     } catch (err) {
-      console.error(err)
+      console.error(err);
     }
   }, [])
 
@@ -47,17 +50,17 @@ const Home = () => {
               </div>
 
               <div className="d-flex flex-row align-items-baseline border border-info rounded-lg w-auto px-3 my-2 mr-2 shadow">
-                <div className="display-3 text-warning">{items.filter(item => item.type === 'feature').length}</div>
+                <div className="display-3 text-warning">{items.length > 0 ? items.filter(item => item.type === 'feature').length : 0}</div>
                 <small className="ml-2">Features</small>
               </div>
 
               <div className="d-flex flex-row align-items-baseline border border-secondary rounded w-auto px-3 my-2 mr-2 shadow">
-                <div className="display-3 text-secondary">{items.filter(item => item.type === 'workItem').length}</div>
+                <div className="display-3 text-secondary">{items.length > 0 ? items.filter(item => item.type === 'workItem').length : 0}</div>
                 <small className="ml-2">Work items</small>
               </div>
 
               <div className="d-flex flex-row align-items-baseline border border-secondary rounded w-auto px-3 my-2 mr-2 shadow">
-                <div className="display-3 text-danger">{items.filter(item => item.type === 'bug').length}</div>
+                <div className="display-3 text-danger">{items.length > 0 ? items.filter(item => item.type === 'bug').length : 0}</div>
                 <small className="ml-2">Bugs</small>
               </div>
             </div>

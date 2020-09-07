@@ -18,10 +18,10 @@ const Project = ({ match }: PathProps) => {
 		if (match.params.id !== undefined) {
 			projectRequest
 				.getProjectById(match.params.id)
-				.then(res => updateProject(res.data));
+				.then(res => updateProject(res.data))
 			itemRequest
 				.getWorkItemsByParentId(match.params.id)
-				.then((res) => updateChildren(res.data))
+				.then((res) => updateChildren(Array.from(res.data)))
 				.catch(err => console.error(err))
 		}
 	}, [match.params])
