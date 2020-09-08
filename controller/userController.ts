@@ -34,28 +34,10 @@ const findUser = (request: Request, response: Response) => {
 
 };
 
-const findByName = (request: Request, response: Response) => {
-  console.log(request.query.name);
-  const name = request.query.name;
-  const query: object = {
-    lastName: {
-      $regex: name,
-      $options: 'i'
-    }
-  };
-  User.find(query)
-    .then(data => response.json(data))
-    .catch(err => response.status(422).json(err));
-};
-
-
-
 
 export {
   createNewUser,
   findAllUsers,
   findUserById,
-  findUser,
-  findByName
-
+  findUser
 };
