@@ -1,10 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { AxiosResponse } from 'axios';
-import { userRequest } from '../../httpRequests'
+import { userRequest } from '../../httpRequests';
+import { ConsoleLogButton } from '../../components';
+
+type NewUserType = {
+  firstName: string;
+  lastName: string;
+  email: string;
+}
 
 const NewUser = () => {
-  const [disableCreateButton, updateDisableCreateButton] = useState(true);
-  const [userInfo, updateUserInfo] = useState(
+  const [disableCreateButton, updateDisableCreateButton] = useState<boolean>(true);
+  const [userInfo, updateUserInfo] = useState<NewUserType>(
     {
       firstName: '',
       lastName: '',
@@ -13,29 +20,22 @@ const NewUser = () => {
   );
 
   useEffect(() => {
-    // if there's input in project name, enable the Create project button
     userInfo.lastName.trim() && userInfo.email.trim() ?
       updateDisableCreateButton(false) : updateDisableCreateButton(true);
   }, [userInfo]);
 
   const submitButtonPressed = (event: React.FormEvent) => {
     event.preventDefault();
-    console.log(`submit button pressed..`)
 
-    // need to make proper API call and what to show to user after creating the project.
-    const data = userInfo;
-    console.log(`sending from client:`, data);
+    console.log(`sending from client:`, userInfo);
     userRequest
-      .createNewUser(data)
+      .createNewUser(userInfo)
       .then((response: AxiosResponse) => {
-        console.log(response);
-        console.log(response.status);
-        if (response.status === 200) {
-          console.log(`successfully added new user`);
-        }
+        if (response.status === 200) window.alert(`User added.`)
       })
       .catch(err => {
         console.error(err);
+        window.alert(`Cannot add user with provided info. ${err}`);
       });
   };
 
@@ -96,14 +96,11 @@ const NewUser = () => {
         <button type="submit" className="btn btn-success" disabled={disableCreateButton}>
           Add user
         </button>
-
       </form>
-      <br />
-      <button onClick={() => console.log(userInfo)}>Console.log userInfo state</button>
 
 
+      <ConsoleLogButton name="userInfo state" state={userInfo} />
     </div>
-
   )
 };
 

@@ -28,7 +28,8 @@ const findUserById = (request: Request, response: Response) => {
 
 const findUser = (request: Request, response: Response) => {
   const query = request.query;
-  User.find(query)
+  User
+    .find(query)
     .then(data => response.json(data))
     .catch(err => response.json(err))
 
