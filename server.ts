@@ -25,7 +25,7 @@ app.use(routes);
 const MONGODB_URI = 'mongodb+srv://phaggio:lsJ86iq8RP9TLZPx@cluster0.wmslu.mongodb.net/project-tracker?retryWrites=true&w=majority';
 const LOCAL_MONGODB = 'mongodb://localhost/project-tracker';
 
-mongoose.connect(LOCAL_MONGODB, {
+mongoose.connect(MONGODB_URI, {
   useUnifiedTopology: true,
   useNewUrlParser: true,
   useCreateIndex: true,
