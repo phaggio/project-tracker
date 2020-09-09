@@ -14,7 +14,7 @@ interface IUserBase extends IUserDocument {
 const UserSchema: Schema = new Schema({
   type: {
     type: String,
-    default: 'User'
+    default: 'user'
   },
 
   firstName: String,
