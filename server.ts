@@ -1,6 +1,8 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import routes from './routes';
+import { MONGODB_URI } from './config';
+
 
 const app = express();
 const LOCAL_PORT = '8000';
@@ -21,9 +23,6 @@ if (process.env.NODE_ENV === 'production') {
 app.use(express.static('client/build'));
 
 app.use(routes);
-
-const MONGODB_URI = 'mongodb+srv://phaggio:lsJ86iq8RP9TLZPx@cluster0.wmslu.mongodb.net/project-tracker?retryWrites=true&w=majority';
-const LOCAL_MONGODB = 'mongodb://localhost/project-tracker';
 
 mongoose.connect(MONGODB_URI, {
   useUnifiedTopology: true,
