@@ -3,6 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "homepage": "https://phaggio-project-tracker.herokuapp.com/",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "tsc": "tsc",
+    "eject": "react-scripts eject"
+  },
   "dependencies": {
     "3": "^2.1.0",
     "-": "0.0.1",
@@ -30,13 +37,6 @@
     "@types/react-router-dom": "^5.1.5",
     "@types/react-transition-group": "^4.4.0",
     "typescript": "^3.9.7"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "tsc": "tsc",
-    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"

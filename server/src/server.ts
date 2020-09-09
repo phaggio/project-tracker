@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import routes from './routes';
+import path from 'path';
 import { ATLAS_MONGODB, LOCAL_MONGODB } from './config';
 
 
@@ -17,7 +18,8 @@ app.use(express.json());
 console.log(`process.env.NODE_ENV: ${process.env.NODE_ENV}`);
 
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(`${__dirname}/client/build`));
+  // app.use(express.static(`${__dirname}/client/build`));
+  app.use(express.static(path.join(__dirname, '../../client/build')));
 };
 
 app.use(routes);
