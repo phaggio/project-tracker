@@ -16,6 +16,7 @@ app.use(express.json());
 
 // process.env.NODE_ENV will be 'product' when deploy it to Heroku; otherwise, it's undefined.
 console.log(`process.env.NODE_ENV: ${process.env.NODE_ENV}`);
+console.log(`process.env.DB_URL: ${process.env.DB_URL}`);
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../../client/build')));
