@@ -16,20 +16,20 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": false, // emit js output during development
+    "noEmit": true,
     "jsx": "react",
-		"sourceMap": true,
-		"declaration": true,
-		"noUnusedParameters": true,
-		"experimentalDecorators": true,
+    "sourceMap": true,
+    "declaration": true,
+    "noUnusedParameters": true,
+    "experimentalDecorators": true,
     "noImplicitAny": true
   },
   "include": [
     "src/**/*",
     "public/**/*"
-	],
-	"exclude": [
-		"node_modules",
-		"build"
-	]
+  ],
+  "exclude": [
+    "node_modules",
+    "build"
+  ]
 }
