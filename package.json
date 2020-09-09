@@ -7,7 +7,7 @@
     "node": ">=14.3.0"
   },
   "scripts": {
-    "build": "concurrently \"cd server && tsc\" \"cd client && npm run build\"",
+    "build": "concurrently \"cd server/src && tsc\" \"cd client && npm run build\"",
     "client": "cd client && npm run start",
     "install": "cd client && npm install",
     "seed": "node server/dist/seeds/seedDB.js",
