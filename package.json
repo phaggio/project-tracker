@@ -7,8 +7,7 @@
     "node": ">=14.3.0"
   },
   "scripts": {
-    "build": "cd client && npm run build",
-    "build-ts": "tsc",
+    "build": "tsc && cd client && npm run build",
     "client": "cd client && npm run start",
     "install": "cd client && npm install",
     "postinstall": "npm run build-ts",
