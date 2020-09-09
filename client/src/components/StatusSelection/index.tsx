@@ -1,7 +1,7 @@
 import React from 'react';
 
 type PropsType = {
-  defaultStatus: string;
+  defaultStatus?: string;
   onChange: (str: string) => void;
 }
 
@@ -10,7 +10,7 @@ const StatusSelection = (props: PropsType) => {
   return (
     <div>
       <select className="custom-select"
-        defaultValue={props.defaultStatus}
+        defaultValue={props.defaultStatus ? props.defaultStatus : 'Open'}
         onChange={(event) => {
           props.onChange(event.target.selectedOptions[0].value)
         }}
@@ -25,4 +25,4 @@ const StatusSelection = (props: PropsType) => {
   )
 }
 
-export default StatusSelection
+export default StatusSelection;

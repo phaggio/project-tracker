@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { PathProps, NewItemType } from '../../util/dataTypes';
+import { PathPropsType, NewItemType } from '../../util/dataTypes';
 import { AxiosResponse } from 'axios';
 import { projectRequest, userRequest, itemRequest } from '../../httpRequests';
-import NameInput from '../../components/NameInput';
-import ParentSelectBox from '../../components/ParentSelectBox';
-import TagsInput from '../../components/TagsInput';
-import DescriptionTextarea from '../../components/DescriptionTextarea';
-import AssigneeSelectBox from '../../components/AssigneeSelectBox';
-import StatusSelection from '../../components/StatusSelection';
-import ConsoleLogButton from '../../components/ConsoleLogButton';
+import {
+  NameInput, ParentSelectBox, TagsInput, AssigneeSelectBox, DescriptionTextarea, StatusSelection
+} from '../../components'
 
-const NewWork = ({ match }: PathProps) => {
+const NewWork = ({ match }: PathPropsType) => {
   const [projects, updateProjects] = useState([]); // potential parents
   const [items, updateItems] = useState([]); // potential parents
   const [users, updateUsers] = useState([]); // potential assignee
@@ -48,9 +44,8 @@ const NewWork = ({ match }: PathProps) => {
     updateDraft(previous => { return { ...previous, tags: tags } })
   }, [tags]);
 
-  const updateName = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const input = event.target.value.trim();
-    updateDraft({ ...draft, name: input });
+  const updateName = (input: string) => {
+    updateDraft(prev => { return { ...prev, name: input } });
     updateDisableAddButton(input ? false : true);
   }
 
@@ -132,13 +127,6 @@ const NewWork = ({ match }: PathProps) => {
         </div>
 
       </div>
-
-
-      <div className="col-5">
-        <ConsoleLogButton name="match params" state={match.params} />
-        <ConsoleLogButton name="draft" state={draft} />
-      </div>
-
 
     </div>
   )

@@ -12,11 +12,10 @@
     "install": "cd client && npm install",
     "seed": "node server/dist/seeds/seedDB.js",
     "start": "node server/dist/server.js",
-    "start:dev-full": "concurrently \"npm run tsc-server\" \"nodemon \" \"npm run client\"",
-    "start:dev-server": "concurrently \"npm run tsc-server\" \"nodemon \"",
+    "dev": "concurrently \"npm run tsc-server\" \"nodemon \" \"npm run client\"",
+    "server": "concurrently \"npm run tsc-server\" \"nodemon \"",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "tsc-server": "cd server/src && tsc -w",
-    "web": "node server/dist/server.js"
+    "tsc-server": "cd server/src && tsc -w"
   },
   "repository": {
     "type": "git",

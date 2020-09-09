@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { PathProps, ItemType, ProjectType, UserType, ParentType } from '../../util/dataTypes';
+import { PathPropsType, ItemType, ProjectType, UserType, ParentType } from '../../util/dataTypes';
 import { findParentsByType } from '../../util/functions';
 import { projectRequest, itemRequest, userRequest } from '../../httpRequests';
 import { AxiosResponse } from 'axios';
 import { AssigneeDiv, ConsoleLogButton, DescriptionDiv, NameBadgeDiv, ParentItemDiv, StatusDiv, TagsDiv } from '../../components';
 
 
-const Bug = ({ match }: PathProps) => {
+const Bug = ({ match }: PathPropsType) => {
   const [bug, updateBug] = useState<ItemType | undefined>();
 
   const [projects, updateProjects] = useState<ProjectType[]>([]);

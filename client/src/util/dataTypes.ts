@@ -1,4 +1,4 @@
-type PathProps = {
+type PathPropsType = {
   history: boolean;
   location: string;
   match: MatchType;
@@ -6,15 +6,30 @@ type PathProps = {
 
 type MatchType = {
   isExact: boolean;
-  params: ParamsType;
+  params: MatchParamsType;
   path: string;
   url: string;
 };
 
-type ParamsType = {
+type MatchParamsType = {
   parentType: string | undefined;
   parentId: string | undefined;
   id: string | undefined;
+};
+
+type NewProjectType = {
+	name: string;
+	description: string;
+	tags: string[];
+};
+
+type ProjectType = {
+  _id: string;
+  name: string,
+  description: string;
+  status: string;
+  type: string;
+  tags: string[];
 };
 
 type NewItemType = {
@@ -38,19 +53,11 @@ type ItemType = {
   assigneeId: string | null;
 };
 
-type ProjectType = {
-  _id: string;
-  name: string,
-  description: string;
-  status: string;
+type NewUserType = {
+  firstName: string;
+  lastName: string;
+  email: string;
   type: string;
-  tags: string[];
-};
-
-type NewProjectType = {
-	name: string;
-	description: string;
-	tags: string[];
 };
 
 type UserType = {
@@ -69,6 +76,7 @@ type ParentPayloadType = {
   parentId: string | null
 };
 
+
 type ParentType = {
   _id: string;
   type: string;
@@ -78,16 +86,17 @@ type ParentType = {
 type AssigneePayloadType = {
   assigneeId: string | null;
   assignee: string;
-}
+};
 
 export type {
-  PathProps,
+  PathPropsType,
   MatchType,
-  ParamsType,
+  MatchParamsType,
+  NewProjectType,
+  ProjectType,
   NewItemType,
   ItemType,
-  ProjectType,
-  NewProjectType,
+  NewUserType,
   UserType,
   ParentPayloadType,
   ParentType,

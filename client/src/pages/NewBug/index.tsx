@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { PathProps, NewItemType } from '../../util/dataTypes';
+import { PathPropsType, NewItemType } from '../../util/dataTypes';
 import { projectRequest, itemRequest, userRequest } from '../../httpRequests';
 import { AxiosResponse } from 'axios';
 import NameInput from '../../components/NameInput';
@@ -11,7 +11,7 @@ import StatusSelection from '../../components/StatusSelection';
 import ConsoleLogButton from '../../components/ConsoleLogButton';
 
 
-const NewBug = ({ match }: PathProps) => {
+const NewBug = ({ match }: PathPropsType) => {
   const [projects, updateProjects] = useState([]); // potential parents
   const [items, updateItems] = useState([]); // potential parents
   const [users, updateUsers] = useState([]); // potential assignee
@@ -49,9 +49,8 @@ const NewBug = ({ match }: PathProps) => {
     updateDraft(previous => { return { ...previous, tags: tags } })
   }, [tags]);
 
-  const updateName = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const input = event.target.value.trim();
-    updateDraft({ ...draft, name: input });
+  const updateName = (input: string) => {
+    updateDraft(prev => { return { ...prev, name: input } });
     updateDisableAddButton(input ? false : true);
   }
 

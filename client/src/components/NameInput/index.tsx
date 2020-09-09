@@ -4,7 +4,7 @@ type PropsType = {
   id?: string;
   spellCheck?: boolean;
   placeholder?: string;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (str: string) => void;
 }
 
 const NameInput = (props: PropsType) => {
@@ -14,7 +14,7 @@ const NameInput = (props: PropsType) => {
       id={props.id ? props.id : 'name'}
       className="form-control"
       spellCheck={props.spellCheck ? props.spellCheck : false}
-      onChange={event => props.onChange(event)}
+      onChange={event => props.onChange(event.target.value.trim())}
       placeholder={props.placeholder ? props.placeholder : 'enter name ...'} />
   )
 }

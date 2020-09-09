@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { PathProps, ProjectType, ItemType } from '../../util/dataTypes';
+import { PathPropsType, ProjectType, ItemType } from '../../util/dataTypes';
 import { projectRequest, userRequest, itemRequest } from '../../httpRequests';
 import {
 	AssigneeDiv, ChildrenItemsDiv, DescriptionDiv, NameBadgeDiv,
@@ -8,7 +8,7 @@ import {
 
 import { AxiosResponse } from 'axios';
 
-const Feature = ({ match }: PathProps) => {
+const Feature = ({ match }: PathPropsType) => {
 	console.log(`Rendering Feature page... `);
 	const [feature, updateFeature] = useState<ItemType | undefined>();
 

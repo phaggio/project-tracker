@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { PathProps, ProjectType, ItemType } from '../../util/dataTypes'
+import { PathPropsType, ProjectType, ItemType } from '../../util/dataTypes'
 import { countByStatus, camelToNormal } from '../../util/functions';
 import { projectRequest, itemRequest } from '../../httpRequests';
 import { ChildrenItemsDiv, DescriptionDiv, FilterItemsDiv, NameBadgeDiv, TagsDiv } from '../../components';
 import DonutChart from '../../charts/DonutChart';
 
-const Project = ({ match }: PathProps) => {
+const Project = ({ match }: PathPropsType) => {
 	console.log('Rendering Project page...');
 
 	const [project, updateProject] = useState<ProjectType | undefined>();

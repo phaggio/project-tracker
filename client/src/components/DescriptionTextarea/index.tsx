@@ -2,6 +2,7 @@ import React from 'react';
 
 type PropsType = {
   text: string;
+  placeholder?: string;
   onChange: (text: string) => void;
 }
 
@@ -20,7 +21,7 @@ const DescriptionTextarea = (props: PropsType) => {
       onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
         props.onChange(event.target.value)
       }}
-      placeholder="enter item description ..."
+      placeholder={props.placeholder ? props.placeholder : "enter description ..."}
     />
   )
 }

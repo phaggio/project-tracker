@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { PathProps, ProjectType, ItemType } from '../../util/dataTypes'
+import { PathPropsType, ProjectType, ItemType } from '../../util/dataTypes'
 import { projectRequest, itemRequest, userRequest } from '../../httpRequests';
 import { AssigneeDiv, ConsoleLogButton, DescriptionDiv, NameBadgeDiv, ParentItemDiv, StatusDiv, TagsDiv } from '../../components';
 
-const WorkItem = ({ match }: PathProps) => {
+const WorkItem = ({ match }: PathPropsType) => {
   const [workItem, updateWorkItem] = useState<ItemType | undefined>();
 
   const [projects, updateProjects] = useState<ProjectType[] | undefined>(); // potential parents

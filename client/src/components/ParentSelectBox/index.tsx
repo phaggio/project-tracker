@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { ParentType } from '../../util/dataTypes';
-import ConsoleLogButton from '../ConsoleLogButton';
 
 type PropsType = {
   parentId: string | null; // current/default parentId
@@ -131,14 +130,6 @@ const ParentSelectBox = (props: PropsType) => {
 
       </div>
 
-      <div className="col-12">
-        <ConsoleLogButton name="props.parentId" state={props.parentId} />
-        <ConsoleLogButton name="selectedParentId" state={selectedParentId} />
-        <ConsoleLogButton name="currentParentName" state={currentParentName} />
-        <ConsoleLogButton name="props.parents" state={props.parents} />
-
-        <ConsoleLogButton name="filtered parents" state={filteredParents} />
-      </div>
 
     </div>
   )

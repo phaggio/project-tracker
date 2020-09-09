@@ -17,7 +17,10 @@ const UserSchema: Schema = new Schema({
     default: 'user'
   },
 
-  firstName: String,
+  firstName: {
+    type: String,
+    default: ''
+  },
 
   lastName: {
     type: String,

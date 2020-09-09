@@ -1,21 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import { ParentType } from '../../util/dataTypes';
 import ParentSelectBox from '../ParentSelectBox';
 import EditButton from '../EditButton';
 import SaveButton from '../SaveButton';
 import CancelButton from '../CancelButton';
-import ConsoleLogButton from '../ConsoleLogButton';
 
 type PropsType = {
   type: string;
   currentParentId: string | null;
   parents: ParentType[];
   saveButtonPressed: (part: string, payload: string) => void;
-}
-
-type ParentType = {
-  type: string;
-  name: string;
-  _id: string;
 }
 
 const ParentItemDiv = (props: PropsType) => {
@@ -72,12 +66,6 @@ const ParentItemDiv = (props: PropsType) => {
           <small className="">{`Parent ID: (${props.currentParentId ? props.currentParentId : 'n/a'})`}</small>
         </div>
       }
-
-      <div className="col-8">
-        <ConsoleLogButton name="draft" state={draft} />
-        <ConsoleLogButton name="props.currentParentId" state={props.currentParentId} />
-        <ConsoleLogButton name="parents" state={props.parents} />
-      </div>
     </div>
   )
 }
