@@ -2,8 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import routes from './routes';
 import path from 'path';
-import { ATLAS_MONGODB, LOCAL_MONGODB } from './config';
-
+import { LOCAL_MONGODB } from './config';
 
 const app = express();
 const LOCAL_PORT = '8000';
@@ -18,13 +17,12 @@ app.use(express.json());
 console.log(`process.env.NODE_ENV: ${process.env.NODE_ENV}`);
 
 if (process.env.NODE_ENV === 'production') {
-  // app.use(express.static(`${__dirname}/client/build`));
   app.use(express.static(path.join(__dirname, '../../client/build')));
 };
 
 app.use(routes);
 
-mongoose.connect(process.env.NODE_ENV === 'production' ? ATLAS_MONGODB : LOCAL_MONGODB, {
+mongoose.connect(process.env.NODE_ENV === 'production' ? process.env.MONGODB_URI : LOCAL_MONGODB, {
   useUnifiedTopology: true,
   useNewUrlParser: true,
   useCreateIndex: true,
