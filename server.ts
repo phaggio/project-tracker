@@ -11,10 +11,14 @@ app.use(express.urlencoded({ extended: true }));
 // for parsing application/json
 app.use(express.json());
 
-console.log(`process env: ${process.env.NODE_ENV}`);
+console.log(`process.env.NODE_ENV: ${process.env.NODE_ENV}`);
+
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(`${__dirname}/client/build`));
+  app.use(express.static(`${__dirname}/../client/build`));
 };
+
+// add for deployment
+app.use(express.static('client/build'));
 
 app.use(routes);
 
@@ -37,6 +41,6 @@ mongoose.connection.on('connected', () => {
 });
 
 app.listen(PORT, () => {
-  console.log(`API Server up on http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
   console.log(`__dirname: ${__dirname}`);
 });
