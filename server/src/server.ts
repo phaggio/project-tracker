@@ -1,6 +1,6 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import routes from './routes';
+// import routes from './routes';
 import { ATLAS_MONGODB, LOCAL_MONGODB } from './config';
 
 
@@ -16,11 +16,13 @@ app.use(express.json());
 // process.env.NODE_ENV will be 'product' when deploy it to Heroku; otherwise, it's undefined.
 console.log(`process.env.NODE_ENV: ${process.env.NODE_ENV}`);
 
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(`${__dirname}/client/build`));
-};
+// if (process.env.NODE_ENV === 'production') {
+//   app.use(express.static(`${__dirname}/client/build`));
+// };
 
-app.use(routes);
+// app.use(routes);
+
+app.get('/', (req, res) => res.send("HELLO"));
 
 mongoose.connect(process.env.NODE_ENV === 'production' ? ATLAS_MONGODB : LOCAL_MONGODB, {
   useUnifiedTopology: true,
