@@ -16,18 +16,25 @@ app.use(express.json());
 // process.env.NODE_ENV will be 'product' when deploy it to Heroku; otherwise, it's undefined.
 console.log(`process.env.NODE_ENV: ${process.env.NODE_ENV}`);
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production' && process.env.MONGODB_URI) {
+
   app.use(express.static(path.join(__dirname, '../../client/build')));
+  mongoose.connect(process.env.MONGODB_URI, {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useFindAndModify: true
+  })
+} else {
+  mongoose.connect(LOCAL_MONGODB, {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useFindAndModify: true
+  })
 };
 
 app.use(routes);
-
-mongoose.connect(process.env.NODE_ENV === 'production' ? process.env.MONGODB_URI : LOCAL_MONGODB, {
-  useUnifiedTopology: true,
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useFindAndModify: true
-});
 
 // console.log out status once mongoose connected
 mongoose.connection.on('connected', () => {
