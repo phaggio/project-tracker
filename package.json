@@ -1,29 +1,29 @@
 {
   "name": "project-tracker",
   "version": "1.0.0",
-  "description": "",
-  "main": "dist/server.js",
+  "description": "project-tracker",
+  "main": "server/dist/server.js",
   "engines": {
     "node": ">=14.3.0"
   },
   "scripts": {
-    "heroku-prebuild": "echo hello",
-    "heroku-postbuild": "echo goodbye",
+    "heroku-prebuild": "tsc",
+    "heroku-postbuild": "npm run start",
     "build": "cd client && npm run build",
     "client": "cd client && npm run start",
     "install": "cd client && npm install",
-    "postinstall": "tsc",
-    "seed": "concurrently \"tsc\" \"node dist/seeds/seedDB.js\"",
-    "start": "node dist/server.js",
-    "start:dev": "concurrently \"tsc -w\" \"nodemon \" \"npm run client\"",
+    "seed": "node server/dist/seeds/seedDB.js",
+    "start": "node server/dist/server.js",
+    "start:dev": "concurrently \"npm run tsc-server\" \"nodemon \" \"npm run client\"",
+    "start:dev-server": "concurrently \"npm run tsc-server\" \"nodemon \"",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "tsc": "tsc"
+    "tsc-server": "cd server/src && tsc -w"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/phaggio/project-tracker.git"
   },
-  "author": "",
+  "author": "phaggio",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/phaggio/project-tracker/issues"

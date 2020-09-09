@@ -20,7 +20,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.3",
     "react-transition-group": "^4.4.1",
-    
+
     "@types/bootstrap": "^4.5.0",
     "@types/chart.js": "^2.9.24",
     "@types/jest": "^24.9.1",
@@ -36,8 +36,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "tsc": "tsc",
-    "eject": "react-scripts eject",
-    "postinstall": "tsc"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"

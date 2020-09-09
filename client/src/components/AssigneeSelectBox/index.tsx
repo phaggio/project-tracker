@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { UserType } from '../../util/dataTypes';
-// import { ConsoleLogButton } from '..';
 
 // a drop down component
 // input: an array of objects
@@ -125,10 +124,6 @@ const AssigneeSelectBox = (props: PropsType) => {
 
       </div>
 
-      {/* <div className="div">
-        <ConsoleLogButton name="filtered users" state={filteredUsers} />
-        <ConsoleLogButton name="props.assigneeId" state={props.currentAssigneeId} />
-      </div> */}
     </div>
   )
 }
