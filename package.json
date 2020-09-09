@@ -7,7 +7,7 @@
     "node": ">=14.3.0"
   },
   "scripts": {
-    "build": "tsc && cd client && npm run build",
+    "build": "concurrently \"cd server && tsc\" \"cd client && npm run build\"",
     "client": "cd client && npm run start",
     "install": "cd client && npm install",
     "seed": "node server/dist/seeds/seedDB.js",
@@ -29,7 +29,6 @@
   },
   "homepage": "https://github.com/phaggio/project-tracker#readme",
   "dependencies": {
-    "@types/node": "^14.6.4",
     "express": "^4.17.1",
     "mongoose": "^5.9.26"
   },
