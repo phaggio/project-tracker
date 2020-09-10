@@ -12,10 +12,9 @@ const Feature = ({ match }: PathPropsType) => {
 	console.log(`Rendering Feature page... `);
 	const [feature, updateFeature] = useState<ItemType | undefined>();
 
-	const [projects, updateProjects] = useState<ProjectType[] | undefined>(undefined) // potential parents
-	const [items, updateItems] = useState<ItemType[] | undefined>() // potential parents
+	const [projects, updateProjects] = useState<ProjectType[]>([]) // potential parents
 	const [users, updateUsers] = useState<[]>([]); // potential assignee
-	const [children, updateChildren] = useState<ItemType[]>([]); // all children of this feature
+	const [children, updateChildren] = useState<ItemType[]>([]); // children of this feature
 
 	const [loading, updateLoading] = useState<boolean>(true);
 	const [update, toggleUpdate] = useState<boolean>(false);
@@ -26,10 +25,6 @@ const Feature = ({ match }: PathPropsType) => {
 			projectRequest
 				.getAllProjects()
 				.then((response: AxiosResponse) => updateProjects(response.data))
-				.catch(err => console.error(err))
-			itemRequest
-				.getAllWorkItems()
-				.then((response: AxiosResponse) => updateItems(response.data))
 				.catch(err => console.error(err))
 			userRequest
 				.getAllUsers()
@@ -90,7 +85,7 @@ const Feature = ({ match }: PathPropsType) => {
 	return (
 		<div className="container">
 
-			{!loading && feature !== undefined && projects !== undefined && items !== undefined ?
+			{!loading && feature !== undefined && projects !== undefined ?
 				<div>
 					{/* start of first row */}
 					< div className="row">
