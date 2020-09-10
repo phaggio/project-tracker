@@ -4,6 +4,7 @@ import AssigneeSelectBox from './AssigneeSelectBox';
 import CancelButton from './CancelButton';
 import ChildrenItemsDiv from './ChildrenItemsDiv';
 import ConsoleLogButton from './ConsoleLogButton';
+import CountCard from './CountCard';
 import DescriptionDiv from './DescriptionDiv';
 import DescriptionTextarea from './DescriptionTextarea';
 import EditButton from './EditButton';
@@ -32,6 +33,7 @@ export {
   CancelButton,
   ChildrenItemsDiv,
   ConsoleLogButton,
+  CountCard,
   DescriptionDiv,
   DescriptionTextarea,
   EditButton,

@@ -74,10 +74,16 @@ const camelToNormal = (camelName: string) => {
   return normal;
 }
 
+const countItemsByType = (type: string, items: ItemType[]) => {
+  if (items.length === 0) return 0;
+  return items.filter(item => item.type === type).length;
+}
+
 export {
   parseTags,
   capitalizeWord,
   countByStatus,
   findParentsByType,
-  camelToNormal
+  camelToNormal,
+  countItemsByType
 }

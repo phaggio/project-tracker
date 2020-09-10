@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { ProjectType, ItemType } from '../../util/dataTypes';
-import { countByStatus } from '../../util/functions'
+import { countItemsByType, countByStatus } from '../../util/functions'
 import { projectRequest, itemRequest } from '../../httpRequests';
-import { AddNewDropDownButton, ProjectList } from '../../components';
+import { ProjectList, AddNewDropDownButton, CountCard } from '../../components';
 import DonutChart from '../../charts/DonutChart';
-
 
 const Home = () => {
   const [projects, updateProjects] = useState<ProjectType[]>([]);
@@ -16,7 +15,6 @@ const Home = () => {
       projectRequest
         .getAllProjects()
         .then(res => {
-          console.log(res.data)
           updateProjects(Array.from(res.data))
         })
       itemRequest
@@ -32,71 +30,69 @@ const Home = () => {
       <div className="row">
 
         <div className="col-12 col-md-4 col-lg-3 col-xl-3">
-          <ProjectList projects={projects} />
+          {/* project list div */}
+          <div className="shadow rounded p-2 mt-2">
+            <ProjectList projects={projects} />
+          </div>
         </div>
 
-        <div className="col-12 col-md-8 col-lg-9 col-xl-9 shadow-sm rounded p-2">
-          <div className="d-flex justify-content-between align-items-baseline">
-            <label className="font-weight-bold">Snapshot</label>
-            <AddNewDropDownButton small={true} includeFeature={true} />
-          </div>
+        <div className="col-12 col-md-8 col-lg-9 col-xl-9">
 
-          {/* first row */}
-          <div className="row">
-            <div className="col-12 d-flex flex-wrap">
-              <div className="d-flex flex-row align-items-baseline border border-primary rounded w-auto px-3 my-2 mr-2 shadow">
-                <div className="display-3 text-primary">{`${projects.length}`}</div>
-                <small className="ml-2">Projects</small>
+          {/* snapshot div */}
+          <div className="shadow rounded p-1 mt-2">
+
+            <div className="d-flex justify-content-between align-items-baseline p-1">
+              <label className="font-weight-light">Snapshot</label>
+              <AddNewDropDownButton small={true} includeFeature={true} />
+            </div>
+
+            <div className="row m-0">
+              <div className="col-6 col-lg-3 p-1">
+                <CountCard type="project"
+                  count={projects.length} />
               </div>
-
-              <div className="d-flex flex-row align-items-baseline border border-info rounded-lg w-auto px-3 my-2 mr-2 shadow">
-                <div className="display-3 text-warning">{items.length > 0 ? items.filter(item => item.type === 'feature').length : 0}</div>
-                <small className="ml-2">Features</small>
+              <div className="col-6 col-lg-3 p-1">
+                <CountCard type="feature"
+                  count={countItemsByType('feature', items)} />
               </div>
-
-              <div className="d-flex flex-row align-items-baseline border border-secondary rounded w-auto px-3 my-2 mr-2 shadow">
-                <div className="display-3 text-secondary">{items.length > 0 ? items.filter(item => item.type === 'workItem').length : 0}</div>
-                <small className="ml-2">Work items</small>
+              <div className="col-6 col-lg-3 p-1">
+                <CountCard type="workItem"
+                  count={countItemsByType('workItem', items)} />
               </div>
-
-              <div className="d-flex flex-row align-items-baseline border border-secondary rounded w-auto px-3 my-2 mr-2 shadow">
-                <div className="display-3 text-danger">{items.length > 0 ? items.filter(item => item.type === 'bug').length : 0}</div>
-                <small className="ml-2">Bugs</small>
+              <div className="col-6 col-lg-3 p-1">
+                <CountCard type="bug"
+                  count={countItemsByType('bug', items)} />
               </div>
             </div>
+
           </div>
-          {/* end of first row */}
 
 
-          {/* second row */}
-          <div className="row">
-            <div className="col-12 col-lg-6">
-              <DonutChart title="Features" data={countByStatus("feature", items)} />
+          {/* progress div */}
+          <div className="shadow rounded p-1 mt-2">
+
+            <div className="row">
+              <div className="col-12 col-lg-6 p-1">
+                <DonutChart title="Projects" data={[]} />
+              </div>
+              <div className="col-12 col-lg-6 p-1">
+                <DonutChart title="Features" data={countByStatus("feature", items)} />
+              </div>
+              <div className="col-12 col-lg-6 p-1">
+                <DonutChart title="Work items" data={countByStatus("workItem", items)} />
+              </div>
+              <div className="col-12 col-lg-6 p-1">
+                <DonutChart title="Bugs" data={countByStatus("bug", items)} />
+              </div>
             </div>
-            <div className="col-12 col-lg-6">
-              <DonutChart title="Work items" data={countByStatus("workItem", items)} />
-            </div>
+
           </div>
-          {/* end of second row */}
-
-          {/* third row */}
-          <div className="row">
-            <div className="col-12 col-lg-6">
-              <DonutChart title="Bugs" data={countByStatus("bug", items)} />
-            </div>
-          </div>
-          {/* end of third row */}
-
 
 
         </div>
         {/* end of right side */}
-
       </div>
       {/* end of main row */}
-
-      {/* debug buttons */}
-
     </div >
   )
 };
