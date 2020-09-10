@@ -16,32 +16,28 @@ const Feature = ({ match }: PathPropsType) => {
 	const [users, updateUsers] = useState<[]>([]); // potential assignee
 	const [children, updateChildren] = useState<ItemType[]>([]); // children of this feature
 
-	const [loading, updateLoading] = useState<boolean>(true);
 	const [update, toggleUpdate] = useState<boolean>(false);
 
 	// INIT GET to get all projects, users data for selection and current feature data and its children items
 	useEffect(() => {
 		if (match.params.id !== undefined) {
-			projectRequest
-				.getAllProjects()
-				.then((response: AxiosResponse) => updateProjects(response.data))
-				.catch(err => console.error(err))
-			userRequest
-				.getAllUsers()
-				.then((response: AxiosResponse) => updateUsers(response.data))
-				.catch(err => console.error(err));
 			itemRequest
 				.getWorkItemById(match.params.id)
-				.then((response: AxiosResponse) => {
-					updateLoading(previous => { return !previous });
-					updateFeature(response.data);
-				})
+				.then((response: AxiosResponse) => updateFeature((response.data)))
 				.catch(err => console.error(err));
 			itemRequest
 				.getWorkItemsByParentId(match.params.id)
-				.then((response: AxiosResponse) => updateChildren(response.data))
+				.then((response: AxiosResponse) => updateChildren(Array.from(response.data)))
 				.catch(err => console.error(err))
 		}
+		projectRequest
+			.getAllProjects()
+			.then((response: AxiosResponse) => updateProjects(response.data))
+			.catch(err => console.error(err))
+		userRequest
+			.getAllUsers()
+			.then((response: AxiosResponse) => updateUsers(response.data))
+			.catch(err => console.error(err));
 	}, [match.params.id]);
 
 	useEffect(() => {
@@ -85,7 +81,7 @@ const Feature = ({ match }: PathPropsType) => {
 	return (
 		<div className="container">
 
-			{!loading && feature !== undefined && projects !== undefined ?
+			{feature !== undefined && projects !== undefined ?
 				<div>
 					{/* start of first row */}
 					< div className="row">
