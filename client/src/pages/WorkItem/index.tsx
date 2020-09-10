@@ -1,32 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import { PathPropsType, ProjectType, ItemType } from '../../util/dataTypes'
+import { PathPropsType, ProjectType, ItemType, UserType } from '../../util/dataTypes'
 import { projectRequest, itemRequest, userRequest } from '../../httpRequests';
 import { AssigneeDiv, ConsoleLogButton, DescriptionDiv, NameBadgeDiv, ParentItemDiv, StatusDiv, TagsDiv } from '../../components';
+import { AxiosResponse } from 'axios';
 
 const WorkItem = ({ match }: PathPropsType) => {
   const [workItem, updateWorkItem] = useState<ItemType | undefined>();
 
-  const [projects, updateProjects] = useState<ProjectType[] | undefined>(); // potential parents
-  const [items, updateItems] = useState<ItemType[] | undefined>(); // potential parents
-  const [users, updateUsers] = useState<[] | undefined>(undefined); // potential assignees
+  const [projects, updateProjects] = useState<ProjectType[]>([]); // potential parents
+  const [items, updateItems] = useState<ItemType[]>([]); // potential parents
+  const [users, updateUsers] = useState<UserType[]>([]); // potential assignees
 
   const [update, toggleUpdate] = useState(false);
 
   // INIT GET api call to get all projects, items, and user data.
   useEffect(() => {
     if (match.params.id !== undefined) {
-      console.log('params.id exists, making GET API call to get current work item data...');
       itemRequest
         .getWorkItemById(match.params.id)
-        .then(response => {
+        .then((response: AxiosResponse) => {
           // if response.data.name does not exist, incorrect _id in URL
           if (response.data.name) {
             console.log('work item found, now getting potential parent and assignee data ...');
             updateWorkItem(response.data);
             // only make features/projects api call when workItem exists
-            projectRequest.getAllProjects().then(res => updateProjects(res.data));
-            itemRequest.getAllWorkItems().then(res => updateItems(res.data));
-            userRequest.getAllUsers().then(res => updateUsers(res.data));
+            projectRequest.getAllProjects().then((response: AxiosResponse) => { if (Array.isArray(response.data)) updateProjects(response.data) });
+            itemRequest.getAllWorkItems().then((response: AxiosResponse) => { if (Array.isArray(response.data)) updateItems(response.data) });
+            userRequest.getAllUsers().then((response: AxiosResponse) => { if (Array.isArray(response.data)) updateUsers(response.data) });
           }
         })
         .catch(err => console.error(err));
@@ -35,10 +35,9 @@ const WorkItem = ({ match }: PathPropsType) => {
 
   useEffect(() => {
     if (workItem !== undefined && update === true) {
-      console.log('updating data....')
       itemRequest
         .updateWorkItemById(workItem._id, workItem)
-        .then(res => console.log(res.data))
+        .then((response: AxiosResponse) => console.log(response.data))
         .catch(err => console.error(err))
     }
     toggleUpdate(false);
@@ -75,7 +74,7 @@ const WorkItem = ({ match }: PathPropsType) => {
 
   return (
     <div className="container">
-      {(workItem !== undefined && users !== undefined && projects !== undefined && items !== undefined) ?
+      {(workItem !== undefined) ?
         <div>
           {/* first row */}
           <div className="row">
@@ -143,15 +142,6 @@ const WorkItem = ({ match }: PathPropsType) => {
       </div>
 
       }
-
-      <div className="col-6">
-        <ConsoleLogButton name="projects" state={projects} />
-        <ConsoleLogButton name="items" state={items} />
-        <ConsoleLogButton name="work item" state={workItem} />
-        <ConsoleLogButton name="users" state={users} />
-        <ConsoleLogButton name="param" state={match.params} />
-      </div>
-
 
     </div>
   )
