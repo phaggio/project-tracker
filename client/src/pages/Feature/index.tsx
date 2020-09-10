@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { PathPropsType, ProjectType, ItemType } from '../../util/dataTypes';
+import { PathPropsType, ProjectType, ItemType, UserType } from '../../util/dataTypes';
 import { projectRequest, userRequest, itemRequest } from '../../httpRequests';
 import {
 	AssigneeDiv, ChildrenItemsDiv, DescriptionDiv, NameBadgeDiv,
@@ -13,7 +13,7 @@ const Feature = ({ match }: PathPropsType) => {
 	const [feature, updateFeature] = useState<ItemType | undefined>();
 
 	const [projects, updateProjects] = useState<ProjectType[]>([]) // potential parents
-	const [users, updateUsers] = useState<[]>([]); // potential assignee
+	const [users, updateUsers] = useState<UserType[]>([]); // potential assignee
 	const [children, updateChildren] = useState<ItemType[]>([]); // children of this feature
 
 	const [update, toggleUpdate] = useState<boolean>(false);
@@ -27,17 +27,23 @@ const Feature = ({ match }: PathPropsType) => {
 				.catch(err => console.error(err));
 			itemRequest
 				.getWorkItemsByParentId(match.params.id)
-				.then((response: AxiosResponse) => updateChildren(Array.from(response.data)))
+				.then((response: AxiosResponse) => {
+					if (Array.isArray(response.data)) updateChildren(response.data)
+				})
 				.catch(err => console.error(err))
+			projectRequest
+				.getAllProjects()
+				.then((response: AxiosResponse) => {
+					if (Array.isArray(response.data)) updateProjects(response.data)
+				})
+				.catch(err => console.error(err))
+			userRequest
+				.getAllUsers()
+				.then((response: AxiosResponse) => {
+					if (Array.isArray(response.data)) updateUsers(response.data)
+				})
+				.catch(err => console.error(err));
 		}
-		projectRequest
-			.getAllProjects()
-			.then((response: AxiosResponse) => updateProjects(response.data))
-			.catch(err => console.error(err))
-		userRequest
-			.getAllUsers()
-			.then((response: AxiosResponse) => updateUsers(response.data))
-			.catch(err => console.error(err));
 	}, [match.params.id]);
 
 	useEffect(() => {
