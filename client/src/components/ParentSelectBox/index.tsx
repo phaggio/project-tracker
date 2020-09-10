@@ -14,7 +14,7 @@ const ParentSelectBox = (props: PropsType) => {
   const [currentHover, updateCurrentHover] = useState<string>('');
   const [active, updateActive] = useState<boolean>(false);
 
-  const [filteredParents, updateFilteredParents] = useState<ParentType[]>(props.parents);
+  const [filteredParents, updateFilteredParents] = useState<ParentType[]>(Array.from(props.parents));
   const [filter, updateFilter] = useState<string>('');
 
   // once props.parents loaded and parentId is not null, look for parent name.
@@ -104,7 +104,7 @@ const ParentSelectBox = (props: PropsType) => {
           </div>
 
           {
-            filteredParents.length > 0 ? filteredParents.map(parent => {
+            filteredParents.length > 0 ? Array.from(filteredParents).map(parent => {
               return (
                 <div key={parent._id}
                   className={`px-3 py-1 ${currentHover === parent._id ? 'bg-dark text-light' : ''}`}
