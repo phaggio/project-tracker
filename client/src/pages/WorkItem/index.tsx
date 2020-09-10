@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { PathPropsType, ProjectType, ItemType, UserType } from '../../util/dataTypes'
 import { projectRequest, itemRequest, userRequest } from '../../httpRequests';
-import { AssigneeDiv, ConsoleLogButton, DescriptionDiv, NameBadgeDiv, ParentItemDiv, StatusDiv, TagsDiv } from '../../components';
+import { AssigneeDiv, DescriptionDiv, NameBadgeDiv, ParentItemDiv, StatusDiv, TagsDiv } from '../../components';
 import { AxiosResponse } from 'axios';
 
 const WorkItem = ({ match }: PathPropsType) => {
