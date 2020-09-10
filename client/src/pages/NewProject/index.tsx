@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NewProjectType } from '../../util/dataTypes';
-import TagsInput from '../../components/TagsInput';
+import { NameInput, TagsInput, DescriptionTextarea, AddNewButton } from '../../components';
 import ConsoleLogButton from '../../components/ConsoleLogButton';
 import { AxiosResponse } from 'axios';
 import { projectRequest } from '../../httpRequests';
@@ -23,26 +23,17 @@ const NewProject = () => {
 
 	const submitButtonPressed = (event: React.FormEvent) => {
 		event.preventDefault();
-		console.log(event);
 		projectRequest.addNewProject(projectInput)
-			.then((response: AxiosResponse) => console.log(response))
+			.then((response: AxiosResponse) => {
+				if (response.status === 200 && response.data._id !== undefined) {
+					window.location.replace(`/project/${response.data._id}`)
+				}
+			})
 			.catch(err => console.error(err));
 	};
 
-	const handleKeyEvent = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-		const id = event.target.id;
-		const input = event.target.value.trim();
-		console.log(id, input)
-		if (id === 'name') {
-			updateProjectInput({
-				...projectInput, name: input
-			})
-		} else if (id === 'description') {
-			updateProjectInput({
-				...projectInput, description: input
-			})
-		}
-	}
+	const updateName = (str: string) => updateProjectInput(prev => { return { ...prev, name: str } });
+	const updateDescription = (str: string) => updateProjectInput(prev => { return { ...prev, description: str } });
 
 	return (
 		<div className="container">
@@ -58,11 +49,7 @@ const NewProject = () => {
 								<label className="font-weight-light">Project name</label>
 								<small>Required</small>
 							</div>
-							<input type="text"
-								className="form-control"
-								id="name"
-								onChange={event => handleKeyEvent(event)}
-								placeholder="enter project name ..." />
+							<NameInput placeholder="enter project name ..." onChange={updateName} />
 						</div>
 
 						<div className="form-group">
@@ -79,25 +66,12 @@ const NewProject = () => {
 								<label className="font-weight-light">Description</label>
 								<small>Optional</small>
 							</div>
-
-							<textarea
-								className="form-control"
-								id="description"
-								style={projectInput.description.length > 150 ? { height: '140px', whiteSpace: 'pre-wrap' } : { height: '80px', whiteSpace: 'pre-wrap' }}
-								onChange={(event) => {
-									handleKeyEvent(event)
-								}}
-								placeholder="Description"
-							/>
+							<DescriptionTextarea text={projectInput.description}
+								placeholder="enter project description ..."
+								onChange={updateDescription} />
 						</div>
 
-						<button className="btn btn-success"
-							type="submit"
-							disabled={disableCreateButton}
-						>
-							Create project
-        		</button>
-
+						<AddNewButton actionName="Create" itemName="project" disabled={disableCreateButton} />
 					</form>
 				</div>
 			</div>

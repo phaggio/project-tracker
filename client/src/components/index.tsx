@@ -1,3 +1,4 @@
+import AddNewButton from './AddNewButton';
 import AddNewDropDownButton from './AddNewDropDownButton';
 import AssigneeDiv from './AssigneeDiv';
 import AssigneeSelectBox from './AssigneeSelectBox';
@@ -27,6 +28,7 @@ import TagsInput from './TagsInput';
 
 
 export {
+  AddNewButton,
   AddNewDropDownButton,
   AssigneeDiv,
   AssigneeSelectBox,
