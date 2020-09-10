@@ -1,4 +1,4 @@
-import { ItemType, ParentType } from './dataTypes';
+import { ItemType, ParentType, ProjectType } from './dataTypes';
 
 // util functions
 
@@ -11,10 +11,8 @@ const parseTags = (str: string): string[] => {
   lowerCaseStr.split(',').forEach((item: string) => {
     if (item.trim().length > 0) outputArr.push(item.trim());
   })
-
   // remove duplicate tags
   return outputArr.filter((a, b) => outputArr.indexOf(a) === b);
-
 }
 
 
@@ -25,30 +23,48 @@ const capitalizeWord = (str: string) => {
 }
 
 // given items array and item type, return an array of counts by types
-const countByStatus = (itemType: string, items: ItemType[]) => {
-  const countArr = [0, 0, 0, 0, 0];
+const countByStatus = (type: string, items: ProjectType[] | ItemType[]) => {
+  const countArr = function (dataType) {
+    if (dataType === 'project') return [0, 0];
+    return [0, 0, 0, 0, 0]
+  }(type);
+
   if (items.length === 0) return countArr;
   for (const item of items) {
-    if (item.type === itemType || itemType === 'all') {
+    if (type === 'project') {
       switch (item.status) {
-        case 'Open':
+        case ('Open'):
           countArr[0]++;
           break;
-        case 'Active':
+        case ('Archived'):
           countArr[1]++;
-          break;
-        case 'Completed':
-          countArr[2]++;
-          break;
-        case 'In-review':
-          countArr[3]++;
-          break;
-        case 'Closed':
-          countArr[4]++;
           break;
         default:
           break;
       }
+    } else {
+      if (item.type === type || type === 'all') {
+        switch (item.status) {
+          case 'Open':
+            countArr[0]++;
+            break;
+          case 'Active':
+            countArr[1]++;
+            break;
+          case 'Completed':
+            countArr[2]++;
+            break;
+          case 'In-review':
+            countArr[3]++;
+            break;
+          case 'Closed':
+            countArr[4]++;
+            break;
+          default:
+            break;
+        }
+      }
+
     }
   }
   return countArr;

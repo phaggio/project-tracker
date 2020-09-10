@@ -79,7 +79,7 @@ const Project = ({ match }: PathPropsType) => {
 
 					<div className="col-12 col-md-6 col-lg-5">
 						<FilterItemsDiv onChange={updateChartFilter} />
-						<DonutChart title={camelToNormal(chartFilter)} data={countByStatus(chartFilter, children)} />
+						<DonutChart title={camelToNormal(chartFilter)} type={chartFilter} data={countByStatus(chartFilter, children)} />
 					</div>
 				</div>
 				// end of first row

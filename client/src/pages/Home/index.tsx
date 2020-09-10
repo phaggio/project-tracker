@@ -70,10 +70,14 @@ const Home = () => {
 
           {/* progress div */}
           <div className="shadow rounded p-1 mt-2">
+            <div className="d-flex justify-content-between align-items-baseline p-1">
+              <label className="font-weight-light">Progress</label>
+
+            </div>
 
             <div className="row">
               <div className="col-12 col-lg-6 p-1">
-                <DonutChart title="Projects" data={[]} />
+                <DonutChart title="Projects" type="project" data={countByStatus('project', projects)} />
               </div>
               <div className="col-12 col-lg-6 p-1">
                 <DonutChart title="Features" data={countByStatus("feature", items)} />

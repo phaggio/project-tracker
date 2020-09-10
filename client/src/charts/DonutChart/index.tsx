@@ -3,30 +3,30 @@ import { Doughnut } from 'react-chartjs-2';
 
 type PropsType = {
   title: string;
+  type?: string;
   data: number[];
 }
 
 const DonutChart = (props: PropsType) => {
+  const projectLabels = ['Open', 'Archived'];
+  const itemLabels = ['Open', 'Active', 'Completed', 'In-review', 'Closed'];
+
+  const projectColorMap = {
+    backgroundColor: ['Orange', 'Grey'],
+    hoverBackgroundColor: ['DarkOrange', 'DimGrey']
+  }
+
+  const itemsColorMap = {
+    backgroundColor: ['BlanchedAlmond', 'Orange', 'ForestGreen', 'DarkOrchid', 'Gray'],
+    hoverBackgroundColor: ['Bisque', 'DarkOrange', 'DarkGreen', 'DarkMagenta', 'DimGray']
+  }
 
   const data = {
-    labels: ['Open', 'Active', 'Completed',
-      'In-review', 'Closed'],
+    labels: props.type === 'project' ? projectLabels : itemLabels,
     datasets: [
       {
-        backgroundColor: [
-          'BlanchedAlmond',
-          'Orange',
-          'ForestGreen',
-          'DarkOrchid',
-          'Gray'
-        ],
-        hoverBackgroundColor: [
-          'Bisque',
-          'DarkOrange',
-          'DarkGreen',
-          'DarkMagenta',
-          'DimGray'
-        ],
+        backgroundColor: props.type === 'project' ? projectColorMap.backgroundColor : itemsColorMap.backgroundColor,
+        hoverBackgroundColor: props.type === 'project' ? projectColorMap.hoverBackgroundColor : itemsColorMap.hoverBackgroundColor,
         data: props.data
       }
     ]
