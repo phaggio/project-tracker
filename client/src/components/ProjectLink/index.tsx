@@ -10,7 +10,7 @@ const ProjectLink = ({ project }: PropsType) => {
   
   return (
     <Link
-      className="mb-1 text-truncate"
+      className="btn btn-primary btn-sm mb-1 text-truncate"
       title={project.name}
       to={`/project/${project._id}`}
     >

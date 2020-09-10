@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ProjectType, ItemType } from '../../util/dataTypes';
 import { countItemsByType, countByStatus } from '../../util/functions'
 import { projectRequest, itemRequest } from '../../httpRequests';
-import { ProjectList, AddNewDropDownButton, CountCard } from '../../components';
+import { NewButton, ProjectList, AddNewDropDownButton, CountCard } from '../../components';
 import DonutChart from '../../charts/DonutChart';
 
 const Home = () => {
@@ -31,8 +31,18 @@ const Home = () => {
 
         <div className="col-12 col-md-4 col-lg-3 col-xl-3">
           {/* project list div */}
-          <div className="shadow rounded p-2 mt-2">
-            <ProjectList projects={projects} />
+          <div className="shadow rounded p-1 mt-2">
+            <div className="d-flex justify-content-between align-items-baseline p-1">
+              <label className="font-weight-light">Projects</label>
+              <NewButton
+                name="New project"
+                url="/new/project"
+                ariaLabel="add-new-project"
+                small={true} />
+            </div>
+            <div className="col-12 p-1">
+              <ProjectList projects={projects} />
+            </div>
           </div>
         </div>
 
