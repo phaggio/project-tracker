@@ -4,7 +4,7 @@ import $ from 'jquery';
 
 const NavBar = () => {
   const toggle = () => {
-    $('.navbar-collapse').collapse('hide');
+    $('.navbar-collapse').collapse('hide')
   }
 
   return (
@@ -14,6 +14,7 @@ const NavBar = () => {
         aria-expanded="true" aria-label="Toggle navigation">
         <span className="navbar-toggler-icon"></span>
       </button>
+
       <div className="collapse navbar-collapse" id="navbar">
         <NavLink exact className="navbar-brand" to="/">Project Tracker</NavLink>
         <ul className="navbar-nav ml-auto mt-2 mt-lg-0">
