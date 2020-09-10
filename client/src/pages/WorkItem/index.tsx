@@ -21,7 +21,6 @@ const WorkItem = ({ match }: PathPropsType) => {
         .then((response: AxiosResponse) => {
           // if response.data.name does not exist, incorrect _id in URL
           if (response.data.name) {
-            console.log('work item found, now getting potential parent and assignee data ...');
             updateWorkItem(response.data);
             // only make features/projects api call when workItem exists
             projectRequest.getAllProjects().then((response: AxiosResponse) => { if (Array.isArray(response.data)) updateProjects(response.data) });

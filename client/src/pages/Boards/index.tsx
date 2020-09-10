@@ -12,7 +12,6 @@ const Boards = () => {
     itemRequest
       .getAllWorkItems()
       .then(res => {
-        console.log(res.data)
         updateItems(res.data)
       })
       .catch(err => {

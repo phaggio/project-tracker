@@ -2,14 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { PathPropsType, NewItemType } from '../../util/dataTypes';
 import { projectRequest, itemRequest, userRequest } from '../../httpRequests';
 import { AxiosResponse } from 'axios';
-import NameInput from '../../components/NameInput';
-import ParentSelectBox from '../../components/ParentSelectBox';
-import TagsInput from '../../components/TagsInput';
-import AssigneeSelectBox from '../../components/AssigneeSelectBox';
-import DescriptionTextarea from '../../components/DescriptionTextarea';
-import StatusSelection from '../../components/StatusSelection';
-import ConsoleLogButton from '../../components/ConsoleLogButton';
-
+import { NameInput, ParentSelectBox, TagsInput, AssigneeSelectBox, DescriptionTextarea, StatusSelection } from '../../components';
 
 const NewBug = ({ match }: PathPropsType) => {
   const [projects, updateProjects] = useState([]); // potential parents
@@ -66,7 +59,7 @@ const NewBug = ({ match }: PathPropsType) => {
     event.preventDefault(); //default action is clear the form
     itemRequest
       .addNewWorkItem(draft)
-      .then((response: AxiosResponse) => console.log(response))
+      .then((response: AxiosResponse) => console.log(response.data))
       .catch(err => console.error(err));
   };
 
@@ -133,9 +126,6 @@ const NewBug = ({ match }: PathPropsType) => {
 
 
       </div>
-
-      <ConsoleLogButton name="match.params" state={match.params} />
-      <ConsoleLogButton name="draft" state={draft} />
     </div>
   )
 }

@@ -9,7 +9,6 @@ import {
 import { AxiosResponse } from 'axios';
 
 const Feature = ({ match }: PathPropsType) => {
-	console.log(`Rendering Feature page... `);
 	const [feature, updateFeature] = useState<ItemType | undefined>();
 
 	const [projects, updateProjects] = useState<ProjectType[]>([]) // potential parents

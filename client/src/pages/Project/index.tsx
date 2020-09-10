@@ -6,7 +6,6 @@ import { ChildrenItemsDiv, DescriptionDiv, FilterItemsDiv, NameBadgeDiv, TagsDiv
 import DonutChart from '../../charts/DonutChart';
 
 const Project = ({ match }: PathPropsType) => {
-	console.log('Rendering Project page...');
 
 	const [project, updateProject] = useState<ProjectType | undefined>();
 	const [update, toggleUpdate] = useState<boolean>(false);
