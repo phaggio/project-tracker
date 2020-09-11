@@ -56,7 +56,7 @@ const NewFeature = ({ match }: PathPropsType) => {
   const submitButtonPressed = (event: React.FormEvent) => {
     event.preventDefault();
     itemRequest
-      .addNewWorkItem(draft)
+      .addNewItem(draft)
       .then((response: AxiosResponse) => {
         if (response.status === 200 && response.data._id !== undefined) {
           window.location.replace(`/feature/${response.data._id}`)

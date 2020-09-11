@@ -17,14 +17,14 @@ const WorkItem = ({ match }: PathPropsType) => {
   useEffect(() => {
     if (match.params.id !== undefined) {
       itemRequest
-        .getWorkItemById(match.params.id)
+        .getItemById(match.params.id)
         .then((response: AxiosResponse) => {
           // if response.data.name does not exist, incorrect _id in URL
           if (response.data.name) {
             updateWorkItem(response.data);
             // only make features/projects api call when workItem exists
             projectRequest.getAllProjects().then((response: AxiosResponse) => { if (Array.isArray(response.data)) updateProjects(response.data) });
-            itemRequest.getAllWorkItems().then((response: AxiosResponse) => { if (Array.isArray(response.data)) updateItems(response.data) });
+            itemRequest.getAllItems().then((response: AxiosResponse) => { if (Array.isArray(response.data)) updateItems(response.data) });
             userRequest.getAllUsers().then((response: AxiosResponse) => { if (Array.isArray(response.data)) updateUsers(response.data) });
           }
         })
@@ -35,7 +35,7 @@ const WorkItem = ({ match }: PathPropsType) => {
   useEffect(() => {
     if (workItem !== undefined && update === true) {
       itemRequest
-        .updateWorkItemById(workItem._id, workItem)
+        .updateItemById(workItem._id, workItem)
         .then((response: AxiosResponse) => console.log(response.data))
         .catch(err => console.error(err))
     }
@@ -137,8 +137,8 @@ const WorkItem = ({ match }: PathPropsType) => {
         </div>
         :
         <div>
-          No work item found
-      </div>
+          <p>not found ... </p>
+        </div>
 
       }
 

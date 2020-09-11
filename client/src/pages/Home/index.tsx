@@ -18,7 +18,7 @@ const Home = () => {
           updateProjects(Array.from(res.data))
         })
       itemRequest
-        .getAllWorkItems()
+        .getAllItems()
         .then(res => updateItems(Array.from(res.data)))
     } catch (err) {
       console.error(err);

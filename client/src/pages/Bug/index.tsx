@@ -29,7 +29,7 @@ const Bug = ({ match }: PathPropsType) => {
         .then((response: AxiosResponse) => updateProjects(response.data))
         .catch(err => console.error(err))
       itemRequest
-        .getAllWorkItems()
+        .getAllItems()
         .then((response: AxiosResponse) => updateItems(response.data))
         .catch(err => console.error(err))
       userRequest
@@ -37,7 +37,7 @@ const Bug = ({ match }: PathPropsType) => {
         .then((response: AxiosResponse) => updateUsers(response.data))
         .catch(err => console.error(err));
       itemRequest
-        .getWorkItemById(match.params.id)
+        .getItemById(match.params.id)
         .then((response: AxiosResponse) => {
           updateBug(response.data);
           updateLoading(previous => { return !previous });
@@ -58,7 +58,7 @@ const Bug = ({ match }: PathPropsType) => {
   useEffect(() => {
     if (bug && update === true) {
       itemRequest
-        .updateWorkItemById(bug._id, bug)
+        .updateItemById(bug._id, bug)
         .then(data => console.log(data))
         .catch(err => console.error(err))
       toggleUpdate(!update)
@@ -150,7 +150,7 @@ const Bug = ({ match }: PathPropsType) => {
 
         </div>
         :
-        ''
+        <p>not found ...</p>
       }
 
 

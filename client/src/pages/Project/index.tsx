@@ -21,7 +21,7 @@ const Project = ({ match }: PathPropsType) => {
 				.getProjectById(match.params.id)
 				.then(res => updateProject(res.data))
 			itemRequest
-				.getWorkItemsByParentId(match.params.id)
+				.getItemsByParentId(match.params.id)
 				.then((res) => updateChildren(Array.from(res.data)))
 				.catch(err => console.error(err))
 		}
@@ -94,6 +94,7 @@ const Project = ({ match }: PathPropsType) => {
 						<DonutChart title={camelToNormal(chartFilter)}
 							type={chartFilter} data={countByStatus(chartFilter, children)} />
 					</div>
+
 				</div>
 				// end of first row
 				:
@@ -115,7 +116,7 @@ const Project = ({ match }: PathPropsType) => {
 					</div>
 				</div>
 				:
-				'no children item...'
+				<p> not found ... </p>
 			}
 			{/* end of second row */}
 

@@ -72,7 +72,7 @@ const NewWork = ({ match }: PathPropsType) => {
   const submitButtonPressed = (event: React.FormEvent) => {
     event.preventDefault(); //default action is clear the form
     itemRequest
-      .addNewWorkItem(draft)
+      .addNewItem(draft)
       .then((response: AxiosResponse) => console.log(response))
       .catch(err => console.error(err));
   };

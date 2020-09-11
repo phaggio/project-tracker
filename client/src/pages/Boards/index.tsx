@@ -10,7 +10,7 @@ const Boards = () => {
 
   useEffect(() => {
     itemRequest
-      .getAllWorkItems()
+      .getAllItems()
       .then(res => {
         updateItems(res.data)
       })

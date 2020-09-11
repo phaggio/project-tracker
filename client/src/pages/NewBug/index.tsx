@@ -33,7 +33,7 @@ const NewBug = ({ match }: PathPropsType) => {
       .then((response: AxiosResponse) => updateProjects(response.data))
       .catch(err => console.error(err))
     itemRequest
-      .getAllWorkItems()
+      .getAllItems()
       .then((response: AxiosResponse) => updateItems(response.data))
       .catch(err => console.error(err))
     userRequest
@@ -62,7 +62,7 @@ const NewBug = ({ match }: PathPropsType) => {
   const submitButtonPressed = (event: React.FormEvent) => {
     event.preventDefault(); //default action is clear the form
     itemRequest
-      .addNewWorkItem(draft)
+      .addNewItem(draft)
       .then((response: AxiosResponse) => console.log(response))
       .catch(err => console.error(err));
   };

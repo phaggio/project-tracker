@@ -27,11 +27,11 @@ const Feature = ({ match }: PathPropsType) => {
 	useEffect(() => {
 		if (match.params.id !== undefined) {
 			itemRequest
-				.getWorkItemById(match.params.id)
+				.getItemById(match.params.id)
 				.then((response: AxiosResponse) => { if (checkItemType(response.data)) updateFeature((response.data)) })
 				.catch(err => console.error(err));
 			itemRequest
-				.getWorkItemsByParentId(match.params.id)
+				.getItemsByParentId(match.params.id)
 				.then((response: AxiosResponse) => {
 					if (Array.isArray(response.data)) updateChildren(response.data)
 				})
@@ -57,7 +57,7 @@ const Feature = ({ match }: PathPropsType) => {
 	useEffect(() => {
 		if (feature && update === true) {
 			itemRequest
-				.updateWorkItemById(feature._id, feature)
+				.updateItemById(feature._id, feature)
 				.then(data => console.log(data))
 				.catch(err => console.error(err))
 			toggleUpdate(!update)
