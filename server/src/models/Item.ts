@@ -29,7 +29,7 @@ const ItemSchema: Schema = new Schema({
   parentType: {
     type: String,
     default: null,
-    enum: ['project', 'feature', 'workItem', 'bug', null]
+    enum: ['project', 'feature', 'work', null]
   },
 
   projectId: {
@@ -59,7 +59,7 @@ const ItemSchema: Schema = new Schema({
   type: {
     type: String,
     required: true,
-    default: 'workItem',
+    default: 'work',
     index: true,
     enum: ['feature', 'work', 'bug']
   },

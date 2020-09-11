@@ -1,21 +1,21 @@
 import { Item } from '../models';
 import { Request, Response } from 'express';
 
-const createNewWorkItem = (request: Request, response: Response) => {
+const createNewItem = (request: Request, response: Response) => {
   Item
     .create(request.body)
     .then(data => response.json(data))
     .catch(err => console.error(err));
 }
 
-const findAllWorkItems = (request: Request, response: Response) => {
+const findAllItems = (request: Request, response: Response) => {
   Item
     .find()
     .then(data => response.json(data))
     .catch(err => response.status(422).json(err))
 }
 
-const findWorkItemById = (request: Request, response: Response) => {
+const findItemById = (request: Request, response: Response) => {
   const id = request.params.id;
   Item
     .findOne({ _id: id })
@@ -23,7 +23,7 @@ const findWorkItemById = (request: Request, response: Response) => {
     .catch(err => response.json(err))
 }
 
-const findWorkItemsByParentId = (request: Request, response: Response) => {
+const findItemsByParentId = (request: Request, response: Response) => {
   const parentId = request.params.id;
   Item
     .find({ parentId: parentId })
@@ -39,7 +39,7 @@ const findItemsByType = (request: Request, response: Response) => {
     .catch(err => response.json(err))
 }
 
-const updateWorkItemById = (request: Request, response: Response) => {
+const updateItemById = (request: Request, response: Response) => {
   const id = request.params.id;
   const data = request.body;
   Item
@@ -49,10 +49,10 @@ const updateWorkItemById = (request: Request, response: Response) => {
 };
 
 export {
-  createNewWorkItem,
-  findAllWorkItems,
-  findWorkItemById,
-  findWorkItemsByParentId,
+  createNewItem,
+  findAllItems,
+  findItemById,
+  findItemsByParentId,
   findItemsByType,
-  updateWorkItemById
+  updateItemById
 }

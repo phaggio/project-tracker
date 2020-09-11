@@ -1,27 +1,27 @@
 import { Router } from 'express';
 import {
-  createNewWorkItem,
-  findAllWorkItems,
-  findWorkItemById,
-  findWorkItemsByParentId,
+  createNewItem,
+  findAllItems,
+  findItemById,
+  findItemsByParentId,
   findItemsByType,
-  updateWorkItemById
+  updateItemById
 } from '../../controller/itemController';
 
 const router: Router = Router();
 
 router.route('/new')
-  .post(createNewWorkItem)
+  .post(createNewItem)
 
 router.route('/')
-  .get(findAllWorkItems)
+  .get(findAllItems)
 
 router.route('/:id')
-  .get(findWorkItemById)
-  .put(updateWorkItemById)
+  .get(findItemById)
+  .put(updateItemById)
 
 router.route('/parentId/:id')
-  .get(findWorkItemsByParentId)
+  .get(findItemsByParentId)
 
 router.route('/type/:type')
   .get(findItemsByType)
