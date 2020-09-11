@@ -81,10 +81,6 @@ type ParentType = {
   projectId?: string;
 };
 
-type AssigneePayloadType = {
-  assigneeId: string | null;
-  assignee: string;
-};
 
 export type {
   PathPropsType,
@@ -96,6 +92,5 @@ export type {
   ItemType,
   NewUserType,
   UserType,
-  ParentType,
-  AssigneePayloadType
+  ParentType
 };

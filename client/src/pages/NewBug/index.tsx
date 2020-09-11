@@ -51,7 +51,9 @@ const NewBug = ({ match }: PathPropsType) => {
     updateDisableAddButton(input ? false : true);
   }
 
-  const updateParent = (parent: string | null) => updateDraft({ ...draft, parentId: parent });
+  const updateParent = (parentId: string | null, parentType: string | null) => {
+    updateDraft(prev => { return { ...prev, parentId: parentId, parentType: parentType } })
+  }
 
   const updateDescription = (text: string) => updateDraft(prev => { return { ...prev, description: text } });
 
@@ -121,20 +123,19 @@ const NewBug = ({ match }: PathPropsType) => {
 
         <div className="pt-2">
           <AddNewButton itemName="bug" disabled={disableAddButton} onClick={submitButtonPressed} />
-
-          <button type="submit"
-            className="btn btn-success"
-            disabled={disableAddButton}
-            onClick={(event) => submitButtonPressed(event)}
-          >Add bug
-          </button>
         </div>
 
 
+
+
+        <div>
+					<ConsoleLogButton name="params" state={match.params} />
+					<ConsoleLogButton name="items" state={items} />
+					<ConsoleLogButton name="draft" state={draft} />
+      	</div>
+
+
       </div>
-      <ConsoleLogButton name="params" state={match.params} />
-      <ConsoleLogButton name="items" state={items} />
-      <ConsoleLogButton name="draft" state={draft} />
     </div>
   )
 }

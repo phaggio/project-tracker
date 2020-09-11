@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ProjectType, ItemType } from '../../util/dataTypes';
 import { countItemsByType, countByStatus } from '../../util/functions'
 import { projectRequest, itemRequest } from '../../httpRequests';
-import { NewButton, ProjectList, AddNewDropDownButton, CountCard } from '../../components';
+import { NewButton, ProjectList, AddNewDropDownButton, CountCard, ConsoleLogButton } from '../../components';
 import DonutChart from '../../charts/DonutChart';
 
 const Home = () => {
@@ -66,8 +66,8 @@ const Home = () => {
                   count={countItemsByType('feature', items)} />
               </div>
               <div className="col-6 col-lg-3 p-1">
-                <CountCard type="workItem"
-                  count={countItemsByType('workItem', items)} />
+                <CountCard type="work"
+                  count={countItemsByType('work', items)} />
               </div>
               <div className="col-6 col-lg-3 p-1">
                 <CountCard type="bug"
@@ -93,7 +93,7 @@ const Home = () => {
                 <DonutChart title="Features" data={countByStatus("feature", items)} />
               </div>
               <div className="col-12 col-lg-6 p-1">
-                <DonutChart title="Work items" data={countByStatus("workItem", items)} />
+                <DonutChart title="Work items" data={countByStatus("work", items)} />
               </div>
               <div className="col-12 col-lg-6 p-1">
                 <DonutChart title="Bugs" data={countByStatus("bug", items)} />
@@ -107,6 +107,7 @@ const Home = () => {
         {/* end of right side */}
       </div>
       {/* end of main row */}
+      <ConsoleLogButton name="items" state={items} />
     </div >
   )
 };

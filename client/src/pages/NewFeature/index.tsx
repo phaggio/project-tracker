@@ -47,7 +47,9 @@ const NewFeature = ({ match }: PathPropsType) => {
 
   const updateDescription = (text: string) => updateDraft(prev => { return { ...prev, description: text } });
 
-  const updateParentAndProjectId = (id: string | null) => updateDraft(prev => { return { ...prev, parentId: id, projectId: id } });
+  const updateParentAndProjectId = (id: string | null, type: string | null) => {
+    updateDraft(prev => { return { ...prev, parentId: id, parentType: type, projectId: id } });
+  }
 
   const updateAssigneeId = (id: string | null) => updateDraft(prev => { return { ...prev, assigneeId: id } });
 
@@ -118,7 +120,7 @@ const NewFeature = ({ match }: PathPropsType) => {
         <AddNewButton itemName="feature" disabled={disableAddButton} onClick={submitButtonPressed} />
       </div>
 
-      <ConsoleLogButton name="input" state={draft} />
+      <ConsoleLogButton name="draft" state={draft} />
 
     </div>
   )

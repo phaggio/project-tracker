@@ -17,7 +17,7 @@ const FilterItemsDiv = (props: PropsType) => {
       >
         <option value='all'>All</option>
         <option value='feature'>Feature</option>
-        <option value='workItem'>Work item</option>
+        <option value='work'>Work</option>
         <option value='bug'>Bug</option>
       </select>
     </div>

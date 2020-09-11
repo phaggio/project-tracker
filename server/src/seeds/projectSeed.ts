@@ -15,11 +15,17 @@ const projectSeed = [
     name: 'Personal Website',
     description: 'A website that shows my project portfolio.',
     type: 'project',
-    tags: ['resume', 'projects', 'portfolio', 'react.js']
+    tags: ['resume', 'projects', 'portfolio', 'react.js', 'frontend']
   },
   {
     name: 'Machine Learning',
     description: 'A new project.',
+    type: 'project',
+    tags: []
+  },
+  {
+    name: 'A project with a really really really really really long name',
+    description: 'A project with long name.',
     type: 'project',
     tags: []
   }
