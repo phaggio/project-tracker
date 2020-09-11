@@ -7,7 +7,7 @@ import { UserType } from '../../util/dataTypes';
 type PropsType = {
   currentAssigneeId: string | null;
   users: UserType[];
-  onChange: (selectedAssignee: string | null) => void;
+  onChange: (selectedAssigneeId: string | null) => void;
 }
 
 const AssigneeSelectBox = (props: PropsType) => {

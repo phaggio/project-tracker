@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ParentType } from '../../util/dataTypes';
-import ParentSelectBox from '../ParentSelectBox';
-import EditButton from '../EditButton';
-import SaveButton from '../SaveButton';
-import CancelButton from '../CancelButton';
+import { ParentSelectBox, EditButton, SaveButton, CancelButton } from '..';
 
 type PropsType = {
   type: string;

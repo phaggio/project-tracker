@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { PathPropsType, NewItemType } from '../../util/dataTypes';
+import { PathPropsType, ProjectType, ItemType, UserType, NewItemType } from '../../util/dataTypes';
 import { projectRequest, itemRequest, userRequest } from '../../httpRequests';
 import { AxiosResponse } from 'axios';
-import { NameInput, ParentSelectBox, TagsInput, AssigneeSelectBox, DescriptionTextarea, StatusSelection } from '../../components';
+import {
+  NameInput, ParentSelectBox, TagsInput, AssigneeSelectBox, DescriptionTextarea, StatusSelection, AddNewButton, ConsoleLogButton
+} from '../../components';
 
 const NewBug = ({ match }: PathPropsType) => {
-  const [projects, updateProjects] = useState([]); // potential parents
-  const [items, updateItems] = useState([]); // potential parents
-  const [users, updateUsers] = useState([]); // potential assignee
+  const [projects, updateProjects] = useState<ProjectType[]>([]); // potential parents
+  const [items, updateItems] = useState<ItemType[]>([]); // potential parents
+  const [users, updateUsers] = useState<UserType[]>([]); // potential assignee
 
   const [draft, updateDraft] = useState<NewItemType>({
     status: 'Open',
-    projectId: null,
+    projectId: match.params.projectId ? match.params.projectId : null,
     parentId: match.params.parentId ? match.params.parentId : null,
     parentType: match.params.parentType ? match.params.parentType : null,
     name: '',
@@ -22,7 +24,7 @@ const NewBug = ({ match }: PathPropsType) => {
   });
 
   const [tags, updateTags] = useState<string[]>([])
-  const [disableAddButton, updateDisableAddButton] = useState(true);
+  const [disableAddButton, updateDisableAddButton] = useState<boolean>(true);
 
   // INIT GET for projects, items, users data for selection
   useEffect(() => {
@@ -51,17 +53,17 @@ const NewBug = ({ match }: PathPropsType) => {
 
   const updateParent = (parent: string | null) => updateDraft({ ...draft, parentId: parent });
 
-  const updateDesc = (text: string) => updateDraft({ ...draft, description: text });
+  const updateDescription = (text: string) => updateDraft(prev => { return { ...prev, description: text } });
 
-  const updateAssignee = (payload: string | null) => updateDraft({ ...draft, assigneeId: payload });
+  const updateAssigneeId = (id: string | null) => updateDraft(prev => { return { ...prev, assigneeId: id } });
 
-  const updateStatus = (status: string) => updateDraft({ ...draft, status: status });
+  const updateStatus = (status: string) => updateDraft(prev => { return { ...prev, status: status } });
 
   const submitButtonPressed = (event: React.FormEvent) => {
     event.preventDefault(); //default action is clear the form
     itemRequest
       .addNewWorkItem(draft)
-      .then((response: AxiosResponse) => console.log(response.data))
+      .then((response: AxiosResponse) => console.log(response))
       .catch(err => console.error(err));
   };
 
@@ -99,7 +101,7 @@ const NewBug = ({ match }: PathPropsType) => {
           <div className="d-flex justify-content-between align-items-baseline">
             <label className="font-weight-light">Assignee</label>
           </div>
-          <AssigneeSelectBox currentAssigneeId={null} users={users} onChange={updateAssignee} />
+          <AssigneeSelectBox currentAssigneeId={null} users={users} onChange={updateAssigneeId} />
         </div>
 
         <div className="pt-2">
@@ -107,7 +109,7 @@ const NewBug = ({ match }: PathPropsType) => {
             <label className="font-weight-light">Description</label>
             <small>Optional</small>
           </div>
-          <DescriptionTextarea text={draft.description} onChange={updateDesc} />
+          <DescriptionTextarea text={draft.description} onChange={updateDescription} />
         </div>
 
         <div className="pt-2">
@@ -118,6 +120,8 @@ const NewBug = ({ match }: PathPropsType) => {
         </div>
 
         <div className="pt-2">
+          <AddNewButton itemName="bug" disabled={disableAddButton} onClick={submitButtonPressed} />
+
           <button type="submit"
             className="btn btn-success"
             disabled={disableAddButton}
@@ -128,6 +132,9 @@ const NewBug = ({ match }: PathPropsType) => {
 
 
       </div>
+      <ConsoleLogButton name="params" state={match.params} />
+      <ConsoleLogButton name="items" state={items} />
+      <ConsoleLogButton name="draft" state={draft} />
     </div>
   )
 }

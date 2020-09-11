@@ -34,10 +34,10 @@ type ProjectType = {
 };
 
 type NewItemType = {
-  status: string;
   parentId: string | null;
   parentType: string | null;
   projectId: string | null;
+  status: string;
   name: string;
   description: string;
   type: string;
@@ -74,14 +74,6 @@ type UserType = {
   email: string;
 };
 
-// payload type for updating item parent info.
-type ParentPayloadType = {
-  parentType: string | null;
-  parentName: string;
-  parentId: string | null
-};
-
-
 type ParentType = {
   _id: string;
   type: string;
@@ -104,7 +96,6 @@ export type {
   ItemType,
   NewUserType,
   UserType,
-  ParentPayloadType,
   ParentType,
   AssigneePayloadType
 };

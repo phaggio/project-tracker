@@ -1,5 +1,7 @@
 type ItemType = {
   parentId: string | null;
+  parentType: string | null;
+  projectId: string | null;
   status: string;
   name: string;
   description: string;
@@ -11,42 +13,52 @@ type ItemType = {
 const itemSeed: ItemType[] = [
   {
     parentId: null,
+    parentType: null,
+    projectId: null,
     status: 'Open',
     name: 'Create API routes',
     description: 'Create API routes for item collection.',
-    type: 'workItem',
-    tags: [],
+    type: 'work',
+    tags: ['tag1', 'tag2'],
     assigneeId: null
   },
   {
     parentId: null,
+    parentType: null,
+    projectId: null,
     status: 'Open',
     name: 'Work number 2',
     description: 'This is work number Two!.',
-    type: 'workItem',
+    type: 'work',
     tags: [],
     assigneeId: null
   },
   {
     parentId: null,
+    parentType: null,
+    projectId: null,
     status: 'Open',
     name: 'Work number 3',
     description: 'This is work number Three!.',
-    type: 'workItem',
+    type: 'work',
     tags: [],
     assigneeId: null
   },
   {
     parentId: null,
+    parentType: null,
+    projectId: null,
     status: 'Open',
     name: 'Work number 4',
     description: 'This is work number FOUR!.',
-    type: 'workItem',
+    type: 'work',
     tags: [],
     assigneeId: null
   },
   {
     parentId: null,
+    parentType: null,
+    projectId: null,
     status: 'Open',
     name: 'A new feature',
     description: 'This is a feature item!',
@@ -56,6 +68,8 @@ const itemSeed: ItemType[] = [
   },
   {
     parentId: null,
+    parentType: null,
+    projectId: null,
     status: 'Open',
     name: 'New feature 2',
     description: 'New feature 2 for the project.',
@@ -65,6 +79,8 @@ const itemSeed: ItemType[] = [
   },
   {
     parentId: null,
+    parentType: null,
+    projectId: null,
     status: 'Open',
     name: 'Another feature',
     description: 'This is another feature desc.',
