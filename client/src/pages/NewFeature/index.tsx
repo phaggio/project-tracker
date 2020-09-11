@@ -3,7 +3,7 @@ import { PathPropsType, ProjectType, NewItemType } from '../../util/dataTypes';
 import { AxiosResponse } from 'axios';
 import { projectRequest, itemRequest, userRequest } from '../../httpRequests';
 import {
-  NameInput, ParentSelectBox, TagsInput, DescriptionTextarea, AssigneeSelectBox, StatusSelection, ConsoleLogButton
+  NameInput, ParentSelectBox, TagsInput, DescriptionTextarea, AssigneeSelectBox, StatusSelection, AddNewButton, ConsoleLogButton
 } from '../../components';
 
 const NewFeature = ({ match }: PathPropsType) => {
@@ -57,13 +57,16 @@ const NewFeature = ({ match }: PathPropsType) => {
     event.preventDefault();
     itemRequest
       .addNewWorkItem(draft)
-      .then((response: AxiosResponse) => console.log(response))
+      .then((response: AxiosResponse) => {
+        if (response.status === 200 && response.data._id !== undefined) {
+          window.location.replace(`/feature/${response.data._id}`)
+        }
+      })
       .catch(err => console.error(err))
   };
 
   return (
     <div className="container">
-
       <div className="form-group">
         <div className="d-flex justify-content-between align-items-baseline">
           <label className="font-weight-light">Feature name</label>
@@ -112,12 +115,7 @@ const NewFeature = ({ match }: PathPropsType) => {
       </div>
 
       <div className="pt-2">
-        <button type="submit"
-          className="btn btn-success"
-          disabled={disableAddButton}
-          onClick={(event) => submitButtonPressed(event)}
-        >Add feature
-        </button>
+        <AddNewButton itemName="feature" disabled={disableAddButton} onClick={submitButtonPressed} />
       </div>
 
       <ConsoleLogButton name="input" state={draft} />

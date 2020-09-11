@@ -4,7 +4,7 @@ type PropsType = {
   itemName: string;
   actionName?: string;
   disabled: boolean;
-  onSubmit?: () => void;
+  onClick?: (event: React.FormEvent) => void;
 }
 
 const AddNewButton = (props: PropsType) => {
@@ -12,6 +12,7 @@ const AddNewButton = (props: PropsType) => {
   return (
     <button className="btn btn-success"
       type="submit"
+      onClick={props.onClick}
       disabled={props.disabled}
     >
       {`${props.actionName ? props.actionName : `Add`} ${props.itemName}`}
