@@ -5,12 +5,11 @@ type PropsType = {
   parentId: string | null; // current/default parentId
   parentType?: string | null;
   parents: ParentType[]; // available parents for this item
-  onChange: (selectedParentId: string | null) => void; // takes parentId string
+  onChange: (selectedParentId: string | null, selectedParentType: string | null) => void; // takes parentId string
 }
 
 const ParentSelectBox = (props: PropsType) => {
   const [selectedParentId, updateSelectedParentId] = useState<string | null>(props.parentId);
-  const [selectedParentType, updateSelectedParentType] = useState<string | null>();
   const [currentParentName, updateCurrentParentName] = useState<string>('(open)');
 
   const [currentHover, updateCurrentHover] = useState<string>('');
@@ -97,7 +96,7 @@ const ParentSelectBox = (props: PropsType) => {
               updateActive(false);
               updateSelectedParentId(null);
               updateCurrentParentName('(open)')
-              props.onChange(null);
+              props.onChange(null, null);
             }}
             style={{ cursor: 'pointer' }}
             onMouseEnter={() => updateCurrentHover('(open)')}
@@ -114,7 +113,7 @@ const ParentSelectBox = (props: PropsType) => {
                     updateActive(false);
                     updateSelectedParentId(parent._id);
                     updateCurrentParentName(parent.name);
-                    props.onChange(parent._id);
+                    props.onChange(parent._id, parent.type);
                   }}
                   style={{ cursor: 'pointer' }}
                   onMouseEnter={() => updateCurrentHover(parent._id)}

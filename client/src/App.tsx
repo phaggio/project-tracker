@@ -19,7 +19,9 @@ const App = () => {
         <Route exact={true} path='/new/user' component={pages.NewUser} />
         <Route exact={false} path='/project/:id?' component={pages.Project} />
         <Route exact={false} path='/feature/:id?' component={pages.Feature} />
-        <Route exact={false} path='/workItem/:id?' component={pages.WorkItem} />
+        {/* to be removed */}
+        <Route exact={false} path='/workItem/:id?' component={pages.WorkItem} /> 
+        <Route exact={false} path='/work/:id?' component={pages.WorkItem} />
         <Route exact={false} path='/bug/:id?' component={pages.Bug} />
       </Switch>
 

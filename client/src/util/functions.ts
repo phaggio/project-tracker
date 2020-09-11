@@ -83,6 +83,11 @@ const findParentNameById = (parentId: string | null, parents: ParentType[]): str
   return parentName;
 }
 
+const findProjectIdByItemId = (itemId: string, items: ItemType[]): string | null => {
+  let matchedItem = items.find(item => item._id === itemId)
+  return matchedItem ? matchedItem.projectId : null;
+}
+
 const camelToNormal = (camelName: string) => {
   let normal = camelName[0].toUpperCase();
   for (let i = 1; i < camelName.length; ++i) {
@@ -107,6 +112,7 @@ export {
   countByStatus,
   findParentsByType,
   findParentNameById,
+  findProjectIdByItemId,
   camelToNormal,
   countItemsByType
 }

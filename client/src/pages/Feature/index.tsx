@@ -52,7 +52,7 @@ const Feature = ({ match }: PathPropsType) => {
 				.then(response => { if (typeof response.data.name === 'string') updateParentName(response.data.name) })
 				.catch(err => console.error(err))
 		}
-	}, [feature?.parentId])
+	}, [feature])
 
 	useEffect(() => {
 		if (feature && update === true) {

@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { PathPropsType, NewItemType } from '../../util/dataTypes';
+import { PathPropsType, ProjectType, ItemType, UserType, NewItemType } from '../../util/dataTypes';
+import { findProjectIdByItemId } from '../../util/functions';
 import { AxiosResponse } from 'axios';
 import { projectRequest, userRequest, itemRequest } from '../../httpRequests';
 import {
-  NameInput, ParentSelectBox, TagsInput, AssigneeSelectBox, DescriptionTextarea, StatusSelection, ConsoleLogButton
+  NameInput, ParentSelectBox, TagsInput, AssigneeSelectBox, DescriptionTextarea, StatusSelection, AddNewButton, ConsoleLogButton
 } from '../../components'
 
 const NewWork = ({ match }: PathPropsType) => {
-  const [projects, updateProjects] = useState([]); // potential parents
-  const [items, updateItems] = useState([]); // potential parents
-  const [users, updateUsers] = useState([]); // potential assignee
+  const [projects, updateProjects] = useState<ProjectType[]>([]); // potential parents
+  const [items, updateItems] = useState<ItemType[]>([]); // potential parents
+  const [users, updateUsers] = useState<UserType[]>([]); // potential assignees
 
   const [draft, updateDraft] = useState<NewItemType>({
     status: 'Open',
@@ -24,7 +25,7 @@ const NewWork = ({ match }: PathPropsType) => {
   });
 
   const [tags, updateTags] = useState<string[]>([])
-  const [disableAddButton, updateDisableAddButton] = useState(true);
+  const [disableAddButton, updateDisableAddButton] = useState<boolean>(true);
 
   // INIT GET for projects, items, users data for selection
   useEffect(() => {
@@ -49,15 +50,24 @@ const NewWork = ({ match }: PathPropsType) => {
   const updateName = (input: string) => {
     updateDraft(prev => { return { ...prev, name: input } });
     updateDisableAddButton(input ? false : true);
-  }
+  };
 
-  const updateParent = (parent: string | null) => updateDraft({ ...draft, parentId: parent });
+  const updateParentAndProject = (parentId: string | null, parentType: string | null) => {
+    updateDraft(prev => { return { ...prev, parentId: parentId, parentType: parentType } })
+    if (parentId === null) {
+      updateDraft(prev => { return { ...prev, projectId: null } })
+    } else if (parentType === 'project') {
+      updateDraft(prev => { return { ...prev, projectId: parentId } })
+    } else {
+      updateDraft(prev => { return { ...prev, projectId: findProjectIdByItemId(parentId, items) } })
+    }
+  };
 
-  const updateDesc = (text: string) => updateDraft({ ...draft, description: text });
+  const updateDescription = (text: string) => updateDraft(prev => { return { ...prev, description: text } });
 
-  const updateAssignee = (payload: string | null) => updateDraft({ ...draft, assigneeId: payload });
+  const updateAssigneeId = (payload: string | null) => updateDraft(prev => { return { ...prev, assigneeId: payload } });
 
-  const updateStatus = (status: string) => updateDraft({ ...draft, status: status });
+  const updateStatus = (status: string) => updateDraft(prev => { return { ...prev, status: status } });
 
   const submitButtonPressed = (event: React.FormEvent) => {
     event.preventDefault(); //default action is clear the form
@@ -86,7 +96,7 @@ const NewWork = ({ match }: PathPropsType) => {
           </div>
           <ParentSelectBox parentId={match.params.parentId ? match.params.parentId : null}
             parents={[...projects, ...items]} // pass projects and items to parent select box
-            onChange={updateParent} />
+            onChange={updateParentAndProject} />
         </div>
 
         <div className="pt-2">
@@ -101,7 +111,7 @@ const NewWork = ({ match }: PathPropsType) => {
           <div className="d-flex justify-content-between align-items-baseline">
             <label className="font-weight-light">Assignee</label>
           </div>
-          <AssigneeSelectBox currentAssigneeId={null} users={users} onChange={updateAssignee} />
+          <AssigneeSelectBox currentAssigneeId={null} users={users} onChange={updateAssigneeId} />
         </div>
 
         <div className="pt-2">
@@ -109,7 +119,7 @@ const NewWork = ({ match }: PathPropsType) => {
             <label className="font-weight-light">Description</label>
             <small>Optional</small>
           </div>
-          <DescriptionTextarea text={draft.description} onChange={updateDesc} />
+          <DescriptionTextarea text={draft.description} onChange={updateDescription} />
         </div>
 
         <div className="pt-2">
@@ -120,12 +130,7 @@ const NewWork = ({ match }: PathPropsType) => {
         </div>
 
         <div className="pt-2">
-          <button type="submit"
-            className="btn btn-success"
-            disabled={disableAddButton}
-            onClick={(event) => submitButtonPressed(event)}
-          >Add work item
-          </button>
+          <AddNewButton itemName="work item" disabled={disableAddButton} onClick={submitButtonPressed} />
         </div>
 
       </div>
