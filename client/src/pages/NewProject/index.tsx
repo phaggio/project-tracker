@@ -26,7 +26,7 @@ const NewProject = () => {
 		projectRequest.addNewProject(projectInput)
 			.then((response: AxiosResponse) => {
 				if (response.status === 200 && response.data._id !== undefined) {
-					window.location.replace(`/project/${response.data._id}`)
+					window.location.replace(`#/project/${response.data._id}`)
 				}
 			})
 			.catch(err => console.error(err));
@@ -68,7 +68,7 @@ const NewProject = () => {
 					</div>
 
 					<AddNewButton actionName="Create" itemName="project" disabled={disableCreateButton} onClick={submitButtonPressed} />
-					
+
 				</div>
 			</div>
 
