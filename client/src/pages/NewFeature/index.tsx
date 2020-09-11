@@ -45,11 +45,11 @@ const NewFeature = ({ match }: PathPropsType) => {
     updateDisableAddButton(str ? false : true);
   };
 
-  const updateDesc = (text: string) => updateDraft(prev => { return { ...prev, description: text } });
+  const updateDescription = (text: string) => updateDraft(prev => { return { ...prev, description: text } });
 
-  const updateParent = (id: string | null) => updateDraft(prev => { return { ...prev, parentId: id } });
+  const updateParentAndProjectId = (id: string | null) => updateDraft(prev => { return { ...prev, parentId: id, projectId: id } });
 
-  const updateAssignee = (id: string | null) => updateDraft(prev => { return { ...prev, assigneeId: id } });
+  const updateAssigneeId = (id: string | null) => updateDraft(prev => { return { ...prev, assigneeId: id } });
 
   const updateStatus = (option: string) => updateDraft(prev => { return { ...prev, status: option } });
 
@@ -80,7 +80,7 @@ const NewFeature = ({ match }: PathPropsType) => {
         <ParentSelectBox parents={projects}
           parentId={match.params.parentId !== undefined ? match.params.parentId : null}
           parentType={match.params.parentType !== undefined ? match.params.parentType : null}
-          onChange={updateParent} />
+          onChange={updateParentAndProjectId} />
       </div>
 
       <div className="pt-2">
@@ -96,14 +96,14 @@ const NewFeature = ({ match }: PathPropsType) => {
           <label className="font-weight-light">Description</label>
           <small>Optional</small>
         </div>
-        <DescriptionTextarea text={draft.description} onChange={updateDesc}
+        <DescriptionTextarea text={draft.description} onChange={updateDescription}
           placeholder="enter feature description ..." />
       </div>
 
       <div className="pt-2">
         <label className="font-weight-light">Assign to:</label>
         <AssigneeSelectBox currentAssigneeId={null}
-          users={users} onChange={updateAssignee} />
+          users={users} onChange={updateAssigneeId} />
       </div>
 
       <div className="pt-2">

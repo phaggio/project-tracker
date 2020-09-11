@@ -23,8 +23,6 @@ const Feature = ({ match }: PathPropsType) => {
 		return false;
 	}
 
-	type ItemArrType = ItemType[];
-
 	// INIT GET to get all projects, users data for selection and current feature data and its children items
 	useEffect(() => {
 		if (match.params.id !== undefined) {
