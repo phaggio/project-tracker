@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { PathPropsType, ProjectType, ItemType } from '../../util/dataTypes'
 import { countByStatus, camelToNormal } from '../../util/functions';
 import { projectRequest, itemRequest } from '../../httpRequests';
-import { ChildrenItemsDiv, DescriptionDiv, FilterItemsDiv, NameBadgeDiv, TagsDiv } from '../../components';
+import {
+	NameBadgeDiv, TagsDiv, StatusDiv, FilterItemsDiv, DescriptionDiv, ChildrenItemsDiv, ConsoleLogButton
+} from '../../components';
 import DonutChart from '../../charts/DonutChart';
 
 const Project = ({ match }: PathPropsType) => {
@@ -41,11 +43,14 @@ const Project = ({ match }: PathPropsType) => {
 				case 'name':
 					if (typeof payload === 'string') updateProject({ ...project, name: payload });
 					break;
-				case 'description':
-					if (typeof payload === 'string') updateProject({ ...project, description: payload });
-					break;
 				case 'tags':
 					if (payload instanceof Array) updateProject({ ...project, tags: payload });
+					break;
+				case 'status':
+					if (typeof payload === 'string') updateProject({ ...project, status: payload });
+					break;
+				case 'description':
+					if (typeof payload === 'string') updateProject({ ...project, description: payload });
 					break;
 				default:
 					break;
@@ -68,6 +73,13 @@ const Project = ({ match }: PathPropsType) => {
 						</div>
 
 						<div className="pt-1">
+							<StatusDiv type='project'
+								status={project.status}
+								saveButtonPressed={saveButtonPressed} />
+							<hr className="mt-2" />
+						</div>
+
+						<div className="pt-1">
 							<TagsDiv type="project"
 								tags={project.tags}
 								saveButtonPressed={saveButtonPressed} />
@@ -78,7 +90,8 @@ const Project = ({ match }: PathPropsType) => {
 
 					<div className="col-12 col-md-6 col-lg-5">
 						<FilterItemsDiv onChange={updateChartFilter} />
-						<DonutChart title={camelToNormal(chartFilter)} type={chartFilter} data={countByStatus(chartFilter, children)} />
+						<DonutChart title={camelToNormal(chartFilter)}
+							type={chartFilter} data={countByStatus(chartFilter, children)} />
 					</div>
 				</div>
 				// end of first row
@@ -87,7 +100,7 @@ const Project = ({ match }: PathPropsType) => {
 			}
 
 
-			{/* second row begins */}
+			{/* second row */}
 			{project && match.params.id !== undefined ?
 				<div className="row mt-1">
 					<div className="col-12">
@@ -105,6 +118,7 @@ const Project = ({ match }: PathPropsType) => {
 			}
 			{/* end of second row */}
 
+			<ConsoleLogButton name="project" state={project} />
 		</div>
 	)
 };

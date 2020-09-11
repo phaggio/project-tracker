@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import EditButton from '../EditButton';
 import SaveButton from '../SaveButton';
 import CancelButton from '../CancelButton';
+import StatusSelection from '../StatusSelection';
 import { capitalizeWord } from '../../util/functions';
 
 type PropsType = {
@@ -35,18 +36,7 @@ const StatusDiv = (props: PropsType) => {
 
       {editMode ?
         <div className="input-group">
-          <select className="custom-select"
-            defaultValue={props.status}
-            onChange={(event) => {
-              updateDraft(event.target.selectedOptions[0].value)
-            }}
-          >
-            <option value='Open'>Open</option>
-            <option value='Active'>Active</option>
-            <option value='Completed'>Completed</option>
-            <option value='In-review'>In-review</option>
-            <option value='Closed'>Closed</option>
-          </select>
+          <StatusSelection type={props.type} defaultStatus={props.status} onChange={updateDraft} />
         </div>
         :
         <div>
