@@ -3,7 +3,7 @@ import { PathPropsType, NewItemType } from '../../util/dataTypes';
 import { AxiosResponse } from 'axios';
 import { projectRequest, userRequest, itemRequest } from '../../httpRequests';
 import {
-  NameInput, ParentSelectBox, TagsInput, AssigneeSelectBox, DescriptionTextarea, StatusSelection
+  NameInput, ParentSelectBox, TagsInput, AssigneeSelectBox, DescriptionTextarea, StatusSelection, ConsoleLogButton
 } from '../../components'
 
 const NewWork = ({ match }: PathPropsType) => {
@@ -13,10 +13,12 @@ const NewWork = ({ match }: PathPropsType) => {
 
   const [draft, updateDraft] = useState<NewItemType>({
     status: 'Open',
+    projectId: match.params.parentType === 'project' && match.params.parentId !== undefined ? match.params.parentId : null,
     parentId: match.params.parentId ? match.params.parentId : null,
+    parentType: match.params.parentType ? match.params.parentType : null,
     name: '',
     description: '',
-    type: 'workItem',
+    type: 'work',
     tags: [],
     assigneeId: null
   });
@@ -31,7 +33,7 @@ const NewWork = ({ match }: PathPropsType) => {
       .then((response: AxiosResponse) => updateProjects(response.data))
       .catch(err => console.error(err))
     itemRequest
-      .getAllWorkItems()
+      .getItemsByType('feature')
       .then((response: AxiosResponse) => updateItems(response.data))
       .catch(err => console.error(err))
     userRequest
@@ -127,7 +129,9 @@ const NewWork = ({ match }: PathPropsType) => {
         </div>
 
       </div>
-
+      <ConsoleLogButton name="items" state={items} />
+      <ConsoleLogButton name="draft" state={draft} />
+      <ConsoleLogButton name="match.params" state={match.params} />
     </div>
   )
 };

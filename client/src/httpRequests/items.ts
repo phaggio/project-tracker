@@ -10,15 +10,20 @@ const getAllWorkItems = () => {
 
 const getWorkItemById = (itemId: string) => {
   return axios.get(`/api/item/${itemId}`);
-}
+};
 
 const getWorkItemsByParentId = (parentId: string) => {
-  return axios.get(`/api/item/parentId/${parentId}`)
+  return axios.get(`/api/item/parentId/${parentId}`);
 };
 
+const getItemsByType = (type: string) => {
+  return axios.get(`/api/item/type/${type}`);
+}
+
 const updateWorkItemById = (itemId: string, data: object) => {
-  return axios.put(`/api/item/${itemId}`, data)
+  return axios.put(`/api/item/${itemId}`, data);
 };
+
 
 
 export {
@@ -26,5 +31,6 @@ export {
   getAllWorkItems,
   getWorkItemById,
   getWorkItemsByParentId,
+  getItemsByType,
   updateWorkItemById
 };

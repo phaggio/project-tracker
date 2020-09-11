@@ -3,6 +3,8 @@ import mongoose, { Schema, Document } from 'mongoose';
 export interface IItem extends Document {
   createDate: Date;
   parentId: string | null;
+  parentType: string | null;
+  projectId: string | null;
   status: string;
   name: string;
   description: string;
@@ -24,12 +26,24 @@ const ItemSchema: Schema = new Schema({
     index: true
   },
 
+  parentType: {
+    type: String,
+    default: null,
+    enum: ['project', 'feature', 'workItem', 'bug', null]
+  },
+
+  projectId: {
+    type: String,
+    default: null,
+    index: true
+  },
+
   status: {
     type: String,
     default: 'Open',
     required: true,
     index: true,
-    enum: ['Open', 'Active', 'Completed', 'In-review', 'Closed']
+    enum: ['Open', 'Active', 'Completed', 'In-review', 'Closed', 'Archived']
   },
 
   name: {
@@ -47,7 +61,7 @@ const ItemSchema: Schema = new Schema({
     required: true,
     default: 'workItem',
     index: true,
-    enum: ['feature', 'workItem', 'bug']
+    enum: ['feature', 'work', 'bug']
   },
 
   tags: {

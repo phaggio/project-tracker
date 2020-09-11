@@ -4,6 +4,7 @@ import {
   findAllWorkItems,
   findWorkItemById,
   findWorkItemsByParentId,
+  findItemsByType,
   updateWorkItemById
 } from '../../controller/itemController';
 
@@ -21,6 +22,9 @@ router.route('/:id')
 
 router.route('/parentId/:id')
   .get(findWorkItemsByParentId)
+
+router.route('/type/:type')
+  .get(findItemsByType)
 
 
 export default router

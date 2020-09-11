@@ -11,7 +11,9 @@ const NewBug = ({ match }: PathPropsType) => {
 
   const [draft, updateDraft] = useState<NewItemType>({
     status: 'Open',
+    projectId: null,
     parentId: match.params.parentId ? match.params.parentId : null,
+    parentType: match.params.parentType ? match.params.parentType : null,
     name: '',
     description: '',
     type: 'bug',

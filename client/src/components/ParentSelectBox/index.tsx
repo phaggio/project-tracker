@@ -3,12 +3,14 @@ import { ParentType } from '../../util/dataTypes';
 
 type PropsType = {
   parentId: string | null; // current/default parentId
+  parentType?: string | null;
   parents: ParentType[]; // available parents for this item
   onChange: (selectedParentId: string | null) => void; // takes parentId string
 }
 
 const ParentSelectBox = (props: PropsType) => {
   const [selectedParentId, updateSelectedParentId] = useState<string | null>(props.parentId);
+  const [selectedParentType, updateSelectedParentType] = useState<string | null>();
   const [currentParentName, updateCurrentParentName] = useState<string>('(open)');
 
   const [currentHover, updateCurrentHover] = useState<string>('');

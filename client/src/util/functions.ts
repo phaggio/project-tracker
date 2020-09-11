@@ -15,11 +15,8 @@ const parseTags = (str: string): string[] => {
   return outputArr.filter((a, b) => outputArr.indexOf(a) === b);
 }
 
-
 const capitalizeWord = (str: string) => {
-  if (str.length > 0) {
-    return (`${str.charAt(0).toUpperCase()}${str.slice(1)}`)
-  }
+  if (str.length > 0) return (`${str.charAt(0).toUpperCase()}${str.slice(1)}`)
 }
 
 // given items array and item type, return an array of counts by types
@@ -64,7 +61,6 @@ const countByStatus = (type: string, items: ProjectType[] | ItemType[]) => {
             break;
         }
       }
-
     }
   }
   return countArr;
@@ -75,6 +71,16 @@ const findParentsByType = (targetTypes: string[], parentArr: ParentType[]) => {
     return targetTypes.includes(parent.type);
   })
   return filteredArr;
+}
+
+// takes parentId and array of parent objs, return parent name
+const findParentNameById = (parentId: string | null, parents: ParentType[]): string => {
+  let parentName = '(open)';
+  if (parentId === null) return parentName;
+  parents.forEach(parent => {
+    if (parent._id === parentId) parentName = parent.name
+  })
+  return parentName;
 }
 
 const camelToNormal = (camelName: string) => {
@@ -100,6 +106,7 @@ export {
   capitalizeWord,
   countByStatus,
   findParentsByType,
+  findParentNameById,
   camelToNormal,
   countItemsByType
 }

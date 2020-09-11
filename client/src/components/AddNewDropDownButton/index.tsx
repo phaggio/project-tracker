@@ -4,8 +4,9 @@ import { Link } from 'react-router-dom';
 type PropsType = {
 	small: boolean;
 	includeFeature: boolean;
-	type?: string;
-	_id?: string;
+	parentType?: string;
+	parentId?: string;
+	projectId?: string | null;
 }
 
 const AddNewDropDownButton = (props: PropsType) => {
@@ -13,19 +14,19 @@ const AddNewDropDownButton = (props: PropsType) => {
 	let buttons = props.includeFeature ? [
 		{
 			name: 'Feature',
-			url: `/new/feature/${props.type && props._id ? `${props.type}/${props._id}` : ''}`,
+			url: `/new/feature/${props.parentType && props.parentId ? `${props.parentType}/${props.parentId}/${props.projectId}` : ''}`,
 			ariaLabel: 'add-new-feature',
 			title: 'add new feature'
 		}] : [];
 
 	buttons = [...buttons, {
-		name: 'Work item',
-		url: `/new/work/${props.type && props._id ? `${props.type}/${props._id}` : ''}`,
+		name: 'Work',
+		url: `/new/work/${props.parentType && props.parentId ? `${props.parentType}/${props.parentId}/${props.projectId}` : ''}`,
 		ariaLabel: 'add-new-work-item',
 		title: 'add new work item'
 	}, {
 		name: 'Bug',
-		url: `/new/bug/${props.type && props._id ? `${props.type}/${props._id}` : ''}`,
+		url: `/new/bug/${props.parentType && props.parentId ? `${props.parentType}/${props.parentId}/${props.projectId}` : ''}`,
 		ariaLabel: 'add-new-bug',
 		title: 'add new bug'
 	}]

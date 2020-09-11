@@ -8,12 +8,12 @@ import {
 import DonutChart from '../../charts/DonutChart';
 
 const Project = ({ match }: PathPropsType) => {
-
 	const [project, updateProject] = useState<ProjectType | undefined>();
-	const [update, toggleUpdate] = useState<boolean>(false);
 
-	const [children, updateChildren] = useState<ItemType[]>([]);
+	const [children, updateChildren] = useState<ItemType[]>([]); // all immediate children items that has its id
 	const [chartFilter, updateChartFilter] = useState<string>('all');
+
+	const [update, toggleUpdate] = useState<boolean>(false);
 
 	useEffect(() => {
 		if (match.params.id !== undefined) {
@@ -25,7 +25,7 @@ const Project = ({ match }: PathPropsType) => {
 				.then((res) => updateChildren(Array.from(res.data)))
 				.catch(err => console.error(err))
 		}
-	}, [match.params])
+	}, [match.params.id])
 
 	useEffect(() => {
 		if (project && match.params.id !== undefined && update === true) {
@@ -61,6 +61,7 @@ const Project = ({ match }: PathPropsType) => {
 
 	return (
 		<div className="container">
+
 			{project !== undefined ?
 				<div className="row">
 					<div className="col-12 col-md-6 col-lg-7 d-flex flex-column">
@@ -99,16 +100,16 @@ const Project = ({ match }: PathPropsType) => {
 				''
 			}
 
-
 			{/* second row */}
-			{project && match.params.id !== undefined ?
+			{project ?
 				<div className="row mt-1">
 					<div className="col-12">
 						<DescriptionDiv text={project.description}
 							saveButtonPressed={saveButtonPressed} />
 						<hr className="mt-2" />
-						<ChildrenItemsDiv _id={match.params.id}
-							type='project'
+						<ChildrenItemsDiv type='project'
+							_id={project._id}
+							projectId={project._id}
 							includeFeature={true}
 							children={children} />
 					</div>
@@ -119,6 +120,7 @@ const Project = ({ match }: PathPropsType) => {
 			{/* end of second row */}
 
 			<ConsoleLogButton name="project" state={project} />
+			<ConsoleLogButton name="params.id" state={match.params.id} />
 		</div>
 	)
 };

@@ -2,11 +2,11 @@ import React from 'react';
 import { ItemType } from '../../util/dataTypes'
 import { AddNewDropDownButton, ItemLink } from '..';
 
-
 type PropsType = {
   includeFeature: boolean;
   type: string; // whether this ChildrenItemsDiv is on project or feature page
   _id: string; // _id of current project/feature this ChildrenItemsDiv is on
+  projectId: string | null; // projectId of current item this page
   children: ItemType[]; // all children of this project/feature
 }
 
@@ -17,8 +17,9 @@ const ChildrenItemsDiv = (props: PropsType) => {
       <div className="d-flex justify-content-between align-items-baseline">
         <label className="font-weight-light">Children items ({props.children.length})</label>
         <AddNewDropDownButton small={true}
-          type={props.type}
-          _id={props._id}
+          parentType={props.type}
+          parentId={props._id}
+          projectId={props.projectId}
           includeFeature={props.includeFeature} />
       </div>
 

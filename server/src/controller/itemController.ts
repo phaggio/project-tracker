@@ -31,6 +31,14 @@ const findWorkItemsByParentId = (request: Request, response: Response) => {
     .catch(err => response.json(err))
 }
 
+const findItemsByType = (request: Request, response: Response) => {
+  const type = request.params.type;
+  Item
+    .find({ type: type })
+    .then(data => response.json(data))
+    .catch(err => response.json(err))
+}
+
 const updateWorkItemById = (request: Request, response: Response) => {
   const id = request.params.id;
   const data = request.body;
@@ -45,5 +53,6 @@ export {
   findAllWorkItems,
   findWorkItemById,
   findWorkItemsByParentId,
+  findItemsByType,
   updateWorkItemById
 }

@@ -1,39 +1,41 @@
 import React, { useEffect, useState } from 'react';
-import { PathPropsType, ProjectType, ItemType, UserType } from '../../util/dataTypes';
+import { PathPropsType, ItemType, UserType } from '../../util/dataTypes';
 import { projectRequest, userRequest, itemRequest } from '../../httpRequests';
 import {
-	AssigneeDiv, ChildrenItemsDiv, DescriptionDiv, NameBadgeDiv,
-	ParentItemDiv, StatusDiv, TagsDiv
+	AssigneeDiv, ChildrenItemsDiv, DescriptionDiv, NameBadgeDiv, StatusDiv, TagsDiv, ConsoleLogButton
 } from '../../components';
 
 import { AxiosResponse } from 'axios';
 
 const Feature = ({ match }: PathPropsType) => {
 	const [feature, updateFeature] = useState<ItemType | undefined>();
+	const [parentName, updateParentName] = useState<string>('(open)');
 
-	const [projects, updateProjects] = useState<ProjectType[]>([]) // potential parents
 	const [users, updateUsers] = useState<UserType[]>([]); // potential assignee
+
 	const [children, updateChildren] = useState<ItemType[]>([]); // children of this feature
 
 	const [update, toggleUpdate] = useState<boolean>(false);
+
+	// type guard
+	const checkItemType = (target: any): target is ItemType => {
+		if ((target as ItemType).type) return true;
+		return false;
+	}
+
+	type ItemArrType = ItemType[];
 
 	// INIT GET to get all projects, users data for selection and current feature data and its children items
 	useEffect(() => {
 		if (match.params.id !== undefined) {
 			itemRequest
 				.getWorkItemById(match.params.id)
-				.then((response: AxiosResponse) => updateFeature((response.data)))
+				.then((response: AxiosResponse) => { if (checkItemType(response.data)) updateFeature((response.data)) })
 				.catch(err => console.error(err));
 			itemRequest
 				.getWorkItemsByParentId(match.params.id)
 				.then((response: AxiosResponse) => {
 					if (Array.isArray(response.data)) updateChildren(response.data)
-				})
-				.catch(err => console.error(err))
-			projectRequest
-				.getAllProjects()
-				.then((response: AxiosResponse) => {
-					if (Array.isArray(response.data)) updateProjects(response.data)
 				})
 				.catch(err => console.error(err))
 			userRequest
@@ -44,6 +46,15 @@ const Feature = ({ match }: PathPropsType) => {
 				.catch(err => console.error(err));
 		}
 	}, [match.params.id]);
+
+	useEffect(() => {
+		if (feature && feature.parentId !== null) {
+			projectRequest
+				.getProjectById(feature.parentId)
+				.then(response => { if (typeof response.data.name === 'string') updateParentName(response.data.name) })
+				.catch(err => console.error(err))
+		}
+	}, [feature?.parentId])
 
 	useEffect(() => {
 		if (feature && update === true) {
@@ -58,7 +69,7 @@ const Feature = ({ match }: PathPropsType) => {
 	const saveButtonPressed = (part: string, payload: string | string[]) => {
 		if (feature) {
 			switch (part) {
-				case ('name'):
+				case 'name':
 					if (typeof payload === 'string') updateFeature({ ...feature, name: payload });
 					break;
 				case 'tags':
@@ -66,9 +77,6 @@ const Feature = ({ match }: PathPropsType) => {
 					break;
 				case 'assigneeId':
 					if (typeof payload === 'string' || payload === null) updateFeature({ ...feature, assigneeId: payload });
-					break;
-				case 'parentId':
-					if (typeof payload === 'string' || payload === null) updateFeature({ ...feature, parentId: payload });
 					break;
 				case 'status':
 					if (typeof payload === 'string') updateFeature({ ...feature, status: payload });
@@ -86,7 +94,7 @@ const Feature = ({ match }: PathPropsType) => {
 	return (
 		<div className="container">
 
-			{feature !== undefined && projects !== undefined ?
+			{feature !== undefined ?
 				<div>
 					{/* start of first row */}
 					< div className="row">
@@ -114,11 +122,17 @@ const Feature = ({ match }: PathPropsType) => {
 								<hr className="mt-2" />
 							</div>
 
-							<div>
-								<ParentItemDiv type="feature"
-									currentParentId={feature.parentId}
-									parents={projects}
-									saveButtonPressed={saveButtonPressed} />
+							<div className="pt-1">
+								<div className="d-flex justify-content-between align-items-baseline">
+									<label className="font-weight-light">Parent</label>
+								</div>
+								<div>
+									<h5 className="mb-0">
+										{parentName}
+									</h5>
+									<small className="">{`Parent ID: (${feature.parentId ? feature.parentId : 'n/a'})`}</small>
+								</div>
+								<hr className="mt-2" />
 							</div>
 
 							<div className="pt-1">
@@ -144,9 +158,11 @@ const Feature = ({ match }: PathPropsType) => {
 							</div>
 
 							<ChildrenItemsDiv type="feature"
+								_id={feature._id}
+								projectId={feature.projectId}
 								includeFeature={false}
 								children={children}
-								_id={feature._id} />
+							/>
 						</div>
 
 
@@ -157,7 +173,7 @@ const Feature = ({ match }: PathPropsType) => {
 				'feature is not found'
 			}
 
-
+			<ConsoleLogButton name="feature" state={feature} />
 		</div >
 	)
 }

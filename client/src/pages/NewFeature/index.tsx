@@ -3,17 +3,17 @@ import { PathPropsType, ProjectType, NewItemType } from '../../util/dataTypes';
 import { AxiosResponse } from 'axios';
 import { projectRequest, itemRequest, userRequest } from '../../httpRequests';
 import {
-  NameInput, ParentSelectBox, TagsInput, DescriptionTextarea, AssigneeSelectBox, StatusSelection
+  NameInput, ParentSelectBox, TagsInput, DescriptionTextarea, AssigneeSelectBox, StatusSelection, ConsoleLogButton
 } from '../../components';
 
 const NewFeature = ({ match }: PathPropsType) => {
-  console.log('Rendering New Feature page...');
-
   const [projects, updateProjects] = useState<ProjectType[]>([]); // potential parents
   const [users, updateUsers] = useState([]) // potential assignees
   const [draft, updateDraft] = useState<NewItemType>({
     status: 'Open',
+    projectId: match.params.parentId ? match.params.parentId : null, // for feature, parent is always a project
     parentId: match.params.parentId ? match.params.parentId : null,
+    parentType: match.params.parentType ? match.params.parentType : null,
     name: '',
     description: '',
     type: 'feature',
@@ -34,9 +34,8 @@ const NewFeature = ({ match }: PathPropsType) => {
       .getAllUsers()
       .then((response: AxiosResponse) => updateUsers(response.data))
       .catch(err => console.error(err))
-  }, [])
+  }, []);
 
-  // update draft when tags input updates
   useEffect(() => {
     updateDraft(previous => { return { ...previous, tags: tags } })
   }, [tags]);
@@ -61,7 +60,7 @@ const NewFeature = ({ match }: PathPropsType) => {
       .then((response: AxiosResponse) => console.log(response))
       .catch(err => console.error(err))
   };
-  
+
   return (
     <div className="container">
 
@@ -78,8 +77,9 @@ const NewFeature = ({ match }: PathPropsType) => {
           <label className="font-weight-light">Parent</label>
           <small>Optional</small>
         </div>
-        <ParentSelectBox parentId={match.params.parentId !== undefined ? match.params.parentId : null} // pass default parentId if available
-          parents={projects}
+        <ParentSelectBox parents={projects}
+          parentId={match.params.parentId !== undefined ? match.params.parentId : null}
+          parentType={match.params.parentType !== undefined ? match.params.parentType : null}
           onChange={updateParent} />
       </div>
 
@@ -119,6 +119,8 @@ const NewFeature = ({ match }: PathPropsType) => {
         >Add feature
         </button>
       </div>
+
+      <ConsoleLogButton name="input" state={draft} />
 
     </div>
   )

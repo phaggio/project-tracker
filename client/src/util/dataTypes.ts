@@ -15,12 +15,13 @@ type MatchParamsType = {
   parentType: string | undefined;
   parentId: string | undefined;
   id: string | undefined;
+  projectId: string | undefined;
 };
 
 type NewProjectType = {
-	name: string;
-	description: string;
-	tags: string[];
+  name: string;
+  description: string;
+  tags: string[];
 };
 
 type ProjectType = {
@@ -35,6 +36,8 @@ type ProjectType = {
 type NewItemType = {
   status: string;
   parentId: string | null;
+  parentType: string | null;
+  projectId: string | null;
   name: string;
   description: string;
   type: string;
@@ -45,6 +48,8 @@ type NewItemType = {
 type ItemType = {
   _id: string;
   parentId: string | null;
+  parentType: string | null;
+  projectId: string | null;
   status: string;
   name: string;
   description: string;
@@ -81,6 +86,7 @@ type ParentType = {
   _id: string;
   type: string;
   name: string;
+  projectId?: string;
 };
 
 type AssigneePayloadType = {
