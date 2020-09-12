@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import EditButton from '../EditButton';
-import SaveButton from '../SaveButton';
-import CancelButton from '../CancelButton';
+import { EditButton, SaveButton, CancelButton } from '..';
 
 type PropsType = {
   type: string;
@@ -19,7 +17,7 @@ const NameBadge = (props: PropsType) => {
         return 'primary';
       case 'feature':
         return 'warning';
-      case 'workItem':
+      case 'work':
         return 'light';
       case 'bug':
         return 'danger';
@@ -34,8 +32,8 @@ const NameBadge = (props: PropsType) => {
         return 'Project name';
       case 'feature':
         return 'Feature name';
-      case 'workItem':
-        return 'Work item name';
+      case 'work':
+        return 'Work name';
       case 'bug':
         return 'Bug name';
       default:

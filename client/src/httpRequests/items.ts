@@ -9,7 +9,7 @@ const getAllItems = () => {
 };
 
 const getItemById = (itemId: string) => {
-  return axios.get(`/api/item/${itemId}`);
+  return axios.get(`/api/item/id/${itemId}`);
 };
 
 const getItemsByParentId = (parentId: string) => {
@@ -18,10 +18,18 @@ const getItemsByParentId = (parentId: string) => {
 
 const getItemsByType = (type: string) => {
   return axios.get(`/api/item/type/${type}`);
-}
+};
+
+const getItemsByQuery = (query: object) => {
+  console.log(query)
+  const config = {
+    params: query
+  }
+  return axios.get(`/api/item/query`, config);
+};
 
 const updateItemById = (itemId: string, data: object) => {
-  return axios.put(`/api/item/${itemId}`, data);
+  return axios.put(`/api/item/id/${itemId}`, data);
 };
 
 export {
@@ -30,5 +38,6 @@ export {
   getItemById,
   getItemsByParentId,
   getItemsByType,
+  getItemsByQuery,
   updateItemById
 };

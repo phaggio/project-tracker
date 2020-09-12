@@ -18,7 +18,7 @@ const Feature = ({ match }: PathPropsType) => {
 	const [update, toggleUpdate] = useState<boolean>(false);
 
 	// type guard
-	const checkItemType = (target: any): target is ItemType => {
+	const isItemType = (target: any): target is ItemType => {
 		if ((target as ItemType).type) return true;
 		return false;
 	}
@@ -28,7 +28,7 @@ const Feature = ({ match }: PathPropsType) => {
 		if (match.params.id !== undefined) {
 			itemRequest
 				.getItemById(match.params.id)
-				.then((response: AxiosResponse) => { if (checkItemType(response.data)) updateFeature((response.data)) })
+				.then((response: AxiosResponse) => { if (isItemType(response.data)) updateFeature((response.data)) })
 				.catch(err => console.error(err));
 			itemRequest
 				.getItemsByParentId(match.params.id)
@@ -65,7 +65,7 @@ const Feature = ({ match }: PathPropsType) => {
 	}, [feature, update])
 
 	const saveButtonPressed = (part: string, payload: string | string[]) => {
-		if (feature) {
+		if (feature !== undefined) {
 			switch (part) {
 				case 'name':
 					if (typeof payload === 'string') updateFeature({ ...feature, name: payload });

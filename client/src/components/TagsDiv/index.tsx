@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
-import EditButton from '../EditButton';
-import SaveButton from '../SaveButton';
-import CancelButton from '../CancelButton';
-import TagsInput from '../../components/TagsInput';
-import Tag from '../Tag';
+import { EditButton, SaveButton, CancelButton, TagsInput, Tag } from '..';
 
 type PropsType = {
   type: string;

@@ -121,7 +121,6 @@ const Project = ({ match }: PathPropsType) => {
 			{/* end of second row */}
 
 			<ConsoleLogButton name="project" state={project} />
-			<ConsoleLogButton name="params.id" state={match.params.id} />
 		</div>
 	)
 };

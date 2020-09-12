@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PathPropsType, ProjectType, ItemType, UserType, NewItemType } from '../../util/dataTypes';
+import { findProjectIdByItemId } from '../../util/functions';
 import { projectRequest, itemRequest, userRequest } from '../../httpRequests';
 import { AxiosResponse } from 'axios';
 import {
@@ -49,11 +50,18 @@ const NewBug = ({ match }: PathPropsType) => {
   const updateName = (input: string) => {
     updateDraft(prev => { return { ...prev, name: input } });
     updateDisableAddButton(input ? false : true);
-  }
+  };
 
-  const updateParent = (parentId: string | null, parentType: string | null) => {
+  const updateParentAndProject = (parentId: string | null, parentType: string | null) => {
     updateDraft(prev => { return { ...prev, parentId: parentId, parentType: parentType } })
-  }
+    if (parentId === null) {
+      updateDraft(prev => { return { ...prev, projectId: null } })
+    } else if (parentType === 'project') {
+      updateDraft(prev => { return { ...prev, projectId: parentId } })
+    } else {
+      updateDraft(prev => { return { ...prev, projectId: findProjectIdByItemId(parentId, items) } })
+    }
+  };
 
   const updateDescription = (text: string) => updateDraft(prev => { return { ...prev, description: text } });
 
@@ -88,7 +96,7 @@ const NewBug = ({ match }: PathPropsType) => {
           </div>
           <ParentSelectBox parentId={match.params.parentId ? match.params.parentId : null}
             parents={[...projects, ...items]} // pass projects and items to parent select box
-            onChange={updateParent} />
+            onChange={updateParentAndProject} />
         </div>
 
         <div className="pt-2">

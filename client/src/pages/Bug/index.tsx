@@ -52,7 +52,7 @@ const Bug = ({ match }: PathPropsType) => {
   }, [match.params.id]);
 
   useEffect(() => {
-    updateParents(findParentsByType(['project', 'feature', 'workItem'], [...projects, ...items]))
+    updateParents(findParentsByType(['project', 'feature', 'work'], [...projects, ...items]))
   }, [projects, items]);
 
   useEffect(() => {

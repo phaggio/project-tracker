@@ -8,7 +8,7 @@ import NewBug from './NewBug';
 import NewUser from './NewUser';
 import Project from './Project';
 import Feature from './Feature';
-import WorkItem from './WorkItem';
+import Work from './Work';
 import Bug from './Bug';
 
 export {
@@ -22,6 +22,6 @@ export {
   NewUser,
   Project,
   Feature,
-  WorkItem,
+  Work,
   Bug
 }

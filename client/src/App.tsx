@@ -19,7 +19,7 @@ const App = () => {
           <Route exact={true} path='/new/user' component={pages.NewUser} />
           <Route exact={true} path='/project/:id?' component={pages.Project} />
           <Route exact={true} path='/feature/:id?' component={pages.Feature} />
-          <Route exact={true} path='/work/:id?' component={pages.WorkItem} />
+          <Route exact={true} path='/work/:id?' component={pages.Work} />
           <Route exact={true} path='/bug/:id?' component={pages.Bug} />
         </Switch>
       </HashRouter>

@@ -39,6 +39,16 @@ const findItemsByType = (request: Request, response: Response) => {
     .catch(err => response.json(err))
 }
 
+const findItemsByQuery = (request: Request, response: Response) => {
+  const query = request.query
+  console.log(`from controller... \nrequest.query`)
+  console.log(query)
+  Item
+    .find(query)
+    .then(data => response.json(data))
+    .catch(err => response.json(err))
+}
+
 const updateItemById = (request: Request, response: Response) => {
   const id = request.params.id;
   const data = request.body;
@@ -46,7 +56,7 @@ const updateItemById = (request: Request, response: Response) => {
     .findOneAndUpdate({ _id: id }, data)
     .then(data => response.json(data))
     .catch(err => response.json(err))
-};
+}
 
 export {
   createNewItem,
@@ -54,5 +64,6 @@ export {
   findItemById,
   findItemsByParentId,
   findItemsByType,
+  findItemsByQuery,
   updateItemById
 }
