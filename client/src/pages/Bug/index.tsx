@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PathPropsType, ItemType, ProjectType, UserType, ParentType } from '../../util/dataTypes';
+import { isItemType, isUserTypeArray } from '../../util/typecheck';
 import { findParentsByType } from '../../util/functions';
 import { projectRequest, itemRequest, userRequest } from '../../httpRequests';
 import { AxiosResponse } from 'axios';
@@ -7,8 +8,9 @@ import { AssigneeDiv, ConsoleLogButton, DescriptionDiv, NameBadgeDiv, ParentItem
 
 
 const Bug = ({ match }: PathPropsType) => {
-  const [projects, updateProjects] = useState<ProjectType[]>([]); // current project as a potential parent
+  const [projects, updateProjects] = useState<ProjectType[]>([]); // potential parents if bug has no parent
   const [items, updateItems] = useState<ItemType[]>([]); // potential parents
+  const [parents, updateParents] = useState<ParentType[]>([]);
   const [users, updateUsers] = useState<UserType[]>([]); // potential assignees
 
   const [bug, updateBug] = useState<ItemType>({
@@ -24,11 +26,32 @@ const Bug = ({ match }: PathPropsType) => {
     assigneeId: null
   });
 
-  const [parents, updateParents] = useState<ParentType[]>([]);
-
   const [loading, updateLoading] = useState<boolean>(true);
   const [update, toggleUpdate] = useState<boolean>(false);
 
+  // INIT GET api call to get item data using match.params.id.
+  useEffect(() => {
+    if (match.params.id !== undefined) {
+      itemRequest
+        .getItemById(match.params.id)
+        .then((response: AxiosResponse) => {
+          if (isItemType(response.data)) updateBug(response.data)
+        })
+        .catch(err => console.error(err));
+    }
+  }, [match.params.id]);
+
+  // if bug is found, get all users to allow user edit assignee
+  useEffect(() => {
+    if (bug._id) {
+      userRequest
+        .getAllUsers()
+        .then((response: AxiosResponse) => {
+          if (isUserTypeArray(response.data)) updateUsers(response.data);
+        })
+        .catch(err => console.error(err))
+    }
+  }, [bug._id])
 
   // INIT GET to current bug data
   useEffect(() => {

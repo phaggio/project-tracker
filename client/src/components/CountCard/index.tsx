@@ -15,7 +15,7 @@ const CountCard = (props: PropsType) => {
         return 'primary';
       case 'feature':
         return 'warning';
-      case 'workItem':
+      case 'work':
         return 'secondary';
       case 'bug':
         return 'danger';
@@ -30,7 +30,7 @@ const CountCard = (props: PropsType) => {
         return 'Projects';
       case 'feature':
         return 'Features';
-      case 'workItem':
+      case 'work':
         return 'Work items';
       case 'bug':
         return 'Bugs';

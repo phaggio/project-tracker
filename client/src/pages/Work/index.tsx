@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { PathPropsType, ProjectType, ItemType, UserType, ParentType } from '../../util/dataTypes'
+import { PathPropsType, ProjectType, ItemType, UserType, ParentType } from '../../util/dataTypes';
+import { isItemType } from '../../util/typecheck';
 import { projectRequest, itemRequest, userRequest } from '../../httpRequests';
 import { AssigneeDiv, DescriptionDiv, NameBadgeDiv, ParentItemDiv, StatusDiv, TagsDiv, ConsoleLogButton } from '../../components';
 import { AxiosResponse } from 'axios';
@@ -23,17 +24,6 @@ const Work = ({ match }: PathPropsType) => {
     assigneeId: null
   });
   const [update, toggleUpdate] = useState(false);
-
-  // type guard
-  const isProjectType = (target: any): target is ProjectType => {
-    if ((target as ProjectType).type) return true;
-    return false;
-  }
-
-  const isItemType = (target: any): target is ItemType => {
-    if ((target as ItemType).type) return true;
-    return false;
-  }
 
   // INIT GET api call to get item data using match.params.id.
   useEffect(() => {
