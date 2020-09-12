@@ -7,21 +7,30 @@ import { AssigneeDiv, ConsoleLogButton, DescriptionDiv, NameBadgeDiv, ParentItem
 
 
 const Bug = ({ match }: PathPropsType) => {
-  const [bug, updateBug] = useState<ItemType | undefined>();
+  const [projects, updateProjects] = useState<ProjectType[]>([]); // current project as a potential parent
+  const [items, updateItems] = useState<ItemType[]>([]); // potential parents
+  const [users, updateUsers] = useState<UserType[]>([]); // potential assignees
 
-  const [projects, updateProjects] = useState<ProjectType[]>([]);
-  const [items, updateItems] = useState<ItemType[]>([]);
-  const [users, updateUsers] = useState<UserType[]>([]);
+  const [bug, updateBug] = useState<ItemType>({
+    _id: '',
+    parentId: null,
+    parentType: null,
+    projectId: null,
+    status: '(open)',
+    name: '',
+    description: '',
+    type: 'bug',
+    tags: [],
+    assigneeId: null
+  });
 
   const [parents, updateParents] = useState<ParentType[]>([]);
-  // const [children, updateChildren] = useState<ItemType[]>([]);
-
 
   const [loading, updateLoading] = useState<boolean>(true);
   const [update, toggleUpdate] = useState<boolean>(false);
 
 
-  // INIT GET to get all projects, users data for selection and current feature data and its children items
+  // INIT GET to current bug data
   useEffect(() => {
     if (match.params.id !== undefined) {
       projectRequest
@@ -43,13 +52,12 @@ const Bug = ({ match }: PathPropsType) => {
           updateLoading(previous => { return !previous });
         })
         .catch(err => console.error(err));
-      // should bugs have children?
-      // itemRequest
-      //   .getWorkItemsByParentId(match.params.id)
-      //   .then((response: AxiosResponse) => updateChildren(response.data))
-      //   .catch(err => console.error(err))
     }
   }, [match.params.id]);
+
+  useEffect(() => {
+
+  }, [bug._id, bug.projectId])
 
   useEffect(() => {
     updateParents(findParentsByType(['project', 'feature', 'work'], [...projects, ...items]))

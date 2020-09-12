@@ -9,7 +9,7 @@ interface IProject extends Document {
 }
 
 const ProjectSchema: Schema = new Schema({
-  
+
   name: {
     type: String,
     minlength: 1
@@ -35,7 +35,15 @@ const ProjectSchema: Schema = new Schema({
     type: [String],
     index: true
   }
-  
-})
+
+},
+  {
+    toJSON: { virtuals: true }
+  });
+
+
+ProjectSchema.virtual('projectId').get(function (this: IProject) {
+  return (`${this._id}`);
+});
 
 export default mongoose.model<IProject>('Project', ProjectSchema);

@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { PathPropsType, ProjectType, ItemType, UserType } from '../../util/dataTypes'
+import { PathPropsType, ProjectType, ItemType, UserType, ParentType } from '../../util/dataTypes'
 import { projectRequest, itemRequest, userRequest } from '../../httpRequests';
 import { AssigneeDiv, DescriptionDiv, NameBadgeDiv, ParentItemDiv, StatusDiv, TagsDiv, ConsoleLogButton } from '../../components';
 import { AxiosResponse } from 'axios';
 
 const Work = ({ match }: PathPropsType) => {
-  const [project, updateProject] = useState<ProjectType>();
+  // NEED TO figure out project type and project type when receive project array
+  const [projects, updateProjects] = useState<ProjectType[]>([]);
+  const [features, updateFeatures] = useState<ItemType[]>([]);
+  const [parents, updateParents] = useState<ParentType[]>([]);
+  const [users, updateUsers] = useState<UserType[]>([]); // potential assignees
   const [work, updateWork] = useState<ItemType>({
     _id: '',
     parentId: null,
@@ -18,15 +22,16 @@ const Work = ({ match }: PathPropsType) => {
     tags: [],
     assigneeId: null
   });
-
-  const [items, updateItems] = useState<ItemType[]>([]); // potential parents
-  const [users, updateUsers] = useState<UserType[]>([]); // potential assignees
-
   const [update, toggleUpdate] = useState(false);
 
   // type guard
   const isProjectType = (target: any): target is ProjectType => {
     if ((target as ProjectType).type) return true;
+    return false;
+  }
+
+  const isItemType = (target: any): target is ItemType => {
+    if ((target as ItemType).type) return true;
     return false;
   }
 
@@ -36,58 +41,59 @@ const Work = ({ match }: PathPropsType) => {
       itemRequest
         .getItemById(match.params.id)
         .then((response: AxiosResponse) => {
-          // if response.data.name does not exist, incorrect _id in URL
-          if (response.data.name) {
-            updateWork(response.data);
-            // only make features/projects api call when workItem exists
-            if (response.data.projectId) {
-              projectRequest
-                .getProjectById(response.data.projectId)
-                .then((response: AxiosResponse) => {
-                  if (isProjectType(response.data)) updateProject(response.data)
-                });
-            }
-            itemRequest.getItemsByType('feature')
-              .then((response: AxiosResponse) => { if (Array.isArray(response.data)) updateItems(response.data) });
-            userRequest.getAllUsers()
-              .then((response: AxiosResponse) => { if (Array.isArray(response.data)) updateUsers(response.data) });
-          }
+          // if response.data is an Item type
+          if (isItemType(response.data)) updateWork(response.data)
         })
         .catch(err => console.error(err));
     }
   }, [match.params.id]);
 
-  // if work._id is valid, find possible parents and users
-  // NEED TO find the right eligible parents for existing work item
+  // if work is found, get all users to allow user edit assignee
   useEffect(() => {
-    if (work._id && work.projectId) {
-      // console.log('have project ID getting parents...');
+    if (work._id) {
+      userRequest
+        .getAllUsers()
+        .then((response: AxiosResponse) => updateUsers(response.data))
+        .catch(err => console.error(err))
+    }
+  }, [work._id])
+
+  // if worwk is found, get the right eligible parents for existing work item
+  useEffect(() => {
+    // if project Id exists, means work is currently assigned to a parent.
+    if (work.projectId) {
+      console.log('have project ID getting parents...');
       projectRequest
         .getProjectById(work.projectId)
-        .then((response: AxiosResponse) => updateProject(response.data))
+        .then((response: AxiosResponse) => updateProjects([response.data]))
         .catch(err => console.error(err))
       itemRequest
         .getItemsByQuery({ projectId: work.projectId, type: 'feature' })
-        .then((response: AxiosResponse) => updateItems(response.data))
+        .then((response: AxiosResponse) => updateFeatures(response.data))
         .catch(err => console.error(err))
-    } else if (work._id && work.projectId === null) {
-      // console.log('do not have project ID getting parents...');
+    } else if (work.projectId === null) {
+      // if no projectId, means it was never assigned to any parent
+      console.log('do not have project ID getting parents...');
       projectRequest
         .getAllProjects()
-        .then((response: AxiosResponse) => updateProject(response.data))
+        .then((response: AxiosResponse) => updateProjects(response.data))
         .catch(err => console.error(err))
       itemRequest
         .getItemsByQuery({ type: 'feature' })
-        .then((response: AxiosResponse) => updateItems(response.data))
+        .then((response: AxiosResponse) => updateFeatures(response.data))
         .catch(err => console.error(err))
     }
-  }, [work._id, work.projectId])
+  }, [work.projectId])
+
+  useEffect(() => {
+    updateParents([...projects, ...features])
+  }, [projects, features])
 
   useEffect(() => {
     if (work && update) {
       itemRequest
         .updateItemById(work._id, work)
-        .then((response: AxiosResponse) => console.log(response.data))
+        .then(res => console.log(res))
         .catch(err => console.error(err))
     }
     toggleUpdate(false);
@@ -100,19 +106,33 @@ const Work = ({ match }: PathPropsType) => {
           if (typeof payload === 'string') updateWork(prev => { return { ...prev, name: payload } })
           break;
         case 'tags':
-          if (payload instanceof Array) updateWork({ ...work, tags: payload });
+          if (payload instanceof Array) updateWork(prev => { return { ...prev, tags: payload } });
           break;
         case 'assigneeId':
-          if ((typeof payload === 'string' || payload === null)) updateWork({ ...work, assigneeId: payload });
+          if ((typeof payload === 'string' || payload === null)) updateWork(prev => { return { ...prev, assigneeId: payload } });
           break;
         case 'parentId':
-          if ((typeof payload === 'string' || payload === null)) updateWork({ ...work, parentId: payload });
+          if ((typeof payload === 'string' || payload === null)) {
+            if (payload === null) {
+              updateWork(prev => { return { ...prev, parentId: null, parentType: null } })
+            } else {
+              const selectedParent = parents.find(parent => parent._id === payload)
+              updateWork(prev => {
+                return {
+                  ...prev,
+                  parentId: selectedParent?._id ? selectedParent._id : null,
+                  parentType: selectedParent?.type ? selectedParent.type : null,
+                  projectId: selectedParent?.projectId ? selectedParent.projectId : null
+                }
+              })
+            }
+          }
           break;
         case 'status':
-          if (typeof payload === 'string') updateWork({ ...work, status: payload });
+          if (typeof payload === 'string') updateWork(prev => { return { ...prev, status: payload } });
           break;
         case 'description':
-          if (typeof payload === 'string') updateWork({ ...work, description: payload });
+          if (typeof payload === 'string') updateWork(prev => { return { ...prev, description: payload } });
           break;
         default:
           break;
@@ -156,7 +176,7 @@ const Work = ({ match }: PathPropsType) => {
               <div className="pt-1">
                 <ParentItemDiv type="work"
                   currentParentId={work.parentId}
-                  parents={project ? [project, ...items] : [...items]}
+                  parents={parents}
                   saveButtonPressed={saveButtonPressed} />
                 <hr className="mt-2" />
               </div>
@@ -195,6 +215,7 @@ const Work = ({ match }: PathPropsType) => {
       <div>
         <ConsoleLogButton name="match.params" state={match.params} />
         <ConsoleLogButton name="work" state={work} />
+        <ConsoleLogButton name="parents" state={parents} />
       </div>
 
     </div>
