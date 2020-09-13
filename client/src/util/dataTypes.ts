@@ -31,6 +31,7 @@ type ProjectType = {
   status: string;
   type: string;
   tags: string[];
+  projectId: string;
 };
 
 type NewItemType = {
@@ -78,7 +79,7 @@ type ParentType = {
   _id: string;
   type: string;
   name: string;
-  projectId?: string;
+  projectId?: string | null;
 };
 
 

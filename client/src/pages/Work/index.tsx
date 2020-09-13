@@ -58,7 +58,7 @@ const Work = ({ match }: PathPropsType) => {
         .then((response: AxiosResponse) => updateProjects([response.data]))
         .catch(err => console.error(err))
       itemRequest
-        .getItemsByQuery({ projectId: work.projectId, type: 'feature' })
+        .getItemsWithProjectIdByQuery({ projectId: work.projectId, type: 'feature' })
         .then((response: AxiosResponse) => updateFeatures(response.data))
         .catch(err => console.error(err))
     } else if (work.projectId === null) {
@@ -69,7 +69,7 @@ const Work = ({ match }: PathPropsType) => {
         .then((response: AxiosResponse) => updateProjects(response.data))
         .catch(err => console.error(err))
       itemRequest
-        .getItemsByQuery({ type: 'feature' })
+        .getItemsWithProjectIdByQuery({ type: 'feature' })
         .then((response: AxiosResponse) => updateFeatures(response.data))
         .catch(err => console.error(err))
     }

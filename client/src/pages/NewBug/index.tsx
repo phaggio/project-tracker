@@ -35,7 +35,10 @@ const NewBug = ({ match }: PathPropsType) => {
       .catch(err => console.error(err))
     itemRequest
       .getAllItems()
-      .then((response: AxiosResponse) => updateItems(response.data))
+      .then((response: AxiosResponse) => {
+        
+        updateItems(response.data)
+      })
       .catch(err => console.error(err))
     userRequest
       .getAllUsers()

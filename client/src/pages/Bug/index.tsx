@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { PathPropsType, ItemType, ProjectType, UserType, ParentType } from '../../util/dataTypes';
+import { findParentByParentId } from '../../util/functions';
 import { isItemType, isUserTypeArray } from '../../util/typecheck';
-import { findParentsByType } from '../../util/functions';
 import { projectRequest, itemRequest, userRequest } from '../../httpRequests';
 import { AxiosResponse } from 'axios';
 import { AssigneeDiv, ConsoleLogButton, DescriptionDiv, NameBadgeDiv, ParentItemDiv, StatusDiv, TagsDiv } from '../../components';
@@ -34,60 +34,55 @@ const Bug = ({ match }: PathPropsType) => {
     if (match.params.id !== undefined) {
       itemRequest
         .getItemById(match.params.id)
-        .then((response: AxiosResponse) => {
-          if (isItemType(response.data)) updateBug(response.data)
-        })
+        .then((response: AxiosResponse) => { if (isItemType(response.data)) updateBug(response.data) })
         .catch(err => console.error(err));
     }
   }, [match.params.id]);
 
-  // if bug is found, get all users to allow user edit assignee
+  // INIT if bug item is found, get all users to allow user edit assignee
   useEffect(() => {
     if (bug._id) {
       userRequest
         .getAllUsers()
         .then((response: AxiosResponse) => {
           if (isUserTypeArray(response.data)) updateUsers(response.data);
+          updateLoading(prev => { return !prev })
         })
         .catch(err => console.error(err))
     }
   }, [bug._id])
 
-  // INIT GET to current bug data
+  // INIT check if projectId in bug item, find eligible parents
   useEffect(() => {
-    if (match.params.id !== undefined) {
+    if (bug.projectId) {
+      projectRequest
+        .getProjectById(bug.projectId)
+        .then((response: AxiosResponse) => updateProjects([response.data]))
+        .catch(err => console.error(err))
+      itemRequest
+        .getItemsWithProjectIdByQuery({ projectId: bug.projectId, type: ['feature', 'work'] })
+        .then((response: AxiosResponse) => updateItems(response.data))
+        .catch(err => console.error(err))
+    } else if (bug.projectId === null) {
       projectRequest
         .getAllProjects()
         .then((response: AxiosResponse) => updateProjects(response.data))
         .catch(err => console.error(err))
       itemRequest
-        .getAllItems()
+        .getItemsWithProjectIdByQuery({ type: ['feature', 'work'] })
         .then((response: AxiosResponse) => updateItems(response.data))
         .catch(err => console.error(err))
-      userRequest
-        .getAllUsers()
-        .then((response: AxiosResponse) => updateUsers(response.data))
-        .catch(err => console.error(err));
-      itemRequest
-        .getItemById(match.params.id)
-        .then((response: AxiosResponse) => {
-          updateBug(response.data);
-          updateLoading(previous => { return !previous });
-        })
-        .catch(err => console.error(err));
     }
-  }, [match.params.id]);
+  }, [bug.projectId]);
 
+  // update eligible parents
   useEffect(() => {
-
-  }, [bug._id, bug.projectId])
-
-  useEffect(() => {
-    updateParents(findParentsByType(['project', 'feature', 'work'], [...projects, ...items]))
+    updateParents([...projects, ...items])
   }, [projects, items]);
 
+  // update bug item
   useEffect(() => {
-    if (bug && update === true) {
+    if (bug._id && update === true) {
       itemRequest
         .updateItemById(bug._id, bug)
         .then(data => console.log(data))
@@ -96,26 +91,40 @@ const Bug = ({ match }: PathPropsType) => {
     }
   }, [bug, update]);
 
-  const saveButtonPressed = (part: string, payload: string | string[]) => {
-    if (bug) {
+  const saveButtonPressed = (part: string, payload: null | string | string[]) => {
+    if (bug._id) {
       switch (part) {
         case ('name'):
-          if (typeof payload === 'string') updateBug({ ...bug, name: payload });
+          if (typeof payload === 'string') updateBug(prev => { return { ...prev, name: payload } });
           break;
         case 'tags':
-          if (payload instanceof Array) updateBug({ ...bug, tags: payload });
+          if (payload instanceof Array) updateBug(prev => { return { ...prev, tags: payload } });
           break;
         case 'assigneeId':
-          if (typeof payload === 'string' || payload === null) updateBug({ ...bug, assigneeId: payload });
+          if (typeof payload === 'string' || payload === null) updateBug(prev => { return { ...prev, assigneeId: payload } });
           break;
         case 'parentId':
-          if (typeof payload === 'string' || payload === null) updateBug({ ...bug, parentId: payload });
+          if ((typeof payload === 'string' || payload === null)) {
+            if (payload === null) {
+              updateBug(prev => { return { ...prev, parentId: null, parentType: null } })
+            } else {
+              const parent = findParentByParentId(payload, parents);
+              updateBug(prev => {
+                return {
+                  ...prev,
+                  parentId: parent?._id ? parent._id : null,
+                  parentType: parent?.type ? parent.type : null,
+                  projectId: parent?.projectId ? parent.projectId : null
+                }
+              })
+            }
+          }
           break;
         case 'status':
-          if (typeof payload === 'string') updateBug({ ...bug, status: payload });
+          if (typeof payload === 'string') updateBug(prev => { return { ...prev, status: payload } });
           break;
         case 'description':
-          if (typeof payload === 'string') updateBug({ ...bug, description: payload });
+          if (typeof payload === 'string') updateBug(prev => { return { ...prev, description: payload } });
           break;
         default:
           break;
@@ -123,10 +132,11 @@ const Bug = ({ match }: PathPropsType) => {
       toggleUpdate(!update)
     }
   }
+
   return (
     <div className="container">
 
-      {bug && !loading ?
+      {bug._id && !loading ?
         <div>
           <div className="row">
             <div className="col-12 col-sm-6 col-md-7 col-lg-8 border border-primary rounded d-flex flex-column">
@@ -188,6 +198,8 @@ const Bug = ({ match }: PathPropsType) => {
       <div className="col-6">
         <ConsoleLogButton name="params" state={match.params} />
         <ConsoleLogButton name="bug" state={bug} />
+        <ConsoleLogButton name="projects" state={projects} />
+        <ConsoleLogButton name="items" state={items} />
         <ConsoleLogButton name="parents" state={parents} />
       </div>
 

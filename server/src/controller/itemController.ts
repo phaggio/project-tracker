@@ -42,9 +42,24 @@ const findItemsByType = (request: Request, response: Response) => {
 const findItemsByQuery = (request: Request, response: Response) => {
   const query = request.query
   console.log(`from controller... \nrequest.query`)
-  console.log(query)
+  console.log(query);
   Item
     .find(query)
+    .then(data => response.json(data))
+    .catch(err => response.json(err))
+}
+
+const findItemsWithProjectId = (request: Request, response: Response) => {
+  console.log(`from controller... \nrequest.query`)
+  let query = request.query
+  query = query.projectId ? query : {
+    ...query, 
+    projectId: {
+      $ne: undefined
+    }
+  }
+  console.log(query);
+  Item.find(query)
     .then(data => response.json(data))
     .catch(err => response.json(err))
 }
@@ -65,5 +80,6 @@ export {
   findItemsByParentId,
   findItemsByType,
   findItemsByQuery,
+  findItemsWithProjectId,
   updateItemById
 }

@@ -20,6 +20,14 @@ const ItemSchema: Schema = new Schema({
     default: Date.now
   },
 
+  type: {
+    type: String,
+    required: true,
+    default: 'work',
+    index: true,
+    enum: ['feature', 'work', 'bug']
+  },
+
   parentId: {
     type: String,
     default: null,
@@ -54,14 +62,6 @@ const ItemSchema: Schema = new Schema({
   description: {
     type: String,
     default: ''
-  },
-
-  type: {
-    type: String,
-    required: true,
-    default: 'work',
-    index: true,
-    enum: ['feature', 'work', 'bug']
   },
 
   tags: {

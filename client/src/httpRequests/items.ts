@@ -20,12 +20,13 @@ const getItemsByType = (type: string) => {
   return axios.get(`/api/item/type/${type}`);
 };
 
-const getItemsByQuery = (query: object) => {
+const getItemsWithProjectIdByQuery = (query: object) => {
+  console.log('from httpRquest ...')
   console.log(query)
   const config = {
     params: query
   }
-  return axios.get(`/api/item/query`, config);
+  return axios.get(`/api/item/query`, { params: query });
 };
 
 const updateItemById = (itemId: string, data: object) => {
@@ -38,6 +39,6 @@ export {
   getItemById,
   getItemsByParentId,
   getItemsByType,
-  getItemsByQuery,
+  getItemsWithProjectIdByQuery,
   updateItemById
 };
