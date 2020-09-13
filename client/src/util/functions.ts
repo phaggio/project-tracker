@@ -20,7 +20,7 @@ const capitalizeWord = (str: string) => {
 }
 
 // given items array and item type, return an array of counts by types
-const countByStatus = (type: string, items: ProjectType[] | ItemType[]) => {
+const countByStatus = (type: string, items: ProjectType[] | ItemType[]): number[] => {
   const countArr = function (dataType) {
     if (dataType === 'project') return [0, 0];
     return [0, 0, 0, 0, 0]
@@ -101,7 +101,7 @@ const camelToNormal = (camelName: string) => {
   return normal;
 }
 
-const countItemsByType = (type: string, items: ItemType[]) => {
+const countItemsByType = (type: string, items: ItemType[]): number => {
   if (items.length === 0) return 0;
   return items.filter(item => item.type === type).length;
 }

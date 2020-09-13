@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { isProjectType, isItemTypeArray } from '../../util/typecheck';
 import { PathPropsType, ProjectType, ItemType } from '../../util/dataTypes'
-import { countByStatus, camelToNormal } from '../../util/functions';
+import { countByStatus, countItemsByType, camelToNormal } from '../../util/functions';
 import { projectRequest, itemRequest } from '../../httpRequests';
 import {
-	NameBadgeDiv, TagsDiv, StatusDiv, FilterItemsDiv, DescriptionDiv, ChildrenItemsDiv, ConsoleLogButton
+	NameBadgeDiv, StatusDiv, TagsDiv, SmallCountCard, FilterItemsDiv, DescriptionDiv, ChildrenItemsDiv, ConsoleLogButton
 } from '../../components';
 import DonutChart from '../../charts/DonutChart';
 import { AxiosResponse } from 'axios';
@@ -85,7 +85,7 @@ const Project = ({ match }: PathPropsType) => {
 
 			{project._id ?
 				<div className="row">
-					<div className="col-12 col-md-6 col-lg-7 d-flex flex-column">
+					<div className="col-12 col-md-6 col-lg-7">
 
 						<div className="pt-1">
 							<NameBadgeDiv type='project'
@@ -111,6 +111,16 @@ const Project = ({ match }: PathPropsType) => {
 					</div>
 
 					<div className="col-12 col-md-6 col-lg-5">
+						<div className="pt-1">
+							<label className="font-weight-light">Snapshot</label>
+							<div>
+								<SmallCountCard type="feature" count={countItemsByType('feature', children)} />
+								<SmallCountCard type="work" count={countItemsByType('work', children)} />
+								<SmallCountCard type="bug" count={countItemsByType('bug', children)} />
+							</div>
+							<hr className="mt-2" />
+						</div>
+
 						<div className="pt-1">
 							<label className="font-weight-light">Overall progress</label>
 							<FilterItemsDiv onChange={updateChartFilter} />

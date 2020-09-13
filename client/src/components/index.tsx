@@ -20,6 +20,7 @@ import ParentSelectBox from './ParentSelectBox';
 import ProjectLink from './ProjectLink';
 import ProjectList from './ProjectList';
 import SaveButton from './SaveButton';
+import SmallCountCard from './SmallCountCard';
 import StatusDiv from './StatusDiv';
 import StatusSelection from './StatusSelection';
 import Tag from './Tag';
@@ -50,6 +51,7 @@ export {
   ProjectLink,
   ProjectList,
   SaveButton,
+  SmallCountCard,
   StatusDiv,
   StatusSelection,
   Tag,

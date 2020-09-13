@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { isItemType } from '../../util/typecheck';
-import { findParentByParentId, countByStatus, camelToNormal } from '../../util/functions';
+import { findParentByParentId, countByStatus, countItemsByType, camelToNormal } from '../../util/functions';
 import { PathPropsType, ItemType, UserType, ProjectType } from '../../util/dataTypes';
 import { projectRequest, userRequest, itemRequest } from '../../httpRequests';
 import {
-	NameBadgeDiv, TagsDiv, AssigneeDiv, ParentItemDiv, StatusDiv, FilterItemsDiv, DescriptionDiv, ChildrenItemsDiv, ConsoleLogButton
+	NameBadgeDiv, TagsDiv, AssigneeDiv, ParentItemDiv, StatusDiv, SmallCountCard, FilterItemsDiv, DescriptionDiv, ChildrenItemsDiv, ConsoleLogButton
 } from '../../components';
 import DonutChart from '../../charts/DonutChart';
 import { AxiosResponse } from 'axios';
@@ -177,6 +177,14 @@ const Feature = ({ match }: PathPropsType) => {
 						<div className="col-12 col-md-6 col-lg-5">
 							<div className="pt-1">
 								<label className="font-weight-light">Snapshot</label>
+								<div>
+									<SmallCountCard type="work" count={countItemsByType('work', children)} />
+									<SmallCountCard type="bug" count={countItemsByType('bug', children)} />
+								</div>
+							</div>
+
+							<div className="pt-1">
+								<label className="font-weight-light">Progress</label>
 								{children.length > 0 ?
 									<div>
 										<FilterItemsDiv onChange={updateChartFilter} includeFeature={false} />
