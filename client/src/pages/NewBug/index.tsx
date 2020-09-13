@@ -34,9 +34,8 @@ const NewBug = ({ match }: PathPropsType) => {
       .then((response: AxiosResponse) => updateProjects(response.data))
       .catch(err => console.error(err))
     itemRequest
-      .getAllItems()
+      .getItemsWithProjectIdByQuery({ type: ['feature'] })
       .then((response: AxiosResponse) => {
-
         updateItems(response.data)
       })
       .catch(err => console.error(err))

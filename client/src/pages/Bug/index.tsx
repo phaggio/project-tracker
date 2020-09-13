@@ -60,7 +60,7 @@ const Bug = ({ match }: PathPropsType) => {
         .then((response: AxiosResponse) => updateProjects([response.data]))
         .catch(err => console.error(err))
       itemRequest
-        .getItemsWithProjectIdByQuery({ projectId: bug.projectId, type: ['feature', 'work'] })
+        .getItemsWithProjectIdByQuery({ projectId: bug.projectId, type: ['feature'] })
         .then((response: AxiosResponse) => updateItems(response.data))
         .catch(err => console.error(err))
     } else if (bug.projectId === null) {
@@ -69,7 +69,7 @@ const Bug = ({ match }: PathPropsType) => {
         .then((response: AxiosResponse) => updateProjects(response.data))
         .catch(err => console.error(err))
       itemRequest
-        .getItemsWithProjectIdByQuery({ type: ['feature', 'work'] })
+        .getItemsWithProjectIdByQuery({ type: ['feature'] })
         .then((response: AxiosResponse) => updateItems(response.data))
         .catch(err => console.error(err))
     }
