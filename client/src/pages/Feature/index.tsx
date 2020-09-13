@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { isItemType } from '../../util/typecheck';
-import { findParentByParentId } from '../../util/functions';
+import { findParentByParentId, countByStatus, camelToNormal } from '../../util/functions';
 import { PathPropsType, ItemType, UserType, ProjectType } from '../../util/dataTypes';
 import { projectRequest, userRequest, itemRequest } from '../../httpRequests';
 import {
-	NameBadgeDiv, TagsDiv, AssigneeDiv, ParentItemDiv, StatusDiv, DescriptionDiv, ChildrenItemsDiv, ConsoleLogButton
+	NameBadgeDiv, TagsDiv, AssigneeDiv, ParentItemDiv, StatusDiv, FilterItemsDiv, DescriptionDiv, ChildrenItemsDiv, ConsoleLogButton
 } from '../../components';
+import DonutChart from '../../charts/DonutChart';
 import { AxiosResponse } from 'axios';
 
 const Feature = ({ match }: PathPropsType) => {
@@ -25,7 +26,7 @@ const Feature = ({ match }: PathPropsType) => {
 		tags: [],
 		assigneeId: null
 	});
-	const [parentName, updateParentName] = useState<string>('(open)');
+	const [chartFilter, updateChartFilter] = useState<string>('all');
 	const [update, toggleUpdate] = useState<boolean>(false);
 
 	// INIT get to get feature data from match.params.id
@@ -119,7 +120,7 @@ const Feature = ({ match }: PathPropsType) => {
 				<div>
 					< div className="row">
 
-						<div className="col-12 col-md-7 col-lg-8 border border-primary rounded d-flex flex-column">
+						<div className="col-12 col-md-6 col-lg-7">
 
 							<div className="pt-1">
 								<NameBadgeDiv type='feature'
@@ -141,7 +142,6 @@ const Feature = ({ match }: PathPropsType) => {
 									users={users} />
 								<hr className="mt-2" />
 							</div>
-
 
 							{feature.projectId ?
 								<div className="pt-1">
@@ -166,12 +166,20 @@ const Feature = ({ match }: PathPropsType) => {
 								</div>
 							}
 
-
 							<div className="pt-1">
 								<StatusDiv type="feature"
 									status={feature.status}
 									saveButtonPressed={saveButtonPressed} />
 								<hr className="mt-2" />
+							</div>
+						</div>
+
+						<div className="col-12 col-md-6 col-lg-5">
+							<div className="pt-1">
+								<label className="font-weight-light">Snapshot</label>
+								<FilterItemsDiv onChange={updateChartFilter} includeFeature={false} />
+								<DonutChart title={camelToNormal(chartFilter)}
+									type={chartFilter} data={countByStatus(chartFilter, children)} position="right" />
 							</div>
 						</div>
 

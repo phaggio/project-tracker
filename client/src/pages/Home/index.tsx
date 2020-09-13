@@ -87,16 +87,16 @@ const Home = () => {
 
             <div className="row">
               <div className="col-12 col-lg-6 p-1">
-                <DonutChart title="Projects" type="project" data={countByStatus('project', projects)} />
+                <DonutChart title="Projects" type="project" data={countByStatus('project', projects)} position="right" />
               </div>
               <div className="col-12 col-lg-6 p-1">
-                <DonutChart title="Features" data={countByStatus("feature", items)} />
+                <DonutChart title="Features" data={countByStatus("feature", items)} position="right" />
               </div>
               <div className="col-12 col-lg-6 p-1">
-                <DonutChart title="Work items" data={countByStatus("work", items)} />
+                <DonutChart title="Work items" data={countByStatus("work", items)} position="right" />
               </div>
               <div className="col-12 col-lg-6 p-1">
-                <DonutChart title="Bugs" data={countByStatus("bug", items)} />
+                <DonutChart title="Bugs" data={countByStatus("bug", items)} position="right" />
               </div>
             </div>
 

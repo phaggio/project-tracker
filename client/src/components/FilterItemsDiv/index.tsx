@@ -1,6 +1,7 @@
 import React from 'react';
 
 type PropsType = {
+  includeFeature?: boolean;
   onChange: (selectedOption: string) => void;
 }
 
@@ -8,7 +9,7 @@ const FilterItemsDiv = (props: PropsType) => {
 
   return (
     <div>
-      <label className="font-weight-light">Filter items by: </label>
+      <small className="font-weight-light">Filter items by: </small>
       <select className="custom-select"
         defaultValue='all'
         onChange={(event) => {
@@ -16,10 +17,15 @@ const FilterItemsDiv = (props: PropsType) => {
         }}
       >
         <option value='all'>All</option>
-        <option value='feature'>Feature</option>
+        {props.includeFeature === true || props.includeFeature === undefined ?
+          <option value='feature'>Feature</option>
+          :
+          ''
+        }
         <option value='work'>Work</option>
         <option value='bug'>Bug</option>
       </select>
+
     </div>
   )
 }

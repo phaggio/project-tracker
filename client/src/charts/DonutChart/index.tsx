@@ -3,6 +3,7 @@ import { Doughnut } from 'react-chartjs-2';
 
 type PropsType = {
   title: string;
+  position?: "right" | "left" | "top" | "bottom" | "chartArea" | undefined;
   type?: string;
   data: number[];
 }
@@ -45,7 +46,7 @@ const DonutChart = (props: PropsType) => {
           },
           legend: {
             display: true,
-            position: "right"
+            position: props.position ? props.position : "right"
           },
           responsive: true
         }}

@@ -90,9 +90,12 @@ const Project = ({ match }: PathPropsType) => {
 					</div>
 
 					<div className="col-12 col-md-6 col-lg-5">
-						<FilterItemsDiv onChange={updateChartFilter} />
-						<DonutChart title={camelToNormal(chartFilter)}
-							type={chartFilter} data={countByStatus(chartFilter, children)} />
+						<div className="pt-1">
+							<label className="font-weight-light">Snapshot</label>
+							<FilterItemsDiv onChange={updateChartFilter} />
+							<DonutChart title={camelToNormal(chartFilter)}
+								type={chartFilter} data={countByStatus(chartFilter, children)} position="right" />
+						</div>
 					</div>
 
 				</div>
