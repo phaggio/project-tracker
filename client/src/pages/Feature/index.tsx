@@ -50,7 +50,7 @@ const Feature = ({ match }: PathPropsType) => {
 
 	// INIT find parents and children depending on whether projectId is found in the feature item
 	useEffect(() => {
-		if (feature.projectId) {
+		if (feature.projectId && feature._id) {
 			projectRequest
 				.getProjectById(feature.projectId)
 				.then((response: AxiosResponse) => updateProjects([response.data]))
@@ -65,7 +65,7 @@ const Feature = ({ match }: PathPropsType) => {
 				.then((response: AxiosResponse) => updateProjects(response.data))
 				.catch(err => console.error(err))
 		}
-	}, [feature.projectId])
+	}, [feature.projectId, feature._id])
 
 	// effect to update feature
 	useEffect(() => {
