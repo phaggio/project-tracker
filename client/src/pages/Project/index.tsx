@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { isProjectType, isItemTypeArray } from '../../util/typecheck';
 import { PathPropsType, ProjectType, ItemType } from '../../util/dataTypes'
-import { countByStatus, countItemsByType, camelToNormal } from '../../util/functions';
+import { countByStatus, countItemsByType, findChildrenByParentId, camelToNormal } from '../../util/functions';
 import { projectRequest, itemRequest } from '../../httpRequests';
 import {
 	NameBadgeDiv, StatusDiv, TagsDiv, SmallCountCard, FilterItemsDiv, DescriptionDiv, ChildrenItemsDiv, ConsoleLogButton
@@ -39,11 +39,12 @@ const Project = ({ match }: PathPropsType) => {
 		if (project._id) {
 			itemRequest
 				.getItemsWithProjectIdByQuery({ projectId: project._id })
-				.then((response: AxiosResponse) => { if (isItemTypeArray(response.data)) updateChildren(response.data) })
-				.catch(err => console.error(err))
-			itemRequest
-				.getItemsByParentId(project._id)
-				.then((response: AxiosResponse) => { if (isItemTypeArray(response.data)) updateImmediateChildren(response.data) })
+				.then((response: AxiosResponse) => {
+					if (isItemTypeArray(response.data)) {
+						updateChildren(response.data);
+						updateImmediateChildren(findChildrenByParentId(project._id, response.data))
+					}
+				})
 				.catch(err => console.error(err))
 		}
 	}, [project._id])

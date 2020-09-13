@@ -112,6 +112,14 @@ const findParentByParentId = (id: string | null, parents: ParentType[]): ParentT
   return parent ? parent : null;
 }
 
+const findChildrenByProjectId = (projectId: string, items: ItemType[]): ItemType[] => {
+  return items.filter(item => { return item.projectId === projectId })
+}
+
+const findChildrenByParentId = (parentId: string, items: ItemType[]): ItemType[] => {
+  return items.filter(item => { return item.parentId === parentId })
+}
+
 export {
   parseTags,
   capitalizeWord,
@@ -121,5 +129,7 @@ export {
   findProjectIdById,
   camelToNormal,
   countItemsByType,
-  findParentByParentId
+  findParentByParentId,
+  findChildrenByProjectId,
+  findChildrenByParentId
 }
