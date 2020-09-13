@@ -132,15 +132,17 @@ const Bug = ({ match }: PathPropsType) => {
       {bug._id && !loading ?
         <div>
           <div className="row">
-            <div className="col-12 col-sm-6 col-md-7 col-lg-8 border border-primary rounded d-flex flex-column">
 
+            <div className="col-12 border border-info rounded">
               <div className="pt-1">
                 <NameBadgeDiv type='bug'
                   name={bug.name}
                   saveButtonPressed={saveButtonPressed} />
                 <hr className="mt-2" />
               </div>
+            </div>
 
+            <div className="col-12 col-sm-6 col-lg-7 border border-primary rounded">
               <div className="pt-1">
                 <TagsDiv type="feature"
                   tags={bug.tags}
@@ -160,6 +162,7 @@ const Bug = ({ match }: PathPropsType) => {
                   currentParentId={bug.parentId}
                   parents={parents}
                   saveButtonPressed={saveButtonPressed} />
+                <hr className="mt-2" />
               </div>
 
               <div className="pt-1">
@@ -169,6 +172,13 @@ const Bug = ({ match }: PathPropsType) => {
                 <hr className="mt-2" />
               </div>
             </div>
+
+            <div className="col-12 col-sm-6 col-lg-5 border border-success rounded">
+              <h5>coming soon ...</h5>
+              <p>relationship diagram showing what current item's parent, project, siblings are</p>
+            </div>
+
+
           </div>
           {/* end of first row */}
 
@@ -186,7 +196,6 @@ const Bug = ({ match }: PathPropsType) => {
         :
         <p>not found ...</p>
       }
-
 
       <div className="col-6">
         <ConsoleLogButton name="params" state={match.params} />

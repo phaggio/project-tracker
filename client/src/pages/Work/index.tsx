@@ -11,6 +11,7 @@ const Work = ({ match }: PathPropsType) => {
   const [features, updateFeatures] = useState<ParentType[]>([]);
   const [parents, updateParents] = useState<ParentType[]>([]);
   const [users, updateUsers] = useState<UserType[]>([]);
+  const [siblings, updateSiblings] = useState<ItemType[]>([]);
   const [work, updateWork] = useState<ItemType>({
     _id: '',
     parentId: null,
@@ -66,7 +67,14 @@ const Work = ({ match }: PathPropsType) => {
         .then((response: AxiosResponse) => updateFeatures(response.data))
         .catch(err => console.error(err))
     }
-  }, [work.projectId])
+    // find siblings
+    if (work.parentId) {
+      itemRequest
+        .getItemsByParentId(work.parentId)
+        .then((response: AxiosResponse) => updateSiblings(response.data))
+        .catch(err => console.error(err))
+    }
+  }, [work.projectId, work.parentId])
 
   useEffect(() => {
     updateParents([...projects, ...features])
@@ -133,7 +141,7 @@ const Work = ({ match }: PathPropsType) => {
               </div>
             </div>
 
-            <div className="col-12 col-sm-6 col-md-8 col-lg-9 border border-dark rounded">
+            <div className="col-12 col-sm-6 col-lg-7 border border-dark rounded">
 
               <div className="pt-1">
                 <TagsDiv type="work"
@@ -165,6 +173,11 @@ const Work = ({ match }: PathPropsType) => {
               </div>
 
             </div>
+
+            <div className="col-12 col-sm-6 col-lg-5 border border-success rounded">
+              <h5>coming soon ...</h5>
+              <p>relationship diagram showing what current item's parent, project, siblings are</p>
+            </div>
           </div>
 
           {/* second row */}
@@ -192,6 +205,7 @@ const Work = ({ match }: PathPropsType) => {
         <ConsoleLogButton name="match.params" state={match.params} />
         <ConsoleLogButton name="work" state={work} />
         <ConsoleLogButton name="parents" state={parents} />
+        <ConsoleLogButton name="siblings" state={siblings} />
       </div>
 
     </div>
