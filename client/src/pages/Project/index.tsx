@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { isProjectType } from '../../util/typecheck';
+import { isProjectType, isItemTypeArray } from '../../util/typecheck';
 import { PathPropsType, ProjectType, ItemType } from '../../util/dataTypes'
 import { countByStatus, camelToNormal } from '../../util/functions';
 import { projectRequest, itemRequest } from '../../httpRequests';
@@ -7,6 +7,7 @@ import {
 	NameBadgeDiv, TagsDiv, StatusDiv, FilterItemsDiv, DescriptionDiv, ChildrenItemsDiv, ConsoleLogButton
 } from '../../components';
 import DonutChart from '../../charts/DonutChart';
+import { AxiosResponse } from 'axios';
 
 const Project = ({ match }: PathPropsType) => {
 	const [project, updateProject] = useState<ProjectType>({
@@ -37,12 +38,12 @@ const Project = ({ match }: PathPropsType) => {
 	useEffect(() => {
 		if (project._id) {
 			itemRequest
-				.getItemsWithProjectIdByQuery({})
-				.then((res) => updateChildren(Array.from(res.data)))
+				.getItemsWithProjectIdByQuery({ projectId: project._id })
+				.then((response: AxiosResponse) => { if (isItemTypeArray(response.data)) updateChildren(response.data) })
 				.catch(err => console.error(err))
 			itemRequest
 				.getItemsByParentId(project._id)
-				.then((res) => updateImmediateChildren(Array.from(res.data)))
+				.then((response: AxiosResponse) => { if (isItemTypeArray(response.data)) updateImmediateChildren(response.data) })
 				.catch(err => console.error(err))
 		}
 	}, [project._id])
