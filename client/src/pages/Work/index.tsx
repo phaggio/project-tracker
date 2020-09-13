@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { PathPropsType, ProjectType, ItemType, UserType, ParentType } from '../../util/dataTypes';
+import { PathPropsType, ItemType, UserType, ParentType } from '../../util/dataTypes';
 import { isItemType } from '../../util/typecheck';
 import { findParentByParentId } from '../../util/functions';
 import { projectRequest, itemRequest, userRequest } from '../../httpRequests';
@@ -7,8 +7,8 @@ import { AssigneeDiv, DescriptionDiv, NameBadgeDiv, ParentItemDiv, StatusDiv, Ta
 import { AxiosResponse } from 'axios';
 
 const Work = ({ match }: PathPropsType) => {
-  const [projects, updateProjects] = useState<ProjectType[]>([]);
-  const [features, updateFeatures] = useState<ItemType[]>([]);
+  const [projects, updateProjects] = useState<ParentType[]>([]);
+  const [features, updateFeatures] = useState<ParentType[]>([]);
   const [parents, updateParents] = useState<ParentType[]>([]);
   const [users, updateUsers] = useState<UserType[]>([]);
   const [work, updateWork] = useState<ItemType>({

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { PathPropsType, ProjectType, ItemType, UserType, NewItemType } from '../../util/dataTypes';
-import { findProjectIdByItemId } from '../../util/functions';
+import { PathPropsType, UserType, NewItemType, ParentType } from '../../util/dataTypes';
+import { findProjectIdById } from '../../util/functions';
 import { projectRequest, itemRequest, userRequest } from '../../httpRequests';
 import { AxiosResponse } from 'axios';
 import {
@@ -8,8 +8,8 @@ import {
 } from '../../components';
 
 const NewBug = ({ match }: PathPropsType) => {
-  const [projects, updateProjects] = useState<ProjectType[]>([]); // potential parents
-  const [items, updateItems] = useState<ItemType[]>([]); // potential parents
+  const [projects, updateProjects] = useState<ParentType[]>([]); // potential parents
+  const [items, updateItems] = useState<ParentType[]>([]); // potential parents
   const [users, updateUsers] = useState<UserType[]>([]); // potential assignee
 
   const [draft, updateDraft] = useState<NewItemType>({
@@ -36,7 +36,7 @@ const NewBug = ({ match }: PathPropsType) => {
     itemRequest
       .getAllItems()
       .then((response: AxiosResponse) => {
-        
+
         updateItems(response.data)
       })
       .catch(err => console.error(err))
@@ -62,7 +62,7 @@ const NewBug = ({ match }: PathPropsType) => {
     } else if (parentType === 'project') {
       updateDraft(prev => { return { ...prev, projectId: parentId } })
     } else {
-      updateDraft(prev => { return { ...prev, projectId: findProjectIdByItemId(parentId, items) } })
+      updateDraft(prev => { return { ...prev, projectId: findProjectIdById(parentId, items) } })
     }
   };
 
@@ -140,10 +140,10 @@ const NewBug = ({ match }: PathPropsType) => {
 
 
         <div>
-					<ConsoleLogButton name="params" state={match.params} />
-					<ConsoleLogButton name="items" state={items} />
-					<ConsoleLogButton name="draft" state={draft} />
-      	</div>
+          <ConsoleLogButton name="params" state={match.params} />
+          <ConsoleLogButton name="items" state={items} />
+          <ConsoleLogButton name="draft" state={draft} />
+        </div>
 
 
       </div>

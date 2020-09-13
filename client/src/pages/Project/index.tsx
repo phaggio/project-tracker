@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { isProjectType } from '../../util/typecheck';
 import { PathPropsType, ProjectType, ItemType } from '../../util/dataTypes'
 import { countByStatus, camelToNormal } from '../../util/functions';
 import { projectRequest, itemRequest } from '../../httpRequests';
@@ -8,9 +9,18 @@ import {
 import DonutChart from '../../charts/DonutChart';
 
 const Project = ({ match }: PathPropsType) => {
-	const [project, updateProject] = useState<ProjectType | undefined>();
+	const [project, updateProject] = useState<ProjectType>({
+		_id: '',
+		projectId: '',
+		status: 'Open',
+		name: '',
+		description: '',
+		type: 'project',
+		tags: []
+	});
 
-	const [children, updateChildren] = useState<ItemType[]>([]); // all immediate children items that has its id
+	const [children, updateChildren] = useState<ItemType[]>([]); // children with that projectId
+	const [immediateChildren, updateImmediateChildren] = useState<ItemType[]>([]);
 	const [chartFilter, updateChartFilter] = useState<string>('all');
 
 	const [update, toggleUpdate] = useState<boolean>(false);
@@ -19,38 +29,48 @@ const Project = ({ match }: PathPropsType) => {
 		if (match.params.id !== undefined) {
 			projectRequest
 				.getProjectById(match.params.id)
-				.then(res => updateProject(res.data))
-			itemRequest
-				.getItemsByParentId(match.params.id)
-				.then((res) => updateChildren(Array.from(res.data)))
+				.then(response => { if (isProjectType(response.data)) updateProject(response.data) })
 				.catch(err => console.error(err))
 		}
 	}, [match.params.id])
 
 	useEffect(() => {
-		if (project && match.params.id !== undefined && update === true) {
+		if (project._id) {
+			itemRequest
+				.getItemsWithProjectIdByQuery({})
+				.then((res) => updateChildren(Array.from(res.data)))
+				.catch(err => console.error(err))
+			itemRequest
+				.getItemsByParentId(project._id)
+				.then((res) => updateImmediateChildren(Array.from(res.data)))
+				.catch(err => console.error(err))
+		}
+	}, [project._id])
+
+	useEffect(() => {
+		if (project._id && update === true) {
 			projectRequest
-				.updateProject(match.params.id, project)
+				.updateProject(project._id, project)
 				.then(data => console.log(data))
 				.catch(err => console.error(err))
 			toggleUpdate(previous => { return !previous })
 		}
-	}, [project, update, match.params.id])
+	}, [project, update])
 
 	const saveButtonPressed = (part: string, payload: string | string[]) => {
 		if (project) {
 			switch (part) {
 				case 'name':
-					if (typeof payload === 'string') updateProject({ ...project, name: payload });
+					if (typeof payload === 'string') updateProject(prev => { return { ...prev, name: payload } });
 					break;
 				case 'tags':
-					if (payload instanceof Array) updateProject({ ...project, tags: payload });
+					if (payload instanceof Array) updateProject(prev => { return { ...prev, tags: payload } });
 					break;
 				case 'status':
-					if (typeof payload === 'string') updateProject({ ...project, status: payload });
+					if (typeof payload === 'string') updateProject(prev => { return { ...prev, status: payload } });
 					break;
 				case 'description':
-					if (typeof payload === 'string') updateProject({ ...project, description: payload });
+					if (typeof payload === 'string') updateProject(prev => { return { ...prev, description: payload } });
 					break;
 				default:
 					break;
@@ -62,7 +82,7 @@ const Project = ({ match }: PathPropsType) => {
 	return (
 		<div className="container">
 
-			{project !== undefined ?
+			{project._id ?
 				<div className="row">
 					<div className="col-12 col-md-6 col-lg-7 d-flex flex-column">
 
@@ -91,7 +111,7 @@ const Project = ({ match }: PathPropsType) => {
 
 					<div className="col-12 col-md-6 col-lg-5">
 						<div className="pt-1">
-							<label className="font-weight-light">Snapshot</label>
+							<label className="font-weight-light">Overall progress</label>
 							<FilterItemsDiv onChange={updateChartFilter} />
 							<DonutChart title={camelToNormal(chartFilter)}
 								type={chartFilter} data={countByStatus(chartFilter, children)} position="right" />
@@ -105,7 +125,7 @@ const Project = ({ match }: PathPropsType) => {
 			}
 
 			{/* second row */}
-			{project ?
+			{project._id ?
 				<div className="row mt-1">
 					<div className="col-12">
 						<DescriptionDiv text={project.description}
@@ -115,15 +135,17 @@ const Project = ({ match }: PathPropsType) => {
 							_id={project._id}
 							projectId={project._id}
 							includeFeature={true}
-							children={children} />
+							children={immediateChildren} />
 					</div>
 				</div>
 				:
-				<p> not found ... </p>
+				<p> no project found ... </p>
 			}
 			{/* end of second row */}
 
 			<ConsoleLogButton name="project" state={project} />
+			<ConsoleLogButton name="children" state={children} />
+			<ConsoleLogButton name="immediate children" state={immediateChildren} />
 		</div>
 	)
 };

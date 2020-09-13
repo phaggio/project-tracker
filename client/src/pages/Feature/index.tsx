@@ -177,9 +177,17 @@ const Feature = ({ match }: PathPropsType) => {
 						<div className="col-12 col-md-6 col-lg-5">
 							<div className="pt-1">
 								<label className="font-weight-light">Snapshot</label>
-								<FilterItemsDiv onChange={updateChartFilter} includeFeature={false} />
-								<DonutChart title={camelToNormal(chartFilter)}
-									type={chartFilter} data={countByStatus(chartFilter, children)} position="right" />
+								{children.length > 0 ?
+									<div>
+										<FilterItemsDiv onChange={updateChartFilter} includeFeature={false} />
+										<DonutChart title={camelToNormal(chartFilter)}
+											type={chartFilter} data={countByStatus(chartFilter, children)} position="right" />
+									</div>
+									:
+									<div className="d-flex justify-content-center">
+										<p>no data available</p>
+									</div>
+								}
 							</div>
 						</div>
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { PathPropsType, ProjectType, ItemType, UserType, NewItemType } from '../../util/dataTypes';
-import { findProjectIdByItemId } from '../../util/functions';
+import { PathPropsType, UserType, NewItemType, ParentType } from '../../util/dataTypes';
+import { findProjectIdById } from '../../util/functions';
 import { AxiosResponse } from 'axios';
 import { projectRequest, userRequest, itemRequest } from '../../httpRequests';
 import {
@@ -8,8 +8,8 @@ import {
 } from '../../components'
 
 const NewWork = ({ match }: PathPropsType) => {
-  const [projects, updateProjects] = useState<ProjectType[]>([]); // potential parents
-  const [items, updateItems] = useState<ItemType[]>([]); // potential parents
+  const [projects, updateProjects] = useState<ParentType[]>([]); // potential parents
+  const [items, updateItems] = useState<ParentType[]>([]); // potential parents
   const [users, updateUsers] = useState<UserType[]>([]); // potential assignees
 
   const [draft, updateDraft] = useState<NewItemType>({
@@ -59,7 +59,7 @@ const NewWork = ({ match }: PathPropsType) => {
     } else if (parentType === 'project') {
       updateDraft(prev => { return { ...prev, projectId: parentId } })
     } else {
-      updateDraft(prev => { return { ...prev, projectId: findProjectIdByItemId(parentId, items) } })
+      updateDraft(prev => { return { ...prev, projectId: findProjectIdById(parentId, items) } })
     }
   };
 

@@ -1,4 +1,4 @@
-import { ProjectType, ItemType, UserType } from './dataTypes';
+import { ProjectType, ItemType, UserType, ParentType } from './dataTypes';
 
 const isProjectType = (target: any): target is ProjectType => {
   if ((target as ProjectType).type) return true;
@@ -15,8 +15,14 @@ const isUserTypeArray = (targetArr: any[]): boolean => {
   return true;
 };
 
+const isParentTypeArr = (targetArr: any[]): boolean => {
+  for (const target of targetArr) if (!(target as ParentType).type) return false;
+  return true;
+}
+
 export {
   isProjectType,
   isItemType,
-  isUserTypeArray
+  isUserTypeArray,
+  isParentTypeArr
 }

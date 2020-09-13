@@ -83,7 +83,7 @@ const findParentNameById = (parentId: string | null, parents: ParentType[]): str
   return parentName;
 }
 
-const findProjectIdByItemId = (itemId: string, items: ItemType[]): string | null => {
+const findProjectIdById = (itemId: string, items: ParentType[]): string | null => {
   let matchedItem = items.find(item => item._id === itemId)
   return matchedItem ? matchedItem.projectId : null;
 }
@@ -118,7 +118,7 @@ export {
   countByStatus,
   findParentsByType,
   findParentNameById,
-  findProjectIdByItemId,
+  findProjectIdById,
   camelToNormal,
   countItemsByType,
   findParentByParentId

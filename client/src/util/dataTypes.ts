@@ -79,7 +79,7 @@ type ParentType = {
   _id: string;
   type: string;
   name: string;
-  projectId: string | null;
+  projectId: string;
 };
 
 

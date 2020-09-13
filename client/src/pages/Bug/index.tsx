@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { PathPropsType, ItemType, ProjectType, UserType, ParentType } from '../../util/dataTypes';
+import { PathPropsType, ItemType, UserType, ParentType } from '../../util/dataTypes';
 import { findParentByParentId } from '../../util/functions';
 import { isItemType, isUserTypeArray } from '../../util/typecheck';
 import { projectRequest, itemRequest, userRequest } from '../../httpRequests';
@@ -8,8 +8,8 @@ import { AssigneeDiv, ConsoleLogButton, DescriptionDiv, NameBadgeDiv, ParentItem
 
 
 const Bug = ({ match }: PathPropsType) => {
-  const [projects, updateProjects] = useState<ProjectType[]>([]); // potential parents if bug has no parent
-  const [items, updateItems] = useState<ItemType[]>([]); // potential parents
+  const [projects, updateProjects] = useState<ParentType[]>([]); // potential parents if bug has no parent
+  const [items, updateItems] = useState<ParentType[]>([]); // potential parents
   const [parents, updateParents] = useState<ParentType[]>([]);
   const [users, updateUsers] = useState<UserType[]>([]); // potential assignees
 
