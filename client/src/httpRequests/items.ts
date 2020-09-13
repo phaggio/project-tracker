@@ -23,9 +23,6 @@ const getItemsByType = (type: string) => {
 const getItemsWithProjectIdByQuery = (query: object) => {
   console.log('from httpRquest ...')
   console.log(query)
-  const config = {
-    params: query
-  }
   return axios.get(`/api/item/query`, { params: query });
 };
 

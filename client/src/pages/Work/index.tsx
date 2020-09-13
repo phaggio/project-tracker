@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { PathPropsType, ProjectType, ItemType, UserType, ParentType } from '../../util/dataTypes';
 import { isItemType } from '../../util/typecheck';
+import { findParentByParentId } from '../../util/functions';
 import { projectRequest, itemRequest, userRequest } from '../../httpRequests';
 import { AssigneeDiv, DescriptionDiv, NameBadgeDiv, ParentItemDiv, StatusDiv, TagsDiv, ConsoleLogButton } from '../../components';
 import { AxiosResponse } from 'axios';
 
 const Work = ({ match }: PathPropsType) => {
-  // NEED TO figure out project type and project type when receive project array
   const [projects, updateProjects] = useState<ProjectType[]>([]);
   const [features, updateFeatures] = useState<ItemType[]>([]);
   const [parents, updateParents] = useState<ParentType[]>([]);
-  const [users, updateUsers] = useState<UserType[]>([]); // potential assignees
+  const [users, updateUsers] = useState<UserType[]>([]);
   const [work, updateWork] = useState<ItemType>({
     _id: '',
     parentId: null,
@@ -30,10 +30,7 @@ const Work = ({ match }: PathPropsType) => {
     if (match.params.id !== undefined) {
       itemRequest
         .getItemById(match.params.id)
-        .then((response: AxiosResponse) => {
-          // if response.data is an Item type
-          if (isItemType(response.data)) updateWork(response.data)
-        })
+        .then((response: AxiosResponse) => { if (isItemType(response.data)) updateWork(response.data) })
         .catch(err => console.error(err));
     }
   }, [match.params.id]);
@@ -50,9 +47,7 @@ const Work = ({ match }: PathPropsType) => {
 
   // if worwk is found, get the right eligible parents for existing work item
   useEffect(() => {
-    // if project Id exists, means work is currently assigned to a parent.
     if (work.projectId) {
-      console.log('have project ID getting parents...');
       projectRequest
         .getProjectById(work.projectId)
         .then((response: AxiosResponse) => updateProjects([response.data]))
@@ -62,8 +57,6 @@ const Work = ({ match }: PathPropsType) => {
         .then((response: AxiosResponse) => updateFeatures(response.data))
         .catch(err => console.error(err))
     } else if (work.projectId === null) {
-      // if no projectId, means it was never assigned to any parent
-      console.log('do not have project ID getting parents...');
       projectRequest
         .getAllProjects()
         .then((response: AxiosResponse) => updateProjects(response.data))
@@ -80,7 +73,7 @@ const Work = ({ match }: PathPropsType) => {
   }, [projects, features])
 
   useEffect(() => {
-    if (work && update) {
+    if (work._id && update) {
       itemRequest
         .updateItemById(work._id, work)
         .then(res => console.log(res))
@@ -90,7 +83,7 @@ const Work = ({ match }: PathPropsType) => {
   }, [update, work]);
 
   const saveButtonPressed = (part: string, payload: string | string[] | null) => {
-    if (work) {
+    if (work._id) {
       switch (part) {
         case ('name'):
           if (typeof payload === 'string') updateWork(prev => { return { ...prev, name: payload } })
@@ -103,18 +96,11 @@ const Work = ({ match }: PathPropsType) => {
           break;
         case 'parentId':
           if ((typeof payload === 'string' || payload === null)) {
-            if (payload === null) {
+            const parent = findParentByParentId(payload, parents)
+            if (parent === null) {
               updateWork(prev => { return { ...prev, parentId: null, parentType: null } })
             } else {
-              const selectedParent = parents.find(parent => parent._id === payload)
-              updateWork(prev => {
-                return {
-                  ...prev,
-                  parentId: selectedParent?._id ? selectedParent._id : null,
-                  parentType: selectedParent?.type ? selectedParent.type : null,
-                  projectId: selectedParent?.projectId ? selectedParent.projectId : null
-                }
-              })
+              updateWork(prev => { return { ...prev, parentId: parent._id, parentType: parent.type, projectId: parent.projectId } })
             }
           }
           break;
@@ -133,7 +119,7 @@ const Work = ({ match }: PathPropsType) => {
 
   return (
     <div className="container">
-      {(work._id !== '') ?
+      {work._id ?
         <div>
           {/* first row */}
           <div className="row">

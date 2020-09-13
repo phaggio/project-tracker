@@ -105,18 +105,11 @@ const Bug = ({ match }: PathPropsType) => {
           break;
         case 'parentId':
           if ((typeof payload === 'string' || payload === null)) {
-            if (payload === null) {
+            const parent = findParentByParentId(payload, parents);
+            if (parent === null) {
               updateBug(prev => { return { ...prev, parentId: null, parentType: null } })
             } else {
-              const parent = findParentByParentId(payload, parents);
-              updateBug(prev => {
-                return {
-                  ...prev,
-                  parentId: parent?._id ? parent._id : null,
-                  parentType: parent?.type ? parent.type : null,
-                  projectId: parent?.projectId ? parent.projectId : null
-                }
-              })
+              updateBug(prev => { return { ...prev, parentId: parent._id, parentType: parent.type, projectId: parent.projectId } })
             }
           }
           break;

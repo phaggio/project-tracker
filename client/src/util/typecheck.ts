@@ -1,4 +1,4 @@
-import { ProjectType, ItemType, ParentType, UserType } from './dataTypes';
+import { ProjectType, ItemType, UserType } from './dataTypes';
 
 const isProjectType = (target: any): target is ProjectType => {
   if ((target as ProjectType).type) return true;

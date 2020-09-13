@@ -1,61 +1,74 @@
 import React, { useEffect, useState } from 'react';
-import { PathPropsType, ItemType, UserType } from '../../util/dataTypes';
+import { isItemType } from '../../util/typecheck';
+import { findParentByParentId } from '../../util/functions';
+import { PathPropsType, ItemType, UserType, ProjectType } from '../../util/dataTypes';
 import { projectRequest, userRequest, itemRequest } from '../../httpRequests';
 import {
-	AssigneeDiv, ChildrenItemsDiv, DescriptionDiv, NameBadgeDiv, StatusDiv, TagsDiv, ConsoleLogButton
+	NameBadgeDiv, TagsDiv, AssigneeDiv, ParentItemDiv, StatusDiv, DescriptionDiv, ChildrenItemsDiv, ConsoleLogButton
 } from '../../components';
-
 import { AxiosResponse } from 'axios';
 
 const Feature = ({ match }: PathPropsType) => {
-	const [feature, updateFeature] = useState<ItemType | undefined>();
-	const [parentName, updateParentName] = useState<string>('(open)');
-
+	const [projects, updateProjects] = useState<ProjectType[]>([]);
 	const [users, updateUsers] = useState<UserType[]>([]); // potential assignee
+	const [children, updateChildren] = useState<ItemType[]>([]);
 
-	const [children, updateChildren] = useState<ItemType[]>([]); // children of this feature
-
+	const [feature, updateFeature] = useState<ItemType>({
+		_id: '',
+		parentId: null,
+		parentType: null,
+		projectId: null,
+		status: '(open)',
+		name: '',
+		description: '',
+		type: 'feature',
+		tags: [],
+		assigneeId: null
+	});
+	const [parentName, updateParentName] = useState<string>('(open)');
 	const [update, toggleUpdate] = useState<boolean>(false);
 
-	// type guard
-	const isItemType = (target: any): target is ItemType => {
-		if ((target as ItemType).type) return true;
-		return false;
-	}
-
-	// INIT GET to get all projects, users data for selection and current feature data and its children items
+	// INIT get to get feature data from match.params.id
 	useEffect(() => {
-		if (match.params.id !== undefined) {
+		if (match.params.id !== undefined)
 			itemRequest
 				.getItemById(match.params.id)
 				.then((response: AxiosResponse) => { if (isItemType(response.data)) updateFeature((response.data)) })
 				.catch(err => console.error(err));
-			itemRequest
-				.getItemsByParentId(match.params.id)
-				.then((response: AxiosResponse) => {
-					if (Array.isArray(response.data)) updateChildren(response.data)
-				})
-				.catch(err => console.error(err))
-			userRequest
-				.getAllUsers()
-				.then((response: AxiosResponse) => {
-					if (Array.isArray(response.data)) updateUsers(response.data)
-				})
-				.catch(err => console.error(err));
-		}
 	}, [match.params.id]);
 
+	// INIT if feature is found, find users as assignees
 	useEffect(() => {
-		if (feature && feature.parentId !== null) {
-			projectRequest
-				.getProjectById(feature.parentId)
-				.then(response => { if (typeof response.data.name === 'string') updateParentName(response.data.name) })
+		if (feature._id) {
+			userRequest
+				.getAllUsers()
+				.then((response: AxiosResponse) => updateUsers(response.data))
 				.catch(err => console.error(err))
 		}
-	}, [feature])
+	}, [feature._id])
 
+	// INIT find parents and children depending on whether projectId is found in the feature item
 	useEffect(() => {
-		if (feature && update === true) {
+		if (feature.projectId) {
+			projectRequest
+				.getProjectById(feature.projectId)
+				.then((response: AxiosResponse) => updateProjects([response.data]))
+				.catch(err => console.error(err))
+			itemRequest
+				.getItemsByParentId(feature._id)
+				.then((response: AxiosResponse) => updateChildren(response.data))
+				.catch(err => console.error(err))
+		} else {
+			projectRequest
+				.getAllProjects()
+				.then((response: AxiosResponse) => updateProjects(response.data))
+				.catch(err => console.error(err))
+		}
+	}, [feature.projectId])
+
+	// effect to update feature
+	useEffect(() => {
+		if (feature._id && update === true) {
 			itemRequest
 				.updateItemById(feature._id, feature)
 				.then(data => console.log(data))
@@ -64,23 +77,33 @@ const Feature = ({ match }: PathPropsType) => {
 		}
 	}, [feature, update])
 
-	const saveButtonPressed = (part: string, payload: string | string[]) => {
+	const saveButtonPressed = (part: string, payload: string | string[] | null) => {
 		if (feature !== undefined) {
 			switch (part) {
 				case 'name':
-					if (typeof payload === 'string') updateFeature({ ...feature, name: payload });
+					if (typeof payload === 'string') updateFeature(prev => { return { ...prev, name: payload } });
 					break;
 				case 'tags':
-					if (payload instanceof Array) updateFeature({ ...feature, tags: payload });
+					if (payload instanceof Array) updateFeature(prev => { return { ...prev, tags: payload } });
 					break;
 				case 'assigneeId':
-					if (typeof payload === 'string' || payload === null) updateFeature({ ...feature, assigneeId: payload });
+					if (typeof payload === 'string' || payload === null) updateFeature(prev => { return { ...prev, assigneeId: payload } });
+					break;
+				case 'parentId':
+					if ((typeof payload === 'string' || payload === null)) {
+						const parent = findParentByParentId(payload, projects)
+						if (parent === null) {
+							updateFeature(prev => { return { ...prev, parentId: null, parentType: null } })
+						} else {
+							updateFeature(prev => { return { ...prev, parentId: parent._id, parentType: parent.type, projectId: parent.projectId } })
+						}
+					}
 					break;
 				case 'status':
-					if (typeof payload === 'string') updateFeature({ ...feature, status: payload });
+					if (typeof payload === 'string') updateFeature(prev => { return { ...prev, status: payload } });
 					break;
 				case 'description':
-					if (typeof payload === 'string') updateFeature({ ...feature, description: payload });
+					if (typeof payload === 'string') updateFeature(prev => { return { ...prev, description: payload } });
 					break;
 				default:
 					break;
@@ -92,9 +115,8 @@ const Feature = ({ match }: PathPropsType) => {
 	return (
 		<div className="container">
 
-			{feature !== undefined ?
+			{feature._id ?
 				<div>
-					{/* start of first row */}
 					< div className="row">
 
 						<div className="col-12 col-md-7 col-lg-8 border border-primary rounded d-flex flex-column">
@@ -120,18 +142,30 @@ const Feature = ({ match }: PathPropsType) => {
 								<hr className="mt-2" />
 							</div>
 
-							<div className="pt-1">
-								<div className="d-flex justify-content-between align-items-baseline">
-									<label className="font-weight-light">Parent</label>
+
+							{feature.projectId ?
+								<div className="pt-1">
+									<div className="d-flex justify-content-between align-items-baseline">
+										<label className="font-weight-light">Parent</label>
+									</div>
+									<div>
+										<h5 className="mb-0">
+											{projects[0] ? projects[0].name : '(open)'}
+										</h5>
+										<small className="">{`Parent ID: (${feature.parentId ? feature.parentId : 'n/a'})`}</small>
+									</div>
+									<hr className="mt-2" />
 								</div>
-								<div>
-									<h5 className="mb-0">
-										{parentName}
-									</h5>
-									<small className="">{`Parent ID: (${feature.parentId ? feature.parentId : 'n/a'})`}</small>
+								:
+								<div className="pt-1">
+									<ParentItemDiv type="feature"
+										currentParentId={feature.parentId}
+										parents={projects}
+										saveButtonPressed={saveButtonPressed} />
+									<hr className="mt-2" />
 								</div>
-								<hr className="mt-2" />
-							</div>
+							}
+
 
 							<div className="pt-1">
 								<StatusDiv type="feature"
@@ -155,12 +189,17 @@ const Feature = ({ match }: PathPropsType) => {
 								<hr className="mt-2" />
 							</div>
 
-							<ChildrenItemsDiv type="feature"
-								_id={feature._id}
-								projectId={feature.projectId}
-								includeFeature={false}
-								children={children}
-							/>
+							{feature.projectId ?
+								<ChildrenItemsDiv type="feature"
+									_id={feature._id}
+									projectId={feature.projectId}
+									includeFeature={false}
+									children={children}
+								/>
+								:
+								''
+							}
+
 						</div>
 
 
@@ -168,13 +207,12 @@ const Feature = ({ match }: PathPropsType) => {
 					{/* end of second row */}
 				</div>
 				:
-				'feature is not found'
+				<p>not found ...</p>
 			}
 
 			<ConsoleLogButton name="feature" state={feature} />
+			<ConsoleLogButton name="projects" state={projects} />
 		</div >
 	)
 }
-
-
 export default Feature;
