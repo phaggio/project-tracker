@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { PathPropsType, ItemType, UserType, ParentType } from '../../util/dataTypes';
+import { PathPropsType, ItemType, UserType, ParentType, ProjectType } from '../../util/dataTypes';
 import { isItemType } from '../../util/typecheck';
 import { findParentByParentId } from '../../util/functions';
 import { projectRequest, itemRequest, userRequest } from '../../httpRequests';
-import { AssigneeDiv, DescriptionDiv, NameBadgeDiv, ParentItemDiv, StatusDiv, TagsDiv, ConsoleLogButton } from '../../components';
+import {
+  AssigneeDiv, DescriptionDiv, NameBadgeDiv, ParentItemDiv, StatusDiv, TagsDiv, RelationshipDiagram, ConsoleLogButton
+} from '../../components';
 import { AxiosResponse } from 'axios';
 
 const Work = ({ match }: PathPropsType) => {
-  const [projects, updateProjects] = useState<ParentType[]>([]);
+  const [projects, updateProjects] = useState<ProjectType[]>([]);
   const [features, updateFeatures] = useState<ParentType[]>([]);
   const [parents, updateParents] = useState<ParentType[]>([]);
   const [users, updateUsers] = useState<UserType[]>([]);
+
   const [siblings, updateSiblings] = useState<ItemType[]>([]);
   const [work, updateWork] = useState<ItemType>({
     _id: '',
@@ -71,7 +74,7 @@ const Work = ({ match }: PathPropsType) => {
     if (work.parentId) {
       itemRequest
         .getItemsByParentId(work.parentId)
-        .then((response: AxiosResponse) => updateSiblings(response.data))
+        .then((response: AxiosResponse) => { updateSiblings(response.data) })
         .catch(err => console.error(err))
     }
   }, [work.projectId, work.parentId])
@@ -84,7 +87,7 @@ const Work = ({ match }: PathPropsType) => {
     if (work._id && update) {
       itemRequest
         .updateItemById(work._id, work)
-        .then(res => console.log(res))
+        .then((response: AxiosResponse) => console.log(response.data))
         .catch(err => console.error(err))
     }
     toggleUpdate(false);
@@ -175,8 +178,16 @@ const Work = ({ match }: PathPropsType) => {
             </div>
 
             <div className="col-12 col-sm-6 col-lg-5 border border-success rounded">
-              <h5>coming soon ...</h5>
-              <p>relationship diagram showing what current item's parent, project, siblings are</p>
+              <div className="pt-1">
+                <RelationshipDiagram type="work"
+                  name={work.name}
+                  parentType={work.parentType}
+                  projectId={work.parentId}
+                  projects={projects}
+                  parentId={work.parentId}
+                  parents={parents}
+                  siblings={siblings} />
+              </div>
             </div>
           </div>
 

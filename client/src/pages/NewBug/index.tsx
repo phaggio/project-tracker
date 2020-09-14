@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PathPropsType, UserType, NewItemType, ParentType } from '../../util/dataTypes';
-import { findProjectIdById } from '../../util/functions';
+import { findProjectIdFromParentsByParentId } from '../../util/functions';
 import { projectRequest, itemRequest, userRequest } from '../../httpRequests';
 import { AxiosResponse } from 'axios';
 import {
@@ -61,7 +61,7 @@ const NewBug = ({ match }: PathPropsType) => {
     } else if (parentType === 'project') {
       updateDraft(prev => { return { ...prev, projectId: parentId } })
     } else {
-      updateDraft(prev => { return { ...prev, projectId: findProjectIdById(parentId, items) } })
+      updateDraft(prev => { return { ...prev, projectId: findProjectIdFromParentsByParentId(parentId, items) } })
     }
   };
 

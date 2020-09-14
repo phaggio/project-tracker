@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PathPropsType, UserType, NewItemType, ParentType } from '../../util/dataTypes';
-import { findProjectIdById } from '../../util/functions';
+import { findProjectIdFromParentsByParentId } from '../../util/functions';
 import { AxiosResponse } from 'axios';
 import { projectRequest, userRequest, itemRequest } from '../../httpRequests';
 import {
@@ -59,7 +59,7 @@ const NewWork = ({ match }: PathPropsType) => {
     } else if (parentType === 'project') {
       updateDraft(prev => { return { ...prev, projectId: parentId } })
     } else {
-      updateDraft(prev => { return { ...prev, projectId: findProjectIdById(parentId, items) } })
+      updateDraft(prev => { return { ...prev, projectId: findProjectIdFromParentsByParentId(parentId, items) } })
     }
   };
 
@@ -134,6 +134,7 @@ const NewWork = ({ match }: PathPropsType) => {
         </div>
 
       </div>
+
       <ConsoleLogButton name="items" state={items} />
       <ConsoleLogButton name="draft" state={draft} />
       <ConsoleLogButton name="match.params" state={match.params} />

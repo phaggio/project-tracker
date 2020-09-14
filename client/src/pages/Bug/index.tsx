@@ -13,6 +13,7 @@ const Bug = ({ match }: PathPropsType) => {
   const [parents, updateParents] = useState<ParentType[]>([]);
   const [users, updateUsers] = useState<UserType[]>([]); // potential assignees
 
+  const [siblings, updateSiblings] = useState<ItemType[]>([])
   const [bug, updateBug] = useState<ItemType>({
     _id: '',
     parentId: null,
@@ -73,7 +74,14 @@ const Bug = ({ match }: PathPropsType) => {
         .then((response: AxiosResponse) => updateItems(response.data))
         .catch(err => console.error(err))
     }
-  }, [bug.projectId]);
+    // find siblings
+    if (bug.parentId) {
+      itemRequest
+        .getItemsByParentId(bug.parentId)
+        .then((response: AxiosResponse) => { updateSiblings(response.data) })
+        .catch(err => console.error(err))
+    }
+  }, [bug.projectId, bug.parentId]);
 
   // update eligible parents
   useEffect(() => {

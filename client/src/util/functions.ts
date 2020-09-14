@@ -83,9 +83,16 @@ const findParentNameById = (parentId: string | null, parents: ParentType[]): str
   return parentName;
 }
 
-const findProjectIdById = (itemId: string, items: ParentType[]): string | null => {
-  let matchedItem = items.find(item => item._id === itemId)
-  return matchedItem ? matchedItem.projectId : null;
+// used in New Work, New Bug
+const findProjectIdFromParentsByParentId = (parentId: string, parents: ParentType[]): string | null => {
+  let matched = parents.find(parent => parent._id === parentId)
+  return matched ? matched.projectId : null;
+}
+
+// used in Work page
+const findProjectByProjectId = (projectId: string | null, projects: ProjectType[]): ProjectType | undefined => {
+  let matched = projects.find(project => project._id === projectId)
+  return matched;
 }
 
 const camelToNormal = (camelName: string) => {
@@ -99,6 +106,10 @@ const camelToNormal = (camelName: string) => {
     }
   }
   return normal;
+}
+
+const parseArrayFromItemsByType = (type: string, items: ItemType[]) => {
+  return items.filter(item => { return item.type === type })
 }
 
 const countItemsByType = (type: string, items: ItemType[]): number => {
@@ -126,8 +137,10 @@ export {
   countByStatus,
   findParentsByType,
   findParentNameById,
-  findProjectIdById,
+  findProjectIdFromParentsByParentId,
+  findProjectByProjectId,
   camelToNormal,
+  parseArrayFromItemsByType,
   countItemsByType,
   findParentByParentId,
   findChildrenByProjectId,

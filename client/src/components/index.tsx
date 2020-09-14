@@ -19,8 +19,10 @@ import ParentItemDiv from './ParentItemDiv';
 import ParentSelectBox from './ParentSelectBox';
 import ProjectLink from './ProjectLink';
 import ProjectList from './ProjectList';
+import RelationshipDiagram from './RelationshipDiagram';
 import SaveButton from './SaveButton';
 import SmallCountCard from './SmallCountCard';
+import SmallNameBadge from './SmallNameBadge';
 import StatusDiv from './StatusDiv';
 import StatusSelection from './StatusSelection';
 import Tag from './Tag';
@@ -50,8 +52,10 @@ export {
   ParentSelectBox,
   ProjectLink,
   ProjectList,
+  RelationshipDiagram,
   SaveButton,
   SmallCountCard,
+  SmallNameBadge,
   StatusDiv,
   StatusSelection,
   Tag,
