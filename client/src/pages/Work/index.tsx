@@ -4,7 +4,7 @@ import { isItemType } from '../../util/typecheck';
 import { findParentByParentId } from '../../util/functions';
 import { projectRequest, itemRequest, userRequest } from '../../httpRequests';
 import {
-  AssigneeDiv, DescriptionDiv, NameBadgeDiv, ParentItemDiv, StatusDiv, TagsDiv, RelationshipDiagram, ConsoleLogButton
+  NameBadgeDiv, TagsDiv, AssigneeDiv, ParentItemDiv, StatusDiv, RelationshipDiagram, DescriptionDiv, ConsoleLogButton
 } from '../../components';
 import { AxiosResponse } from 'axios';
 
@@ -135,72 +135,79 @@ const Work = ({ match }: PathPropsType) => {
           {/* first row */}
           <div className="row">
 
-            <div className="col-12 border border-info rounded">
-              <div className="pt-1">
-                <NameBadgeDiv type="work"
-                  name={work.name}
-                  saveButtonPressed={saveButtonPressed} />
-                <hr className="mt-2" />
+            <div className="col-12">
+              <div className="shadow rounded p-2 mt-2">
+                <div >
+                  <NameBadgeDiv type="work"
+                    name={work.name}
+                    saveButtonPressed={saveButtonPressed} />
+                  <hr className="mt-2" />
+                </div>
               </div>
             </div>
 
-            <div className="col-12 col-sm-6 col-lg-7 border border-dark rounded">
+            <div className="col-12 col-sm-6 col-lg-7">
 
-              <div className="pt-1">
-                <TagsDiv type="work"
-                  tags={work.tags}
-                  saveButtonPressed={saveButtonPressed} />
-                <hr className="mt-2" />
-              </div>
+              <div className="shadow rounded p-2 mt-2">
+                <div className="">
+                  <TagsDiv type="work"
+                    tags={work.tags}
+                    saveButtonPressed={saveButtonPressed} />
+                  <hr className="mt-2" />
+                </div>
 
-              <div className="pt-1">
-                <AssigneeDiv assigneeId={work.assigneeId}
-                  users={users}
-                  saveButtonPressed={saveButtonPressed} />
-                <hr className="mt-2" />
-              </div>
+                <div className="">
+                  <AssigneeDiv assigneeId={work.assigneeId}
+                    users={users}
+                    saveButtonPressed={saveButtonPressed} />
+                  <hr className="mt-2" />
+                </div>
 
-              <div className="pt-1">
-                <ParentItemDiv type="work"
-                  currentParentId={work.parentId}
-                  parents={parents}
-                  saveButtonPressed={saveButtonPressed} />
-                <hr className="mt-2" />
-              </div>
+                <div className="">
+                  <ParentItemDiv type="work"
+                    currentParentId={work.parentId}
+                    parents={parents}
+                    saveButtonPressed={saveButtonPressed} />
+                  <hr className="mt-2" />
+                </div>
 
-              <div className="pt-1">
-                <StatusDiv type="work"
-                  status={work.status}
-                  saveButtonPressed={saveButtonPressed} />
-                <hr className="mt-2" />
+                <div className="">
+                  <StatusDiv type="work"
+                    status={work.status}
+                    saveButtonPressed={saveButtonPressed} />
+                  <hr className="mt-2" />
+                </div>
               </div>
 
             </div>
 
-            <div className="col-12 col-sm-6 col-lg-5 border border-success rounded">
-              <div className="pt-1">
-                <RelationshipDiagram type="work"
-                  name={work.name}
-                  parentType={work.parentType}
-                  projectId={work.parentId}
-                  projects={projects}
-                  parentId={work.parentId}
-                  parents={parents}
-                  siblings={siblings} />
+            <div className="col-12 col-sm-6 col-lg-5">
+              <div className="shadow rounded p-2 mt-2">
+                <div className="">
+                  <RelationshipDiagram type="work"
+                    name={work.name}
+                    parentType={work.parentType}
+                    projectId={work.projectId}
+                    projects={projects}
+                    parentId={work.parentId}
+                    parents={parents}
+                    siblings={siblings} />
+                  <hr className="mt-2" />
+                </div>
               </div>
             </div>
           </div>
 
           {/* second row */}
           <div className="row">
-            <div className="col-12 border border-dark rounded">
-
-              <div className="pt-1">
-                <DescriptionDiv text={work.description}
-                  saveButtonPressed={saveButtonPressed} />
-                <hr className="mt-2" />
+            <div className="col-12">
+              <div className="shadow rounded p-2 mt-2">
+                <div className="">
+                  <DescriptionDiv text={work.description}
+                    saveButtonPressed={saveButtonPressed} />
+                  <hr className="mt-2" />
+                </div>
               </div>
-
             </div>
           </div>
 
@@ -212,7 +219,7 @@ const Work = ({ match }: PathPropsType) => {
 
       }
 
-      <div>
+      <div className="col-4">
         <ConsoleLogButton name="match.params" state={match.params} />
         <ConsoleLogButton name="work" state={work} />
         <ConsoleLogButton name="parents" state={parents} />

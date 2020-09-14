@@ -122,85 +122,89 @@ const Feature = ({ match }: PathPropsType) => {
 
 						<div className="col-12 col-md-6 col-lg-7">
 
-							<div className="pt-1">
-								<NameBadgeDiv type='feature'
-									name={feature.name}
-									saveButtonPressed={saveButtonPressed} />
-								<hr className="mt-2" />
-							</div>
-
-							<div className="pt-1">
-								<TagsDiv type="feature"
-									tags={feature.tags}
-									saveButtonPressed={saveButtonPressed} />
-								<hr className="mt-2" />
-							</div>
-
-							<div className="pt-1">
-								<AssigneeDiv assigneeId={feature.assigneeId}
-									saveButtonPressed={saveButtonPressed}
-									users={users} />
-								<hr className="mt-2" />
-							</div>
-
-							{feature.projectId ?
-								<div className="pt-1">
-									<div className="d-flex justify-content-between align-items-baseline">
-										<label className="font-weight-light">Parent</label>
-									</div>
-									<div>
-										<h5 className="mb-0">
-											{projects[0] ? projects[0].name : '(open)'}
-										</h5>
-										<small className="">{`Parent ID: (${feature.parentId ? feature.parentId : 'n/a'})`}</small>
-									</div>
-									<hr className="mt-2" />
-								</div>
-								:
-								<div className="pt-1">
-									<ParentItemDiv type="feature"
-										currentParentId={feature.parentId}
-										parents={projects}
+							<div className="shadow rounded p-2 mt-2">
+								<div className="">
+									<NameBadgeDiv type='feature'
+										name={feature.name}
 										saveButtonPressed={saveButtonPressed} />
 									<hr className="mt-2" />
 								</div>
-							}
 
-							<div className="pt-1">
-								<StatusDiv type="feature"
-									status={feature.status}
-									saveButtonPressed={saveButtonPressed} />
-								<hr className="mt-2" />
+								<div className="">
+									<TagsDiv type="feature"
+										tags={feature.tags}
+										saveButtonPressed={saveButtonPressed} />
+									<hr className="mt-2" />
+								</div>
+
+								<div className="">
+									<AssigneeDiv assigneeId={feature.assigneeId}
+										saveButtonPressed={saveButtonPressed}
+										users={users} />
+									<hr className="mt-2" />
+								</div>
+
+								{feature.projectId ?
+									<div className="">
+										<div className="d-flex justify-content-between align-items-baseline">
+											<label className="font-weight-light">Parent</label>
+										</div>
+										<div>
+											<h5 className="mb-0">
+												{projects[0] ? projects[0].name : '(open)'}
+											</h5>
+											<small className="">{`Parent ID: (${feature.parentId ? feature.parentId : 'n/a'})`}</small>
+										</div>
+										<hr className="mt-2" />
+									</div>
+									:
+									<div className="">
+										<ParentItemDiv type="feature"
+											currentParentId={feature.parentId}
+											parents={projects}
+											saveButtonPressed={saveButtonPressed} />
+										<hr className="mt-2" />
+									</div>
+								}
+
+								<div className="">
+									<StatusDiv type="feature"
+										status={feature.status}
+										saveButtonPressed={saveButtonPressed} />
+									<hr className="mt-2" />
+								</div>
 							</div>
 						</div>
 
 
 						<div className="col-12 col-md-6 col-lg-5">
 
-							<div className="pt-1">
-								<label className="font-weight-light">Snapshot</label>
-								<div>
-									<SmallCountCard type="work" count={countItemsByType('work', children)} />
-									<SmallCountCard type="bug" count={countItemsByType('bug', children)} />
+							<div className="shadow rounded p-2 mt-2">
+								<div className="">
+									<label className="font-weight-light">Snapshot</label>
+									<div>
+										<SmallCountCard type="work" count={countItemsByType('work', children)} />
+										<SmallCountCard type="bug" count={countItemsByType('bug', children)} />
+									</div>
+									<hr className="mt-2" />
 								</div>
-								<hr className="mt-2" />
+
+								<div className="">
+									<label className="font-weight-light">Progress</label>
+									{children.length > 0 ?
+										<div>
+											<FilterItemsDiv onChange={updateChartFilter} includeFeature={false} />
+											<DonutChart title={camelToNormal(chartFilter)}
+												type={chartFilter} data={countByStatus(chartFilter, children)} position="right" />
+										</div>
+										:
+										<div className="d-flex justify-content-center">
+											<p>no data available</p>
+										</div>
+									}
+								</div>
 							</div>
 
-							<div className="pt-1">
-								<label className="font-weight-light">Progress</label>
-								{children.length > 0 ?
-									<div>
-										<FilterItemsDiv onChange={updateChartFilter} includeFeature={false} />
-										<DonutChart title={camelToNormal(chartFilter)}
-											type={chartFilter} data={countByStatus(chartFilter, children)} position="right" />
-									</div>
-									:
-									<div className="d-flex justify-content-center">
-										<p>no data available</p>
-									</div>
-								}
-							</div>
-							
 						</div>
 
 					</div>
@@ -211,22 +215,24 @@ const Feature = ({ match }: PathPropsType) => {
 					<div className="row">
 						<div className="col-12">
 
-							<div className="pt-1">
-								<DescriptionDiv text={feature.description}
-									saveButtonPressed={saveButtonPressed} />
-								<hr className="mt-2" />
-							</div>
+							<div className="shadow rounded p-2 mt-2">
+								<div className="">
+									<DescriptionDiv text={feature.description}
+										saveButtonPressed={saveButtonPressed} />
+									<hr className="mt-2" />
+								</div>
 
-							{feature.projectId ?
-								<ChildrenItemsDiv type="feature"
-									_id={feature._id}
-									projectId={feature.projectId}
-									includeFeature={false}
-									children={children}
-								/>
-								:
-								''
-							}
+								{feature.projectId ?
+									<ChildrenItemsDiv type="feature"
+										_id={feature._id}
+										projectId={feature.projectId}
+										includeFeature={false}
+										children={children}
+									/>
+									:
+									''
+								}
+							</div>
 
 						</div>
 
@@ -238,8 +244,10 @@ const Feature = ({ match }: PathPropsType) => {
 				<p>not found ...</p>
 			}
 
-			<ConsoleLogButton name="feature" state={feature} />
-			<ConsoleLogButton name="projects" state={projects} />
+			<div className="col-5">
+				<ConsoleLogButton name="feature" state={feature} />
+				<ConsoleLogButton name="projects" state={projects} />
+			</div>
 		</div >
 	)
 }

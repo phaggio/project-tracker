@@ -40,35 +40,36 @@ const NewProject = () => {
 			<div className="row">
 				<div className="col-12">
 
-					<div className="form-group">
-						<div className="d-flex justify-content-between align-items-baseline">
-							<label className="font-weight-light">Project name</label>
-							<small>Required</small>
-						</div>
-						<NameInput placeholder="enter project name ..." onChange={updateName} />
-					</div>
-
-					<div className="form-group">
-						<div className="d-flex justify-content-between align-items-baseline">
-							<label className="font-weight-light">Tags</label>
-							<small>Optional</small>
+					<div className="shadow rounded p-2 mt-2">
+						<div className="form-group">
+							<div className="d-flex justify-content-between align-items-baseline">
+								<label className="font-weight-light">Project name</label>
+								<small>Required</small>
+							</div>
+							<NameInput placeholder="enter project name ..." onChange={updateName} />
 						</div>
 
-						<TagsInput tags={tags} onChange={updateTags} />
-					</div>
-
-					<div className="form-group">
-						<div className="d-flex justify-content-between align-items-baseline">
-							<label className="font-weight-light">Description</label>
-							<small>Optional</small>
+						<div className="form-group">
+							<div className="d-flex justify-content-between align-items-baseline">
+								<label className="font-weight-light">Tags</label>
+								<small>Optional</small>
+							</div>
+							<TagsInput tags={tags} onChange={updateTags} />
 						</div>
-						<DescriptionTextarea text={projectInput.description}
-							placeholder="enter project description ..."
-							onChange={updateDescription} />
+
+						<div className="form-group">
+							<div className="d-flex justify-content-between align-items-baseline">
+								<label className="font-weight-light">Description</label>
+								<small>Optional</small>
+							</div>
+							<DescriptionTextarea text={projectInput.description}
+								placeholder="enter project description ..."
+								onChange={updateDescription} />
+						</div>
+
+						<AddNewButton actionName="Create" itemName="project" disabled={disableCreateButton} onClick={submitButtonPressed} />
+
 					</div>
-
-					<AddNewButton actionName="Create" itemName="project" disabled={disableCreateButton} onClick={submitButtonPressed} />
-
 				</div>
 			</div>
 

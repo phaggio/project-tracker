@@ -81,70 +81,73 @@ const NewBug = ({ match }: PathPropsType) => {
 
   return (
     <div className="container">
-      <div className="col-12">
+      <div className="row">
+        <div className="col-12">
 
-        <div className="form-group pt-2">
-          <div className="d-flex justify-content-between align-items-baseline">
-            <label className="font-weight-light">Bug name</label>
-            <small>Required</small>
+          <div className="shadow rounded p-2 mt-2">
+
+            <div className="form-group">
+              <div className="d-flex justify-content-between align-items-baseline">
+                <label className="font-weight-light">Bug name</label>
+                <small>Required</small>
+              </div>
+              <NameInput onChange={updateName} />
+            </div>
+
+            <div className="form-group">
+              <div className="d-flex justify-content-between align-items-baseline">
+                <label className="font-weight-light">Parent</label>
+                <small>Optional</small>
+              </div>
+              <ParentSelectBox parentId={match.params.parentId ? match.params.parentId : null}
+                parents={[...projects, ...items]} // pass projects and items to parent select box
+                onChange={updateParentAndProject} />
+            </div>
+
+            <div className="form-group">
+              <div className="d-flex justify-content-between align-items-baseline">
+                <label className="font-weight-light">Tags</label>
+                <small>Optional</small>
+              </div>
+              <TagsInput tags={tags} onChange={updateTags} />
+            </div>
+
+            <div className="form-group">
+              <div className="d-flex justify-content-between align-items-baseline">
+                <label className="font-weight-light">Assignee</label>
+              </div>
+              <AssigneeSelectBox currentAssigneeId={null} users={users} onChange={updateAssigneeId} />
+            </div>
+
+            <div className="form-group">
+              <div className="d-flex justify-content-between align-items-baseline">
+                <label className="font-weight-light">Description</label>
+                <small>Optional</small>
+              </div>
+              <DescriptionTextarea text={draft.description} onChange={updateDescription} />
+            </div>
+
+            <div className="form-group">
+              <div className="d-flex justify-content-between align-items-baseline">
+                <label className="font-weight-light">Status</label>
+              </div>
+              <StatusSelection defaultStatus="open" onChange={updateStatus} />
+            </div>
+
+            <div className="">
+              <AddNewButton itemName="bug" disabled={disableAddButton} onClick={submitButtonPressed} />
+            </div>
+
           </div>
-          <NameInput onChange={updateName} />
-        </div>
 
-        <div className="form-group pt-2">
-          <div className="d-flex justify-content-between align-items-baseline">
-            <label className="font-weight-light">Parent</label>
-            <small>Optional</small>
+          <div>
+            <ConsoleLogButton name="params" state={match.params} />
+            <ConsoleLogButton name="items" state={items} />
+            <ConsoleLogButton name="draft" state={draft} />
           </div>
-          <ParentSelectBox parentId={match.params.parentId ? match.params.parentId : null}
-            parents={[...projects, ...items]} // pass projects and items to parent select box
-            onChange={updateParentAndProject} />
+
+
         </div>
-
-        <div className="pt-2">
-          <div className="d-flex justify-content-between align-items-baseline">
-            <label className="font-weight-light">Tags</label>
-            <small>Optional</small>
-          </div>
-          <TagsInput tags={tags} onChange={updateTags} />
-        </div>
-
-        <div className="pt-2">
-          <div className="d-flex justify-content-between align-items-baseline">
-            <label className="font-weight-light">Assignee</label>
-          </div>
-          <AssigneeSelectBox currentAssigneeId={null} users={users} onChange={updateAssigneeId} />
-        </div>
-
-        <div className="pt-2">
-          <div className="d-flex justify-content-between align-items-baseline">
-            <label className="font-weight-light">Description</label>
-            <small>Optional</small>
-          </div>
-          <DescriptionTextarea text={draft.description} onChange={updateDescription} />
-        </div>
-
-        <div className="pt-2">
-          <div className="d-flex justify-content-between align-items-baseline">
-            <label className="font-weight-light">Status</label>
-          </div>
-          <StatusSelection defaultStatus="open" onChange={updateStatus} />
-        </div>
-
-        <div className="pt-2">
-          <AddNewButton itemName="bug" disabled={disableAddButton} onClick={submitButtonPressed} />
-        </div>
-
-
-
-
-        <div>
-          <ConsoleLogButton name="params" state={match.params} />
-          <ConsoleLogButton name="items" state={items} />
-          <ConsoleLogButton name="draft" state={draft} />
-        </div>
-
-
       </div>
     </div>
   )

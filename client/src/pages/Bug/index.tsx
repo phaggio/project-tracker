@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { PathPropsType, ItemType, UserType, ParentType } from '../../util/dataTypes';
+import { PathPropsType, ProjectType, ItemType, UserType, ParentType } from '../../util/dataTypes';
 import { findParentByParentId } from '../../util/functions';
 import { isItemType, isUserTypeArray } from '../../util/typecheck';
 import { projectRequest, itemRequest, userRequest } from '../../httpRequests';
 import { AxiosResponse } from 'axios';
-import { AssigneeDiv, ConsoleLogButton, DescriptionDiv, NameBadgeDiv, ParentItemDiv, StatusDiv, TagsDiv } from '../../components';
+import {
+  NameBadgeDiv, TagsDiv, AssigneeDiv, ParentItemDiv, StatusDiv, RelationshipDiagram, DescriptionDiv, ConsoleLogButton
+} from '../../components';
 
 
 const Bug = ({ match }: PathPropsType) => {
-  const [projects, updateProjects] = useState<ParentType[]>([]); // potential parents if bug has no parent
+  const [projects, updateProjects] = useState<ProjectType[]>([]); // potential parents if bug has no parent
   const [items, updateItems] = useState<ParentType[]>([]); // potential parents
   const [parents, updateParents] = useState<ParentType[]>([]);
   const [users, updateUsers] = useState<UserType[]>([]); // potential assignees
@@ -140,50 +142,69 @@ const Bug = ({ match }: PathPropsType) => {
       {bug._id && !loading ?
         <div>
           <div className="row">
+            <div className="col-12">
 
-            <div className="col-12 border border-info rounded">
-              <div className="pt-1">
-                <NameBadgeDiv type='bug'
-                  name={bug.name}
-                  saveButtonPressed={saveButtonPressed} />
-                <hr className="mt-2" />
+              <div className="shadow rounded p-2 mt-2">
+                <div className="">
+                  <NameBadgeDiv type='bug'
+                    name={bug.name}
+                    saveButtonPressed={saveButtonPressed} />
+                  <hr className="mt-2" />
+                </div>
+              </div>
+
+            </div>
+
+            <div className="col-12 col-sm-6 col-lg-7">
+
+              <div className="shadow rounded p-2 mt-2">
+                <div className="">
+                  <TagsDiv type="feature"
+                    tags={bug.tags}
+                    saveButtonPressed={saveButtonPressed} />
+                  <hr className="mt-2" />
+                </div>
+
+                <div className="">
+                  <AssigneeDiv assigneeId={bug.assigneeId}
+                    saveButtonPressed={saveButtonPressed}
+                    users={users} />
+                  <hr className="mt-2" />
+                </div>
+
+                <div>
+                  <ParentItemDiv type="bug"
+                    currentParentId={bug.parentId}
+                    parents={parents}
+                    saveButtonPressed={saveButtonPressed} />
+                  <hr className="mt-2" />
+                </div>
+
+                <div className="">
+                  <StatusDiv type="bug"
+                    status={bug.status}
+                    saveButtonPressed={saveButtonPressed} />
+                  <hr className="mt-2" />
+                </div>
               </div>
             </div>
 
-            <div className="col-12 col-sm-6 col-lg-7 border border-primary rounded">
-              <div className="pt-1">
-                <TagsDiv type="feature"
-                  tags={bug.tags}
-                  saveButtonPressed={saveButtonPressed} />
-                <hr className="mt-2" />
+            <div className="col-12 col-sm-6 col-lg-5">
+
+              <div className="shadow rounded p-2 mt-2">
+                <div className="">
+                  <RelationshipDiagram type="bug"
+                    name={bug.name}
+                    parentType={bug.parentType}
+                    projectId={bug.parentId}
+                    projects={projects}
+                    parentId={bug.parentId}
+                    parents={parents}
+                    siblings={siblings} />
+                  <hr className="mt-2" />
+                </div>
               </div>
 
-              <div className="pt-1">
-                <AssigneeDiv assigneeId={bug.assigneeId}
-                  saveButtonPressed={saveButtonPressed}
-                  users={users} />
-                <hr className="mt-2" />
-              </div>
-
-              <div>
-                <ParentItemDiv type="bug"
-                  currentParentId={bug.parentId}
-                  parents={parents}
-                  saveButtonPressed={saveButtonPressed} />
-                <hr className="mt-2" />
-              </div>
-
-              <div className="pt-1">
-                <StatusDiv type="bug"
-                  status={bug.status}
-                  saveButtonPressed={saveButtonPressed} />
-                <hr className="mt-2" />
-              </div>
-            </div>
-
-            <div className="col-12 col-sm-6 col-lg-5 border border-success rounded">
-              <h5>coming soon ...</h5>
-              <p>relationship diagram showing what current item's parent, project, siblings are</p>
             </div>
 
 
@@ -191,12 +212,16 @@ const Bug = ({ match }: PathPropsType) => {
           {/* end of first row */}
 
           <div className="row">
-            <div className="col-12 d-flex flex-column border border-warning rounded">
-              <div className="pt-1">
-                <DescriptionDiv text={bug.description}
-                  saveButtonPressed={saveButtonPressed} />
-                <hr className="mt-2" />
+            <div className="col-12">
+
+              <div className="shadow rounded p-2 mt-2">
+                <div className="">
+                  <DescriptionDiv text={bug.description}
+                    saveButtonPressed={saveButtonPressed} />
+                  <hr className="mt-2" />
+                </div>
               </div>
+
             </div>
           </div>
 
@@ -205,7 +230,7 @@ const Bug = ({ match }: PathPropsType) => {
         <p>not found ...</p>
       }
 
-      <div className="col-6">
+      <div className="col-5">
         <ConsoleLogButton name="params" state={match.params} />
         <ConsoleLogButton name="bug" state={bug} />
         <ConsoleLogButton name="projects" state={projects} />

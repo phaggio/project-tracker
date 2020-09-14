@@ -88,46 +88,52 @@ const Project = ({ match }: PathPropsType) => {
 				<div className="row">
 					<div className="col-12 col-md-6 col-lg-7">
 
-						<div className="pt-1">
-							<NameBadgeDiv type='project'
-								name={project.name}
-								saveButtonPressed={saveButtonPressed} />
-							<hr className="mt-2" />
-						</div>
+						<div className="shadow rounded p-2 mt-2">
+							<div className="">
+								<NameBadgeDiv type='project'
+									name={project.name}
+									saveButtonPressed={saveButtonPressed} />
+								<hr className="mt-2" />
+							</div>
 
-						<div className="pt-1">
-							<StatusDiv type='project'
-								status={project.status}
-								saveButtonPressed={saveButtonPressed} />
-							<hr className="mt-2" />
-						</div>
+							<div className="">
+								<StatusDiv type='project'
+									status={project.status}
+									saveButtonPressed={saveButtonPressed} />
+								<hr className="mt-2" />
+							</div>
 
-						<div className="pt-1">
-							<TagsDiv type="project"
-								tags={project.tags}
-								saveButtonPressed={saveButtonPressed} />
-							<hr className="mt-2" />
+							<div className="">
+								<TagsDiv type="project"
+									tags={project.tags}
+									saveButtonPressed={saveButtonPressed} />
+								<hr className="mt-2" />
+							</div>
 						</div>
 
 					</div>
 
 					<div className="col-12 col-md-6 col-lg-5">
-						<div className="pt-1">
-							<label className="font-weight-light">Snapshot</label>
-							<div>
-								<SmallCountCard type="feature" count={countItemsByType('feature', children)} />
-								<SmallCountCard type="work" count={countItemsByType('work', children)} />
-								<SmallCountCard type="bug" count={countItemsByType('bug', children)} />
+
+						<div className="shadow rounded p-2 mt-2">
+							<div className="">
+								<label className="font-weight-light">Snapshot</label>
+								<div>
+									<SmallCountCard type="feature" count={countItemsByType('feature', children)} />
+									<SmallCountCard type="work" count={countItemsByType('work', children)} />
+									<SmallCountCard type="bug" count={countItemsByType('bug', children)} />
+								</div>
+								<hr className="mt-2" />
 							</div>
-							<hr className="mt-2" />
+
+							<div className="">
+								<label className="font-weight-light">Overall progress</label>
+								<FilterItemsDiv onChange={updateChartFilter} />
+								<DonutChart title={camelToNormal(chartFilter)}
+									type={chartFilter} data={countByStatus(chartFilter, children)} position="right" />
+							</div>
 						</div>
 
-						<div className="pt-1">
-							<label className="font-weight-light">Overall progress</label>
-							<FilterItemsDiv onChange={updateChartFilter} />
-							<DonutChart title={camelToNormal(chartFilter)}
-								type={chartFilter} data={countByStatus(chartFilter, children)} position="right" />
-						</div>
 					</div>
 
 				</div>
@@ -140,14 +146,18 @@ const Project = ({ match }: PathPropsType) => {
 			{project._id ?
 				<div className="row mt-1">
 					<div className="col-12">
-						<DescriptionDiv text={project.description}
-							saveButtonPressed={saveButtonPressed} />
-						<hr className="mt-2" />
-						<ChildrenItemsDiv type='project'
-							_id={project._id}
-							projectId={project._id}
-							includeFeature={true}
-							children={immediateChildren} />
+
+						<div className="shadow rounded p-2 mt-2">
+							<DescriptionDiv text={project.description}
+								saveButtonPressed={saveButtonPressed} />
+							<hr className="mt-2" />
+							<ChildrenItemsDiv type='project'
+								_id={project._id}
+								projectId={project._id}
+								includeFeature={true}
+								children={immediateChildren} />
+						</div>
+
 					</div>
 				</div>
 				:
@@ -155,9 +165,12 @@ const Project = ({ match }: PathPropsType) => {
 			}
 			{/* end of second row */}
 
-			<ConsoleLogButton name="project" state={project} />
-			<ConsoleLogButton name="children" state={children} />
-			<ConsoleLogButton name="immediate children" state={immediateChildren} />
+
+			<div className="col-5">
+				<ConsoleLogButton name="project" state={project} />
+				<ConsoleLogButton name="children" state={children} />
+				<ConsoleLogButton name="immediate children" state={immediateChildren} />
+			</div>
 		</div>
 	)
 };

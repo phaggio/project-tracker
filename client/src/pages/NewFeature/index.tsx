@@ -69,59 +69,68 @@ const NewFeature = ({ match }: PathPropsType) => {
 
   return (
     <div className="container">
-      <div className="form-group">
-        <div className="d-flex justify-content-between align-items-baseline">
-          <label className="font-weight-light">Feature name</label>
-          <small>Required</small>
+      <div className="row">
+        <div className="col-12">
+
+          <div className="shadow rounded p-2 mt-2">
+
+            <div className="form-group">
+              <div className="d-flex justify-content-between align-items-baseline">
+                <label className="font-weight-light">Feature name</label>
+                <small>Required</small>
+              </div>
+              <NameInput onChange={updateName} placeholder="enter feature name ..." />
+            </div>
+
+            <div className="form-group">
+              <div className="d-flex justify-content-between align-items-baseline">
+                <label className="font-weight-light">Parent</label>
+                <small>Optional</small>
+              </div>
+              <ParentSelectBox parents={projects}
+                parentId={match.params.parentId !== undefined ? match.params.parentId : null}
+                parentType={match.params.parentType !== undefined ? match.params.parentType : null}
+                onChange={updateParentAndProjectId} />
+            </div>
+
+            <div className="form-group">
+              <div className="d-flex justify-content-between align-items-baseline">
+                <label className="font-weight-light">Tags</label>
+                <small>Optional</small>
+              </div>
+              <TagsInput tags={tags} onChange={updateTags} />
+            </div>
+
+            <div className="form-group">
+              <div className="d-flex justify-content-between align-items-baseline">
+                <label className="font-weight-light">Description</label>
+                <small>Optional</small>
+              </div>
+              <DescriptionTextarea text={draft.description} onChange={updateDescription}
+                placeholder="enter feature description ..." />
+            </div>
+
+            <div className="form-group">
+              <label className="font-weight-light">Assign to:</label>
+              <AssigneeSelectBox currentAssigneeId={null}
+                users={users} onChange={updateAssigneeId} />
+            </div>
+
+            <div className="form-group">
+              <label className="font-weight-light">Status</label>
+              <StatusSelection onChange={updateStatus} />
+            </div>
+
+            <div className="">
+              <AddNewButton itemName="feature" disabled={disableAddButton} onClick={submitButtonPressed} />
+            </div>
+
+          </div>
+
+
+          <ConsoleLogButton name="draft" state={draft} />
         </div>
-        <NameInput onChange={updateName} placeholder="enter feature name ..." />
       </div>
-
-      <div className="form-group pt-2">
-        <div className="d-flex justify-content-between align-items-baseline">
-          <label className="font-weight-light">Parent</label>
-          <small>Optional</small>
-        </div>
-        <ParentSelectBox parents={projects}
-          parentId={match.params.parentId !== undefined ? match.params.parentId : null}
-          parentType={match.params.parentType !== undefined ? match.params.parentType : null}
-          onChange={updateParentAndProjectId} />
-      </div>
-
-      <div className="pt-2">
-        <div className="d-flex justify-content-between align-items-baseline">
-          <label className="font-weight-light">Tags</label>
-          <small>Optional</small>
-        </div>
-        <TagsInput tags={tags} onChange={updateTags} />
-      </div>
-
-      <div className="pt-2">
-        <div className="d-flex justify-content-between align-items-baseline">
-          <label className="font-weight-light">Description</label>
-          <small>Optional</small>
-        </div>
-        <DescriptionTextarea text={draft.description} onChange={updateDescription}
-          placeholder="enter feature description ..." />
-      </div>
-
-      <div className="pt-2">
-        <label className="font-weight-light">Assign to:</label>
-        <AssigneeSelectBox currentAssigneeId={null}
-          users={users} onChange={updateAssigneeId} />
-      </div>
-
-      <div className="pt-2">
-        <label className="font-weight-light">Status</label>
-        <StatusSelection onChange={updateStatus} />
-      </div>
-
-      <div className="pt-2">
-        <AddNewButton itemName="feature" disabled={disableAddButton} onClick={submitButtonPressed} />
-      </div>
-
-      <ConsoleLogButton name="draft" state={draft} />
-
     </div>
   )
 };
