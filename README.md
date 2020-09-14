@@ -4,7 +4,8 @@ A web application where users can track the progress of their projects.
 
 Application link: https://phaggio-project-tracker.herokuapp.com/
 
-![inAction](https://raw.githubusercontent.com/phaggio/project-tracker/master/screenshot/project-tracker-screenshot-01.png)
+<img src="https://raw.githubusercontent.com/phaggio/project-tracker/master/screenshot/project-tracker-screenshot-01.png" width="480">
+
 
 ## Table of contents
 * [Setup](#setup)
