@@ -1,4 +1,4 @@
-import { ItemType, ParentType, ProjectType } from './dataTypes';
+import { ItemType, ParentType, ProjectType, UserType } from './dataTypes';
 
 // util functions
 
@@ -131,6 +131,18 @@ const findChildrenByParentId = (parentId: string, items: ItemType[]): ItemType[]
   return items.filter(item => { return item.parentId === parentId })
 }
 
+const findAssigneeNameByAssigneeId = (assigneeId: string | null, users: UserType[]): string => {
+  if (assigneeId === null) return 'Unassigned';
+  let name = 'User not found'
+  users.forEach(user => {
+    if (user._id === assigneeId) {
+      name = user.fullName;
+      return name;
+    }
+  })
+  return name;
+}
+
 export {
   parseTags,
   capitalizeWord,
@@ -144,5 +156,6 @@ export {
   countItemsByType,
   findParentByParentId,
   findChildrenByProjectId,
-  findChildrenByParentId
+  findChildrenByParentId,
+  findAssigneeNameByAssigneeId
 }

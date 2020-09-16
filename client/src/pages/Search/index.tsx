@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { projectRequest, itemRequest } from '../../httpRequests';
-import { ItemType, ProjectType } from '../../util/dataTypes';
-import { findProjectByProjectId } from '../../util/functions';
-import { SearchInput, StatusSelection, ConsoleLogButton } from '../../components';
+import { projectRequest, itemRequest, userRequest } from '../../httpRequests';
+import { ProjectType, ItemType, UserType } from '../../util/dataTypes';
+import { findProjectByProjectId, findAssigneeNameByAssigneeId } from '../../util/functions';
+import { SearchInput, StatusSelection, SearchItem, ConsoleLogButton } from '../../components';
 import { AxiosResponse } from 'axios';
 
 const Search = () => {
   const [projects, updateProjects] = useState<ProjectType[]>([]);
   const [items, updateItems] = useState<ItemType[]>([]);
+  const [users, updateUsers] = useState<UserType[]>([]);
 
   const [input, updateInput] = useState<string>('');
   const [filteredItems, updateFilteredItems] = useState<ItemType[]>([]);
@@ -28,6 +29,10 @@ const Search = () => {
     itemRequest
       .getAllItems()
       .then((response: AxiosResponse) => updateItems(response.data))
+      .catch(err => console.error(err))
+    userRequest
+      .getAllUsers()
+      .then((response: AxiosResponse) => updateUsers(response.data))
       .catch(err => console.error(err))
   }, []);
 
@@ -131,20 +136,23 @@ const Search = () => {
         </div>
 
         <div className="col-12 col-md-8">
+          <div className="shadow rounded p-2 mt-2">
 
-          <h3>Item table goes here ...</h3>
-
-          <div>
-
+            <h3>Items</h3>
 
             {
               filteredItems ? filteredItems.map(item => {
-                return <Link className="btn btn-primary btn-sm mr-2"
-                  key={item._id} to={`/${item.type}/${item._id}`}>{item.name}</Link>
+                return <SearchItem key={item._id}
+                  type={item.type}
+                  name={item.name}
+                  assignee={findAssigneeNameByAssigneeId(item.assigneeId, users)}
+                  status={item.status}
+                  to={`/${item.type}/${item._id}`} />
               })
                 :
-                'no item'
+                ''
             }
+
           </div>
         </div>
 
@@ -153,6 +161,7 @@ const Search = () => {
         <div className="col-3">
           <ConsoleLogButton name="projects" state={projects} />
           <ConsoleLogButton name="items" state={items} />
+          <ConsoleLogButton name="users" state={users} />
           <ConsoleLogButton name="input" state={input} />
           <ConsoleLogButton name="projectId" state={projectId} />
           <ConsoleLogButton name="type" state={type} />
