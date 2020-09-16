@@ -2,6 +2,7 @@ import React from 'react';
 
 type PropsType = {
   type?: string;
+  all?: boolean;
   defaultStatus?: string;
   onChange: (str: string) => void;
 }
@@ -28,6 +29,7 @@ const StatusSelection = (props: PropsType) => {
           onChange={(event) => {
             props.onChange(event.target.selectedOptions[0].value)
           }}>
+          {props.all ? <option value=''>All</option> : ``}
           <option value='Open'>Open</option>
           <option value='Active'>Active</option>
           <option value='Completed'>Completed</option>

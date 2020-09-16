@@ -21,6 +21,7 @@ import ProjectLink from './ProjectLink';
 import ProjectList from './ProjectList';
 import RelationshipDiagram from './RelationshipDiagram';
 import SaveButton from './SaveButton';
+import SearchInput from './SearchInput';
 import SmallCountCard from './SmallCountCard';
 import SmallNameBadge from './SmallNameBadge';
 import StatusDiv from './StatusDiv';
@@ -54,6 +55,7 @@ export {
   ProjectList,
   RelationshipDiagram,
   SaveButton,
+  SearchInput,
   SmallCountCard,
   SmallNameBadge,
   StatusDiv,

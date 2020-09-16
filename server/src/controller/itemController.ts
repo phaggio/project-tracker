@@ -39,14 +39,16 @@ const findItemsByType = (request: Request, response: Response) => {
     .catch(err => response.json(err))
 }
 
-const findItemsByQuery = (request: Request, response: Response) => {
-  let query = request.query
-  console.log(`from controller... \nrequest.query`)
+const findItemsBySearchFilter = (request: Request, response: Response) => {
+  let query: any = { ...request.query }
+  let projectId;
+  if (query.projectId === 'null') {
+    query.projectId = { $type: 10 }
+  } else {
+    projectId = query.projectId
+  }
+  console.log(`from controller...`)
   console.log(query);
-  // if (query.projectId === 'null') {
-  //   query.projectId = { $type: 10 }
-  // }
-  // console.log(query)
   Item
     .find(query)
     .then(data => response.json(data))
@@ -85,7 +87,7 @@ export {
   findItemById,
   findItemsByParentId,
   findItemsByType,
-  findItemsByQuery,
+  findItemsBySearchFilter,
   findItemsWithProjectId,
   updateItemById
 }

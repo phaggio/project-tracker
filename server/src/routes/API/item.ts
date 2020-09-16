@@ -5,7 +5,7 @@ import {
   findItemById,
   findItemsByParentId,
   findItemsByType,
-  findItemsByQuery,
+  findItemsBySearchFilter,
   findItemsWithProjectId,
   updateItemById
 } from '../../controller/itemController';
@@ -26,7 +26,7 @@ router.route('/parentId/:id')
   .get(findItemsByParentId)
 
 router.route('/filter')
-  .get(findItemsByQuery)
+  .get(findItemsBySearchFilter)
 
 router.route('/query')
   .get(findItemsWithProjectId)
