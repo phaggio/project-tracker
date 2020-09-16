@@ -19,7 +19,7 @@ Application link: https://phaggio-project-tracker.herokuapp.com/
 To run the appllication locally in dev mode:
 
 1. fork this repo
-2. navigate to the repo directory on your local device in terminal
+2. open your terminal and navigate to the repo directory on your local device
 3. install required dependencies
 <code>npm install</code>
 4. once dependencies are installed, you can run the dev mode
@@ -43,7 +43,7 @@ Server side src directory is organized as follows:
 * routes - files that take API routes and send them to the respective controller and operations.
 * seeds - sample data 
 
-## App item design
+## App design
 In this application, user can create various 'items' to divide and distribute the workload/reponsibilities of a project. 
 
 The highest unit of workload is 'project'. The lowest unit are 'work' and 'bug'.
@@ -60,7 +60,10 @@ Furthermore, once a feature/work/bug is assigned in a project, it cannot change 
 
 
 ## Features
-* 
+* snapshot and chart by item type on the project page. user can filter the chart by type. <img src="https://raw.githubusercontent.com/phaggio/project-tracker/master/screenshot/filter-chart.png">
+* user can edit the assignee of an item. the selection dropbox also offers a search function, where user can search for assignees by name. <img src="https://raw.githubusercontent.com/phaggio/project-tracker/master/screenshot/search-user-filter.png">
+* on work or bug item page level, a relationship tree is shown to the user <img src="https://raw.githubusercontent.com/phaggio/project-tracker/master/screenshot/item-relationship.png" >
+* on the Search page, there's a search filter where user can filter the list of items by their assigned project, type, status. User can also search for items by matching name in the item name input <img src="https://raw.githubusercontent.com/phaggio/project-tracker/master/screenshot/search-filter.png">
 
 
 ## Tech stack
@@ -78,10 +81,8 @@ Server
 * mongoose
 
 
-
-one project => many (features, workItems, bugs)
-one feature => many (workItems, bugs)
-one workItem => many (bugs)
-
-two collections - projects and items
-every item should have a prjectId. This is for archiving all items once project is archived.
+## Contributors
+Feel free leave me any feedbacks.
+- [Richard Wang](https://github.com/phaggio)
+[Github](https://github.com/phaggio) ,
+[LinkedIn](https://www.linkedin.com/in/richard-c-wang/)
