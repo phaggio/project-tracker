@@ -60,10 +60,18 @@ Furthermore, once a feature/work/bug is assigned in a project, it cannot change 
 
 
 ## Features
-* snapshot and chart by item type on the project page. user can filter the chart by type. <img src="https://raw.githubusercontent.com/phaggio/project-tracker/master/screenshot/filter-chart.png">
-* user can edit the assignee of an item. the selection dropbox also offers a search function, where user can search for assignees by name. <img src="https://raw.githubusercontent.com/phaggio/project-tracker/master/screenshot/search-user-filter.png">
-* on work or bug item page level, a relationship tree is shown to the user <img src="https://raw.githubusercontent.com/phaggio/project-tracker/master/screenshot/item-relationship.png" >
-* on the Search page, there's a search filter where user can filter the list of items by their assigned project, type, status. User can also search for items by matching name in the item name input <img src="https://raw.githubusercontent.com/phaggio/project-tracker/master/screenshot/search-filter.png">
+* snapshot and chart by item type on the project page. user can filter the chart by type. 
+  
+  <img src="https://raw.githubusercontent.com/phaggio/project-tracker/master/screenshot/filter-chart.png">
+* user can edit the assignee of an item. the selection dropbox also offers a search function, where user can search for assignees by name. 
+  
+  <img src="https://raw.githubusercontent.com/phaggio/project-tracker/master/screenshot/search-user-filter.png">
+* on work or bug item page level, a relationship tree is shown to the user 
+  
+  <img src="https://raw.githubusercontent.com/phaggio/project-tracker/master/screenshot/item-relationship.png" >
+* on the Search page, there's a search filter where user can filter the list of items by their assigned project, type, status. User can also search for items by matching name in the item name input 
+  
+  <img src="https://raw.githubusercontent.com/phaggio/project-tracker/master/screenshot/search-filter.png">
 
 
 ## Tech stack
