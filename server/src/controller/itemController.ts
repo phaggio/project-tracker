@@ -40,9 +40,13 @@ const findItemsByType = (request: Request, response: Response) => {
 }
 
 const findItemsByQuery = (request: Request, response: Response) => {
-  const query = request.query
+  let query = request.query
   console.log(`from controller... \nrequest.query`)
   console.log(query);
+  // if (query.projectId === 'null') {
+  //   query.projectId = { $type: 10 }
+  // }
+  // console.log(query)
   Item
     .find(query)
     .then(data => response.json(data))
@@ -53,7 +57,7 @@ const findItemsWithProjectId = (request: Request, response: Response) => {
   console.log(`from controller... \nrequest.query`)
   let query = request.query
   query = query.projectId ? query : {
-    ...query, 
+    ...query,
     projectId: {
       $ne: undefined
     }
@@ -63,6 +67,8 @@ const findItemsWithProjectId = (request: Request, response: Response) => {
     .then(data => response.json(data))
     .catch(err => response.json(err))
 }
+
+
 
 const updateItemById = (request: Request, response: Response) => {
   const id = request.params.id;

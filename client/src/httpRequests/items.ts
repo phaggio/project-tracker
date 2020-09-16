@@ -24,6 +24,10 @@ const getItemsWithProjectIdByQuery = (query: object) => {
   return axios.get(`/api/item/query`, { params: query });
 };
 
+const getItemsWithQuery = (query: object) => {
+  return axios.get(`/api/item/filter`, { params: query })
+}
+
 const updateItemById = (itemId: string, data: object) => {
   return axios.put(`/api/item/id/${itemId}`, data);
 };
@@ -35,5 +39,6 @@ export {
   getItemsByParentId,
   getItemsByType,
   getItemsWithProjectIdByQuery,
+  getItemsWithQuery,
   updateItemById
 };

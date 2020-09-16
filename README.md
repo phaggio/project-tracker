@@ -16,8 +16,14 @@ Application link: https://phaggio-project-tracker.herokuapp.com/
 
 
 ## Setup
+To run the appllication locally in dev mode:
 
-
+1. fork this repo
+2. navigate to the repo directory on your local device in terminal
+3. install required dependencies
+<code>npm install</code>
+4. once dependencies are installed, you can run the dev mode
+<code>npm run dev</code>
 
 
 ## File structure

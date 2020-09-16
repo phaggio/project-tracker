@@ -22,7 +22,7 @@ const NavBar = () => {
             <NavLink exact className="nav-link" to="/" onClick={toggle}>Overview</NavLink>
           </li>
           <li className="nav-item">
-            <NavLink exact className="nav-link" to="/boards" onClick={toggle}>Boards</NavLink>
+            <NavLink exact className="nav-link" to="/search" onClick={toggle}>Search</NavLink>
           </li>
           <li className="nav-item">
             <NavLink exact className="nav-link" to="/settings" onClick={toggle}>Settings</NavLink>

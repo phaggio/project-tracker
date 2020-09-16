@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
-import EditButton from '../EditButton';
-import SaveButton from '../SaveButton';
-import CancelButton from '../CancelButton';
-import StatusSelection from '../StatusSelection';
+import { EditButton, SaveButton, CancelButton, StatusSelection } from '..'
 import { capitalizeWord } from '../../util/functions';
 
 type PropsType = {

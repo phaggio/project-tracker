@@ -1,5 +1,5 @@
 import Home from './Home';
-import Boards from './Boards';
+import Search from './Search';
 import Settings from './Settings';
 import NewProject from './NewProject';
 import NewFeature from './NewFeature';
@@ -13,7 +13,7 @@ import Bug from './Bug';
 
 export {
   Home,
-  Boards,
+  Search,
   Settings,
   NewProject,
   NewFeature,
