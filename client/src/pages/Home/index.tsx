@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ProjectType, ItemType } from '../../util/dataTypes';
 import { countItemsByType, countByStatus } from '../../util/functions'
 import { projectRequest, itemRequest } from '../../httpRequests';
 import { NewButton, ProjectList, AddNewDropDownButton, CountCard, ConsoleLogButton } from '../../components';
+import { AxiosResponse } from 'axios';
 import DonutChart from '../../charts/DonutChart';
 import DebugModeContext from '../../util/DebugModeContext';
 
@@ -10,19 +11,15 @@ const Home = () => {
   const [projects, updateProjects] = useState<ProjectType[]>([]);
   const [items, updateItems] = useState<ItemType[]>([]);
 
-  const debug = useContext(DebugModeContext)
-  console.log(debug)
   // init Get calls to get all project and item data
   useEffect(() => {
     try {
       projectRequest
         .getAllProjects()
-        .then(res => {
-          updateProjects(Array.from(res.data))
-        })
+        .then((response: AxiosResponse) => updateProjects(Array.from(response.data)))
       itemRequest
         .getAllItems()
-        .then(res => updateItems(Array.from(res.data)))
+        .then((response: AxiosResponse) => updateItems(Array.from(response.data)))
     } catch (err) {
       console.error(err);
     }
@@ -113,19 +110,17 @@ const Home = () => {
 
 
       <DebugModeContext.Consumer>
-        {
-          ({ debugMode }) => {
-            if (debugMode) {
-              return (
-                <div className="col-4">
-                  <ConsoleLogButton name="projects" state={projects} />
-                  <ConsoleLogButton name="items" state={items} />
-                </div>
+        {({ debugMode }) => {
+          if (debugMode) {
+            return (
+              <div className="col-4">
+                <ConsoleLogButton name="projects" state={projects} />
+                <ConsoleLogButton name="items" state={items} />
+              </div>
 
-              )
-            }
+            )
           }
-        }
+        }}
       </DebugModeContext.Consumer>
 
 

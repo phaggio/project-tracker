@@ -5,14 +5,11 @@ import DebugModeContext from '../../util/DebugModeContext';
 const Settings = () => {
 
   const debugMode = useContext(DebugModeContext);
-  console.log(debugMode)
 
   return (
     <div className="container">
       <div className="row">
         <div className="col-12 d-flex flex-column align-items-center">
-
-          <h4>Coming soon ... </h4>
 
           <div>
             <Link className="btn btn-primary btn-sm" to={'/new/user'}>Add new user</Link>
