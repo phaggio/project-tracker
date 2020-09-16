@@ -1,14 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { ProjectType, ItemType } from '../../util/dataTypes';
 import { countItemsByType, countByStatus } from '../../util/functions'
 import { projectRequest, itemRequest } from '../../httpRequests';
 import { NewButton, ProjectList, AddNewDropDownButton, CountCard, ConsoleLogButton } from '../../components';
 import DonutChart from '../../charts/DonutChart';
+import DebugModeContext from '../../util/DebugModeContext';
 
 const Home = () => {
   const [projects, updateProjects] = useState<ProjectType[]>([]);
   const [items, updateItems] = useState<ItemType[]>([]);
 
+  const debug = useContext(DebugModeContext)
+  console.log(debug)
   // init Get calls to get all project and item data
   useEffect(() => {
     try {
@@ -107,7 +110,25 @@ const Home = () => {
         {/* end of right side */}
       </div>
       {/* end of main row */}
-      <ConsoleLogButton name="items" state={items} />
+
+
+      <DebugModeContext.Consumer>
+        {
+          ({ debugMode }) => {
+            if (debugMode) {
+              return (
+                <div className="col-4">
+                  <ConsoleLogButton name="projects" state={projects} />
+                  <ConsoleLogButton name="items" state={items} />
+                </div>
+
+              )
+            }
+          }
+        }
+      </DebugModeContext.Consumer>
+
+
     </div >
   )
 };

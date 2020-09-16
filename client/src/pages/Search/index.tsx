@@ -5,6 +5,7 @@ import { ProjectType, ItemType, UserType } from '../../util/dataTypes';
 import { findProjectByProjectId, findAssigneeNameByAssigneeId } from '../../util/functions';
 import { SearchInput, StatusSelection, SearchItem, ConsoleLogButton } from '../../components';
 import { AxiosResponse } from 'axios';
+import DebugModeContext from '../../util/DebugModeContext';
 
 const Search = () => {
   const [projects, updateProjects] = useState<ProjectType[]>([]);
@@ -133,6 +134,23 @@ const Search = () => {
             </div>
 
           </div>
+
+          <DebugModeContext.Consumer>
+            {({ debugMode }) => {
+              if (debugMode) return (
+                <div>
+                  <ConsoleLogButton name="projects" state={projects} />
+                  <ConsoleLogButton name="items" state={items} />
+                  <ConsoleLogButton name="users" state={users} />
+                  <ConsoleLogButton name="input" state={input} />
+                  <ConsoleLogButton name="projectId" state={projectId} />
+                  <ConsoleLogButton name="type" state={type} />
+                  <ConsoleLogButton name="status" state={status} />
+                </div>
+              )
+            }}
+          </DebugModeContext.Consumer>
+
         </div>
 
         <div className="col-12 col-md-8">
@@ -158,15 +176,7 @@ const Search = () => {
 
 
 
-        <div className="col-3">
-          <ConsoleLogButton name="projects" state={projects} />
-          <ConsoleLogButton name="items" state={items} />
-          <ConsoleLogButton name="users" state={users} />
-          <ConsoleLogButton name="input" state={input} />
-          <ConsoleLogButton name="projectId" state={projectId} />
-          <ConsoleLogButton name="type" state={type} />
-          <ConsoleLogButton name="status" state={status} />
-        </div>
+
 
       </div>
     </div>

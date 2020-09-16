@@ -5,6 +5,7 @@ import { projectRequest, itemRequest, userRequest } from '../../httpRequests';
 import {
   NameInput, ParentSelectBox, TagsInput, DescriptionTextarea, AssigneeSelectBox, StatusSelection, AddNewButton, ConsoleLogButton
 } from '../../components';
+import DebugModeContext from '../../util/DebugModeContext';
 
 const NewFeature = ({ match }: PathPropsType) => {
   const [projects, updateProjects] = useState<ProjectType[]>([]); // potential parents
@@ -128,7 +129,15 @@ const NewFeature = ({ match }: PathPropsType) => {
           </div>
 
 
-          <ConsoleLogButton name="draft" state={draft} />
+          <DebugModeContext.Consumer>
+            {({ debugMode }) => {
+              if (debugMode) return (
+                <div className="col-4">
+                  <ConsoleLogButton name="draft" state={draft} />
+                </div>
+              )
+            }}
+          </DebugModeContext.Consumer>
         </div>
       </div>
     </div>

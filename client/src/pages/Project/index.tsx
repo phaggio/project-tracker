@@ -8,6 +8,7 @@ import {
 } from '../../components';
 import DonutChart from '../../charts/DonutChart';
 import { AxiosResponse } from 'axios';
+import DebugModeContext from '../../util/DebugModeContext';
 
 const Project = ({ match }: PathPropsType) => {
 	const [project, updateProject] = useState<ProjectType>({
@@ -166,11 +167,17 @@ const Project = ({ match }: PathPropsType) => {
 			{/* end of second row */}
 
 
-			<div className="col-5">
-				<ConsoleLogButton name="project" state={project} />
-				<ConsoleLogButton name="children" state={children} />
-				<ConsoleLogButton name="immediate children" state={immediateChildren} />
-			</div>
+			<DebugModeContext.Consumer>
+				{({ debugMode }) => {
+					if (debugMode) return (
+						<div className="col-4">
+							<ConsoleLogButton name="project" state={project} />
+							<ConsoleLogButton name="children" state={children} />
+							<ConsoleLogButton name="immediate children" state={immediateChildren} />
+						</div>
+					)
+				}}
+			</DebugModeContext.Consumer>
 		</div>
 	)
 };

@@ -7,6 +7,7 @@ import {
   NameBadgeDiv, TagsDiv, AssigneeDiv, ParentItemDiv, StatusDiv, RelationshipDiagram, DescriptionDiv, ConsoleLogButton
 } from '../../components';
 import { AxiosResponse } from 'axios';
+import DebugModeContext from '../../util/DebugModeContext';
 
 const Work = ({ match }: PathPropsType) => {
   const [projects, updateProjects] = useState<ProjectType[]>([]);
@@ -219,12 +220,19 @@ const Work = ({ match }: PathPropsType) => {
 
       }
 
-      <div className="col-4">
-        <ConsoleLogButton name="match.params" state={match.params} />
-        <ConsoleLogButton name="work" state={work} />
-        <ConsoleLogButton name="parents" state={parents} />
-        <ConsoleLogButton name="siblings" state={siblings} />
-      </div>
+
+      <DebugModeContext.Consumer>
+        {({ debugMode }) => {
+          if (debugMode) return (
+            <div className="col-4">
+              <ConsoleLogButton name="match.params" state={match.params} />
+              <ConsoleLogButton name="work" state={work} />
+              <ConsoleLogButton name="parents" state={parents} />
+              <ConsoleLogButton name="siblings" state={siblings} />
+            </div>
+          )
+        }}
+      </DebugModeContext.Consumer>
 
     </div>
   )

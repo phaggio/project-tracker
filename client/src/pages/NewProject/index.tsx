@@ -4,6 +4,7 @@ import { NameInput, TagsInput, DescriptionTextarea, AddNewButton } from '../../c
 import ConsoleLogButton from '../../components/ConsoleLogButton';
 import { AxiosResponse } from 'axios';
 import { projectRequest } from '../../httpRequests';
+import DebugModeContext from '../../util/DebugModeContext';
 
 const NewProject = () => {
 	const [disableCreateButton, updateDisableCreateButton] = useState(true);
@@ -74,10 +75,15 @@ const NewProject = () => {
 			</div>
 
 
-			{/* debug console.log */}
-			<div className="col-5">
-				<ConsoleLogButton name="project input" state={projectInput} />
-			</div>
+			<DebugModeContext.Consumer>
+				{({ debugMode }) => {
+					if (debugMode) return (
+						<div className="col-4">
+							<ConsoleLogButton name="project input" state={projectInput} />
+						</div>
+					)
+				}}
+			</DebugModeContext.Consumer>
 
 		</div>
 	)

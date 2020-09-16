@@ -7,6 +7,7 @@ import { AxiosResponse } from 'axios';
 import {
   NameBadgeDiv, TagsDiv, AssigneeDiv, ParentItemDiv, StatusDiv, RelationshipDiagram, DescriptionDiv, ConsoleLogButton
 } from '../../components';
+import DebugModeContext from '../../util/DebugModeContext';
 
 
 const Bug = ({ match }: PathPropsType) => {
@@ -230,14 +231,20 @@ const Bug = ({ match }: PathPropsType) => {
         <p>not found ...</p>
       }
 
-      <div className="col-5">
-        <ConsoleLogButton name="params" state={match.params} />
-        <ConsoleLogButton name="bug" state={bug} />
-        <ConsoleLogButton name="projects" state={projects} />
-        <ConsoleLogButton name="items" state={items} />
-        <ConsoleLogButton name="parents" state={parents} />
-      </div>
 
+      <DebugModeContext.Consumer>
+        {({ debugMode }) => {
+          if (debugMode) return (
+            <div className="col-4">
+              <ConsoleLogButton name="params" state={match.params} />
+              <ConsoleLogButton name="bug" state={bug} />
+              <ConsoleLogButton name="projects" state={projects} />
+              <ConsoleLogButton name="items" state={items} />
+              <ConsoleLogButton name="parents" state={parents} />
+            </div>
+          )
+        }}
+      </DebugModeContext.Consumer>
     </div>
   )
 }

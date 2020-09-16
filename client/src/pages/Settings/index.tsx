@@ -1,7 +1,11 @@
-import React from 'react';
-import { Link } from 'react-router-dom'
+import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
+import DebugModeContext from '../../util/DebugModeContext';
 
 const Settings = () => {
+
+  const debugMode = useContext(DebugModeContext);
+  console.log(debugMode)
 
   return (
     <div className="container">
@@ -12,6 +16,11 @@ const Settings = () => {
 
           <div>
             <Link className="btn btn-primary btn-sm" to={'/new/user'}>Add new user</Link>
+          </div>
+
+          <div className="d-flex align-items-center">
+            <label className="m-0 mr-2">Debug mode: </label>
+            <input className="" type="checkbox" checked={debugMode.debugMode} onChange={() => debugMode.toggle()} />
           </div>
 
           <div>

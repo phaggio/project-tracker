@@ -5,7 +5,8 @@ import { AxiosResponse } from 'axios';
 import { projectRequest, userRequest, itemRequest } from '../../httpRequests';
 import {
   NameInput, ParentSelectBox, TagsInput, AssigneeSelectBox, DescriptionTextarea, StatusSelection, AddNewButton, ConsoleLogButton
-} from '../../components'
+} from '../../components';
+import DebugModeContext from '../../util/DebugModeContext';
 
 const NewWork = ({ match }: PathPropsType) => {
   const [projects, updateProjects] = useState<ParentType[]>([]); // potential parents
@@ -142,13 +143,19 @@ const NewWork = ({ match }: PathPropsType) => {
           </div>
 
         </div>
+        
 
-
-        <div className="col-6">
-          <ConsoleLogButton name="items" state={items} />
-          <ConsoleLogButton name="draft" state={draft} />
-          <ConsoleLogButton name="match.params" state={match.params} />
-        </div>
+        <DebugModeContext.Consumer>
+          {({ debugMode }) => {
+            if (debugMode) return (
+              <div className="col-4">
+                <ConsoleLogButton name="items" state={items} />
+                <ConsoleLogButton name="draft" state={draft} />
+                <ConsoleLogButton name="match.params" state={match.params} />
+              </div>
+            )
+          }}
+        </DebugModeContext.Consumer>
       </div>
     </div>
   )

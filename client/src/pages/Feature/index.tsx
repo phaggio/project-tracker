@@ -8,6 +8,7 @@ import {
 } from '../../components';
 import DonutChart from '../../charts/DonutChart';
 import { AxiosResponse } from 'axios';
+import DebugModeContext from '../../util/DebugModeContext';
 
 const Feature = ({ match }: PathPropsType) => {
 	const [projects, updateProjects] = useState<ProjectType[]>([]);
@@ -244,10 +245,18 @@ const Feature = ({ match }: PathPropsType) => {
 				<p>not found ...</p>
 			}
 
-			<div className="col-5">
-				<ConsoleLogButton name="feature" state={feature} />
-				<ConsoleLogButton name="projects" state={projects} />
-			</div>
+
+
+			<DebugModeContext.Consumer>
+				{({ debugMode }) => {
+					if (debugMode) return (
+						<div className="col-4">
+							<ConsoleLogButton name="feature" state={feature} />
+							<ConsoleLogButton name="projects" state={projects} />
+						</div>
+					)
+				}}
+			</DebugModeContext.Consumer>
 		</div >
 	)
 }
