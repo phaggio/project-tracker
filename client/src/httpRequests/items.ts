@@ -25,7 +25,6 @@ const getItemsWithProjectIdByQuery = (query: object) => {
 };
 
 const getItemsBySearchFilter = (query: object) => {
-  console.log(query)
   return axios.get(`/api/item/filter`, { params: query })
 }
 

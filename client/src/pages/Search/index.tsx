@@ -59,7 +59,6 @@ const Search = () => {
   }, [input, items])
 
   const findButtonPressed = () => {
-    console.log(`Find button pressed ...`);
     updateDisableFindButton(true);
     updateInput('');
     itemRequest
