@@ -5,7 +5,7 @@ A web application where users can track the progress of their projects.
 Application link: https://phaggio-project-tracker.herokuapp.com/
 
 <img src="https://raw.githubusercontent.com/phaggio/project-tracker/master/screenshot/project-tracker-screenshot-01.png" width="360">
-<img src="https://raw.githubusercontent.com/phaggio/project-tracker/master/screenshot/project-tracker-demo.gif">
+<img src="https://raw.githubusercontent.com/phaggio/project-tracker/master/screenshot/project-tracker-demo.gif" height="250">
 
 
 ## Table of contents
@@ -63,16 +63,16 @@ Furthermore, once a feature/work/bug is assigned in a project, it cannot change 
 ## Features
 * snapshot and chart by item type on the project page. user can filter the chart by type. 
   
-  <img src="https://raw.githubusercontent.com/phaggio/project-tracker/master/screenshot/filter-chart.png">
+  <img src="https://raw.githubusercontent.com/phaggio/project-tracker/master/screenshot/filter-chart.png" height="220">
 * user can edit the assignee of an item. the selection dropbox also offers a search function, where user can search for assignees by name. 
   
-  <img src="https://raw.githubusercontent.com/phaggio/project-tracker/master/screenshot/search-user-filter.png">
+  <img src="https://raw.githubusercontent.com/phaggio/project-tracker/master/screenshot/search-user-filter.png" height="180">
 * on work or bug item page level, a relationship tree is shown to the user 
   
-  <img src="https://raw.githubusercontent.com/phaggio/project-tracker/master/screenshot/item-relationship.png" >
+  <img src="https://raw.githubusercontent.com/phaggio/project-tracker/master/screenshot/item-relationship.png" height="180">
 * on the Search page, there's a search filter where user can filter the list of items by their assigned project, type, status. User can also search for items by matching name in the item name input 
   
-  <img src="https://raw.githubusercontent.com/phaggio/project-tracker/master/screenshot/search-filter.png">
+  <img src="https://raw.githubusercontent.com/phaggio/project-tracker/master/screenshot/search-filter.png" height="180">
 
 
 ## Tech stack
