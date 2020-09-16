@@ -75,7 +75,11 @@ const NewBug = ({ match }: PathPropsType) => {
     event.preventDefault(); //default action is clear the form
     itemRequest
       .addNewItem(draft)
-      .then((response: AxiosResponse) => console.log(response))
+      .then((response: AxiosResponse) => {
+        if (response.status === 200 && response.data._id !== undefined) {
+          window.location.replace(`#/bug/${response.data._id}`)
+        }
+      })
       .catch(err => console.error(err));
   };
 

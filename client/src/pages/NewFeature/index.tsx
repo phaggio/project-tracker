@@ -61,7 +61,7 @@ const NewFeature = ({ match }: PathPropsType) => {
       .addNewItem(draft)
       .then((response: AxiosResponse) => {
         if (response.status === 200 && response.data._id !== undefined) {
-          window.location.replace(`/feature/${response.data._id}`)
+          window.location.replace(`#/feature/${response.data._id}`)
         }
       })
       .catch(err => console.error(err))

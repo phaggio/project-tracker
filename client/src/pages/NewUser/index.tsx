@@ -43,17 +43,11 @@ const NewUser = () => {
     const id = event.target.id;
     const input = event.target.value.trim();
     if (id === 'firstName') {
-      updateUserInfo({
-        ...userInfo, firstName: input
-      })
+      updateUserInfo(prev => { return { ...prev, firstName: input } })
     } else if (id === 'lastName') {
-      updateUserInfo({
-        ...userInfo, lastName: input
-      })
+      updateUserInfo(prev => { return { ...prev, lastName: input } })
     } else if (id === 'email') {
-      updateUserInfo({
-        ...userInfo, email: input
-      })
+      updateUserInfo(prev => { return { ...prev, email: input } })
     }
   };
 
