@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { AxiosResponse } from 'axios';
 import { userRequest } from '../../httpRequests';
 import { ConsoleLogButton } from '../../components';
+import DebugModeContext from '../../util/DebugModeContext';
 
 type NewUserType = {
   firstName: string;
@@ -26,15 +27,15 @@ const NewUser = () => {
 
   const submitButtonPressed = (event: React.FormEvent) => {
     event.preventDefault();
-
-    console.log(`sending from client:`, userInfo);
     userRequest
       .createNewUser(userInfo)
       .then((response: AxiosResponse) => {
-        if (response.status === 200) window.alert(`User added.`)
+        if (response.status === 200) {
+          window.alert(`User added.`);
+          window.location.replace(`/`);
+        }
       })
       .catch(err => {
-        console.error(err);
         window.alert(`Cannot add user with provided info. ${err}`);
       });
   };
@@ -92,8 +93,16 @@ const NewUser = () => {
         </button>
       </form>
 
+      <DebugModeContext.Consumer>
+        {({ debugMode }) => {
+          if (debugMode) return (
+            <div className="col-4">
+              <ConsoleLogButton name="userInfo state" state={userInfo} />
+            </div>
+          )
+        }}
+      </DebugModeContext.Consumer>
 
-      <ConsoleLogButton name="userInfo state" state={userInfo} />
     </div>
   )
 };
