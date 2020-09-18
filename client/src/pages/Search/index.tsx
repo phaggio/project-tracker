@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { projectRequest, itemRequest, userRequest } from '../../httpRequests';
 import { ProjectType, ItemType, UserType } from '../../util/dataTypes';
-import { findProjectByProjectId, findAssigneeNameByAssigneeId } from '../../util/functions';
+import { findAssigneeNameByAssigneeId } from '../../util/functions';
 import { SearchInput, StatusSelection, SearchItem, ConsoleLogButton } from '../../components';
 import { AxiosResponse } from 'axios';
 import DebugModeContext from '../../util/DebugModeContext';
@@ -73,8 +72,6 @@ const Search = () => {
       })
       .catch(err => console.error(err))
   };
-
-  const headerNames = ['Project', 'Type', 'Name', 'Status', 'Assignee']
 
   return (
     <div className="container">
@@ -172,8 +169,6 @@ const Search = () => {
 
           </div>
         </div>
-
-
 
 
 
