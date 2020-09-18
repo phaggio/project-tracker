@@ -102,6 +102,7 @@ Server
 
 ## Contributors
 Feel free leave me any feedbacks.
-- [Richard Wang](https://github.com/phaggio)
+
+Richard Wang
 [Github](https://github.com/phaggio) ,
 [LinkedIn](https://www.linkedin.com/in/richard-c-wang/)
