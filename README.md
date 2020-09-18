@@ -79,6 +79,10 @@ Furthermore, once a feature/work/bug is assigned in a project, it cannot change 
   
   <img src="https://raw.githubusercontent.com/phaggio/project-tracker/master/screenshot/search-filter.png" height="180">
 
+* on the Setting page, user can add new user to the database. User can also toggle between debug mode of the application. Debug mode shows all the relevant console log buttons for users to see what is being store in each state of the page.
+
+  <img src="https://raw.githubusercontent.com/phaggio/project-tracker/master/screenshot/setting-page.png" height="180">
+
 
 ## Tech stack
 Client
@@ -91,8 +95,9 @@ Client
 
 Server
 * typescript
-* express.js
 * mongoose
+* express.js
+* node.js
 
 
 ## Contributors
