@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NewProjectType } from '../../util/dataTypes';
-import { NameInput, TagsInput, DescriptionTextarea, AddNewButton } from '../../components';
-import ConsoleLogButton from '../../components/ConsoleLogButton';
+import { NameInput, TagsInput, DescriptionTextarea, AddNewButton, ConsoleLogButton } from '../../components';
 import { AxiosResponse } from 'axios';
 import { projectRequest } from '../../httpRequests';
 import DebugModeContext from '../../util/DebugModeContext';
