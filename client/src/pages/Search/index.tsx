@@ -1,40 +1,52 @@
 import React, { useState, useEffect } from 'react';
 import { projectRequest, itemRequest, userRequest } from '../../httpRequests';
-import { ProjectType, ItemType, UserType } from '../../util/dataTypes';
+import { ProjectType, ItemType, UserType, PathPropsType } from '../../util/dataTypes';
 import { findAssigneeNameByAssigneeId } from '../../util/functions';
 import { SearchInput, StatusSelection, SearchItem, ConsoleLogButton } from '../../components';
 import { AxiosResponse } from 'axios';
 import DebugModeContext from '../../util/DebugModeContext';
 
-const Search = () => {
+
+const Search = ({ match }: PathPropsType) => {
+  console.log(match.params)
   const [projects, updateProjects] = useState<ProjectType[]>([]);
   const [items, updateItems] = useState<ItemType[]>([]);
   const [users, updateUsers] = useState<UserType[]>([]);
 
+  // search input and filtered items for display
   const [input, updateInput] = useState<string>('');
   const [filteredItems, updateFilteredItems] = useState<ItemType[]>([]);
 
+  // drop down filter options
   const [projectId, updateProjectId] = useState<string | undefined>();
-  const [type, updateType] = useState<string | undefined>();
+  const [type, updateType] = useState<string | undefined>(match.params.type);
   const [status, updateStatus] = useState<string>('');
 
   const [disableFindButton, updateDisableFindButton] = useState(false);
 
   // INIT call
   useEffect(() => {
+    if (match.params.type) {
+      itemRequest
+        .getItemsBySearchFilter({ type: match.params.type })
+        .then((response: AxiosResponse) => updateItems(response.data))
+        .catch(err => console.error(err))
+    } else {
+      itemRequest
+        .getAllItems()
+        .then((response: AxiosResponse) => updateItems(response.data))
+        .catch(err => console.error(err))
+    }
     projectRequest
       .getAllProjects()
       .then((response: AxiosResponse) => updateProjects(response.data))
-      .catch(err => console.error(err))
-    itemRequest
-      .getAllItems()
-      .then((response: AxiosResponse) => updateItems(response.data))
       .catch(err => console.error(err))
     userRequest
       .getAllUsers()
       .then((response: AxiosResponse) => updateUsers(response.data))
       .catch(err => console.error(err))
-  }, []);
+  }, [match.params.type]);
+
 
   // load filteredItems array
   useEffect(() => {
@@ -109,7 +121,10 @@ const Search = () => {
             <div className="pb-3">
               <label className="font-weight-light">Type</label>
               <select className="custom-select"
-                onChange={(event) => { updateType(event.target.selectedOptions[0].value ? event.target.selectedOptions[0].value : undefined) }}>
+                defaultValue={match.params.type ? match.params.type : ''}
+                onChange={(event) => {
+                  updateType(event.target.selectedOptions[0].value ? event.target.selectedOptions[0].value : undefined)
+                }}>
                 <option value=''>All</option>
                 <option value='feature'>Feature</option>
                 <option value='work'>Work</option>

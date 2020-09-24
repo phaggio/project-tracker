@@ -6,7 +6,7 @@ import DebugModeContext from './util/DebugModeContext';
 
 const App = () => {
   const [debugModeState, setDebugModeState] = useState({
-    debugMode: false,
+    debugMode: true,
     toggle: () => setDebugModeState(prev => { return { ...prev, debugMode: !prev.debugMode } })
   })
 
@@ -17,7 +17,7 @@ const App = () => {
           <NavBar />
           <Switch>
             <Route exact={true} path='/' component={pages.Home} />
-            <Route exact={true} path='/search' component={pages.Search} />
+            <Route exact={false} path='/search/:type?' component={pages.Search} />
             <Route exact={true} path='/settings' component={pages.Settings} />
             <Route exact={true} path='/new/project' component={pages.NewProject} />
             <Route exact={true} path='/new/feature/:parentType?/:parentId?/:projectId?' component={pages.NewFeature} />

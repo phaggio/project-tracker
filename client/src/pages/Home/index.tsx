@@ -63,14 +63,17 @@ const Home = () => {
               </div>
               <div className="col-6 col-lg-3 p-1">
                 <CountCard type="feature"
+                  to="/search/feature"
                   count={countItemsByType('feature', items)} />
               </div>
               <div className="col-6 col-lg-3 p-1">
                 <CountCard type="work"
+                  to="/search/work"
                   count={countItemsByType('work', items)} />
               </div>
               <div className="col-6 col-lg-3 p-1">
                 <CountCard type="bug"
+                  to="/search/bug"
                   count={countItemsByType('bug', items)} />
               </div>
             </div>
@@ -82,7 +85,6 @@ const Home = () => {
           <div className="shadow rounded p-1 mt-2">
             <div className="d-flex justify-content-between align-items-baseline p-1">
               <label className="font-weight-light">Progress</label>
-
             </div>
 
             <div className="row">
@@ -117,12 +119,10 @@ const Home = () => {
                 <ConsoleLogButton name="projects" state={projects} />
                 <ConsoleLogButton name="items" state={items} />
               </div>
-
             )
           }
         }}
       </DebugModeContext.Consumer>
-
 
     </div >
   )

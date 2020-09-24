@@ -16,6 +16,7 @@ type MatchParamsType = {
   parentId: string | undefined;
   id: string | undefined;
   projectId: string | undefined;
+  type: string | undefined;
 };
 
 type NewProjectType = {
