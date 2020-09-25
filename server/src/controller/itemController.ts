@@ -42,10 +42,9 @@ const findItemsByType = (request: Request, response: Response) => {
 const findItemsBySearchFilter = (request: Request, response: Response) => {
   let query: any = { ...request.query }
   let projectId;
+  console.log(`query: ${query}`)
   if (query.projectId === 'null') {
     query.projectId = { $type: 10 }
-  } else {
-    projectId = query.projectId
   }
   console.log(`from controller...`)
   console.log(query);

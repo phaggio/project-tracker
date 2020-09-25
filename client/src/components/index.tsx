@@ -15,8 +15,10 @@ import NameBadgeDiv from './NameBadgeDiv';
 import NameInput from './NameInput';
 import NavBar from './NavBar';
 import NewButton from './NewButton';
+import Pagination from './Pagination';
 import ParentItemDiv from './ParentItemDiv';
 import ParentSelectBox from './ParentSelectBox';
+import ProjectFilter from './ProjectFilter';
 import ProjectLink from './ProjectLink';
 import ProjectList from './ProjectList';
 import RelationshipDiagram from './RelationshipDiagram';
@@ -30,6 +32,7 @@ import StatusSelection from './StatusSelection';
 import Tag from './Tag';
 import TagsDiv from './TagsDiv';
 import TagsInput from './TagsInput';
+import TypeFilter from './TypeFilter';
 
 
 export {
@@ -50,8 +53,10 @@ export {
   NameInput,
   NavBar,
   NewButton,
+  Pagination,
   ParentItemDiv,
   ParentSelectBox,
+  ProjectFilter,
   ProjectLink,
   ProjectList,
   RelationshipDiagram,
@@ -64,5 +69,6 @@ export {
   StatusSelection,
   Tag,
   TagsDiv,
-  TagsInput
+  TagsInput,
+  TypeFilter
 }

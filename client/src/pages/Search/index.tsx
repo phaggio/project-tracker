@@ -2,13 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { projectRequest, itemRequest, userRequest } from '../../httpRequests';
 import { ProjectType, ItemType, UserType, PathPropsType } from '../../util/dataTypes';
 import { findAssigneeNameByAssigneeId } from '../../util/functions';
-import { SearchInput, StatusSelection, SearchItem, ConsoleLogButton } from '../../components';
+import { SearchInput, ProjectFilter, TypeFilter, StatusSelection, SearchItem, Pagination, ConsoleLogButton } from '../../components';
 import { AxiosResponse } from 'axios';
 import DebugModeContext from '../../util/DebugModeContext';
 
 
 const Search = ({ match }: PathPropsType) => {
-  console.log(match.params)
   const [projects, updateProjects] = useState<ProjectType[]>([]);
   const [items, updateItems] = useState<ItemType[]>([]);
   const [users, updateUsers] = useState<UserType[]>([]);
@@ -23,6 +22,7 @@ const Search = ({ match }: PathPropsType) => {
   const [status, updateStatus] = useState<string>('');
 
   const [disableFindButton, updateDisableFindButton] = useState(false);
+  const [page, updatePage] = useState<number>(1)
 
   // INIT call
   useEffect(() => {
@@ -67,6 +67,7 @@ const Search = ({ match }: PathPropsType) => {
         return isMatch;
       })
     );
+    updatePage(1)
   }, [input, items])
 
   const findButtonPressed = () => {
@@ -91,50 +92,22 @@ const Search = ({ match }: PathPropsType) => {
         <div className="col-12 col-md-4">
 
           <div className="shadow rounded p-2 mt-2">
+
             <div className="pb-3">
               <SearchInput label="Item name" input={input} onChange={updateInput} />
             </div>
 
             <div className="pb-3">
-              <label className="font-weight-light">Project</label>
-              <select className="custom-select"
-                onChange={(event) => {
-                  const selectedProjectId = event.target.selectedOptions[0].value;
-                  if (selectedProjectId === 'all') {
-                    updateProjectId(undefined)
-                  } else {
-                    updateProjectId(selectedProjectId)
-                  }
-                }}>
-                <option value="all">All</option>
-                <option value='null'>(open)</option>
-                {projects ?
-                  projects.map(project => {
-                    return (<option key={project._id} value={project._id}>{project.name}</option>)
-                  })
-                  :
-                  ``
-                }
-              </select>
+              <ProjectFilter projects={projects} onChange={updateProjectId} />
             </div>
 
             <div className="pb-3">
-              <label className="font-weight-light">Type</label>
-              <select className="custom-select"
-                defaultValue={match.params.type ? match.params.type : ''}
-                onChange={(event) => {
-                  updateType(event.target.selectedOptions[0].value ? event.target.selectedOptions[0].value : undefined)
-                }}>
-                <option value=''>All</option>
-                <option value='feature'>Feature</option>
-                <option value='work'>Work</option>
-                <option value='bug'>Bug</option>
-              </select>
+              <TypeFilter defaultType={match.params.type} onChange={updateType} />
             </div>
 
             <div className="pb-3">
               <label className="font-weight-light">Status</label>
-              <StatusSelection all={true} onChange={updateStatus} />
+              <StatusSelection all={true} onChange={updateStatus} defaultStatus={"all"} />
             </div>
 
             <div>
@@ -145,6 +118,7 @@ const Search = ({ match }: PathPropsType) => {
             </div>
 
           </div>
+
 
           <DebugModeContext.Consumer>
             {({ debugMode }) => {
@@ -169,6 +143,8 @@ const Search = ({ match }: PathPropsType) => {
 
             <h3>Items</h3>
 
+
+
             {
               filteredItems ? filteredItems.map(item => {
                 return <SearchItem key={item._id}
@@ -181,6 +157,8 @@ const Search = ({ match }: PathPropsType) => {
                 :
                 ''
             }
+
+            <Pagination currentPage={page} itemCount={filteredItems.length} itemsPerPage={10} onClick={updatePage} />
 
           </div>
         </div>
