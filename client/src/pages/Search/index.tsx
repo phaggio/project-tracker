@@ -22,7 +22,7 @@ const Search = ({ match }: PathPropsType) => {
   const [status, updateStatus] = useState<string>('');
 
   const [disableFindButton, updateDisableFindButton] = useState(false);
-  const [page, updatePage] = useState<number>(1)
+  const [page, updatePage] = useState<number>(0)
 
   // INIT call
   useEffect(() => {
@@ -67,7 +67,7 @@ const Search = ({ match }: PathPropsType) => {
         return isMatch;
       })
     );
-    updatePage(1)
+    updatePage(0)
   }, [input, items])
 
   const findButtonPressed = () => {
@@ -131,6 +131,7 @@ const Search = ({ match }: PathPropsType) => {
                   <ConsoleLogButton name="projectId" state={projectId} />
                   <ConsoleLogButton name="type" state={type} />
                   <ConsoleLogButton name="status" state={status} />
+                  <ConsoleLogButton name="page" state={page} />
                 </div>
               )
             }}
@@ -143,10 +144,8 @@ const Search = ({ match }: PathPropsType) => {
 
             <h3>Items</h3>
 
-
-
             {
-              filteredItems ? filteredItems.map(item => {
+              filteredItems.slice(page * 10, page * 10 + 10).map(item => {
                 return <SearchItem key={item._id}
                   type={item.type}
                   name={item.name}
@@ -154,12 +153,13 @@ const Search = ({ match }: PathPropsType) => {
                   status={item.status}
                   to={`/${item.type}/${item._id}`} />
               })
-                :
-                ''
             }
-
-            <Pagination currentPage={page} itemCount={filteredItems.length} itemsPerPage={10} onClick={updatePage} />
-
+            <div className="py-2 d-flex justify-content-center">
+              <Pagination currentPage={page}
+                itemCount={filteredItems.length}
+                itemsPerPage={10}
+                onClick={updatePage} />
+            </div>
           </div>
         </div>
 

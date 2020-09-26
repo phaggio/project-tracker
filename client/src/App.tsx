@@ -6,7 +6,7 @@ import DebugModeContext from './util/DebugModeContext';
 
 const App = () => {
   const [debugModeState, setDebugModeState] = useState({
-    debugMode: true,
+    debugMode: false,
     toggle: () => setDebugModeState(prev => { return { ...prev, debugMode: !prev.debugMode } })
   })
 
