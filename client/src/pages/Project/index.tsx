@@ -21,6 +21,8 @@ const Project = ({ match }: PathPropsType) => {
 		tags: []
 	});
 
+	const [loading, updateLoading] = useState<boolean>(true);
+
 	const [children, updateChildren] = useState<ItemType[]>([]); // children with that projectId
 	const [immediateChildren, updateImmediateChildren] = useState<ItemType[]>([]);
 	const [chartFilter, updateChartFilter] = useState<string>('all');
@@ -31,7 +33,10 @@ const Project = ({ match }: PathPropsType) => {
 		if (match.params.id !== undefined) {
 			projectRequest
 				.getProjectById(match.params.id)
-				.then(response => { if (isProjectType(response.data)) updateProject(response.data) })
+				.then(response => {
+					if (isProjectType(response.data)) updateProject(response.data);
+					updateLoading(false);
+				})
 				.catch(err => console.error(err))
 		}
 	}, [match.params.id])
@@ -43,7 +48,7 @@ const Project = ({ match }: PathPropsType) => {
 				.then((response: AxiosResponse) => {
 					if (isItemTypeArray(response.data)) {
 						updateChildren(response.data);
-						updateImmediateChildren(findChildrenByParentId(project._id, response.data))
+						updateImmediateChildren(findChildrenByParentId(project._id, response.data));
 					}
 				})
 				.catch(err => console.error(err))
@@ -84,9 +89,22 @@ const Project = ({ match }: PathPropsType) => {
 
 	return (
 		<div className="container">
+			{
+				loading ?
+					<small>loading...</small>
+					:
+					null
+			}
+			
+			{
+				!project._id && !loading ?
+					<small>No project found.</small>
+					:
+					null
+			}
 
 			{
-				project._id ?
+				project._id && !loading ?
 					<div className="row">
 						<div className="col-12 col-md-6 col-lg-7">
 
@@ -141,12 +159,12 @@ const Project = ({ match }: PathPropsType) => {
 					</div>
 					// end of first row
 					:
-					''
+					null
 			}
 
 			{/* second row */}
 			{
-				project._id ?
+				project._id && !loading ?
 					<div className="row mt-1">
 						<div className="col-12">
 							<div className="shadow rounded p-2 mt-2">
@@ -160,8 +178,9 @@ const Project = ({ match }: PathPropsType) => {
 			}
 			{/* end of second row */}
 
+			{/* third row */}
 			{
-				project._id ?
+				project._id && !loading ?
 					<div className="row mt-1">
 						<div className="col-12">
 							<div className="shadow rounded p-2 mt-2">
@@ -176,6 +195,7 @@ const Project = ({ match }: PathPropsType) => {
 					:
 					null
 			}
+			{/* end of third row */}
 
 
 			<DebugModeContext.Consumer>
