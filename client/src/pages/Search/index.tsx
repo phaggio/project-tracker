@@ -45,6 +45,7 @@ const Search = ({ match }: PathPropsType) => {
       .getAllUsers()
       .then((response: AxiosResponse) => updateUsers(response.data))
       .catch(err => console.error(err))
+    updateType(match.params.type)
   }, [match.params.type]);
 
 
@@ -124,6 +125,7 @@ const Search = ({ match }: PathPropsType) => {
             {({ debugMode }) => {
               if (debugMode) return (
                 <div>
+                  <ConsoleLogButton name="match.params" state={match.params} />
                   <ConsoleLogButton name="projects" state={projects} />
                   <ConsoleLogButton name="items" state={items} />
                   <ConsoleLogButton name="users" state={users} />

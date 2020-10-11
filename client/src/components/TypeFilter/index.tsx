@@ -12,7 +12,7 @@ const TypeFilter = (props: PropsType) => {
     <div>
       <label className="font-weight-light">Type</label>
       <select className="custom-select"
-        defaultValue={props.defaultType ? props.defaultType : ''}
+        value={props.defaultType ? props.defaultType : ''}
         onChange={(event) => {
           props.onChange(event.target.selectedOptions[0].value ? event.target.selectedOptions[0].value : undefined)
         }}>
