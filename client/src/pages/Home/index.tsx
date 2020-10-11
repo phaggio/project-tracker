@@ -50,7 +50,7 @@ const Home = () => {
                 small={true} />
             </div>
             <div className="col-12 p-1">
-              <ProjectList projects={projects} />
+              <ProjectList loading={loadingProjects} projects={projects} />
             </div>
           </div>
         </div>
