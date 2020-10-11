@@ -28,14 +28,19 @@ const Work = ({ match }: PathPropsType) => {
     tags: [],
     assigneeId: null
   });
-  const [update, toggleUpdate] = useState(false);
+
+  const [loading, updateLoading] = useState<boolean>(true);
+  const [update, toggleUpdate] = useState<boolean>(false);
 
   // INIT GET api call to get item data using match.params.id.
   useEffect(() => {
     if (match.params.id !== undefined) {
       itemRequest
         .getItemById(match.params.id)
-        .then((response: AxiosResponse) => { if (isItemType(response.data)) updateWork(response.data) })
+        .then((response: AxiosResponse) => {
+          if (isItemType(response.data)) updateWork(response.data);
+          updateLoading(false);
+        })
         .catch(err => console.error(err));
     }
   }, [match.params.id]);
@@ -131,94 +136,96 @@ const Work = ({ match }: PathPropsType) => {
 
   return (
     <div className="container">
-      {work._id ?
-        <div>
-          {/* first row */}
-          <div className="row">
+      {
+        loading ?
+          <small>loading...</small>
+          :
+          null
+      }
 
+      {
+        !work._id && !loading ?
+          <small>No work found</small>
+          :
+          null
+      }
+
+      {
+        work._id && !loading ?
+          // first row
+          <div className="row">
             <div className="col-12">
               <div className="shadow rounded p-2 mt-2">
-                <div >
-                  <NameBadgeDiv type="work"
-                    name={work.name}
-                    saveButtonPressed={saveButtonPressed} />
-                  <hr className="mt-2" />
-                </div>
+
+                <NameBadgeDiv type="work"
+                  name={work.name}
+                  saveButtonPressed={saveButtonPressed} />
+
               </div>
             </div>
 
             <div className="col-12 col-sm-6 col-lg-7">
-
               <div className="shadow rounded p-2 mt-2">
-                <div className="">
-                  <TagsDiv type="work"
-                    tags={work.tags}
-                    saveButtonPressed={saveButtonPressed} />
-                  <hr className="mt-2" />
-                </div>
 
-                <div className="">
-                  <AssigneeDiv assigneeId={work.assigneeId}
-                    users={users}
-                    saveButtonPressed={saveButtonPressed} />
-                  <hr className="mt-2" />
-                </div>
+                <TagsDiv type="work"
+                  tags={work.tags}
+                  saveButtonPressed={saveButtonPressed} />
+                <hr className="mt-2" />
 
-                <div className="">
-                  <ParentItemDiv type="work"
-                    currentParentId={work.parentId}
-                    parents={parents}
-                    saveButtonPressed={saveButtonPressed} />
-                  <hr className="mt-2" />
-                </div>
+                <AssigneeDiv assigneeId={work.assigneeId}
+                  users={users}
+                  saveButtonPressed={saveButtonPressed} />
+                <hr className="mt-2" />
 
-                <div className="">
-                  <StatusDiv type="work"
-                    status={work.status}
-                    saveButtonPressed={saveButtonPressed} />
-                  <hr className="mt-2" />
-                </div>
+                <ParentItemDiv type="work"
+                  currentParentId={work.parentId}
+                  parents={parents}
+                  saveButtonPressed={saveButtonPressed} />
+                <hr className="mt-2" />
+
+                <StatusDiv type="work"
+                  status={work.status}
+                  saveButtonPressed={saveButtonPressed} />
+
               </div>
-
             </div>
 
             <div className="col-12 col-sm-6 col-lg-5">
               <div className="shadow rounded p-2 mt-2">
-                <div className="">
-                  <RelationshipDiagram type="work"
-                    name={work.name}
-                    parentType={work.parentType}
-                    projectId={work.projectId}
-                    projects={projects}
-                    parentId={work.parentId}
-                    parents={parents}
-                    siblings={siblings} />
-                  <hr className="mt-2" />
-                </div>
+
+                <RelationshipDiagram type="work"
+                  name={work.name}
+                  parentType={work.parentType}
+                  projectId={work.projectId}
+                  projects={projects}
+                  parentId={work.parentId}
+                  parents={parents}
+                  siblings={siblings} />
+
               </div>
             </div>
-          </div>
 
-          {/* second row */}
+          </div>
+          :
+          null
+      }
+
+      {/* second row */}
+      {
+        work._id && !loading ?
           <div className="row">
             <div className="col-12">
               <div className="shadow rounded p-2 mt-2">
-                <div className="">
-                  <DescriptionDiv text={work.description}
-                    saveButtonPressed={saveButtonPressed} />
-                  <hr className="mt-2" />
-                </div>
+                <DescriptionDiv text={work.description}
+                  saveButtonPressed={saveButtonPressed} />
               </div>
             </div>
           </div>
-
-        </div>
-        :
-        <div>
-          <p>not found ... </p>
-        </div>
-
+          :
+          null
       }
+      {/* end of second row */}
+
 
 
       <DebugModeContext.Consumer>
