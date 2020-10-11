@@ -33,6 +33,7 @@ const Pagination = (props: PropsType) => {
       <div className="btn-group">
 
         <button type="button"
+          style={{ width: "75px" }}
           className="btn btn-outline-primary btn-sm"
           disabled={props.currentPage === 0 ? true : false}
           onClick={() => props.onClick(props.currentPage - 1)}
@@ -53,6 +54,7 @@ const Pagination = (props: PropsType) => {
         })}
 
         <button type="button"
+          style={{ width: "75px" }}
           className="btn btn-outline-primary btn-sm"
           disabled={props.currentPage === lastPageIndex ? true : false}
           onClick={() => props.onClick(props.currentPage + 1)}
