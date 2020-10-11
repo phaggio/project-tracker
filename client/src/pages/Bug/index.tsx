@@ -8,6 +8,7 @@ import {
   NameBadgeDiv, TagsDiv, AssigneeDiv, ParentItemDiv, StatusDiv, RelationshipDiagram, DescriptionDiv, ConsoleLogButton
 } from '../../components';
 import DebugModeContext from '../../util/DebugModeContext';
+import Work from '../Work';
 
 
 const Bug = ({ match }: PathPropsType) => {
@@ -139,98 +140,95 @@ const Bug = ({ match }: PathPropsType) => {
 
   return (
     <div className="container">
+      {
+        loading ?
+          <small>loading...</small>
+          :
+          null
+      }
 
-      {bug._id && !loading ?
-        <div>
+      {
+        !bug._id && !loading ?
+          <small>No bug found</small>
+          :
+          null
+      }
+
+      {
+        bug._id && !loading ?
+          // first row
           <div className="row">
             <div className="col-12">
-
               <div className="shadow rounded p-2 mt-2">
-                <div className="">
-                  <NameBadgeDiv type='bug'
-                    name={bug.name}
-                    saveButtonPressed={saveButtonPressed} />
-                  <hr className="mt-2" />
-                </div>
-              </div>
 
+                <NameBadgeDiv type='bug'
+                  name={bug.name}
+                  saveButtonPressed={saveButtonPressed} />
+
+              </div>
             </div>
 
             <div className="col-12 col-sm-6 col-lg-7">
-
               <div className="shadow rounded p-2 mt-2">
-                <div className="">
-                  <TagsDiv type="feature"
-                    tags={bug.tags}
-                    saveButtonPressed={saveButtonPressed} />
-                  <hr className="mt-2" />
-                </div>
 
-                <div className="">
-                  <AssigneeDiv assigneeId={bug.assigneeId}
-                    saveButtonPressed={saveButtonPressed}
-                    users={users} />
-                  <hr className="mt-2" />
-                </div>
+                <TagsDiv type="feature"
+                  tags={bug.tags}
+                  saveButtonPressed={saveButtonPressed} />
+                <hr className="mt-2" />
 
-                <div>
-                  <ParentItemDiv type="bug"
-                    currentParentId={bug.parentId}
-                    parents={parents}
-                    saveButtonPressed={saveButtonPressed} />
-                  <hr className="mt-2" />
-                </div>
+                <AssigneeDiv assigneeId={bug.assigneeId}
+                  saveButtonPressed={saveButtonPressed}
+                  users={users} />
+                <hr className="mt-2" />
 
-                <div className="">
-                  <StatusDiv type="bug"
-                    status={bug.status}
-                    saveButtonPressed={saveButtonPressed} />
-                  <hr className="mt-2" />
-                </div>
+                <ParentItemDiv type="bug"
+                  currentParentId={bug.parentId}
+                  parents={parents}
+                  saveButtonPressed={saveButtonPressed} />
+                <hr className="mt-2" />
+
+                <StatusDiv type="bug"
+                  status={bug.status}
+                  saveButtonPressed={saveButtonPressed} />
+
               </div>
             </div>
 
             <div className="col-12 col-sm-6 col-lg-5">
-
               <div className="shadow rounded p-2 mt-2">
-                <div className="">
-                  <RelationshipDiagram type="bug"
-                    name={bug.name}
-                    parentType={bug.parentType}
-                    projectId={bug.projectId}
-                    projects={projects}
-                    parentId={bug.parentId}
-                    parents={parents}
-                    siblings={siblings} />
-                  <hr className="mt-2" />
-                </div>
-              </div>
 
+                <RelationshipDiagram type="bug"
+                  name={bug.name}
+                  parentType={bug.parentType}
+                  projectId={bug.projectId}
+                  projects={projects}
+                  parentId={bug.parentId}
+                  parents={parents}
+                  siblings={siblings} />
+
+              </div>
             </div>
 
-
           </div>
-          {/* end of first row */}
-
-          <div className="row">
-            <div className="col-12">
-
-              <div className="shadow rounded p-2 mt-2">
-                <div className="">
-                  <DescriptionDiv text={bug.description}
-                    saveButtonPressed={saveButtonPressed} />
-                  <hr className="mt-2" />
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-        </div>
-        :
-        <p>not found ...</p>
+          :
+          null
       }
 
+      {
+        bug._id && !loading ?
+          <div className="row">
+            <div className="col-12">
+              <div className="shadow rounded p-2 mt-2">
+
+                <DescriptionDiv text={bug.description}
+                  saveButtonPressed={saveButtonPressed} />
+
+              </div>
+            </div>
+          </div>
+          :
+          null
+      }
 
       <DebugModeContext.Consumer>
         {({ debugMode }) => {
