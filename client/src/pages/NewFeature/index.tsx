@@ -85,7 +85,7 @@ const NewFeature = ({ match }: PathPropsType) => {
 
             <div className="form-group">
               <div className="d-flex justify-content-between align-items-baseline">
-                <label className="font-weight-light">Parent</label>
+                <label className="font-weight-light">Project</label>
                 <small>Optional</small>
               </div>
               <ParentSelectBox parents={projects}

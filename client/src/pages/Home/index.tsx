@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ProjectType, ItemType } from '../../util/dataTypes';
 import { countItemsByType, countByStatus } from '../../util/functions'
 import { projectRequest, itemRequest } from '../../httpRequests';
-import { NewButton, ProjectList, AddNewDropDownButton, CountCard, ConsoleLogButton } from '../../components';
+import { ProjectList, CountCard, ConsoleLogButton } from '../../components';
 import { AxiosResponse } from 'axios';
 import DonutChart from '../../charts/DonutChart';
 import DebugModeContext from '../../util/DebugModeContext';
@@ -43,11 +43,11 @@ const Home = () => {
           <div className="shadow rounded p-1 mt-2">
             <div className="d-flex justify-content-between align-items-baseline p-1">
               <label className="font-weight-light">Projects</label>
-              <NewButton
+              {/* <NewButton
                 name="New project"
                 url="/new/project"
                 ariaLabel="add-new-project"
-                small={true} />
+                small={true} /> */}
             </div>
             <div className="col-12 p-1">
               <ProjectList loading={loadingProjects} projects={projects} />
@@ -62,7 +62,7 @@ const Home = () => {
 
             <div className="d-flex justify-content-between align-items-baseline p-1">
               <label className="font-weight-light">Snapshot</label>
-              <AddNewDropDownButton small={true} includeFeature={true} />
+              {/* <AddNewDropDownButton small={true} includeFeature={true} /> */}
             </div>
 
             <div className="row m-0">
