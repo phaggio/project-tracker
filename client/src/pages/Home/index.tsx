@@ -11,15 +11,24 @@ const Home = () => {
   const [projects, updateProjects] = useState<ProjectType[]>([]);
   const [items, updateItems] = useState<ItemType[]>([]);
 
+  const [loadingProjects, updateLoadingProjects] = useState(true);
+  const [loadingItems, updateLoadingItems] = useState(true);
+
   // init Get calls to get all project and item data
   useEffect(() => {
     try {
       projectRequest
         .getAllProjects()
-        .then((response: AxiosResponse) => updateProjects(Array.from(response.data)))
+        .then((response: AxiosResponse) => {
+          updateProjects(Array.from(response.data));
+          updateLoadingProjects(prev => { return !prev });
+        })
       itemRequest
         .getAllItems()
-        .then((response: AxiosResponse) => updateItems(Array.from(response.data)))
+        .then((response: AxiosResponse) => {
+          updateItems(Array.from(response.data));
+          updateLoadingItems(prev => { return !prev });
+        })
     } catch (err) {
       console.error(err);
     }
@@ -59,20 +68,24 @@ const Home = () => {
             <div className="row m-0">
               <div className="col-6 col-lg-3 p-1">
                 <CountCard type="project"
+                  loading={loadingProjects}
                   count={projects.length} />
               </div>
               <div className="col-6 col-lg-3 p-1">
                 <CountCard type="feature"
+                  loading={loadingItems}
                   to="/search/feature"
                   count={countItemsByType('feature', items)} />
               </div>
               <div className="col-6 col-lg-3 p-1">
                 <CountCard type="work"
+                  loading={loadingItems}
                   to="/search/work"
                   count={countItemsByType('work', items)} />
               </div>
               <div className="col-6 col-lg-3 p-1">
                 <CountCard type="bug"
+                  loading={loadingItems}
                   to="/search/bug"
                   count={countItemsByType('bug', items)} />
               </div>
@@ -89,16 +102,24 @@ const Home = () => {
 
             <div className="row">
               <div className="col-12 col-lg-6 p-1">
-                <DonutChart title="Projects" type="project" data={countByStatus('project', projects)} position="right" />
+                <DonutChart title="Projects"
+                  loading={loadingProjects}
+                  type="project" data={countByStatus('project', projects)} position="right" />
               </div>
               <div className="col-12 col-lg-6 p-1">
-                <DonutChart title="Features" data={countByStatus("feature", items)} position="right" />
+                <DonutChart title="Features"
+                  loading={loadingItems}
+                  data={countByStatus("feature", items)} position="right" />
               </div>
               <div className="col-12 col-lg-6 p-1">
-                <DonutChart title="Work items" data={countByStatus("work", items)} position="right" />
+                <DonutChart title="Work items"
+                  loading={loadingItems}
+                  data={countByStatus("work", items)} position="right" />
               </div>
               <div className="col-12 col-lg-6 p-1">
-                <DonutChart title="Bugs" data={countByStatus("bug", items)} position="right" />
+                <DonutChart title="Bugs"
+                  loading={loadingItems}
+                  data={countByStatus("bug", items)} position="right" />
               </div>
             </div>
 
@@ -118,6 +139,8 @@ const Home = () => {
               <div className="col-4">
                 <ConsoleLogButton name="projects" state={projects} />
                 <ConsoleLogButton name="items" state={items} />
+                <ConsoleLogButton name="loading projects" state={loadingProjects} />
+                <ConsoleLogButton name="loading items" state={loadingItems} />
               </div>
             )
           }

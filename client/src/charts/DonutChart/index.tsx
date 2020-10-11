@@ -5,6 +5,7 @@ type PropsType = {
   title: string;
   position?: "right" | "left" | "top" | "bottom" | "chartArea" | undefined;
   type?: string;
+  loading?: boolean;
   data: number[];
 }
 
@@ -35,23 +36,28 @@ const DonutChart = (props: PropsType) => {
 
   return (
     <div>
-      <Doughnut data={data}
+      {props.loading ?
+        <div className="d-flex justify-content-center">
+          <div className="font-weight-lighter">loading ...</div>
+        </div>
+        :
+        <Doughnut data={data}
 
-        options={{
-          title: {
-            display: true,
-            text: props.title,
-            fontSize: 12,
-            position: 'top'
-          },
-          legend: {
-            display: true,
-            position: props.position ? props.position : "right"
-          },
-          responsive: true
-        }}
-      />
-
+          options={{
+            title: {
+              display: true,
+              text: props.title,
+              fontSize: 12,
+              position: 'top'
+            },
+            legend: {
+              display: true,
+              position: props.position ? props.position : "right"
+            },
+            responsive: true
+          }}
+        />
+      }
     </div>
   )
 }

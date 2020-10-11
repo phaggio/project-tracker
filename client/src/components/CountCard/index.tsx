@@ -5,6 +5,7 @@ type PropsType = {
   to?: string;
   type?: string;
   count?: number;
+  loading?: boolean;
 }
 
 const CountCard = (props: PropsType) => {
@@ -40,11 +41,19 @@ const CountCard = (props: PropsType) => {
   })(props.type)
 
   return (
-    <Link className={`btn card text-white text-center bg-${color}`}
+    <Link className={`btn card text-white text-center bg-${color} h-100`}
+      style={{ minHeight: "121px" }}
       to={props.to ? props.to : '/'}>
       <div className="card-body p-lg-2">
-        <div className="display-4">{props.count ? props.count : 0}</div>
-        <div className="card-text">{name}</div>
+        {
+          props.loading ?
+            <div className="card-text">loading...</div>
+            :
+            <div>
+              <div className="display-4">{props.count}</div>
+              <div className="card-text">{name}</div>
+            </div>
+        }
       </div>
     </Link>
   )
