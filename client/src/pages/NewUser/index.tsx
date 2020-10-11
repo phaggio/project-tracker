@@ -55,54 +55,57 @@ const NewUser = () => {
 
   return (
     <div className="container">
-      <form
-        method="POST"
-        onSubmit={submitButtonPressed} // this also works when user press enter key on keyboard
-      >
-        <div className="form-group">
-          <label className="d-flex flex-row justify-content-between align-items-baseline">Last name <small>Required</small></label>
-          <input type="text"
-            className="form-control"
-            id="lastName"
-            onChange={event => {
-              handleKeyEvent(event);
-            }}
-            placeholder="Last name" />
-        </div>
-
-        <div className="form-group">
-          <label>First name</label>
-          <input type="text"
-            className="form-control"
-            id="firstName"
-            onChange={event => handleKeyEvent(event)}
-            placeholder="First name" />
-        </div>
-
-        <div className="form-group">
-          <label className="d-flex flex-row justify-content-between align-items-baseline">Email <small>Required</small></label>
-          <input type="text"
-            className="form-control"
-            id="email"
-            onChange={event => handleKeyEvent(event)}
-            placeholder="user@example.com" />
-        </div>
-
-        <button type="submit" className="btn btn-success" disabled={disableCreateButton}>
-          Add user
-        </button>
-      </form>
-
-      <DebugModeContext.Consumer>
-        {({ debugMode }) => {
-          if (debugMode) return (
-            <div className="col-4">
-              <ConsoleLogButton name="userInfo state" state={userInfo} />
+      <div className="row justify-content-center">
+        <div className="col-12 col-lg-8">
+          <form
+            method="POST"
+            onSubmit={submitButtonPressed} // this also works when user press enter key on keyboard
+          >
+            <div className="form-group">
+              <label className="d-flex flex-row justify-content-between align-items-baseline">Last name <small>Required</small></label>
+              <input type="text"
+                className="form-control"
+                id="lastName"
+                onChange={event => {
+                  handleKeyEvent(event);
+                }}
+                placeholder="Last name" />
             </div>
-          )
-        }}
-      </DebugModeContext.Consumer>
 
+            <div className="form-group">
+              <label>First name</label>
+              <input type="text"
+                className="form-control"
+                id="firstName"
+                onChange={event => handleKeyEvent(event)}
+                placeholder="First name" />
+            </div>
+
+            <div className="form-group">
+              <label className="d-flex flex-row justify-content-between align-items-baseline">Email <small>Required</small></label>
+              <input type="text"
+                className="form-control"
+                id="email"
+                onChange={event => handleKeyEvent(event)}
+                placeholder="user@example.com" />
+            </div>
+
+            <button type="submit" className="btn btn-success" disabled={disableCreateButton}>
+              Add user
+        </button>
+          </form>
+
+          <DebugModeContext.Consumer>
+            {({ debugMode }) => {
+              if (debugMode) return (
+                <div className="col-4">
+                  <ConsoleLogButton name="userInfo state" state={userInfo} />
+                </div>
+              )
+            }}
+          </DebugModeContext.Consumer>
+        </div>
+      </div>
     </div>
   )
 };

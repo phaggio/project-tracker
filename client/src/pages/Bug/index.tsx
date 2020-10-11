@@ -197,7 +197,7 @@ const Bug = ({ match }: PathPropsType) => {
                   <RelationshipDiagram type="bug"
                     name={bug.name}
                     parentType={bug.parentType}
-                    projectId={bug.parentId}
+                    projectId={bug.projectId}
                     projects={projects}
                     parentId={bug.parentId}
                     parents={parents}

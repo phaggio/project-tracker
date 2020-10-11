@@ -37,8 +37,8 @@ const NewProject = () => {
 
 	return (
 		<div className="container">
-			<div className="row">
-				<div className="col-12">
+			<div className="row justify-content-center">
+				<div className="col-12 col-lg-8">
 
 					<div className="shadow rounded p-2 mt-2">
 						<div className="form-group">

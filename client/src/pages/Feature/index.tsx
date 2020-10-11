@@ -145,27 +145,28 @@ const Feature = ({ match }: PathPropsType) => {
 									<hr className="mt-2" />
 								</div>
 
-								{feature.projectId ?
-									<div className="">
-										<div className="d-flex justify-content-between align-items-baseline">
-											<label className="font-weight-light">Parent</label>
+								{
+									feature.projectId ?
+										<div className="">
+											<div className="d-flex justify-content-between align-items-baseline">
+												<label className="font-weight-light">Project</label>
+											</div>
+											<div>
+												<h5 className="mb-0">
+													{projects[0] ? projects[0].name : '(open)'}
+												</h5>
+												<small className="">{`Parent ID: (${feature.parentId ? feature.parentId : 'n/a'})`}</small>
+											</div>
+											<hr className="mt-2" />
 										</div>
-										<div>
-											<h5 className="mb-0">
-												{projects[0] ? projects[0].name : '(open)'}
-											</h5>
-											<small className="">{`Parent ID: (${feature.parentId ? feature.parentId : 'n/a'})`}</small>
+										:
+										<div className="">
+											<ParentItemDiv type="feature"
+												currentParentId={feature.parentId}
+												parents={projects}
+												saveButtonPressed={saveButtonPressed} />
+											<hr className="mt-2" />
 										</div>
-										<hr className="mt-2" />
-									</div>
-									:
-									<div className="">
-										<ParentItemDiv type="feature"
-											currentParentId={feature.parentId}
-											parents={projects}
-											saveButtonPressed={saveButtonPressed} />
-										<hr className="mt-2" />
-									</div>
 								}
 
 								<div className="">
