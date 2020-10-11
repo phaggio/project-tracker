@@ -8,7 +8,6 @@ import {
   NameBadgeDiv, TagsDiv, AssigneeDiv, ParentItemDiv, StatusDiv, RelationshipDiagram, DescriptionDiv, ConsoleLogButton
 } from '../../components';
 import DebugModeContext from '../../util/DebugModeContext';
-import Work from '../Work';
 
 
 const Bug = ({ match }: PathPropsType) => {
@@ -39,7 +38,10 @@ const Bug = ({ match }: PathPropsType) => {
     if (match.params.id !== undefined) {
       itemRequest
         .getItemById(match.params.id)
-        .then((response: AxiosResponse) => { if (isItemType(response.data)) updateBug(response.data) })
+        .then((response: AxiosResponse) => {
+          if (isItemType(response.data)) updateBug(response.data);
+          updateLoading(false);
+        })
         .catch(err => console.error(err));
     }
   }, [match.params.id]);
@@ -51,7 +53,6 @@ const Bug = ({ match }: PathPropsType) => {
         .getAllUsers()
         .then((response: AxiosResponse) => {
           if (isUserTypeArray(response.data)) updateUsers(response.data);
-          updateLoading(prev => { return !prev })
         })
         .catch(err => console.error(err))
     }
