@@ -16,7 +16,7 @@ demo on mobile device
 ## Table of contents
 * [Setup](#setup)
 * [File structure](#file-structure)
-* [App item design](#app-design)
+* [App design](#app-design)
 * [Features](#features)
 * [Tech stack](#tech-stack)
 

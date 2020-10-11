@@ -1,6 +1,7 @@
 {
   "short_name": "Project Tracker",
   "name": "Project Tracker",
+  "description": "Project progress tracking application",
   "icons": [
     {
       "src": "images/project-tracker-64.png",
@@ -18,7 +19,7 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": ".",
+  "start_url": "https://phaggio-project-tracker.herokuapp.com",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff"
