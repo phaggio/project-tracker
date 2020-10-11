@@ -14,6 +14,7 @@ const Feature = ({ match }: PathPropsType) => {
 	const [projects, updateProjects] = useState<ProjectType[]>([]);
 	const [users, updateUsers] = useState<UserType[]>([]); // potential assignee
 	const [children, updateChildren] = useState<ItemType[]>([]);
+	const [loading, updateLoading] = useState(true);
 
 	const [feature, updateFeature] = useState<ItemType>({
 		_id: '',
@@ -35,7 +36,10 @@ const Feature = ({ match }: PathPropsType) => {
 		if (match.params.id !== undefined)
 			itemRequest
 				.getItemById(match.params.id)
-				.then((response: AxiosResponse) => { if (isItemType(response.data)) updateFeature((response.data)) })
+				.then((response: AxiosResponse) => {
+					if (isItemType(response.data)) updateFeature((response.data));
+					updateLoading(false);
+				})
 				.catch(err => console.error(err));
 	}, [match.params.id]);
 
@@ -116,135 +120,139 @@ const Feature = ({ match }: PathPropsType) => {
 
 	return (
 		<div className="container">
+			{
+				loading ?
+					<small>loading...</small>
+					:
+					null
+			}
 
-			{feature._id ?
-				<div>
-					< div className="row">
+			{
+				!feature._id && !loading ?
+					<p>No feature found...</p>
+					:
+					null
+			}
 
-						<div className="col-12 col-md-6 col-lg-7">
+			{
+				feature._id && !loading ?
+					<div>
+						< div className="row">
+							<div className="col-12 col-md-6 col-lg-7">
+								<div className="shadow rounded p-2 mt-2">
 
-							<div className="shadow rounded p-2 mt-2">
-								<div className="">
 									<NameBadgeDiv type='feature'
 										name={feature.name}
 										saveButtonPressed={saveButtonPressed} />
 									<hr className="mt-2" />
-								</div>
 
-								<div className="">
 									<TagsDiv type="feature"
 										tags={feature.tags}
 										saveButtonPressed={saveButtonPressed} />
 									<hr className="mt-2" />
-								</div>
 
-								<div className="">
 									<AssigneeDiv assigneeId={feature.assigneeId}
 										saveButtonPressed={saveButtonPressed}
 										users={users} />
 									<hr className="mt-2" />
-								</div>
-
-								{
-									feature.projectId ?
-										<div className="">
-											<div className="d-flex justify-content-between align-items-baseline">
-												<label className="font-weight-light">Project</label>
+									{
+										feature.projectId ?
+											<div className="">
+												<div className="d-flex justify-content-between align-items-baseline">
+													<label className="font-weight-light">Project</label>
+												</div>
+												<div>
+													<h5 className="mb-0">
+														{projects[0] ? projects[0].name : '(open)'}
+													</h5>
+													<small className="">{`Parent ID: (${feature.parentId ? feature.parentId : 'n/a'})`}</small>
+												</div>
+												<hr className="mt-2" />
 											</div>
+											:
 											<div>
-												<h5 className="mb-0">
-													{projects[0] ? projects[0].name : '(open)'}
-												</h5>
-												<small className="">{`Parent ID: (${feature.parentId ? feature.parentId : 'n/a'})`}</small>
+												<ParentItemDiv type="feature"
+													currentParentId={feature.parentId}
+													parents={projects}
+													saveButtonPressed={saveButtonPressed} />
+												<hr className="mt-2" />
 											</div>
-											<hr className="mt-2" />
-										</div>
-										:
-										<div className="">
-											<ParentItemDiv type="feature"
-												currentParentId={feature.parentId}
-												parents={projects}
-												saveButtonPressed={saveButtonPressed} />
-											<hr className="mt-2" />
-										</div>
-								}
-
-								<div className="">
+									}
 									<StatusDiv type="feature"
 										status={feature.status}
 										saveButtonPressed={saveButtonPressed} />
-									<hr className="mt-2" />
+
 								</div>
 							</div>
-						</div>
 
-
-						<div className="col-12 col-md-6 col-lg-5">
-
-							<div className="shadow rounded p-2 mt-2">
-								<div className="">
+							<div className="col-12 col-md-6 col-lg-5">
+								<div className="shadow rounded p-2 mt-2">
 									<label className="font-weight-light">Snapshot</label>
 									<div>
 										<SmallCountCard type="work" count={countItemsByType('work', children)} />
 										<SmallCountCard type="bug" count={countItemsByType('bug', children)} />
 									</div>
 									<hr className="mt-2" />
-								</div>
 
-								<div className="">
 									<label className="font-weight-light">Progress</label>
-									{children.length > 0 ?
-										<div>
-											<FilterItemsDiv onChange={updateChartFilter} includeFeature={false} />
-											<DonutChart title={camelToNormal(chartFilter)}
-												type={chartFilter} data={countByStatus(chartFilter, children)} position="right" />
-										</div>
-										:
-										<div className="d-flex justify-content-center">
-											<p>no data available</p>
-										</div>
+									{
+										children.length > 0 ?
+											<div>
+												<FilterItemsDiv onChange={updateChartFilter} includeFeature={false} />
+												<DonutChart title={camelToNormal(chartFilter)}
+													type={chartFilter} data={countByStatus(chartFilter, children)} position="right" />
+											</div>
+											:
+											<div className="d-flex justify-content-center">
+												<small>no data available</small>
+											</div>
 									}
 								</div>
 							</div>
 
 						</div>
+						{/* end of first row */}
 
 					</div>
-					{/* end of first row */}
+					:
+					null
+			}
 
-
-					{/* start of second row */}
+			{/* start of second row */}
+			{
+				feature._id ?
 					<div className="row">
 						<div className="col-12">
-
 							<div className="shadow rounded p-2 mt-2">
-								<div className="">
-									<DescriptionDiv text={feature.description}
-										saveButtonPressed={saveButtonPressed} />
-									<hr className="mt-2" />
-								</div>
-
-								{feature.projectId ?
-									<ChildrenItemsDiv type="feature"
-										_id={feature._id}
-										projectId={feature.projectId}
-										includeFeature={false}
-										children={children}
-									/>
-									:
-									''
-								}
+								<DescriptionDiv text={feature.description}
+									saveButtonPressed={saveButtonPressed} />
 							</div>
-
 						</div>
-
-
 					</div>
-					{/* end of second row */}
-				</div>
-				:
-				<p>not found ...</p>
+					:
+					null
 			}
+			{/* end of second row */}
+
+			{/* third row */}
+			{
+				feature.projectId ?
+					<div className="row">
+						<div className="col-12">
+							<div className="shadow rounded p-2 mt-2">
+								<ChildrenItemsDiv type="feature"
+									_id={feature._id}
+									projectId={feature.projectId}
+									includeFeature={false}
+									children={children}
+								/>
+							</div>
+						</div>
+					</div>
+					:
+					null
+			}
+			{/* end of third row */}
 
 
 
