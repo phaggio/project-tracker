@@ -10,6 +10,7 @@ import Project from './Project';
 import Feature from './Feature';
 import Work from './Work';
 import Bug from './Bug';
+import NotFound from './404';
 
 export {
   Home,
@@ -23,5 +24,6 @@ export {
   Project,
   Feature,
   Work,
-  Bug
+  Bug,
+  NotFound
 }

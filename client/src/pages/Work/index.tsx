@@ -6,7 +6,7 @@ import { projectRequest, itemRequest, userRequest } from '../../httpRequests';
 import {
   NameBadgeDiv, TagsDiv, AssigneeDiv, ParentItemDiv, StatusDiv, RelationshipDiagram, DescriptionDiv, ConsoleLogButton
 } from '../../components';
-import { AxiosResponse } from 'axios';
+import { AxiosError, AxiosResponse } from 'axios';
 import DebugModeContext from '../../util/DebugModeContext';
 
 const Work = ({ match }: PathPropsType) => {
@@ -41,7 +41,11 @@ const Work = ({ match }: PathPropsType) => {
           if (isItemType(response.data)) updateWork(response.data);
           updateLoading(false);
         })
-        .catch(err => console.error(err));
+        .catch((err: AxiosError) => {
+          console.error(err);
+          if (err.response) console.error(err.response);
+          updateLoading(false);
+        });
     }
   }, [match.params.id]);
 

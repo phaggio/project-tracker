@@ -7,7 +7,7 @@ import {
 	NameBadgeDiv, StatusDiv, TagsDiv, SmallCountCard, FilterItemsDiv, DescriptionDiv, ChildrenItemsDiv, ConsoleLogButton
 } from '../../components';
 import DonutChart from '../../charts/DonutChart';
-import { AxiosResponse } from 'axios';
+import { AxiosError, AxiosResponse } from 'axios';
 import DebugModeContext from '../../util/DebugModeContext';
 
 const Project = ({ match }: PathPropsType) => {
@@ -33,11 +33,15 @@ const Project = ({ match }: PathPropsType) => {
 		if (match.params.id !== undefined) {
 			projectRequest
 				.getProjectById(match.params.id)
-				.then(response => {
+				.then((response: AxiosResponse) => {
 					if (isProjectType(response.data)) updateProject(response.data);
 					updateLoading(false);
 				})
-				.catch(err => console.error(err))
+				.catch((err: AxiosError) => {
+					console.error(err);
+					// if (err.response) console.error(err.response);
+					updateLoading(false);
+				})
 		}
 	}, [match.params.id])
 

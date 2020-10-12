@@ -7,7 +7,7 @@ import {
 	NameBadgeDiv, TagsDiv, AssigneeDiv, ParentItemDiv, StatusDiv, SmallCountCard, FilterItemsDiv, DescriptionDiv, ChildrenItemsDiv, ConsoleLogButton
 } from '../../components';
 import DonutChart from '../../charts/DonutChart';
-import { AxiosResponse } from 'axios';
+import { AxiosError, AxiosResponse } from 'axios';
 import DebugModeContext from '../../util/DebugModeContext';
 
 const Feature = ({ match }: PathPropsType) => {
@@ -40,7 +40,10 @@ const Feature = ({ match }: PathPropsType) => {
 					if (isItemType(response.data)) updateFeature((response.data));
 					updateLoading(false);
 				})
-				.catch(err => console.error(err));
+				.catch((err: AxiosError) => {
+					console.error(err);
+					updateLoading(false);
+				});
 	}, [match.params.id]);
 
 	// INIT if feature is found, find users as assignees

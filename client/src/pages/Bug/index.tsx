@@ -3,7 +3,7 @@ import { PathPropsType, ProjectType, ItemType, UserType, ParentType } from '../.
 import { findParentByParentId } from '../../util/functions';
 import { isItemType, isUserTypeArray } from '../../util/typecheck';
 import { projectRequest, itemRequest, userRequest } from '../../httpRequests';
-import { AxiosResponse } from 'axios';
+import { AxiosError, AxiosResponse } from 'axios';
 import {
   NameBadgeDiv, TagsDiv, AssigneeDiv, ParentItemDiv, StatusDiv, RelationshipDiagram, DescriptionDiv, ConsoleLogButton
 } from '../../components';
@@ -42,7 +42,10 @@ const Bug = ({ match }: PathPropsType) => {
           if (isItemType(response.data)) updateBug(response.data);
           updateLoading(false);
         })
-        .catch(err => console.error(err));
+        .catch((err: AxiosError) => {
+          console.error(err);
+          updateLoading(false);
+        });
     }
   }, [match.params.id]);
 

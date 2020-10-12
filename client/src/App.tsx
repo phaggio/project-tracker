@@ -17,6 +17,7 @@ const App = () => {
           <NavBar />
           <Switch>
             <Route exact={true} path='/' component={pages.Home} />
+            
             <Route exact={false} path='/search/:type?/:projectId?/:parentId?' component={pages.Search} />
             <Route exact={true} path='/settings' component={pages.Settings} />
             <Route exact={true} path='/new/project' component={pages.NewProject} />
@@ -28,6 +29,7 @@ const App = () => {
             <Route exact={true} path='/feature/:id?' component={pages.Feature} />
             <Route exact={true} path='/work/:id?' component={pages.Work} />
             <Route exact={true} path='/bug/:id?' component={pages.Bug} />
+            <Route exact={false} path='/' component={pages.NotFound} />
           </Switch>
         </DebugModeContext.Provider>
       </HashRouter>
