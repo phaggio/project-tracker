@@ -95,7 +95,7 @@ const Project = ({ match }: PathPropsType) => {
 					:
 					null
 			}
-			
+
 			{
 				!project._id && !loading ?
 					<small>No project found.</small>
@@ -107,53 +107,48 @@ const Project = ({ match }: PathPropsType) => {
 				project._id && !loading ?
 					<div className="row">
 						<div className="col-12 col-md-6 col-lg-7">
-
 							<div className="shadow rounded p-2 mt-2">
-								<div className="">
-									<NameBadgeDiv type='project'
-										name={project.name}
-										saveButtonPressed={saveButtonPressed} />
-									<hr className="mt-2" />
-								</div>
 
-								<div className="">
-									<StatusDiv type='project'
-										status={project.status}
-										saveButtonPressed={saveButtonPressed} />
-									<hr className="mt-2" />
-								</div>
+								<NameBadgeDiv type='project'
+									name={project.name}
+									saveButtonPressed={saveButtonPressed} />
+								<hr className="mt-2" />
 
-								<div className="">
-									<TagsDiv type="project"
-										tags={project.tags}
-										saveButtonPressed={saveButtonPressed} />
-									<hr className="mt-2" />
-								</div>
+								<StatusDiv type='project'
+									status={project.status}
+									saveButtonPressed={saveButtonPressed} />
+								<hr className="mt-2" />
+
+								<TagsDiv type="project"
+									tags={project.tags}
+									saveButtonPressed={saveButtonPressed} />
+
 							</div>
-
 						</div>
 
 						<div className="col-12 col-md-6 col-lg-5">
-
 							<div className="shadow rounded p-2 mt-2">
-								<div className="">
-									<label className="font-weight-light">Snapshot</label>
-									<div>
-										<SmallCountCard type="feature" count={countItemsByType('feature', children)} />
-										<SmallCountCard type="work" count={countItemsByType('work', children)} />
-										<SmallCountCard type="bug" count={countItemsByType('bug', children)} />
-									</div>
-									<hr className="mt-2" />
-								</div>
 
-								<div className="">
-									<label className="font-weight-light">Overall progress</label>
-									<FilterItemsDiv onChange={updateChartFilter} />
-									<DonutChart title={camelToNormal(chartFilter)}
-										type={chartFilter} data={countByStatus(chartFilter, children)} position="right" />
+								<label className="font-weight-light">Snapshot</label>
+								<div>
+									<SmallCountCard type="feature"
+										count={countItemsByType('feature', children)}
+										to={`/search/feature/${project.projectId}`} />
+									<SmallCountCard type="work"
+										count={countItemsByType('work', children)}
+										to={`/search/work/${project.projectId}`} />
+									<SmallCountCard type="bug"
+										count={countItemsByType('bug', children)}
+										to={`/search/bug/${project.projectId}`} />
 								</div>
+								<hr className="mt-2" />
+
+								<label className="font-weight-light">Overall progress</label>
+								<FilterItemsDiv onChange={updateChartFilter} />
+								<DonutChart title={camelToNormal(chartFilter)}
+									type={chartFilter} data={countByStatus(chartFilter, children)} position="right" />
+
 							</div>
-
 						</div>
 
 					</div>

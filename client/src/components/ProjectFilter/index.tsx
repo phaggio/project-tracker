@@ -4,6 +4,7 @@ import { ProjectType } from '../../util/dataTypes';
 type PropsType = {
   projects: ProjectType[];
   onChange: (selectedProjectId: undefined | string) => void;
+  defaultValue?: string;
 }
 
 const ProjectFilter = (props: PropsType) => {
@@ -12,6 +13,7 @@ const ProjectFilter = (props: PropsType) => {
     <div>
       <label className="font-weight-light">Project</label>
       <select className="custom-select"
+        value={props.defaultValue ? props.defaultValue : 'all'}
         onChange={(event) => {
 
           const selectedProjectId = event.target.selectedOptions[0].value;

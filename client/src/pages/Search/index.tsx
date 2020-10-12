@@ -17,7 +17,8 @@ const Search = ({ match }: PathPropsType) => {
   const [filteredItems, updateFilteredItems] = useState<ItemType[]>([]);
 
   // drop down filter options
-  const [projectId, updateProjectId] = useState<string | undefined>();
+  const [projectId, updateProjectId] = useState<string | undefined>(match.params.projectId);
+  const [parentId, updateParentId] = useState<string | undefined>(match.params.parentId);
   const [type, updateType] = useState<string | undefined>(match.params.type);
   const [status, updateStatus] = useState<string>('');
 
@@ -26,9 +27,9 @@ const Search = ({ match }: PathPropsType) => {
 
   // INIT call
   useEffect(() => {
-    if (match.params.type) {
+    if (match.params.type || match.params.projectId || match.params.parentId) {
       itemRequest
-        .getItemsBySearchFilter({ type: match.params.type })
+        .getItemsBySearchFilter({ type: match.params.type, projectId: projectId, parentId: parentId })
         .then((response: AxiosResponse) => updateItems(response.data))
         .catch(err => console.error(err))
     } else {
@@ -46,7 +47,7 @@ const Search = ({ match }: PathPropsType) => {
       .then((response: AxiosResponse) => updateUsers(response.data))
       .catch(err => console.error(err))
     updateType(match.params.type)
-  }, [match.params.type]);
+  }, [match.params.type, match.params.projectId, match.params.parentId]);
 
 
   // load filteredItems array
@@ -99,7 +100,7 @@ const Search = ({ match }: PathPropsType) => {
             </div>
 
             <div className="pb-3">
-              <ProjectFilter projects={projects} onChange={updateProjectId} />
+              <ProjectFilter projects={projects} onChange={updateProjectId} defaultValue={projectId} />
             </div>
 
             <div className="pb-3">

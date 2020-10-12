@@ -1,8 +1,10 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 type PropsType = {
   type: string;
   count: number;
+  to?: string;
 }
 
 // not being used
@@ -35,10 +37,10 @@ const SmallCountCard = (props: PropsType) => {
 
 
   return (
-    <div className={`badge border badge-${color}`} style={{minWidth: '80px'}}>
+    <Link className={`badge border badge-${color}`} style={{ minWidth: '80px' }} to={props.to ? props.to : '/'}>
       <h4 className="font-weight-bold">{props.count ? props.count : 0} </h4>
       <small className="text-center">{name}</small>
-    </div>
+    </Link>
   )
 }
 

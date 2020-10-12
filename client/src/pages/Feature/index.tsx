@@ -189,8 +189,12 @@ const Feature = ({ match }: PathPropsType) => {
 								<div className="shadow rounded p-2 mt-2">
 									<label className="font-weight-light">Snapshot</label>
 									<div>
-										<SmallCountCard type="work" count={countItemsByType('work', children)} />
-										<SmallCountCard type="bug" count={countItemsByType('bug', children)} />
+										<SmallCountCard type="work"
+											count={countItemsByType('work', children)}
+											to={`/search/work/${feature.projectId}/${feature._id}`} />
+										<SmallCountCard type="bug"
+											count={countItemsByType('bug', children)}
+											to={`/search/bug/${feature.projectId}/${feature._id}`} />
 									</div>
 									<hr className="mt-2" />
 
