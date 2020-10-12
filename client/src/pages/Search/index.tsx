@@ -18,7 +18,7 @@ const Search = ({ match }: PathPropsType) => {
 
   // drop down filter options
   const [projectId, updateProjectId] = useState<string | undefined>(match.params.projectId);
-  const [parentId, updateParentId] = useState<string | undefined>(match.params.parentId);
+  const [parentId] = useState<string | undefined>(match.params.parentId);
   const [type, updateType] = useState<string | undefined>(match.params.type);
   const [status, updateStatus] = useState<string>('');
 
@@ -27,9 +27,10 @@ const Search = ({ match }: PathPropsType) => {
 
   // INIT call
   useEffect(() => {
-    if (match.params.type || match.params.projectId || match.params.parentId) {
+    console.log('running effect')
+    if (type || projectId || parentId) {
       itemRequest
-        .getItemsBySearchFilter({ type: match.params.type, projectId: projectId, parentId: parentId })
+        .getItemsBySearchFilter({ type: type, projectId: projectId, parentId: parentId })
         .then((response: AxiosResponse) => updateItems(response.data))
         .catch(err => console.error(err))
     } else {
@@ -46,8 +47,7 @@ const Search = ({ match }: PathPropsType) => {
       .getAllUsers()
       .then((response: AxiosResponse) => updateUsers(response.data))
       .catch(err => console.error(err))
-    updateType(match.params.type)
-  }, [match.params.type, match.params.projectId, match.params.parentId]);
+  }, [type, projectId, parentId]);
 
 
   // load filteredItems array
