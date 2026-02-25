@@ -29,7 +29,7 @@
   "homepage": "https://github.com/phaggio/project-tracker#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "mongoose": "^5.9.26"
+    "mongoose": "^6.13.6"
   },
   "devDependencies": {
     "@types/express": "^4.17.8",
